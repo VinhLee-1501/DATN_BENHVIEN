@@ -63,7 +63,7 @@ class UserController extends Controller
     public function authenticateLogin(LoginRequest $request)
     {
         $credentials = [
-            'email' =>  $request->input('email'),
+            'phone' =>  $request->input('phone'),
             'password' => $request->input('password'),
         ];
 
