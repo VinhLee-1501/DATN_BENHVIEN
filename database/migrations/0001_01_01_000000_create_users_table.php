@@ -9,14 +9,13 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id('row_id');
-            $table->string('user_id');
-            $table->string('firstname');
-            $table->string('lastname');
+            $table->id('row_id')->primary();
+            $table->string('user_id')->unique();
+            $table->string('name');
             $table->string('avatar')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('phone')->nullable();
+            $table->string('phone')->unique();
             $table->string('google_id')->nullable();
             $table->string('zalo_id')->nullable();
             $table->tinyInteger('role')->default(0)->comment('1 là admin');

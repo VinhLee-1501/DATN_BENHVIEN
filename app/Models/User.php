@@ -18,13 +18,13 @@ class User extends Authenticatable
     protected $primaryKey = 'row_id';
     protected $fillable = [
         'user_id',
-        'firstname',   
-        'lastname',    
+        'firstname',
+        'lastname',
         'phone',
         'email',
         'password',
-        'avatar',       
-        'expertise',    
+        'avatar',
+        'expertise',
         'role',
         'status',
         'email_verified_at',
@@ -49,4 +49,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed', // Dùng hashed để mã hóa mật khẩu
     ];
+
+    public function specialtyForeignKey()
+    {
+        return $this->belongsTo(Specialty::class, 'user_id', 'user_id');
+    }
+
+    public function schedule()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }
