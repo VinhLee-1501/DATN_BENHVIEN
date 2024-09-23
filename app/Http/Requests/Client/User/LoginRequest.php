@@ -22,7 +22,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' =>  'required|email|max:255',
+            'phone' =>  'required|numeric|digits_between:10,15',
             'password' => 'required|max:255',
         ];
     }
@@ -30,25 +30,20 @@ class LoginRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'phone.required' => ':attribute không được để trống',
+            'phone.numeric' => ':attribute phải là số',
+            'phone.digits_between' => ':attribute phải có từ 10 đến 15 chữ số',
+
             'password.required' => ':attribute không được để trống',
-            'email.required' => ':attribute không được để trống',
-            'email.email' => ':attribute không đúng định dạng',
-
             'password.max' => ':attribute tối đa 255 ký tự',
-            'email.max' => ':attribute tối đa 255 ký tự',
-
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'name' => 'Họ tên',
-            'email' => 'Email',
             'phone' => 'Số điện thoại',
-            'address' => 'Địa chỉ',
             'password' => 'Mật khẩu',
-            'confirm_password' => 'Xác nhận mật khẩu',
         ];
     }
 }

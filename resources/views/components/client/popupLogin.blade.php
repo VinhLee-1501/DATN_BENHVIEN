@@ -18,8 +18,8 @@
                         <x-message.message></x-message.message>
                         <div class="form__frame">
                             <div class="form__group">
-                                <input id="email" type="email" name="email" placeholder="Tên đăng nhập" />
-                                @error('email')
+                                <input id="phone" type="text" name="phone" placeholder="Số điện thoại" />
+                                @error('phone')
                                     <div class="form__error">{{ $message }}</div>
                                 @enderror
                             </div>
