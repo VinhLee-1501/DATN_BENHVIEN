@@ -1,0 +1,59 @@
+.box-booking
+    margin-top: 80px
+    padding-top: 40px
+&__image
+    img
+        object-fit: contain
+        object-position: left bottom
+
+&__main
+    .booking
+        background: $color_page_1
+        border-radius: 8px
+        border: 1px solid #64bb9c
+        overflow: hidden
+    &__body
+        padding: 20px
+
+    &__contact
+        color: #fff
+        a
+            color: #fff
+        &:hover
+            color: #fff
+
+        .item
+        &__icon
+            background: #fff
+            color: $color_page_1
+
+    &__action
+        .button
+            width: 100%
+        &:hover
+            color: #fff
+            background: $color_page
+
+    .select2-container .select2-selection--single
+        background: $color_page_1
+        border: none
+        border-radius: 0
+        border-bottom: 1px solid #fff
+    &:hover
+        background: #64bb9c
+
+    .select2-container--default .select2-selection--single .select2-selection__placeholder
+        color: #fff
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow b
+        border-color: #fff transparent transparent transparent
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered
+        color: #fff
+        font-weight: 500
+
+.button
+    background: #fff
+    color: $color_page_1
+    &:hover
+        box-shadow: 2px 3px 6px 0px rgba(#fff, 0.5)

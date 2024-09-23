@@ -1,0 +1,43 @@
+.box-head {
+  padding-top: 70px;
+  &__bg {
+    height: 80%;
+  }
+  &__frame {
+    padding-top: 40px;
+  }
+  &__image {
+    img {
+      display: block;
+      width: 100%;
+      max-width: 480px;
+      margin: auto;
+    }
+  }
+  &__description {
+    max-width: 910px;
+    margin: auto;
+    text-align: center;
+    color: #fff;
+  }
+  &__service {
+    .box-title {
+      max-width: 560px;
+      margin: auto;
+      .highlight {
+        color: #ffda56 !important;
+      }
+    }
+  }
+  .box-heading {
+    h1 {
+      font-size: 40px;
+      text-align: center;
+      color: #fff;
+    }
+  }
+  .box-highlight,
+  .box-title {
+    color: #fff !important;
+  }
+}

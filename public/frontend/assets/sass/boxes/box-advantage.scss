@@ -1,0 +1,66 @@
+.box-advantage
+.box-title
+    color: $color_page
+
+.description
+    max-width: 1000px
+    margin: 4px auto 0
+
+.tab__list
+    height: 100%
+    display: flex
+    flex-direction: column
+    .tab
+        flex: 1
+        padding: 20px
+        display: flex
+        align-items: center
+        gap: 16px
+        border: 1px solid $color_page
+        border-bottom-width: 0
+    &:last-child
+        border-bottom-width: 1px
+
+    &__index
+        width: 30px
+        height: 30px
+        color: #fff
+        border-radius: 100%
+        background: $color_page
+        display: flex
+        justify-content: center
+        align-items: center
+        font-weight: 600
+
+    &__title
+        font-weight: 600
+        width: calc(100% - 46px)
+
+    &.active
+        color: #fff
+        background: $color_page
+        &__index
+            background: #fff
+            color: $color_page
+
+.pane__list
+    height: 100%
+    .pane
+        height: 100%
+    &__frame
+        height: 100%
+        padding: 40px
+        background: $color_page
+        display: flex
+        gap: 20px
+
+    &__image
+        width: 280px
+        img
+            width: 100%
+            aspect-ratio: 1/1
+            object-fit: cover
+
+    &__content
+        color: #fff
+        width: calc(100% - 300px)

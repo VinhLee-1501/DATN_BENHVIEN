@@ -1,0 +1,84 @@
+.video {
+  &__list {
+    .item {
+      &-video {
+        cursor: pointer;
+        position: relative;
+        border: 1px solid #eaecf0;
+        border-radius: 16px;
+        overflow: hidden;
+        &:hover {
+          .item-video__title {
+            color: $color_page_1;
+          }
+          .item-video__image {
+            img {
+              transform: scale(1.1);
+            }
+          }
+        }
+        &__image {
+          img {
+            background: #eaf0f9;
+            width: 100%;
+            aspect-ratio: 9/16;
+            object-fit: cover;
+            @include _transition;
+          }
+        }
+        &__body {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          padding: 120px 16px 16px;
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0) 19.5%,
+            #fff 66.11%
+          );
+        }
+        &__wrap {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 8px;
+        }
+        &__play {
+          width: 32px;
+          height: 32px;
+          border-radius: 100%;
+          background: $color_page_1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          i {
+            position: relative;
+            left: 2px;
+            color: #fff;
+            font-size: 18px;
+          }
+        }
+        &__author {
+          color: $color_page_1;
+          font-size: 14px;
+          flex: 1;
+          @include _line_clamp_1;
+        }
+        &__title {
+          text-transform: initial;
+          @include _line_clamp_2;
+        }
+      }
+    }
+  }
+  &__slider {
+    .slick-list {
+      margin: 0 -10px;
+      padding: 10px 0;
+    }
+    .item-video {
+      margin: 0 10px;
+    }
+  }
+}

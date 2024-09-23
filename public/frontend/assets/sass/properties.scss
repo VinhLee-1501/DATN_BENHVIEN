@@ -1,0 +1,122 @@
+$color_page: #2a65c7;
+$color_page_1: #219e72;
+$color_page_2: #fff;
+$color_page_bg: #fff;
+$color_text: #2a2a2b;
+$color_a: $color_text;
+$color_a_hover: $color_page;
+$color_menu: #e3e3e3;
+$color_menu_hover: $color_page_2;
+$color_menu_hover_1: $color_page_2;
+$color_menu_active: $color_page_2;
+$color_menu_active_1: $color_page_2;
+$color_heading: $color_page_1;
+$highlight: $color_page_1;
+
+%overlay {
+
+    &:before,
+    &:after {
+        display: block;
+        content: "";
+        position: absolute;
+        opacity: 0;
+        top: 10px;
+        right: 10px;
+        bottom: 10px;
+        left: 10px;
+        transition: opacity 0.5s, transform 0.5s;
+        z-index: 2;
+    }
+
+    &:before {
+        border-top: 1px solid rgba(255, 255, 255, 1);
+        border-bottom: 1px solid rgba(255, 255, 255, 1);
+        -webkit-transform: scale(0, 1);
+        transform: scale(0, 1);
+    }
+
+    &:after {
+        border-left: 1px solid rgba(255, 255, 255, 1);
+        border-right: 1px solid rgba(255, 255, 255, 1);
+        -webkit-transform: scale(1, 0);
+        transform: scale(1, 0);
+    }
+
+    &:hover {
+
+        &:before,
+        &:after {
+            opacity: 1;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+    }
+}
+
+@mixin _transition {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+@mixin _transition_in_out {
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+@mixin _bg_cover {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+@mixin _bg_contain {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+@mixin _line_clamp_1 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+@mixin _line_clamp_2 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+@mixin _line_clamp_3 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+@mixin _line_clamp_5 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+}
+
+$box_shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@200;300;400;500;600;700;800;900&display=swap");
+$font_be_vn: "Be Vietnam Pro", sans-serif;
+
+@import url("https://fonts.googleapis.com/css2?family=Allura&display=swap");
+$font_allura: "Allura", cursive;

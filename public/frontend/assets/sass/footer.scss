@@ -1,0 +1,51 @@
+.footer {
+  background: $color_page;
+  padding: 40px 0;
+  &__logo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    a {
+      display: block;
+    }
+    img {
+      max-width: 200px;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+  &__title {
+    color: #fff;
+  }
+  &__list {
+    .item {
+      &__label {
+        color: #fff;
+      }
+      a {
+        color: #fff;
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+  &__social {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .item {
+      &__link {
+        display: block;
+        border-radius: 100%;
+        overflow: hidden;
+        img {
+          width: 30px;
+          aspect-ratio: 1/1;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+}

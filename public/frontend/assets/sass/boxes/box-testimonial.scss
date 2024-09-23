@@ -1,0 +1,62 @@
+.box-testimonial {
+  background: $color_page_1;
+  &__slider {
+    .slick-list {
+      margin: 0 -10px;
+    }
+    .item {
+      color: #fff;
+      padding: 0 40px;
+      margin: 0 10px;
+      &__wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 16px;
+      }
+      &__head {
+        padding: 8px 0 8px 20px;
+        border-left: 4px solid #fff;
+        max-width: calc(100% - 160px);
+      }
+      &__image {
+        width: 140px;
+        height: 140px;
+        border-radius: 100%;
+        border: 3px solid #fff;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      &__body {
+        text-align: center;
+        max-width: 900px;
+        margin: auto;
+      }
+      &__info {
+        font-size: 14px;
+        margin-top: 4px;
+      }
+    }
+  }
+  .box-title {
+    color: #fff !important;
+  }
+  .slick-slider {
+    height: auto;
+    > button {
+      background: #fff;
+      &::before {
+        color: $color_page_1;
+      }
+    }
+    .slick-dots {
+      position: initial;
+      padding-top: 40px;
+    }
+  }
+}

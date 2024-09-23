@@ -1,0 +1,129 @@
+.header__menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  .item {
+    &:hover {
+      .item__link {
+        color: $color_page_1;
+      }
+      .submenu {
+        opacity: 1;
+        visibility: initial;
+        -webkit-transform: perspective(400) rotate3d(0, 0, 0, 0);
+      }
+    }
+    &__link {
+      display: block;
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      font-weight: 500;
+      border-radius: 8px;
+      i {
+        margin-left: 6px;
+      }
+    }
+    &__dropdown {
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 100%;
+        height: 10px;
+        width: 100%;
+      }
+      ul {
+        box-shadow: 2px 3px 8px 0px rgba(19, 25, 28, 0.16);
+      }
+      .submenu {
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transform: perspective(400) rotate3d(1, 0, 0, -90deg);
+        -webkit-transform-origin: 50% 0;
+        transition: 300ms;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        width: 100%;
+        width: fit-content;
+        li {
+          position: relative;
+          width: 100%;
+          border-bottom: 1px solid #eaeaea;
+          &:last-child {
+            border: none;
+          }
+          &:hover {
+            i {
+              color: $color_page_1;
+            }
+            .submenu__child {
+              display: block;
+            }
+          }
+          a {
+            display: block;
+            white-space: nowrap;
+            padding: 10px 12px;
+            min-width: 250px;
+            border-left: 3px solid #fff;
+            background: #fff;
+          }
+          > a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            font-weight: 400;
+            i {
+              font-size: 12px;
+            }
+          }
+        }
+        > li {
+          &:hover {
+            > a {
+              color: $color_text;
+              background: #e9f5f1;
+              border-color: #e9f5f1;
+            }
+          }
+          > a {
+            &.active {
+              border-color: $color_page_1;
+              background: #e9f5f1;
+            }
+          }
+        }
+        &__child {
+          display: none;
+          position: absolute;
+          top: 0;
+          left: 100%;
+          border-left: 1px solid #eaeaea;
+          li {
+            &:hover {
+              a {
+                color: $color_page_1;
+              }
+            }
+            a {
+              font-weight: 300;
+              &.active {
+                color: $color_page_1;
+                border-color: $color_page_1;
+              }
+            }
+          }
+        }
+      }
+    }
+    &.active {
+      .item__link {
+        border-color: $color_page_1;
+        color: $color_page_1;
+      }
+    }
+  }
+}

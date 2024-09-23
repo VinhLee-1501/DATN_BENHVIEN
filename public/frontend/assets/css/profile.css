@@ -1,0 +1,54 @@
+.profile__page {
+    padding: 20px;
+}
+
+.profile__info {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.profile__avatar {
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center;     /* Căn giữa theo chiều dọc */
+}
+
+.profile__avatar img {
+    width: 30%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+.profile__details p {
+    margin: 10px 0;
+}
+
+.profile__medical-history {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.medical-history__table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.medical-history__table th, .medical-history__table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.medical-history__table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.medical-history__table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

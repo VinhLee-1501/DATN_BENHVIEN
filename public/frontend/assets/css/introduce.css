@@ -1,0 +1,12 @@
+:root {
+    --primary: #048647;
+    --secondary: #03B75F;
+}
+
+.text-title {
+    color: var(--primary);
+}
+
+.logo-inproduce {
+    width: 300px;
+}

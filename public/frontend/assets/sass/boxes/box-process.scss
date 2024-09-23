@@ -1,0 +1,75 @@
+.box-process {
+  .process {
+    &__tab {
+      display: flex;
+      .tab {
+        width: calc(100% / 5);
+        border: 1px solid $color_page_1;
+        padding: 20px 12px;
+        border-right-width: 0;
+        background: #fff;
+        @include _transition;
+        &:last-child {
+          border-right-width: 1px;
+        }
+        &:hover,
+        &.active {
+          background: $color_page;
+          border-color: $color_page;
+          color: #fff;
+          .tab__image {
+            img {
+              filter: brightness(0) invert(1);
+            }
+          }
+        }
+        &__frame {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          align-items: center;
+        }
+        &__image {
+          img {
+            width: 68px;
+            aspect-ratio: 1/1;
+            object-fit: contain;
+          }
+        }
+        &__title {
+          font-weight: 500;
+          text-align: center;
+        }
+      }
+    }
+    &__pane {
+      border: 1px solid #eaeaea;
+      padding: 20px;
+      .pane {
+        display: none;
+        &__content {
+          padding: 20px;
+        }
+        &__title {
+          font-size: 26px;
+          font-weight: 700;
+        }
+        &__image {
+          width: 100%;
+          img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+          }
+        }
+        &.active {
+          display: block;
+        }
+      }
+    }
+  }
+  .box-description {
+    max-width: 790px;
+  }
+}

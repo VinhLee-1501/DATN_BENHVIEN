@@ -1,0 +1,48 @@
+.box-doctor {
+  &__slider {
+    .slick-list {
+      padding: 10px 0;
+    }
+    .item {
+      height: 100%;
+      &__frame {
+        height: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fff;
+        border-bottom: 4px solid $color_page;
+        text-align: center;
+        transform: scale(0.9);
+        @include _transition;
+        &:hover {
+          background: $color_page_1;
+          border-color: #176f50;
+          transform: scale(1);
+          .item__name,
+          .item__position {
+            color: #fff;
+          }
+        }
+      }
+      &__image {
+        background: linear-gradient(180deg, #fff 0%, #cadfff 100%);
+        img {
+          display: block;
+          width: 100%;
+          aspect-ratio: 3/4;
+          object-fit: cover;
+        }
+      }
+      &__body {
+        padding: 16px;
+      }
+      &__position {
+        font-size: 14px;
+        color: $color_page_1;
+      }
+    }
+  }
+  .box-description {
+    max-width: 580px;
+  }
+}

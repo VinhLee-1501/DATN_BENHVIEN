@@ -1,0 +1,193 @@
+.news {
+    &__list {
+        .item {
+            height: 100%;
+
+            &__frame {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                border-radius: 8px;
+                border: 1px solid #f4f4f4;
+                background: #fff;
+                overflow: hidden;
+                @include _transition;
+
+                &:hover {
+                    box-shadow: 3px 6px 12px 0px rgba(52, 61, 55, 0.12);
+
+                    .item__link {
+                        color: $color_page;
+                    }
+                }
+            }
+
+            &__thumb {
+                &--link {
+                    display: block;
+                    width: 100%;
+                }
+
+                img {
+                    display: block;
+                    width: 100%;
+                    aspect-ratio: 16/9;
+                    object-fit: cover;
+                }
+            }
+
+            &__body {
+                height: 100%;
+                padding: 16px;
+                @include _transition;
+
+                &--wrap {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    background: #eaeaea;
+                    padding: 4px 12px 2px;
+                    border-radius: 50px;
+                    width: fit-content;
+                    margin: 12px 0;
+                    font-size: 12px;
+
+                    .sep {
+                        width: 1px;
+                        height: 8px;
+                        background: #6a6a6b;
+                    }
+                }
+            }
+
+            &__link {
+                text-transform: initial;
+                @include _line_clamp_2;
+
+                &:hover {
+                    color: $color_text;
+                }
+            }
+
+            &__category {
+                color: #6a6a6b;
+                display: block;
+                font-size: 12px;
+                line-height: 1;
+                @include _transition;
+
+                &:hover {
+                    color: $color_page;
+                }
+            }
+
+            &__published {
+                color: #6a6a6b;
+                font-size: 12px;
+            }
+
+            &__description {
+                color: #6d6a6a;
+                @include _line_clamp_2;
+            }
+        }
+
+        &--row {
+            .item {
+                &__frame {
+                    flex-direction: row;
+                    border-color: #eaeaea;
+                }
+
+                &__thumb {
+                    width: 228px;
+                }
+
+                &__body {
+                    width: calc(100% - 228px);
+                    padding: 8px 12px;
+
+                    &--wrap {
+                        margin: 6px 0 0;
+                    }
+                }
+
+                &__description {
+                    display: none;
+                }
+
+                &__link {
+                    font-size: 14px;
+                    font-weight: 500;
+                    -webkit-line-clamp: 3;
+                }
+            }
+        }
+    }
+
+    &__relative {
+        margin-bottom: 40px;
+    }
+
+    &__slider {
+        .slick-list {
+            margin: 0 -10px;
+            padding: 12px 0;
+        }
+
+        .item {
+            margin: 0 10px;
+        }
+    }
+
+    &__detail {
+        padding-top: 0 !important;
+    }
+
+    &__featured {
+        height: 100%;
+
+        .slick-list {
+            padding: 0;
+            margin: 0 -10px;
+        }
+
+        .item {
+            margin: 0 10px;
+
+            &__frame {
+                &:hover {
+                    box-shadow: none;
+                }
+            }
+
+            &__body {
+                height: 100%;
+            }
+
+            &__description {
+                -webkit-line-clamp: 3;
+            }
+        }
+    }
+
+    &__info {
+        margin-top: 40px;
+
+        &--frame {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        &--header {
+            .box-title {
+                color: $color_page_1;
+            }
+        }
+    }
+
+    .box-branch {
+        margin-top: 0;
+    }
+}

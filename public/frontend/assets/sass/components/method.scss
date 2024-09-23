@@ -1,0 +1,112 @@
+.method {
+    &__list {
+
+        // .item {
+        //   height: 100%;
+        //   border-radius: 16px;
+        //   overflow: hidden;
+        //   border: 1px solid;
+        //   border-bottom: 4px solid;
+        //   border-color: #eaeaea;
+        //   background: #fff;
+        //   @include _transition;
+        //   &__frame {
+        //     height: 100%;
+        //     display: flex;
+        //     flex-direction: column;
+        //     padding: 16px;
+        //     gap: 12px;
+        //     text-align: center;
+        //   }
+        //   &__image {
+        //     width: 100%;
+        //     overflow: hidden;
+        //     border-radius: 8px;
+        //     img {
+        //       width: 100%;
+        //       aspect-ratio: 4/3;
+        //       object-fit: cover;
+        //       @include _transition;
+        //     }
+        //   }
+        //   &__wrap {
+        //     flex: 1;
+        //     width: 100%;
+        //     display: flex;
+        //     flex-direction: column;
+        //     justify-content: space-between;
+        //     gap: 12px;
+        //   }
+        //   &__link {
+        //     text-transform: initial;
+        //     @include _transition;
+        //     @include _line_clamp_1;
+        //   }
+        //   &__description {
+        //     font-size: 14px;
+        //     margin-top: 8px;
+        //     @include _line_clamp_2;
+        //   }
+        //   &__action {
+        //     .button {
+        //       width: 100%;
+        //     }
+        //   }
+        //   &:hover {
+        //     border-color: $color_page;
+        //     .item__image {
+        //       img {
+        //         transform: scale(1.2);
+        //       }
+        //     }
+        //     .item__link {
+        //       color: $color_page;
+        //     }
+        //   }
+        // }
+        &.horizon {
+            .item {
+                border-radius: 8px;
+                border: none;
+
+                &__frame {
+                    flex-direction: row;
+                    padding: 8px;
+                    gap: 0;
+                    text-align: left;
+                }
+
+                &__image {
+                    width: fit-content;
+                    border-radius: 8px;
+
+                    img {
+                        width: 200px;
+                    }
+                }
+
+                &__wrap {
+                    width: calc(100% - 200px);
+                    padding-left: 12px;
+                }
+
+                &__link {
+                    -webkit-line-clamp: 2;
+                }
+
+                &__description {
+                    margin-top: 8px;
+                    -webkit-line-clamp: 4;
+                }
+
+                &__action {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &__other {
+        background: #edf4ff;
+    }
+}

@@ -1,0 +1,327 @@
+.popup.login .popup__frame {
+    overflow: hidden;
+    max-width: 500px;
+    max-height: calc(100vh - 20px);
+    border-radius: 16px;
+    background-color: #fff;
+    padding: 20px;
+    border: 3px solid #048647;
+}
+
+.popup.login .popup__form {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+}
+
+.popup.login .popup__form--frame {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.popup.login .popup__form .form {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.popup.login .popup__form .form__action {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.popup.login .popup__form .form__action .button {
+    margin: 0;
+    padding: 10px;
+
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+}
+
+.popup.login .popup__form .form__action .button.btn-login {
+    background-color: #00a253;
+    color: white;
+}
+
+.popup.login .popup__form .form__action .button.btn-cancel {
+    background-color: #ffffff;
+    color: #048647;
+    flex: 0 0 120px;
+}
+
+.popup.login .popup__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.form__social-login {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.btn-google-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #5f6368;
+    border: 1px solid #dadce0;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-zalo-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #5f6368;
+    border: 1px solid #dadce0;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-zalo-login:hover {
+    background-color: #f7f7f7;
+    color: #181818;
+}
+
+.btn-google-login:hover {
+    background-color: #f7f7f7;
+    color: #181818;
+}
+
+.google-icon {
+    width: 90px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.zalo-icon {
+    width: 90px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.btn-google-login {
+    width: 100%;
+}
+
+.btn-zalo-login {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.form__group--checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.form__group--checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: #007bff;
+}
+
+.form__group--checkbox label {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.popup.register .popup__frame {
+    overflow: hidden;
+    max-width: 600px;
+    max-height: calc(100vh - 10px);
+    border-radius: 16px;
+    background-color: #fff;
+    padding: 20px;
+    border: 3px solid #048647;
+}
+
+.popup.register .popup__form {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+}
+
+.popup.register .popup__form .form__group.form__group--half {
+    display: flex;
+    gap: 10px;
+}
+
+.popup.register .popup__form .form__group.form__group--half input {
+    flex: 1;
+}
+.popup.register .popup__form .form__group.form__group--half select {
+    flex: 1;
+}
+
+.popup.register .popup__form .form__action .button.btn-register {
+    background-color: #048647;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.popup.register .popup__form .form__action .button.btn-cancel {
+    background-color: #ffffff;
+    color: #048647;
+    border: 1px solid #048647;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.popup.register .box-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #048647;
+}
+
+.popup.register .popup__form .form__group input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+}
+.popup.register .popup__form .form__group select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+}
+
+.popup.register .form__link a {
+    color: #048647;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.popup.register .popup__form {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+}
+
+.popup.register .popup__form--frame {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.popup.register .popup__form .form {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.popup.register .popup__form .form__action {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.popup.register .popup__form .form__action .button {
+    margin: 0;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+}
+
+.popup.register .popup__form .form__action .button.btn-login {
+    background-color: #00a253;
+    color: white;
+}
+
+.popup.register .popup__form .form__action .button.btn-cancel {
+    background-color: #ffffff;
+    color: #048647;
+    flex: 0 0 120px;
+}
+
+/* css forget */
+
+.popup.forgot-password .popup__frame {
+    overflow: hidden;
+    max-width: 500px;
+    max-height: calc(100vh - 20px);
+    border-radius: 16px;
+    background-color: #fff;
+    padding: 20px;
+    border: 3px solid #048647;
+}
+
+.popup.forgot-password .popup__form {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+}
+
+.popup.forgot-password .popup__form--frame {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.popup.forgot-password .popup__form .form {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.popup.forgot-password .popup__form .form__action {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.popup.forgot-password .popup__form .form__action .button {
+    margin: 0;
+    padding: 10px;
+
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+}
+
+.popup.forgot-password .popup__form .form__action .button.btn-login {
+    background-color: #00a253;
+    color: white;
+}
+
+.popup.forgot-password .popup__form .form__action .button.btn-cancel {
+    background-color: #ffffff;
+    color: #048647;
+    flex: 0 0 120px;
+}
+
+.popup.forgot-password .popup__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.form__error {
+    color: red;
+}

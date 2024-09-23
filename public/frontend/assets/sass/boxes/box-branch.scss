@@ -1,0 +1,39 @@
+.box-branch
+    margin-top: 80px
+    background: $color_page_1
+.box-title
+    color: #fff !important
+
+.item
+    color: #fff
+    padding: 10px 0
+    a
+        color: #fff
+
+    &__header
+        display: flex
+        align-items: center
+        gap: 8px
+        padding: 4px 10px
+        width: fit-content
+        background: #64bb9c
+        border-radius: 8px
+        margin-bottom: 10px
+    &--icon
+        font-size: 18px
+
+    &--title
+        font-weight: 500
+
+    &__wrap
+        margin-bottom: 6px
+    &:last-child
+        margin-bottom: 0
+
+    &__label
+        white-space: nowrap
+        font-weight: 500
+
+    &__link
+    &:hover
+        text-decoration: underline

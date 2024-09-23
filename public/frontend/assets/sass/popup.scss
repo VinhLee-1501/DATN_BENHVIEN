@@ -1,0 +1,179 @@
+.popup {
+  opacity: 0;
+  visibility: hidden;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  overflow: hidden;
+  @include _transition;
+  &__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__frame {
+    position: relative;
+    display: flex;
+    max-width: fit-content;
+    width: 100%;
+    height: fit-content;
+    background: #fff;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 3px 6px 16px 0px rgba(191, 191, 191, 0.25);
+  }
+  &__image {
+    width: fit-content;
+    margin: auto;
+    img {
+      display: block;
+      width: 100px;
+      aspect-ratio: 1/1;
+      object-fit: contain;
+    }
+  }
+  &__title {
+    color: $color_page;
+  }
+  &__close {
+    z-index: 1;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      background: #f4f4f4;
+    }
+  }
+  &.video {
+    .popup__close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 2;
+      width: 28px;
+      height: 28px;
+      border-radius: 0;
+      border-bottom-left-radius: 8px;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    .popup__frame {
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .video {
+      max-height: 100vh;
+      overflow: auto;
+    }
+  }
+  &.booking {
+    .popup__frame {
+      overflow: hidden;
+      max-width: 1200px;
+      max-height: calc(100vh - 20px);
+      border-radius: 16px;
+    }
+    .popup__image {
+      width: 45%;
+      margin: 0;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .popup__form {
+      position: relative;
+      width: 55%;
+      padding: 40px;
+      &--frame {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .form {
+        flex: 1;
+        overflow-y: auto;
+        &__action {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          .button {
+            margin: 0;
+            &.btn-booking {
+              width: 100%;
+            }
+            &.btn-cancel {
+              min-width: 120px;
+            }
+          }
+        }
+      }
+    }
+    .popup__close {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+  }
+  &.success {
+    .popup__frame {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+      padding: 30px;
+      box-shadow: 0 4px 0 #32ba7c;
+    }
+    .popup__close {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+    .popup__title {
+      color: $color_page_1;
+    }
+  }
+  &.promotion {
+    background-color: rgba(0, 0, 0, 0.7);
+    .popup__frame {
+      max-width: 500px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: transparent;
+    }
+    .popup__image {
+      width: 100%;
+      img {
+        width: 100%;
+        cursor: pointer;
+      }
+    }
+    .popup__close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      color: #fff;
+      &:hover {
+        background: rgba(#fff, 0.2);
+      }
+    }
+  }
+  &.active {
+    opacity: 1;
+    visibility: initial;
+  }
+}
