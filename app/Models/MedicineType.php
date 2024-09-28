@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MedicineType extends Model
 {
+    protected $primaryKey = 'medicine_type_id';
+    protected $keyType = 'string';
     use HasFactory;
 
     protected $fillable = ['medicine_type_id', 'name', 'status'];
