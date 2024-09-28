@@ -24,11 +24,11 @@
                             <div class="profile__info">
 
                                 <div class="profile__avatar">
-                                    <img src="{{ auth()->user()->avarta }}" alt="Avatar" />
+                                    <img src="{{ auth()->user()->avatar }}" alt="Avatar" />
                                 </div>
                                 <h1 class="text-center">Thông tin cá nhân</h1>
                                 <div class="profile__details">
-                                    <p><strong>Họ tên:</strong> {{ auth()->user()->name }}</p>
+                                    <p><strong>Họ tên:</strong> {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</p>
                                     <p><strong>Số điện thoại:</strong> {{ auth()->user()->phone }} </p>
                                     <p><strong>Email:</strong>{{ auth()->user()->email }}</p>
                                     <p><strong>Ngày sinh:</strong> 01/01/1990</p>

@@ -71,7 +71,21 @@
     background-color: #ffffff;
     color: #5f6368;
     border: 1px solid #dadce0;
-    border-radius: 15px;
+    border-radius: 25px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-facebook-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #5f6368;
+    border: 1px solid #dadce0;
+    border-radius: 25px;
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
@@ -85,22 +99,13 @@
     background-color: #ffffff;
     color: #5f6368;
     border: 1px solid #dadce0;
-    border-radius: 15px;
-    padding: 10px;
+    border-radius: 25px;
+    padding: 5px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.btn-zalo-login:hover {
-    background-color: #f7f7f7;
-    color: #181818;
-}
-
-.btn-google-login:hover {
-    background-color: #f7f7f7;
-    color: #181818;
-}
 
 .google-icon {
     width: 90px;
@@ -119,6 +124,10 @@
 }
 
 .btn-zalo-login {
+    width: 100%;
+    margin-top: 10px;
+}
+.btn-facebook-login {
     width: 100%;
     margin-top: 10px;
 }

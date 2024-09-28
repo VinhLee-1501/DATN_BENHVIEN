@@ -25,7 +25,7 @@
             </div>
             @if (auth()->check())
                 <div style="width: 200px" class="header__login">
-                    <a href="{{ route('client.profile.index') }}" class="">{{ auth()->user()->name }}</a>
+                    <a href="{{ route('client.profile.index') }}" class="">{{ auth()->user()->last_name }} {{ auth()->user()->first_name }}</a>
                 </div>
             @else
                 <div class="header__login">

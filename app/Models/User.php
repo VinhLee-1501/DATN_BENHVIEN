@@ -27,6 +27,9 @@ class User extends Authenticatable
         'expertise',
         'role',
         'status',
+        'google_id',
+        'zalo_id',
+        'facebook_id',
         'email_verified_at',
     ];
 
