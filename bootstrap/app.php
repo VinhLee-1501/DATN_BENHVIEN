@@ -26,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'admin.php',
                 'auth.php',
                 'medicalRecord.php',
-                'appointmentSchedule.php'
+                'appointmentSchedule.php',
                 'medicine.php',
                 'medicineType.php',
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Medicine\MedicineTypeRequest;
 use App\Models\MedicineType;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\Medicine\CreateRequest;
@@ -17,7 +18,7 @@ class MedicineTypeController extends Controller
     public function create(){
         return view('admin.medicineTypes.create');
     }
-    public function store(CreateRequest $request){
+    public function store(MedicineTypeRequest $request){
         $validatedData = $request->validated();
         $medicine = new MedicineType();
             $medicine->medicine_type_id = $request->input('code');
