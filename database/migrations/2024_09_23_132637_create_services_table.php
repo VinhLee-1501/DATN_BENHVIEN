@@ -21,6 +21,7 @@ return new class extends Migration
                 ->references('directory_id')
                 ->on('service_directories')
                 ->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -28,6 +28,7 @@ return new class extends Migration
                 ->references('medical_id')
                 ->on('medical_records')
                 ->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

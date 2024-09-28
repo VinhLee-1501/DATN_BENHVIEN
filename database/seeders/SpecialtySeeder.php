@@ -18,5 +18,11 @@ class SpecialtySeeder extends Seeder
             'name' => 'Tai mũi họng',
             'status'=> 1,
         ]);
+
+        Specialty::create([
+            'specialty_id' => strtoupper(Str::random(10)),
+            'name' => 'Ngoại chấn thương',
+            'status'=> 1,
+        ]);
     }
 }

@@ -23,5 +23,26 @@ class TreatmentMedicationSeeder extends Seeder
             'quantity' => 20,
             'usage' => '2/ngày',
         ]);
+
+        TreatmentMedication::create([
+            'treatment_id' => $treatment->treatment_id,
+            'medicine_id' =>$medicine->medicine_id,
+            'quantity' => 20,
+            'usage' => '2/ngày',
+        ]);
+
+        TreatmentMedication::create([
+            'treatment_id' => $treatment->treatment_id,
+            'medicine_id' =>$medicine->medicine_id,
+            'quantity' => 20,
+            'usage' => '2/ngày',
+        ]);
+
+        TreatmentMedication::create([
+            'treatment_id' => $treatment->treatment_id,
+            'medicine_id' =>$medicine->medicine_id,
+            'quantity' => 10,
+            'usage' => '1/ngày',
+        ]);
     }
 }

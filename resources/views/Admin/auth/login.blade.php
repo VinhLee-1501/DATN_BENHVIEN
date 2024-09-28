@@ -40,7 +40,6 @@
     <div class="loginColumns">
         <div class="ibox-content">
             <h3 class="text-center">Đăng Nhập Admin</h3>
-            
             <form class="m-t" role="form" action="" method="post">
                 @csrf
                 <div class="form-group">

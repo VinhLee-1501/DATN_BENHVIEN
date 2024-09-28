@@ -24,6 +24,7 @@ return new class extends Migration
                 ->references('shift_id')
                 ->on('schedules')
                 ->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

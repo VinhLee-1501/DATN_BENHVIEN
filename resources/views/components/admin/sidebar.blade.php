@@ -12,8 +12,8 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <li class="sidebar-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('admin.dashboard') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
@@ -28,8 +28,8 @@
                         <span class="hide-menu">Quản lý bệnh nhân</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="#" aria-expanded="false">
+                <li class="sidebar-item {{ request()->routeIs('admin.medicalRecord') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('admin.medicalRecord') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-checkup-list"></i>
                         </span>
@@ -61,15 +61,15 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="#" aria-expanded="false">
                         <span>
-                            <i class="ti ti-calendar-week"></i>
+                            <i class="ti ti-calendar-event"></i>
                         </span>
                         <span class="hide-menu">Quản lý lịch làm BS</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="" aria-expanded="false">
+                <li class="sidebar-item {{ request()->routeIs('admin.appointmentSchedule') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('admin.appointmentSchedule') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-calendar-user"></i>
+                            <i class="ti ti-calendar-event"></i>
                         </span>
                         <span class="hide-menu">Quản lý lịch khám</span>
                     </a>

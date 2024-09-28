@@ -22,5 +22,11 @@ class TreatmentDetailSeeder extends Seeder
             'service_id' =>$service->service_id,
             'medical_id' => $medical->medical_id,
         ]);
+
+        TreatmentDetail::create([
+            'treatment_id' => strtoupper(Str::random(10)),
+            'service_id' =>$service->service_id,
+            'medical_id' => $medical->medical_id,
+        ]);
     }
 }

@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Book extends Model
 {
-    use HasFactory;
+    protected $primaryKey = 'book_id';
+    protected $keyType = 'string';
+
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['book_id', 'day', 'name', 'phone', 'email', 'symptoms'];
 

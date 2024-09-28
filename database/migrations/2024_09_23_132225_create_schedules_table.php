@@ -16,13 +16,13 @@ return new class extends Migration
             $table->string('shift_id', 10)->unique();
             $table->string('note', 255);
             $table->tinyInteger('status');
-            $table->dateTime('time');
             $table->date('day');
             $table->string('user_id', 10)->nullable();
             $table->foreign('user_id')
                 ->references('user_id')
                 ->on('users')
                 ->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

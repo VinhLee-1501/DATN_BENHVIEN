@@ -23,5 +23,10 @@ class MedicineTypeSeeder extends Seeder
             'name' => 'Kháng viêm',
             'status' => 0,
         ]);
+        MedicineType::create([
+            'medicine_type_id' => strtoupper(Str::random(10)),
+            'name' => 'Dạ dày',
+            'status' => 0,
+        ]);
     }
 }

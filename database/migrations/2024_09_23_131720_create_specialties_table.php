@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('specialty_id', 10)->unique();
             $table->string('name', 20);
             $table->tinyInteger('status');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

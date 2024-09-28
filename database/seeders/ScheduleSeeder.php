@@ -19,7 +19,23 @@ class ScheduleSeeder extends Seeder
             'shift_id' => strtoupper(Str::random(10)),
             'note' => 'ngày 2',
             'status' => '1',
-            'time' => ' 2024-10-05 09:00:00',
+            'day' => ' 2024-09-28',
+            'user_id' => $user->user_id
+        ]);
+
+        Schedule::create([
+            'shift_id' => strtoupper(Str::random(10)),
+            'note' => 'ngày 2',
+            'status' => '1',
+            'day' => ' 2024-09-27',
+            'user_id' => $user->user_id
+        ]);
+
+        Schedule::create([
+            'shift_id' => strtoupper(Str::random(10)),
+            'note' => 'ngày 2',
+            'status' => '1',
+            'day' => ' 2024-09-27',
             'user_id' => $user->user_id
         ]);
     }

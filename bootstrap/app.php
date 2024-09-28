@@ -15,7 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
         using: function () {
 
             $clientRoutes = [
-
                 'page.php',
                 'auth.php',
                 'profile.php'
@@ -25,7 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
             $systemRoutes = [
                 'admin.php',
                 'auth.php',
-               
+                'medicalRecord.php',
+                'appointmentSchedule.php'
             ];
 
 

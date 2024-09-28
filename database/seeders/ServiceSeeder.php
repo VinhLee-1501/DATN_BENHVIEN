@@ -15,9 +15,16 @@ class ServiceSeeder extends Seeder
     public function run(): void
     {
         $directory = ServiceDirectory::first();
+//        Service::create([
+//            'service_id' => strtoupper(Str::random(10)),
+//            'name' => 'Siêu âm bụng',
+//            'price' => 165.00,
+//            'directory_id' => $directory->directory_id,
+//        ]);
+
         Service::create([
             'service_id' => strtoupper(Str::random(10)),
-            'name' => 'Siêu âm bụng',
+            'name' => 'Chụp X-Quang',
             'price' => 165.00,
             'directory_id' => $directory->directory_id,
         ]);

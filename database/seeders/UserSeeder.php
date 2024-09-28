@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Specialty;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
@@ -32,9 +33,20 @@ class UserSeeder extends Seeder
             'password' => bcrypt('doctor123'),
             'phone' => '0847258369',
             'role' => 2,
-            'status' => 1
+            'status' => 1,
         ]);
 
+        User::create([
+            'user_id' => strtoupper(Str::random(10)),
+            'firstname' => 'Bác sĩ',
+            'lastname' => 'Doc',
+            'email' => 'bacsi@example.com',
+            'password' => bcrypt('123456'),
+            'phone' => '0847243242',
+            'role' => 2,
+            'status' => 1,
+        ]);
+//
         User::create([
             'user_id' => strtoupper(Str::random(10)),
             'firstname' => 'Phước Vinh',
@@ -45,6 +57,16 @@ class UserSeeder extends Seeder
             'role' => 0,
             'status' => 1
         ]);
-    }
 
+        User::create([
+            'user_id' => strtoupper(Str::random(10)),
+            'firstname' => 'User',
+            'lastname' => 'Nguyen',
+            'email' => 'user@example.com',
+            'password' => bcrypt('user123'),
+            'phone' => '0787258565',
+            'role' => 0,
+            'status' => 1
+        ]);
+    }
 }

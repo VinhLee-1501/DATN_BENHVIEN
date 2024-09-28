@@ -36,6 +36,7 @@ return new class extends Migration
                 ->references('book_id')
                 ->on('books')
                 ->onDelete('set null');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
