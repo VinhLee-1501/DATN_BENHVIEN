@@ -10,6 +10,9 @@ Route::get('/', function () {
 Route::get('/gioi-thieu', function () {
     return view('client.introduce');
 })->name('introduce');
+Route::get('/chuan-doan-benh', function () {
+    return view('client.diagnosis');
+})->name('diagnosis');
 
 Route::get('/phuong-phap-dieu-tri', function () {
     return view('client.treatment-method');

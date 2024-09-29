@@ -46,6 +46,14 @@
                 <div class="item__title">Messenger</div>
             </a>
         </div>
+        <div class="item openPopup" data-popup="#popupDisease">
+            <a href="{{route('client.diagnosis')}}" class="item__link">
+                <div class="item__icon">
+                    <i class="fa-solid fa-stethoscope"></i>
+                </div>
+                <div class="item__title">Chuẩn đoán bệnh</div>
+            </a>
+        </div>
 
         <div class="item top">
             <div class="item__link scroll-to-target" data-target="html">
