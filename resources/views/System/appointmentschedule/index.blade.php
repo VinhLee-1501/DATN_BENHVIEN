@@ -66,9 +66,9 @@
                                 </span>
                             </td>
                             <td class="border-bottom-0 d-flex">
-                                <a href="{{ route('admin.editAppointmentSchedule',$item->book_id) }}"
+                                <a href="{{ route('system.editAppointmentSchedule',$item->book_id) }}"
                                    class="btn btn-primary me-1"><i class="ti ti-pencil"></i></a>
-                                <form action="{{ route('admin.deleteAppointmentSchedule', $item->book_id) }}"
+                                <form action="{{ route('system.deleteAppointmentSchedule', $item->book_id) }}"
                                       id="form-delete{{ $item->book_id }}" method="post">
                                     @method('delete')
                                     @csrf

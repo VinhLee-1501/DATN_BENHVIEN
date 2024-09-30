@@ -73,8 +73,8 @@
                                 </span>
                             </td>
                             <td class="border-bottom-0 d-flex">
-                                <a href="{{ route('admin.detail_medical_record', $item->medical_id) }}" class="btn btn-primary"><i class="ti ti-notes"></i></a>
-                                <form action="{{ route('admin.delete_medical_record', $item->medical_id) }}"
+                                <a href="{{ route('system.detail_medical_record', $item->medical_id) }}" class="btn btn-primary"><i class="ti ti-notes"></i></a>
+                                <form action="{{ route('system.delete_medical_record', $item->medical_id) }}"
                                       id="form-delete{{ $item->medical_id }}" method="post">
                                     @method('delete')
                                     @csrf

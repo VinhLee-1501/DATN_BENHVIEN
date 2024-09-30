@@ -113,7 +113,7 @@
                                         <textarea class="form-control" name="" rows="3">{{ $medical[0]->diaginsis }}</textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Lưu</button>
-                                    <a href="{{ route('admin.prescription_medical_record',
+                                    <a href="{{ route('system.prescription_medical_record',
                                     ['medical_id' => $medical[0]->medical_id, 'treatment_id' => $medical[0]->treatment_id]) }}"
                                        type="submit" class="btn btn-primary">Xem toa thuốc</a>
                                 </form>

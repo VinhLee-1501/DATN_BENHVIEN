@@ -7,7 +7,7 @@
             <h5 class="card-title fw-semibold mb-4">Sửa lịch khám</h5>
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('admin.updateAppointmentSchedule', $book->book_id) }}" method="post">
+                    <form action="{{ route('system.updateAppointmentSchedule', $book->book_id) }}" method="post">
                         @method('PUT')
                         @csrf
                         <div class="col-md-12 row">
@@ -75,9 +75,7 @@
                         <div class="col-md-12 row">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Triệu chứng</label>
-                                <textarea class="form-control" name="symptoms" id="" cols="10" rows="5" disabled>
-                                    {{ $book->symptoms }}
-                                </textarea>
+                                <textarea class="form-control" name="symptoms" id="" cols="10" rows="5" disabled>{{ $book->symptoms }}</textarea>
                                 @error('symptoms')
                                 <span class="invalid-feedback">
                                         {{ $message }}
