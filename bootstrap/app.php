@@ -23,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ];
 
             $systemRoutes = [
-                'admin.php',
+                'system.php',
                 'auth.php',
                 'medicalRecord.php',
                 'appointmentSchedule.php',
@@ -42,8 +42,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
             foreach ($systemRoutes as $route) {
                 Route::middleware('web')
-                    ->prefix('admin')
-                    ->name('admin.')
+                    ->prefix('system')
+                    ->name('system.')
                     ->group(base_path("routes/system/{$route}"));
             }
 

@@ -12,11 +12,11 @@ class MedicineTypeController extends Controller
     public function index()
     {
         $medicineType = MedicineType::get();
-        return view('Admin.medicineTypes.index', compact('medicineType'));
+        return view('System.medicineTypes.index', compact('medicineType'));
 
     }
     public function create(){
-        return view('admin.medicineTypes.create');
+        return view('system.medicineTypes.create');
     }
     public function store(MedicineTypeRequest $request){
         $validatedData = $request->validated();
@@ -26,12 +26,12 @@ class MedicineTypeController extends Controller
             $medicine->status = 1;
 
             $medicine->save();
-            return redirect()->route('admin.medicineType')->with('success', 'Thêm mới thành công.');
+            return redirect()->route('system.medicineType')->with('success', 'Thêm mới thành công.');
     }
     public function edit($medicine_type_id)
     {
         $medicine = MedicineType::where('medicine_type_id',$medicine_type_id)->first();
-        return view('admin.medicineTypes.edit', compact( 'medicine'));
+        return view('system.medicineTypes.edit', compact( 'medicine'));
     }
     public function update(Request $request, $row_id)
     {
@@ -39,7 +39,7 @@ class MedicineTypeController extends Controller
         $type->fill($request->all());
         $type->update();
         // dd($type);
-        return redirect()->route('admin.medicineType')->with('success', 'Cập nhật thành công.');
+        return redirect()->route('system.medicineType')->with('success', 'Cập nhật thành công.');
     }
 
     /**
@@ -51,6 +51,6 @@ class MedicineTypeController extends Controller
         $category = MedicineType::findOrFail($row_id);
         $category->delete();
 
-        return redirect()->route('admin.medicineTypes')->with('success', 'Thêm mới thành công.');
+        return redirect()->route('system.medicineTypes')->with('success', 'Thêm mới thành công.');
     }
 }

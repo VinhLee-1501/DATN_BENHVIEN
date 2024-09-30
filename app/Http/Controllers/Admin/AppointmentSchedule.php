@@ -15,14 +15,14 @@ class AppointmentSchedule extends Controller
     public function index()
     {
         $book = Book::get();
-        return view('admin.appointmentschedule.index', ['book' => $book]);
+        return view('system.appointmentschedule.index', ['book' => $book]);
     }
 
     public function edit($id)
     {
         $book = Book::join('schedules', 'schedules.shift_id', 'books.shift_id')->join('users', 'users.user_id', 'schedules.user_id')->where('books.book_id', $id)->select('books.*', 'users.firstname', 'users.lastname')->groupBy('books.book_id')->first();
 
-        return view('admin.appointmentschedule.edit', ['book' => $book]);
+        return view('system.appointmentschedule.edit', ['book' => $book]);
     }
 
     public function update($id, Request $request)
@@ -40,14 +40,14 @@ class AppointmentSchedule extends Controller
         $date = Carbon::parse($request->input('day'));
 
         if ($date < now()) {
-            return redirect()->route('admin.editAppointmentSchedule', $id)->with('error', 'Ngày đặt lịch không hợp lệ');
+            return redirect()->route('system.editAppointmentSchedule', $id)->with('error', 'Ngày đặt lịch không hợp lệ');
         }
 
         $scheduleDate = Schedule::whereDate('day', $date)->first();
         $user = User::join('schedules', 'users.user_id', 'schedules.user_id')->where('users.user_id', $optionUser)->whereDate('schedules.day', $date)->first();
 
         if (!$user) {
-            return redirect()->route('admin.editAppointmentSchedule', $id)->with('error', 'Không có bác sĩ khám vào ngày này');
+            return redirect()->route('system.editAppointmentSchedule', $id)->with('error', 'Không có bác sĩ khám vào ngày này');
         }
 
         $book->shift_id = $scheduleDate->shift_id;
@@ -57,18 +57,18 @@ class AppointmentSchedule extends Controller
             ->whereDate('schedules.day', $date)->count();
 
         if ($bookCount > 5) {
-            return redirect()->route('admin.editAppointmentSchedule', $id)->with('error', 'Khống có');
+            return redirect()->route('system.editAppointmentSchedule', $id)->with('error', 'Khống có');
         }
 
         $book->save();
 //        dd($book);
-        return redirect()->route('admin.appointmentSchedule')->with('success', 'Cập nhật thành công');
+        return redirect()->route('system.appointmentSchedule')->with('success', 'Cập nhật thành công');
     }
 
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
         $book->delete();
-        return redirect()->route('admin.appointmentSchedule')->with('success', 'Xóa thành công');
+        return redirect()->route('system.appointmentSchedule')->with('success', 'Xóa thành công');
     }
 }

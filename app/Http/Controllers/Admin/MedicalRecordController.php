@@ -12,7 +12,7 @@ class MedicalRecordController extends Controller
     {
         $medicalRecord = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')->groupBy('medical_records.medical_id')->get();
 
-        return view('admin.medicalrecord.index', ['medicalRecord' => $medicalRecord]);
+        return view('system.medicalrecord.index', ['medicalRecord' => $medicalRecord]);
     }
 
     public function detail($id)
@@ -26,7 +26,7 @@ class MedicalRecordController extends Controller
             ->orderBy('medical_records.medical_id')
             ->get();
 
-        return view('admin.medicalrecord.detail', ['medical' => $medical]);
+        return view('system.medicalrecord.detail', ['medical' => $medical]);
     }
 
     public function prescription($medical_id, $treatment_id)
@@ -44,14 +44,14 @@ class MedicalRecordController extends Controller
                 'treatment_medications.usage')
             ->get();
 //        dd($treatment[0]);
-        return view('admin.medicalrecord.prescription', ['treatment' => $treatment]);
+        return view('system.medicalrecord.prescription', ['treatment' => $treatment]);
     }
 
     public function destroy($medical_id)
     {
         $medicalRecord = MedicalRecord::where('medical_id', $medical_id);
         $medicalRecord->delete();
-        return redirect()->route('admin.medicalRecord')->with('success', 'Xóa thành công');
+        return redirect()->route('system.medicalRecord')->with('success', 'Xóa thành công');
     }
 
 }

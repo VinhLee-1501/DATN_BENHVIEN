@@ -20,12 +20,12 @@ class CheckLogin
             if (Auth::user()->role) {
                 return $next($request);
             } else {
-                return redirect()->route('admin.auth.login')
+                return redirect()->route('system.auth.login')
                     ->with('warning', 'Tài khoản thành viên không có quyền truy cập. Cố ý truy cập sẽ bị khóa tài khoản');
             }
-        }
+        }   
 
-        return redirect()->route('admin.auth.login')
-            ->with('warning', 'Vui lòng đăng nhập admin');
+        return redirect()->route('system.auth.login')
+            ->with('warning', 'Vui lòng đăng nhập tài khoản');
     }
 }

@@ -37,7 +37,7 @@
                                 <i class="ti ti-list-check fs-6"></i>
                                 <p class="mb-0 fs-3">My Task</p>
                             </a>
-                            <a href="{{route('admin.auth.logout')}}" class="btn btn-outline-primary mx-3 mt-2 d-block">Đăng xuất</a>
+                            <a href="{{route('system.auth.logout')}}" class="btn btn-outline-primary mx-3 mt-2 d-block">Đăng xuất</a>
                         </div>
                     </div>
                 </li>

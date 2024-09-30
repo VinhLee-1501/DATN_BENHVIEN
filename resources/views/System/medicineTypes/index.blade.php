@@ -7,7 +7,7 @@
             <div class="table-responsive">
                 <form action="" class="col-md-12 row">
                     <div class="col-md-4">
-                        <a href="{{ route('admin.medicineTypes.create') }}" class="btn btn-success">Thêm</a>
+                        <a href="{{ route('system.medicineTypes.create') }}" class="btn btn-success">Thêm</a>
                     </div>
                     <div class="col-md-4">
                         <input type="text" id="myInput" class="form-control" placeholder="Nhập tên thuốc">
@@ -53,7 +53,7 @@
                                     @endif
                                 </td>
                                 <td class="border-bottom-0 d-flex">
-                                    <a href="{{ route('admin.medicineTypes.edit', $data->medicine_type_id )}}"class="btn btn-primary me-1"><i class="ti ti-pencil"></i></a>
+                                    <a href="{{ route('system.medicineTypes.edit', $data->medicine_type_id )}}"class="btn btn-primary me-1"><i class="ti ti-pencil"></i></a>
                                 </td>
                             </tr>
                         @endforeach

@@ -28,7 +28,7 @@ class MedicineController extends Controller
     ->where('medicines.status',1)
     ->get();
 
-        return view('Admin.medicines.index', compact('medicine'));
+        return view('System.medicines.index', compact('medicine'));
     }
 
     public function end()
@@ -49,14 +49,14 @@ class MedicineController extends Controller
     ->where('medicines.status',0)
     ->get();
 
-        return view('Admin.medicines.index', compact('medicine'));
+        return view('System.medicines.index', compact('medicine'));
     }
 
 
     public function create()
     {
         $medicineType = MedicineType::get();
-        return view('admin.medicines.create', compact('medicineType'));
+        return view('System.medicines.create', compact('medicineType'));
     }
     public function store(CreateRequest $request)
     {
@@ -68,7 +68,7 @@ class MedicineController extends Controller
         $medicine->unit_of_measurement = $request->input('unit_of_measurement');
         $medicine->status = 1;
         $medicine->save();
-        return redirect()->route('admin.medicine')->with('success', 'Thêm mới thành công.');
+        return redirect()->route('system.medicine')->with('success', 'Thêm mới thành công.');
     }
     public function edit($medicine_id)
     {
@@ -89,7 +89,7 @@ class MedicineController extends Controller
         )
 
         ->where('medicine_id',$medicine_id)->first();
-        return view('admin.medicines.edit', compact('medicineType','medicine'));
+        return view('System.medicines.edit', compact('medicineType','medicine'));
     }
     public function update(Request $request, $medicine_id)
     {
@@ -102,7 +102,7 @@ class MedicineController extends Controller
         $medicine->unit_of_measurement = $request->input('unit_of_measurement');
         $medicine->status = $request->input('status');
         $medicine->update();
-        return redirect()->route('admin.medicine')->with('success', 'Cập nhật thành công.');
+        return redirect()->route('system.medicine')->with('success', 'Cập nhật thành công.');
     }
 
     public function delete($medicine_id)
@@ -110,6 +110,6 @@ class MedicineController extends Controller
         // dd($medicine_id);
         $medicine = Medicine::findOrFail($medicine_id);
         $medicine->delete();
-        return redirect()->route('admin.medicine')->with('success', 'Xóa thành công.');
+        return redirect()->route('system.medicine')->with('success', 'Xóa thành công.');
     }
 }

@@ -25,17 +25,48 @@
             </div>
             @if (auth()->check())
                 <div style="width: 200px" class="header__login">
-                    <a href="{{ route('client.profile.index') }}" class="">{{ auth()->user()->last_name }} {{ auth()->user()->first_name }}</a>
+                    <a href="{{ route('client.profile.index') }}" class="">{{ auth()->user()->lastname }}
+                        {{ auth()->user()->firstname }}</a>
                 </div>
             @else
                 <div class="header__login">
-                    <a href="{{ route('client.login') }}">
+                    <div class="login-container">
                         <div class="button btn-small btn-cta openPopup">
                             Đăng nhập
                         </div>
-                    </a>
 
+                        <div class="login-options" style="display: none;">
+                            <a href="{{ route('client.login') }}">
+                                <div style="border-radius: 0px; width: 240px" class="button btn-small">
+                                    Đăng nhập người dùng
+                                </div>
+                            </a>
+                            <a href="{{route('system.auth.login')}}">
+                                <div style="border-radius: 0px; width: 240px" class="button btn-small">
+                                    Đăng nhập với bác sĩ
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
+                <script>
+                    // Lấy các phần tử cần thiết
+                    const loginContainer = document.querySelector('.login-container');
+                    const loginOptions = document.querySelector('.login-options');
+                    const loginButton = loginContainer.querySelector('.openPopup');
+
+                    // Hiện/ẩn login-options khi nhấn vào nút Đăng nhập
+                    loginButton.addEventListener('click', function(event) {
+                        event.stopPropagation(); // Ngăn sự kiện click tiếp tục lan truyền
+                        loginOptions.style.display = loginOptions.style.display === 'block' ? 'none' : 'block';
+                    });
+
+                    // Ẩn login-options khi nhấn ra ngoài
+                    document.addEventListener('click', function() {
+                        loginOptions.style.display = 'none';
+                    });
+                </script>
             @endif
 
             <div class="header__booking">

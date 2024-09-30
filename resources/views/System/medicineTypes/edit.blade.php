@@ -6,7 +6,7 @@
             <h5 class="card-title fw-semibold mb-4">Thêm nhóm thuốc</h5>
             <div class="card">
                 <div class="card-body">
-                    <form action="{{route('admin.medicineTypes.update', $medicine->medicine_type_id)}}" method="post">
+                    <form action="{{route('system.medicineTypes.update', $medicine->medicine_type_id)}}" method="post">
                         @method('patch')
                         @csrf
                         <div class="col-md-12 row">

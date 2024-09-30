@@ -7,9 +7,9 @@
             <div class="table-responsive">
                 <form action="" class="col-md-12 row">
                     <div class="col-md-8 d-flex p-4">
-                        <a href="{{ route('admin.medicines.create') }}" class="btn btn-success me-2">Thêm thuốc</a>
-                        <a href="{{ route('admin.medicines.end') }}" class="btn btn-danger me-2">Thuốc hết</a>
-                        <a href="{{ route('admin.medicine') }}" class="btn btn-primary">Thuốc hoạt động</a>
+                        <a href="{{ route('system.medicines.create') }}" class="btn btn-success me-2">Thêm thuốc</a>
+                        <a href="{{ route('system.medicines.end') }}" class="btn btn-danger me-2">Thuốc hết</a>
+                        <a href="{{ route('system.medicine') }}" class="btn btn-primary">Thuốc hoạt động</a>
                     </div>
                     <div class="col-md-4">
                         <input type="text" id="myInput" class="form-control" placeholder="Nhập tên thuốc">
@@ -57,11 +57,11 @@
                                 @endif
                                 </td>
                                 <td class="border-bottom-0 d-flex">
-                                    <a href="{{ route('admin.medicines.edit', $data->medicine_id) }}"
+                                    <a href="{{ route('system.medicines.edit', $data->medicine_id) }}"
                                         class="btn btn-primary me-1">
                                         <i class="ti ti-pencil"></i>
                                     </a>
-                                    <a href="{{ route('admin.medicines.delete', $data->medicine_id) }}"
+                                    <a href="{{ route('system.medicines.delete', $data->medicine_id) }}"
                                         class="btn btn-danger">
                                         <i class="ti ti-trash"></i>
                                     </a>

@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return view('Admin.auth.login');
+        return view('System.auth.login');
     }
 
     public function handleLogin(Request $request)
@@ -22,11 +22,11 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            if ($user->role == 1) {
+            if ($user->role == 1 ||$user-> role == 2) {
                 $request->session()->regenerate();
                 session(['user_data' => $user]);
 
-                return redirect()->route('admin.dashboard')->with('success', 'Đăng nhập thành công');
+                return redirect()->route('system.dashboard')->with('success', 'Đăng nhập thành công');
             } else {
                 Auth::logout();
                 return redirect()->back()->with('warning', 'Tài khoản thành viên không có quyền truy cập. Cố ý truy cập sẽ bị khóa tài khoản');
@@ -43,7 +43,7 @@ class AuthController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect()->route('admin.auth.login')->with('success', 'Đăng xuất thành công');
+            return redirect()->route('system.auth.login')->with('success', 'Đăng xuất thành công');
         }
     }
 }
