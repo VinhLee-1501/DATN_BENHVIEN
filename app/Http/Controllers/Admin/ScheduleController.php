@@ -33,14 +33,14 @@ class ScheduleController extends Controller
             ->get();
         // dd($schedule);
 
-        return view('Admin.schedules.index', compact('schedule'));
+        return view('System.schedules.index', compact('schedule'));
     }
     public function create(Request $reauest)
     {
         $user = User::where('role', 2)->get();
         $sclinic = Sclinic::where('status', 0)
         ->select('sclinic_id', 'name')->get();
-        return view('admin.schedules.create', [
+        return view('System.schedules.create', [
             'user' => $user,
             'sclinic' => $sclinic
         ]);
@@ -73,7 +73,7 @@ class ScheduleController extends Controller
 
         $this->updateSclinic($schedule->sclinic_id);
 
-        return redirect()->route('admin.schedule')->with('success', 'Thêm mới thành công.');
+        return redirect()->route('system.schedule')->with('success', 'Thêm mới thành công.');
     }
 
 
@@ -110,7 +110,7 @@ class ScheduleController extends Controller
         $sclinic = Sclinic::where('status', 0)
         ->select('sclinic_id', 'name')->get();
         $this->Sclinic($schedule->sclinic_id);
-        return view('admin.schedules.edit', compact('schedule','user','sclinic'));
+        return view('System.schedules.edit', compact('schedule','user','sclinic'));
     }
     public function update(CreateRequest $request, $shift_id)
     {
@@ -124,7 +124,7 @@ class ScheduleController extends Controller
         $this->updateSclinic($schedule->sclinic_id);
 
         $schedule->update();
-        return redirect()->route('admin.schedule')->with('success', 'Cập nhật thành công.');
+        return redirect()->route('system.schedule')->with('success', 'Cập nhật thành công.');
     }
 
     public function delete($shift_id)
@@ -136,7 +136,7 @@ class ScheduleController extends Controller
         $this->Sclinic($schedule->sclinic_id);
 
         $schedule->delete();
-        return redirect()->route('admin.schedule')->with('success', 'Xóa thành công.');
+        return redirect()->route('system.schedule')->with('success', 'Xóa thành công.');
     }
     public function Sclinic($sclinic_id)
     {

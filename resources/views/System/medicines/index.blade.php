@@ -61,7 +61,7 @@
                                         class="btn btn-primary me-1">
                                         <i class="ti ti-pencil"></i>
                                     </a>
-                                    <form action="{{ route('admin.medicines.delete', $data->medicine_id) }}"
+                                    <form action="{{ route('system.medicines.delete', $data->medicine_id) }}"
                                         id="form-delete{{ $data->medicine_id }}" method="post">
                                       @method('delete')
                                       @csrf

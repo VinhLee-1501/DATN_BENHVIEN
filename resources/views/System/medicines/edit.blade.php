@@ -49,11 +49,11 @@
                                         @if ($medicine->status == 1)
                                             <option value="1" selected>Hoạt động</option>
                                             <option value="0">Hết
-                                            <option>
+                                            </option>
                                         @else
                                             <option value="0" selected>Hết</option>
                                             <option value="1">Hoạt động
-                                            <option>
+                                            </option>
                                         @endif
 
                                     </select>

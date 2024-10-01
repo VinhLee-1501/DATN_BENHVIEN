@@ -7,12 +7,11 @@
             <div class="table-responsive">
                 <form action="" class="col-md-12 row">
                     <div class="col-md-8 d-flex p-4">
-                        <a href="{{ route('admin.schedules.create') }}" class="btn btn-success me-2">Thêm lịch mới</a>
+                        <a href="{{ route('system.schedules.create') }}" class="btn btn-success me-2">Thêm lịch mới</a>
                     </div>
                     <div class="col-md-4">
                         <input type="text" id="myInput" class="form-control" placeholder="Tìm lịch làm">
                     </div>
-
                 </form>
                 <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4">
@@ -37,7 +36,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody  id="myTable">
+                    <tbody id="myTable">
                         @foreach ($schedule as $data)
                             <tr>
                                 <td class="border-bottom-0">
@@ -59,18 +58,19 @@
                                 </td>
                                 </td>
                                 <td class="border-bottom-0 d-flex">
-                                    <a href="{{ route('admin.schedules.update', $data->shift_id) }}"
+                                    <a href="{{ route('system.schedules.edit', $data->shift_id) }}"
                                         class="btn btn-primary me-1">
                                         <i class="ti ti-pencil"></i>
                                     </a>
-                                    <form action="{{ route('admin.schedules.delete', $data->shift_id) }}"
+                                    <form action="{{ route('system.schedules.delete', $data->shift_id) }}"
                                         id="form-delete{{ $data->shift_id }}" method="post">
-                                      @method('delete')
-                                      @csrf
-                                  </form>
-                                  <button type="submit" class="btn btn-danger btn-delete" data-id="{{$data->shift_id }}">
-                                      <i class="ti ti-trash"></i>
-                                  </button>
+                                        @method('delete')
+                                        @csrf
+                                    </form>
+                                    <button type="submit" class="btn btn-danger btn-delete"
+                                        data-id="{{ $data->shift_id }}">
+                                        <i class="ti ti-trash"></i>
+                                    </button>
                                     <a class="btn btn-warning ms-1" data-bs-toggle="collapse"
                                         href="#collapse{{ $data->shift_id }}" role="button" aria-expanded="false"
                                         aria-controls="collapse{{ $data->shift_id }}">
@@ -88,17 +88,20 @@
                                                     <!-- Phần ảnh đại diện -->
                                                     <div class="col-md-4 text-center">
                                                         <img src="{{ $data->avatar ? $data->avatar : asset('backend/assets/images/profile/user-1.jpg') }}"
-                                                             alt="Ảnh đại diện bác sĩ"
-                                                             class="img-fluid rounded-circle"
-                                                             style="width: 150px; height: 150px; object-fit: cover;">
+                                                            alt="Ảnh đại diện bác sĩ" class="img-fluid rounded-circle"
+                                                            style="width: 150px; height: 150px; object-fit: cover;">
                                                     </div>
                                                     <div class="col-md-8">
                                                         <ul class="list-unstyled mb-0">
-                                                            <li><strong>Tên bác sĩ:</strong> {{ $data->lastname }} {{ $data->firstname }}</li>
-                                                            <li><strong>Chuyên khoa:</strong> {{ $data->specialty_name }}</li>
+                                                            <li><strong>Tên bác sĩ:</strong> {{ $data->lastname }}
+                                                                {{ $data->firstname }}</li>
+                                                            <li><strong>Chuyên khoa:</strong> {{ $data->specialty_name }}
+                                                            </li>
                                                             <li><strong>Số điện thoại:</strong> {{ $data->phone }}</li>
                                                             <li><strong>Phòng khám:</strong> {{ $data->sclinic_name }}</li>
-                                                            <li><strong>Ngày khám:</strong> {{ Carbon\Carbon::parse($data->day)->format('d/m/Y') }}</li>
+                                                            <li><strong>Ngày khám:</strong>
+                                                                {{ Carbon\Carbon::parse($data->day)->format('d/m/Y') }}
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -107,8 +110,6 @@
                                     </div>
                                 </td>
                             </tr>
-
-
                         @endforeach
                     </tbody>
                 </table>
