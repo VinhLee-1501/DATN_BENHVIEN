@@ -3,8 +3,8 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title fw-semibold mb-4 text-center">Bệnh án - {{ $medical[0]->last_name  }}
-                {{ $medical[0]->first_name }}</h5>
+            <h5 class="card-title fw-semibold mb-4 text-center">Bệnh án - {{ $medical->last_name  }}
+                {{ $medical->first_name }}</h5>
             <div class="card">
                 <div class="col-md-12 row">
                     <div class="col-md-3">
@@ -12,8 +12,8 @@
                             <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}"
                                  class="img-thumbnail rounded-circle w-75" alt="...">
                             <span class="text-center fs-6 fw-bold">
-                                {{ $medical[0]->last_name }}
-                                {{ $medical[0]->first_name }}
+                                {{ $medical->last_name }}
+                                {{ $medical->first_name }}
                             </span>
                         </div>
                         <hr class="w-50 m-md-4">
@@ -23,17 +23,17 @@
                                 <div class="phone">
                                     <span>
                                         <i class="ti ti-phone"></i>
-                                    </span> {{ $medical[0]->phone }}
+                                    </span> {{ $medical->phone }}
                                 </div>
                                 <div class="birthday">
                                     <span>
                                         <i class="ti ti-calendar"></i>
-                                    </span> {{ $medical[0]->birthday }}
+                                    </span> {{ $medical->birthday }}
                                 </div>
                                 <div class="address">
                                     <span>
                                         <i class="ti ti-map-pin"></i>
-                                    </span> {{ $medical[0]->address }}
+                                    </span> {{ $medical->address }}
                                 </div>
                             </div>
 
@@ -52,7 +52,7 @@
                                                         Tiêu đề
                                                     </label>
                                                     <input type="text" name="name" class="form-control"
-                                                           value="Thăm khám {{ \Carbon\Carbon::parse($medical[0]->date)->format('d-m-Y') }} ">
+                                                           value="Thăm khám {{ \Carbon\Carbon::parse($medical->date)->format('d-m-Y') }} ">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -61,7 +61,7 @@
                                                         Họ và tên
                                                     </label>
                                                     <input type="text" class="form-control" id=""
-                                                    value="{{ $medical[0]->last_name }} {{ $medical[0]->first_name }}
+                                                    value="{{ $medical->last_name }} {{ $medical->first_name }}
                                                         ">
                                                 </div>
                                             </div>
@@ -74,7 +74,7 @@
                                                             Ngày sinh
                                                         </label>
                                                         <input type="date" class="form-control" id=""
-                                                               value="{{ $medical[0]->birthday }}">
+                                                               value="{{ $medical->birthday }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,7 +85,7 @@
                                                     </label>
                                                     <textarea name="" id="" cols="10" rows="2"
                                                               class="form-control">
-                                                        {{ $medical[0]->address }}
+                                                        {{ $medical->address }}
                                                     </textarea>
                                                 </div>
                                             </div>
@@ -100,7 +100,7 @@
                                                     Ngày khám
                                                 </label>
                                                 <input type="date" name="name" class="form-control"
-                                                value="{{ \Carbon\Carbon::parse($medical[0]->date)->format('d-m-Y') }}">
+                                                value="{{ \Carbon\Carbon::parse($medical->date)->format('d-m-Y') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -110,11 +110,11 @@
                                         <label for="exampleInputEmail1" class="form-label">
                                             Chuẩn đoán
                                         </label>
-                                        <textarea class="form-control" name="" rows="3">{{ $medical[0]->diaginsis }}</textarea>
+                                        <textarea class="form-control" name="" rows="3">{{ $medical->diaginsis }}</textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Lưu</button>
                                     <a href="{{ route('system.prescription_medical_record',
-                                    ['medical_id' => $medical[0]->medical_id, 'treatment_id' => $medical[0]->treatment_id]) }}"
+                                    ['medical_id' => $medical->medical_id, 'treatment_id' => $medical->treatment_id]) }}"
                                        type="submit" class="btn btn-primary">Xem toa thuốc</a>
                                 </form>
                             </div>

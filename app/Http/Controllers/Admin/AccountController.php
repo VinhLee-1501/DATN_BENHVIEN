@@ -26,7 +26,7 @@ class AccountController extends Controller
             ->get();
 
 
-        return view('system.accounts.index', compact('admin', 'doctors', 'users'));
+        return view('System.accounts.index', compact('admin', 'doctors', 'users'));
     }
 
     public function create()
@@ -34,7 +34,7 @@ class AccountController extends Controller
         $users = user::all();
         $specialties = specialty::all();
 
-        return view('system.accounts.create', compact('users', 'specialties'));
+        return view('System.accounts.create', compact('users', 'specialties'));
     }
 
     public function store(AccountRequest $request)
@@ -71,7 +71,7 @@ class AccountController extends Controller
         $account = User::where('user_id', $user_id)->get();
 //
 
-        return view('system.accounts.detail', compact('account'));
+        return view('System.accounts.detail', compact('account'));
     }
 
 

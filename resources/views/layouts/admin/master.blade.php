@@ -21,17 +21,17 @@
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
-        <x-admin.Sidebar></x-admin.Sidebar>
+        <x-admin.sidebar></x-admin.sidebar>
         <!--  Sidebar End -->
         <!--  Main wrapper -->
         <div class="body-wrapper">
             <!--  Header Start -->
-            <x-admin.Header></x-admin.Header>
+            <x-admin.header></x-admin.header>
             <!--  Header End -->
             <div class="container-fluid">
                 <!--  Row 1 -->
                 @yield('content')
-                <x-admin.Footer></x-admin.Footer>
+                <x-admin.footer></x-admin.footer>
             </div>
         </div>
     </div>

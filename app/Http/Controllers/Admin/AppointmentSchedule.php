@@ -15,7 +15,7 @@ class AppointmentSchedule extends Controller
     public function index()
     {
         $book = Book::get();
-        return view('system.appointmentschedule.index', ['book' => $book]);
+        return view('System.appointmentschedule.index', ['book' => $book]);
     }
 
     public function edit($id)
@@ -26,7 +26,7 @@ class AppointmentSchedule extends Controller
             ->groupBy('books.book_id')
             ->first();
 
-        return view('system.appointmentschedule.edit', ['book' => $book]);
+        return view('System.appointmentschedule.edit', ['book' => $book]);
     }
 
     public function update($id, Request $request)

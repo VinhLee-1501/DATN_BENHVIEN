@@ -43,13 +43,13 @@
 
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
-                @include('system.accounts.doctors')
+                @include('System.accounts.doctors')
 
             </div>
 
 
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                @include('system.accounts.users')
+                @include('System.accounts.users')
             </div>
         </div>
 
