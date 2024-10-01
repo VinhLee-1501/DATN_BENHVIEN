@@ -13,7 +13,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="exampleInput1" class="form-label">Mã thuốc</label>
-                                    <input type="text" name="medicine_id" class="form-control" id=""
+                                    <input type="text" name="medicine_id" class="form-control @error('medicine_id') is-invalid @enderror" id=""
                                         value="{{ $medicine->medicine_id }}">
                                     @error('medicine_id')
                                         <div class="text-danger">*{{ $message }}</div>
@@ -23,7 +23,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="exampleInput1" class="form-label">Tên thuốc</label>
-                                    <input type="text" name="name" class="form-control" id=""
+                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id=""
                                         value="{{ $medicine->name }}">
                                     @error('name')
                                         <div class="text-danger">*{{ $message }}</div>
@@ -62,7 +62,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="exampleInput1" class="form-label">Hoạt tính</label>
-                                    <textarea type="text" name="active_ingredient" class="form-control" id="">{{ $medicine->active_ingredient }}</textarea>
+                                    <textarea type="text" name="active_ingredient" class="form-control @error('active_ingredient') is-invalid @enderror" id="">{{ $medicine->active_ingredient }}</textarea>
                                     @error('active_ingredient')
                                         <div class="text-danger">*{{ $message }}</div>
                                     @enderror
@@ -71,7 +71,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="exampleInput1" class="form-label">Đơn vị</label>
-                                    <input type="text" name="unit_of_measurement" class="form-control"
+                                    <input type="text" name="unit_of_measurement" class="form-control @error('unit_of_measurement') is-invalid @enderror"
                                         value="{{ $medicine->unit_of_measurement }}">
                                     @error('unit_of_measurement')
                                         <div class="text-danger">*{{ $message }}</div>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id('row_id')->primary();
             $table->string('shift_id', 10)->unique();
-            $table->string('note', 255);
+            $table->string('note', 255)->nullable();
             $table->tinyInteger('status');
             $table->date('day');
             $table->string('user_id', 10)->nullable();

@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             SpecialtySeeder::class,
             UserSeeder::class,
             PatientSeeder::class,
+            SclinicSeeder::class,
             ScheduleSeeder::class,
             BookSeeder::class,
             MedicalRecordSeeder::class,

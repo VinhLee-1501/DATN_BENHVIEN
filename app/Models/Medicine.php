@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Medicine extends Model
 {
 
     protected $primaryKey = 'medicine_id';
     protected $keyType = 'string';
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'medicine_id',

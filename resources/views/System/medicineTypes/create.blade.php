@@ -12,7 +12,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Mã nhóm thuốc</label>
-                                    <input type="text" name="code" class="form-control" id=""
+                                    <input type="text" name="code" class="form-control @error('code') is-invalid @enderror" id=""
                                         value="{{ strtoupper(Str::random(10)) }}">
                                     @error('code')
                                         <div class="text-danger">*{{ $message }}</div>
@@ -22,7 +22,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Tên nhóm thuốc</label>
-                                    <input type="text" name="name" class="form-control" id="">
+                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="">
                                     @error('name')
                                         <div class="text-danger">*{{ $message }}</div>
                                     @enderror

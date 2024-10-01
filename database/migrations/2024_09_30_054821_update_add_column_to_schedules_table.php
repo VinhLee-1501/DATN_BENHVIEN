@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('schedules', function (Blueprint $table) {
-            $table->dropColumn('day');
+            $table->string('sclinic_id',10)->nullable();
+            $table->foreign('sclinic_id')
+            ->references('sclinic_id')
+            ->on('sclinics')
+            ->onDelete('set null');
         });
     }
 

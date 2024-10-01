@@ -29,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'appointmentSchedule.php',
                 'medicine.php',
                 'medicineType.php',
+                'schedule.php',
 
             ];
 

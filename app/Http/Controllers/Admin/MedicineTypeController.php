@@ -45,12 +45,5 @@ class MedicineTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($row_id)
-    {
-        dd($row_id);
-        $category = MedicineType::findOrFail($row_id);
-        $category->delete();
 
-        return redirect()->route('system.medicineTypes')->with('success', 'Thêm mới thành công.');
-    }
 }

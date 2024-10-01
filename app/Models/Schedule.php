@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Schedule extends Model
 {
-    use HasFactory;
+    protected $primaryKey = 'shift_id';
+    protected $keyType = 'string';
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'shift_id',

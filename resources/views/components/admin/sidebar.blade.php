@@ -117,19 +117,13 @@
                             </a>
                         </li>
                     </ul>
-                </nav>
-                <!-- Kết thúc Điều hướng thanh bên -->
-            </div>
-            <!-- Kết thúc Cuộn thanh bên -->
-        </aside>
-    @else
-        <aside class="left-sidebar">
-            <!-- Cuộn thanh bên - đây là thanh bên cho bác sĩ -->
-            <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="#" class="text-nowrap logo-img ms-5">
-                        <img src="{{ asset('backend/assets/images/logos/logo.png') }}" width="120"
-                            alt="" />
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{route('admin.schedule')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-calendar-event"></i>
+                        </span>
+                        <span class="hide-menu">Quản lý lịch làm BS</span>
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>

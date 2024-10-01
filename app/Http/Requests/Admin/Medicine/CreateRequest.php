@@ -24,7 +24,7 @@ class CreateRequest extends FormRequest
         return [
             'medicine_type_id' => 'required|max:10',
             'medicine_id' => 'required|max:10|unique:medicines,medicine_id',
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:medicines,name',
             'active_ingredient' => 'required|max:255',
             'unit_of_measurement' => 'required|max:255',
         ];
@@ -40,6 +40,7 @@ class CreateRequest extends FormRequest
             'medicine_id.unique' => ':attribute đã tồn tại',
             'name.required' => ':attribute không để trống',
             'name.max' => ':attribute không được vượt quá 255 ký tự',
+            'name.unique' => ':attribute đã tồn tại',
             'active_ingredient.required' => ':attribute không để trống',
             'active_ingredient.max' => ':attribute không được vượt quá 255 ký tự',
             'unit_of_measurement.required' => ':attribute không để trống',

@@ -22,8 +22,8 @@ class MedicineTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|size:10|regex:/^[A-Z0-9]+$/|unique:medicine_types,medicine_type_id',
-            'name' => 'required|max:255',
+            'code' => 'required|max:10|unique:medicine_types,medicine_type_id',
+            'name' => 'required|max:255|unique:medicine_types,name',
         ];
     }
 
@@ -35,6 +35,7 @@ class MedicineTypeRequest extends FormRequest
             'code.max' => ':attribute tối đa 10 ký tự',
             'code.unique' => ':attribute mã nhóm thuốc đã tồn tại',
             'name.required' => ':attribute không để trống',
+            'name.unique' => ':attribute đã tồn tại',
 
         ];
     }
