@@ -55,8 +55,9 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Ghi chú</label>
-                                    <input type="text" name="note"
-                                        class="form-control @error('note') is-invalid @enderror" id="" value="{{$schedule->note}}">
+                                    <textarea name="note"
+                                              class="form-control @error('note') is-invalid @enderror"
+                                              id=""> {{$schedule->note}}</textarea>
                                     @error('note')
                                         <div class="text-danger">*{{ $message }}</div>
                                     @enderror

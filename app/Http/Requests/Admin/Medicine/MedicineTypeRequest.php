@@ -34,6 +34,7 @@ class MedicineTypeRequest extends FormRequest
             'code.regex' => ':attribute phải là chuỗi ký tự chữ in hoa và số',
             'code.max' => ':attribute tối đa 10 ký tự',
             'code.unique' => ':attribute mã nhóm thuốc đã tồn tại',
+
             'name.required' => ':attribute không để trống',
             'name.unique' => ':attribute đã tồn tại',
 

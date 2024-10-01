@@ -36,8 +36,9 @@
                             </p>
                         </td>
                         <td class="border-bottom-0 d-flex">
-                            <a href="{{ route('admin.accounts.edit', $item->user_id) }}" class="btn btn-primary"><i class="ti ti-notes"></i></a>
-                            <form action="{{ route('admin.accounts.destroy', $item->user_id) }}"
+                            <a href="{{ route('system.accounts.edit', $item->user_id) }}" class="btn btn-primary"><i
+                                    class="ti ti-notes"></i></a>
+                            <form action="{{ route('system.accounts.destroy', $item->user_id) }}"
                                   id="form-delete" method="post">
                                 @method('delete')
                                 @csrf

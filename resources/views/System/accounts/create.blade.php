@@ -7,7 +7,7 @@
 
         <div class="card w-100">
             <div class="card-body p-4">
-                <form action="{{ route('admin.accounts.store') }}" method="POST">
+                <form action="{{ route('system.accounts.store') }}" method="POST">
                     @csrf
                     <h6 class="fw-semibold mb-4">I. Tài khoản</h6>
                     <div class="table-responsive ms-3">
@@ -90,27 +90,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 row" id="specialtyField" style="display: none;">
-                            <div class="col-md-6">
+                        <div class="col-md-12    row" id="specialtyField">
+                            <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="specialtyInput" class="form-label">Chuyên khoa</label>
-                                    <input type="text" id="specialtyInput" name="specialty" class="form-control"
-                                           placeholder="Nhập chuyên khoa" value="{{ old('specialty') }}">
+                                    <select id="specialtyInput" name="specialty" class="form-control"
+                                            placeholder="Nhập chuyên khoa" value="{{ old('specialty') }}">
+                                        @foreach($specialties as $item)
+                                            <option value="{{ $item->specialty_id }}"> {{ $item->name }}</option>
+
+                                        @endforeach
+                                    </select>
                                     @error('specialty')
                                     <div class="text-danger">*{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="departmentInput" class="form-label">Phòng khám</label>
-                                    <input type="text" id="departmentInput" name="department" class="form-control"
-                                           placeholder="Nhập phòng khám" value="{{ old('department') }}">
-                                    @error('department')
-                                    <div class="text-danger">*{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 

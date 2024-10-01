@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Account\AccountRequest;
+use App\Models\Specialty;
 use App\Models\User;
-use App\Http\Requests\Admin\AccountRequest;
-use Illuminate\Http\Request;
+
 
 class AccountController extends Controller
 {
     public function index()
     {
-        $users = User::join('patients', 'patients.phone', '=', 'users.phone')
-            ->where('role', 0)
+        $users = User::where('role', 0)
             ->orderBy('users.row_id', 'desc')
             ->get();
 
@@ -26,13 +26,15 @@ class AccountController extends Controller
             ->get();
 
 
-        return view('admin.accounts.index',compact('admin', 'doctors', 'users') );
+        return view('system.accounts.index', compact('admin', 'doctors', 'users'));
     }
 
     public function create()
     {
         $users = user::all();
-        return view('admin.accounts.create', compact('users'));
+        $specialties = specialty::all();
+
+        return view('system.accounts.create', compact('users', 'specialties'));
     }
 
     public function store(AccountRequest $request)
@@ -44,19 +46,20 @@ class AccountController extends Controller
         $user = new User();
 
         // Gán các giá trị từ validated data vào thuộc tính của model
-//        $user->user_id = $request->input('userid');
+        $user->user_id = $request->input('userid');
         $user->role = $validatedData['role'];
         $user->email = $validatedData['email'];
         $user->phone = $validatedData['phone'];
         $user->password = bcrypt($validatedData['password']); // Mã hóa mật khẩu
         $user->firstname = $validatedData['firstname'];
         $user->lastname = $validatedData['lastname'];
+        $user->specialty_id = $request->input('specialty');
 
         // Lưu vào cơ sở dữ liệu
         $user->save();
 
         // Chuyển hướng về trang danh sách với thông báo thành công
-        return redirect()->route('admin.account')->with('success', 'Thêm tài khoản thành công.');
+        return redirect()->route('system.account')->with('success', 'Thêm tài khoản thành công.');
     }
 
 
@@ -66,8 +69,9 @@ class AccountController extends Controller
     {
 //        dd($user_id);
         $account = User::where('user_id', $user_id)->get();
-//        dd($account);
-        return view('admin.accounts.detail', compact('account'));
+//
+
+        return view('system.accounts.detail', compact('account'));
     }
 
 
@@ -81,7 +85,7 @@ class AccountController extends Controller
 
         // Nếu không tìm thấy người dùng, trả về thông báo lỗi
         if (!$user) {
-            return redirect()->route('admin.account')->with('error', 'Người dùng không tồn tại!');
+            return redirect()->route('system.account')->with('error', 'Người dùng không tồn tại!');
         }
 
         // Chỉ cập nhật nếu các trường đã thay đổi
@@ -113,7 +117,7 @@ class AccountController extends Controller
         // Lưu thay đổi
         $user->save();
 
-        return redirect()->route('admin.account')->with('success', 'Tài khoản đã được cập nhật thành công!');
+        return redirect()->route('system.account')->with('success', 'Tài khoản đã được cập nhật thành công!');
     }
 
 
@@ -122,7 +126,7 @@ class AccountController extends Controller
     {
         $users = User::where('user_id', $user_id);
         $users->delete();
-        return redirect()->route('admin.account')->with('success', 'Xóa thành công');
+        return redirect()->route('system.account')->with('success', 'Xóa thành công');
     }
 
 

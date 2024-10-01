@@ -86,18 +86,15 @@
                             </a>
                         </li>
                         <li class="dropdown sidebar-item">
-                            <a class="sidebar-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="sidebar-link" href=" {{ route('system.account') }}" id="navbarDropdown"
+                               role="button"
+                               data-bs-toggle="" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-users"></i>
                                 </span>
                                 <span class="hide-menu">Quản lý tài khoản</span>
                             </a>
-                            <ul class="dropdown-menu ms-5" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">TK quản trị</a></li>
-                                <li><a class="dropdown-item" href="#">TK bác sĩ</a></li>
-                                <li><a class="dropdown-item" href="#">TK bệnh nhân</a></li>
-                            </ul>
+
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{route('system.schedule')}}" aria-expanded="false">

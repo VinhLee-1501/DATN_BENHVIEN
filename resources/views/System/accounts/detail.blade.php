@@ -6,7 +6,7 @@
 
         <div class="card w-100">
             <div class="card-body p-4">
-                <form action="{{ route('admin.accounts.update', $account[0]->user_id) }}" method="POST">
+                <form action="{{ route('system.accounts.update', $account[0]->user_id) }}" method="POST">
                     @csrf
                     @method('PATCH')
                     <h6 class="fw-semibold mb-4">I. Tài khoản</h6>

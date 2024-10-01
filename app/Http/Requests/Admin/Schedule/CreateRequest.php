@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin\Schedule;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Carbon\Carbon;
 
 class CreateRequest extends FormRequest
 {
@@ -37,10 +36,14 @@ class CreateRequest extends FormRequest
     {
         return [
             'user_id.required' => ':attribute không được để trống',
+
             'sclinic_id.required' => ':attribute không được để trống',
+
             'day.required' => ':attribute không được để trống',
             'day.date' => ':attribute không hợp lệ',
             'day.after_or_equal' => ':attribute phải lớn hơn hoặc bằng ngày hiện tại',
+
+            'note.required' => ':attribute không được để trống',
 
         ];
     }
@@ -54,6 +57,7 @@ class CreateRequest extends FormRequest
             'user_id' => 'Bác sĩ',
             'sclinic_id' => 'Phòng khám',
             'day' => 'Ngày khám',
+            'note' => 'Ghi chú',
 
         ];
     }

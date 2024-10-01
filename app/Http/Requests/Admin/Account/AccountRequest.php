@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Account;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -32,27 +32,26 @@ class AccountRequest extends FormRequest
                 'phone' => 'required|regex:/^[0-9]{10}$/|unique:users,phone', // Kiểm tra tính duy nhất khi thêm mới
                 'firstname' => 'required|string|max:255',
                 'lastname' => 'required|string|max:255',
-                'password' => 'required|min:8|confirmed',
+                'password' => 'required|min:6',
             ];
         }
 
-        // Nếu là phương thức chỉnh sửa (PATCH/PUT)
         if ($this->isMethod('patch') || $this->isMethod('put')) {
             return [
                 'role' => 'required|in:0,1,2',
                 'email' => [
                     'required',
                     'email',
-                    Rule::unique('users')->ignore($userId, 'user_id'), // Bỏ qua email của chính user hiện tại
+                    Rule::unique('users')->ignore($userId, 'user_id'),
                 ],
                 'phone' => [
                     'required',
                     'regex:/^[0-9]{10}$/',
-                    Rule::unique('users')->ignore($userId, 'user_id'), // Bỏ qua số điện thoại của user hiện tại
+                    Rule::unique('users')->ignore($userId, 'user_id'),
                 ],
                 'firstname' => 'required|string|max:255',
                 'lastname' => 'required|string|max:255',
-                'password' => 'nullable|min:8|confirmed', // Mật khẩu không bắt buộc khi chỉnh sửa
+                'password' => 'nullable|min:6',
             ];
         }
 

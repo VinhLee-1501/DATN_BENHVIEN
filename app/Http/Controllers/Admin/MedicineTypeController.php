@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Medicine\MedicineTypeRequest;
 use App\Models\MedicineType;
-use Illuminate\Http\Request;
-use App\Http\Requests\Admin\Medicine\CreateRequest;
+
 class MedicineTypeController extends Controller
 {
     public function index()
@@ -33,7 +32,8 @@ class MedicineTypeController extends Controller
         $medicine = MedicineType::where('medicine_type_id',$medicine_type_id)->first();
         return view('system.medicineTypes.edit', compact( 'medicine'));
     }
-    public function update(Request $request, $row_id)
+
+    public function update(MedicineTypeRequest $request, $row_id)
     {
         $type = MedicineType::findOrFail($row_id);
         $type->fill($request->all());
