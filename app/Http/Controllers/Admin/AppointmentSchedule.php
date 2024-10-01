@@ -20,7 +20,11 @@ class AppointmentSchedule extends Controller
 
     public function edit($id)
     {
-        $book = Book::join('schedules', 'schedules.shift_id', 'books.shift_id')->join('users', 'users.user_id', 'schedules.user_id')->where('books.book_id', $id)->select('books.*', 'users.firstname', 'users.lastname')->groupBy('books.book_id')->first();
+        $book = Book::join('schedules', 'schedules.shift_id', 'books.shift_id')
+            ->join('users', 'users.user_id', 'schedules.user_id')
+            ->where('books.book_id', $id)->select('books.*', 'users.firstname', 'users.lastname')
+            ->groupBy('books.book_id')
+            ->first();
 
         return view('system.appointmentschedule.edit', ['book' => $book]);
     }

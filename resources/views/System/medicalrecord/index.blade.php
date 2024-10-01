@@ -7,6 +7,8 @@
                 <div class="col-md-5">
                     <h5 class="card-title fw-semibold mb-4">Quản lý bệnh án</h5>
                 </div>
+
+
                 <div class="col-md-6 d-flex justify-content-end">
                     <form action="" class="col-md-12 row">
                         <div class="col-md-4">
