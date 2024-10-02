@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="col-md-12 row">
                     <div class="col-md-3">
-                        <div class="header-info">
+                        <div class="header-info text-center">
                             <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}"
                                  class="img-thumbnail rounded-circle w-75" alt="...">
                             <span class="text-center fs-6 fw-bold">
@@ -17,7 +17,7 @@
                             </span>
                         </div>
                         <hr class="w-50 m-md-4">
-                        <div class="footer-info mt-3">
+                        <div class="footer-info mt-3 text-center">
                             <h6 class="fw-bold">Thông tin</h6>
                             <div class="info">
                                 <div class="phone">
@@ -83,10 +83,7 @@
                                                     <label for="exampleInputPassword1" class="form-label">
                                                         Địa chỉ
                                                     </label>
-                                                    <textarea name="" id="" cols="10" rows="2"
-                                                              class="form-control">
-                                                        {{ $medical->address }}
-                                                    </textarea>
+                                                    <textarea name="" id="" cols="10" rows="2" class="form-control">{{ $medical->address }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +109,7 @@
                                         </label>
                                         <textarea class="form-control" name="" rows="3">{{ $medical->diaginsis }}</textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Lưu</button>
+{{--                                    <button type="submit" class="btn btn-primary">Lưu</button>--}}
                                     <a href="{{ route('system.prescription_medical_record',
                                     ['medical_id' => $medical->medical_id, 'treatment_id' => $medical->treatment_id]) }}"
                                        type="submit" class="btn btn-primary">Xem toa thuốc</a>

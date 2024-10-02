@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\SystemController;
 
-Route::get('/', function () {
-    return view('system.index');
-})->name('dashboard')->middleware('check_login_admin');
+Route::middleware('check_login_admin')->group(function (){
+   Route::get('/', [SystemController::class, 'getDashboard', 'getDashboardPieChart'])->name('dashboard');
+});

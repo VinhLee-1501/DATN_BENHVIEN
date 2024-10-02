@@ -15,7 +15,7 @@
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Họ tên</label>
                                     <input type="text" name="name" class="form-control" value="{{ $book->name }}"
-                                           disabled>
+                                           readonly>
                                 </div>
                                 @error('name')
                                 <span class="invalid-feedback">
@@ -42,7 +42,7 @@
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Email</label>
                                     <input type="email" name="email" class="form-control" value="{{ $book->email }}"
-                                           disabled>
+                                           readonly>
                                 </div>
                                 @error('email')
                                 <span class="invalid-feedback">
@@ -54,7 +54,7 @@
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Số điện thoại</label>
                                     <input type="text" name="phone" class="form-control" value="{{ $book->phone }}"
-                                           disabled>
+                                           readonly>
                                 </div>
                                 @error('phone')
                                 <span class="invalid-feedback">
@@ -75,7 +75,7 @@
                         <div class="col-md-12 row">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Triệu chứng</label>
-                                <textarea class="form-control" name="symptoms" id="" cols="10" rows="5" disabled>{{ $book->symptoms }}</textarea>
+                                <textarea class="form-control" name="symptoms" id="" cols="10" rows="5" readonly>{{ $book->symptoms }}</textarea>
                                 @error('symptoms')
                                 <span class="invalid-feedback">
                                         {{ $message }}
