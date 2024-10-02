@@ -153,20 +153,16 @@ class SocialLoginController extends Controller
                 throw new Exception('Unable to get user information from Zalo.');
             }
 
-
             $zaloId = $user->id ?? null;
-            $email = $user->email ?? null;
+            $email = $user->email ?? $zaloId . '@gmail.com'; // Tạo email từ zalo_id nếu email không tồn tại
             $name = $user->name ?? 'Unknown';
             $avatar = $user->avatar ?? '';
-
 
             $nameParts = explode(' ', $name);
             $firstname = array_shift($nameParts);
             $lastname = implode(' ', $nameParts);
 
-
             $phone = '0' . rand(100000000, 999999999);
-
 
             $finduser = User::where('zalo_id', $zaloId)->first();
 
@@ -174,7 +170,7 @@ class SocialLoginController extends Controller
                 Auth::login($finduser);
                 return redirect()->route('client.profile.index')->with('success', 'Đăng nhập thành công');
             } else {
-
+                // Tạo hoặc cập nhật người dùng với thông tin mới
                 $newUser = User::updateOrCreate(['email' => $email], [
                     'user_id' => $this->generateUserId(),
                     'firstname' => $firstname,
