@@ -30,7 +30,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 'medicine.php',
                 'medicineType.php',
                 'schedule.php',
-                'account.php'
+                'account.php',
+                'doctor/medicalRecordDoctor.php',
+                'doctor/checkupHealth.php',
 
             ];
 

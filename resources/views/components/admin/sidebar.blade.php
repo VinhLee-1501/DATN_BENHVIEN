@@ -46,7 +46,7 @@
                                 <span class="hide-menu">Quản lý bác sĩ</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item {{ request()->routeIs('system.medicine') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.medicine') }}" aria-expanded="false">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -66,7 +66,7 @@
                                 <span class="hide-menu">Quản lý thuốc</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item {{ request()->routeIs('system.medicineType') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.medicineType') }}" aria-expanded="false">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -85,10 +85,9 @@
                                 <span class="hide-menu">Quản lý danh mục thuốc</span>
                             </a>
                         </li>
-                        <li class="dropdown sidebar-item">
+                        <li class="dropdown sidebar-item {{ request()->routeIs('system.account') ? 'active' : '' }}">
                             <a class="sidebar-link" href=" {{ route('system.account') }}" id="navbarDropdown"
-                               role="button"
-                               data-bs-toggle="" aria-expanded="false">
+                                role="button" data-bs-toggle="" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-users"></i>
                                 </span>
@@ -96,8 +95,8 @@
                             </a>
 
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{route('system.schedule')}}" aria-expanded="false">
+                        <li class="sidebar-item {{ request()->routeIs('system.schedule') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.schedule') }}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-calendar-event"></i>
                                 </span>
@@ -164,6 +163,62 @@
                             <span>
                                 <i class="ti ti-calendar-event"></i>
                             </span>
+                                <span class="hide-menu">Quản lý lịch khám</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Kết thúc Điều hướng thanh bên -->
+
+                <!-- Kết thúc Cuộn thanh bên -->
+        </aside>
+    @else
+        <aside class="left-sidebar">
+            <!-- Cuộn thanh bên - đây là thanh bên cho bác sĩ -->
+            <div>
+                <div class="brand-logo d-flex align-items-center justify-content-between">
+                    <a href="#" class="text-nowrap logo-img ms-5">
+                        <img src="{{ asset('backend/assets/images/logos/logo.png') }}" width="120" alt="" />
+                    </a>
+                        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                            <i class="ti ti-x fs-8"></i>
+                        </div>
+                </div>
+                <!-- Điều hướng thanh bên -->
+                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                    <ul id="sidebarnav">
+                        <li class="sidebar-item {{ request()->routeIs('system.dashboard') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.dashboard') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-layout-dashboard"></i>
+                                </span>
+                                <span class="hide-menu">Thống kê (Bác sĩ)</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="#" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-user-plus"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý bệnh nhân</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('system.recordDoctor') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.recordDoctor') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-checkup-list"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý bệnh án</span>
+                            </a>
+                        </li>
+                        <li
+                            class="sidebar-item {{ request()->routeIs('system.chckupHealth') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.checkupHealth') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-calendar-event"></i>
+                                </span>
                                 <span class="hide-menu">Quản lý lịch khám</span>
                             </a>
                         </li>

@@ -10,3 +10,6 @@ Route::prefix('medicalRecords')->middleware('check_login_admin')
       Route::get('/detail/{medical_id}/prescription/{treatment_id}', [MedicalRecordController::class, 'prescription'])->name('prescription_medical_record');
       Route::delete('/delete/{medical_id}', [MedicalRecordController::class, 'destroy'])->name('delete_medical_record');
    });
+
+
+   

@@ -15,7 +15,7 @@ class MedicineTypeController extends Controller
 
     }
     public function create(){
-        return view('system.medicineTypes.create');
+        return view('System.medicineTypes.create');
     }
     public function store(MedicineTypeRequest $request){
         $validatedData = $request->validated();
@@ -30,7 +30,7 @@ class MedicineTypeController extends Controller
     public function edit($medicine_type_id)
     {
         $medicine = MedicineType::where('medicine_type_id',$medicine_type_id)->first();
-        return view('system.medicineTypes.edit', compact( 'medicine'));
+        return view('System.medicineTypes.edit', compact( 'medicine'));
     }
 
     public function update(MedicineTypeRequest $request, $row_id)
