@@ -123,61 +123,6 @@
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
                     <a href="#" class="text-nowrap logo-img ms-5">
-                        <img src="{{ asset('backend/assets/images/logos/logo.png') }}" width="120"
-                             alt=""/>
-                    </a>
-                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                        <i class="ti ti-x fs-8"></i>
-                    </div>
-                </div>
-                <!-- Điều hướng thanh bên -->
-                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                    <ul id="sidebarnav">
-                        <li class="sidebar-item {{ request()->routeIs('system.dashboard') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.dashboard') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-layout-dashboard"></i>
-                            </span>
-                                <span class="hide-menu">Thống kê (Bác sĩ)</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="#" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-user-plus"></i>
-                            </span>
-                                <span class="hide-menu">Quản lý bệnh nhân</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item {{ request()->routeIs('system.medicalRecord') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.medicalRecord') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-checkup-list"></i>
-                            </span>
-                                <span class="hide-menu">Quản lý bệnh án</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item {{ request()->routeIs('system.appointmentSchedule') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.appointmentSchedule') }}"
-                               aria-expanded="false">
-                            <span>
-                                <i class="ti ti-calendar-event"></i>
-                            </span>
-                                <span class="hide-menu">Quản lý lịch khám</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- Kết thúc Điều hướng thanh bên -->
-
-                <!-- Kết thúc Cuộn thanh bên -->
-        </aside>
-    @else
-        <aside class="left-sidebar">
-            <!-- Cuộn thanh bên - đây là thanh bên cho bác sĩ -->
-            <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="#" class="text-nowrap logo-img ms-5">
                         <img src="{{ asset('backend/assets/images/logos/logo.png') }}" width="120" alt="" />
                     </a>
                         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">

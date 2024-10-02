@@ -57,7 +57,7 @@ class CheckupHealthController extends Controller
             ->groupBy('medical_records.medical_id', 'patients.patient_id', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->get();
 
-            dd($patient_id);
+            // dd($patient_id);
             $user = [
                 'medicalRecord' => $medicalRecord,
                 'patient' => $patient,
@@ -76,7 +76,7 @@ class CheckupHealthController extends Controller
                 'book' => $book,
                 'patient' => $patient,
                 'user' => $user,
-                'medicalRecord' => $medicalRecord,
+                
                 'service' => $service,
                 'medicine' => $medicine,
             ]
