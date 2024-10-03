@@ -8,7 +8,7 @@
         <div class="breadcrumbs">
             <div class="container">
                 <div class="breadcrumbs-nav">
-                    <div class="item"><a href="https://phongkhamtuean.com.vn" title="Trang chủ">Trang chủ</a>
+                    <div class="item"><a href="" title="Trang chủ">Trang chủ</a>
                     </div>
                     <div class="item sep">/</div>
                     <div class="item">Lịch sử</div>

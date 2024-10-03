@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="item__wrap">
                                             <span class="item__label">Trụ sở chính:</span>
-                                            <a href="https://maps.app.goo.gl/kjpVxAW2goAAK95g7" class="item__link"
+                                            <a href="" class="item__link"
                                                target="_blank">48
                                                 Đường Số
                                                 6 KDC Cityland Park Hill, Phường 10,
@@ -66,14 +66,14 @@
                                 <div class="footer__list contact__list">
                                     <div class="item">
                                         <div class="item__wrap">
-                                            <a href="https://phongkhamtuean.com.vn/chinh-sach-bao-mat"
+                                            <a href=""
                                                class="item__link">Chính sách bảo
                                                 mật</a>
                                         </div>
                                     </div>
                                     <div class="item">
                                         <div class="item__wrap">
-                                            <a href="https://phongkhamtuean.com.vn/giay-phep-hoat-dong"
+                                            <a href=""
                                                class="item__link">Giấy phép hoạt
                                                 động</a>
                                         </div>
@@ -83,16 +83,16 @@
                             <div class="col l-12 mc-12 c-12">
                                 <div class="footer__social">
                                     <div class="item">
-                                        <a href="https://www.facebook.com/Phongkhamtuean" class="item__link"
+                                        <a href="" class="item__link"
                                            target="_blank">
-                                            <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_face.png"
+                                            <img src="{{ asset('frontend/assets/image/icon-index/fb.png') }}"
                                                  alt="Fanpage"/>
                                         </a>
                                     </div>
                                     <div class="item">
-                                        <a href="https://www.tiktok.com/@phongkhamtuean07" class="item__link"
+                                        <a href="" class="item__link"
                                            target="_blank">
-                                            <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_tik.png"
+                                            <img src="{{ asset('frontend/assets/image/icon-index/tiktok.webp') }}"
                                                  alt="Tiktok"/>
                                         </a>
                                     </div>

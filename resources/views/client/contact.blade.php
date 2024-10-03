@@ -25,7 +25,7 @@
                                         <div class="form contact">
                                             <div id="loading">
                                                 <img
-                                                    src="https://phongkhamtuean.com.vn/frontend/home/images/loading.gif"
+                                                    src=""
                                                     alt="Background"/>
                                             </div>
                                             <div class="form__notice">

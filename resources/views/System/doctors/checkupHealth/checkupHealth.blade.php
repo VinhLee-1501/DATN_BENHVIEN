@@ -4,7 +4,8 @@
     <style>
         .card,
         .table,
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             padding: 0.4rem;
             /* Giảm padding */
             border-radius: 0;
@@ -48,7 +49,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="age">Năm sinh</label>
-                                <input type="date" class="form-control" id="age" >
+                                <input type="date" class="form-control" id="age">
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -89,14 +90,15 @@
                             <div class="col-md-2">
                                 <label for="gender">Giới tính</label>
                                 <select class="form-select" id="gender" name="gender" disabled>
-                                    <option value="1" {{ $user['patient']->gender == 1 ? 'selected' : '' }}>Nam</option>
+                                    <option value="1" {{ $user['patient']->gender == 1 ? 'selected' : '' }}>Nam
+                                    </option>
                                     <option value="0" {{ $user['patient']->gender == 0 ? 'selected' : '' }}>Nữ</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <label for="age">Ngày sinh</label>
                                 <input type="text" class="form-control" id="age"
-                                value="{{ Carbon\Carbon::parse($user['patient']->birthday)->format('d/m/Y') }}">
+                                    value="{{ Carbon\Carbon::parse($user['patient']->birthday)->format('d/m/Y') }}">
 
                             </div>
                         </div>
@@ -123,48 +125,45 @@
         </div>
         <div class="d-flex col-md-12">
             <!-- Patient History -->
-            @if(!$patient)
-            <div class="card mb-3 me-2 col-md-6">
-                <div class="card-header">Lịch sử bệnh</div>
-                <div class="card-body">
-                    <table class="table text-nowrap mb-0 align-middle">
-                        <thead class="text-dark fs-4">
-                            <tr>
-                                <th>Ngày khám</th>
-                                <th>Chẩn đoán</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+            @if (!$patient)
+                <div class="card mb-3 me-2 col-md-6">
+                    <div class="card-header">Lịch sử bệnh</div>
+                    <div class="card-body">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+
+                                <td>Lịch sử khám trống</td>
+
+                        </table>
+                    </div>
                 </div>
-            </div>
             @else
-            <div class="card mb-3 me-2 col-md-6">
-                <div class="card-header">Lịch sử bệnh</div>
-                <div class="card-body">
-                    <table class="table text-nowrap mb-0 align-middle">
-                        <thead class="text-dark fs-4">
-                            <tr>
-                                <th>Ngày khám</th>
-                                <th>Chẩn đoán</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($user['medicalRecord'] as $data)
-                            <tr>
-                                <td class="border-bottom-0">{{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</td>
-                                <td class="border-bottom-0">{{$data->diaginsis}}</td>
-                                <td class="border-bottom-0"></td>
-                                <td class="border-bottom-0"> <button type="button" class="btn btn-success btn-sm">Xem</button></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="card mb-3 me-2 col-md-6">
+                    <div class="card-header">Lịch sử bệnh</div>
+                    <div class="card-body">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th>Ngày khám</th>
+                                    <th>Chẩn đoán</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($user['medicalRecord'] as $data)
+                                    <tr>
+                                        <td class="border-bottom-0">
+                                            {{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</td>
+                                        <td class="border-bottom-0">{{ $data->diaginsis }}</td>
+                                        <td class="border-bottom-0"></td>
+                                        <td class="border-bottom-0"> <button type="button"
+                                                class="btn btn-success btn-sm">Xem</button></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
             @endif
             <!-- Vitals -->
             <div class="card mb-3 col-md-6">
@@ -209,7 +208,7 @@
                     <form action="">
                         <div class="col mb-2">
                             <label for="pulse">Triệu chứng</label>
-                            <textarea class="form-control" id="pulse">{{$user['book']->symptoms}}</textarea>
+                            <textarea class="form-control" id="pulse"></textarea>
                         </div>
                         <div class="col">
                             <label for="temperature">Chuẩn đoán</label>
@@ -222,16 +221,20 @@
             <!-- Clinical Tests -->
             <div class="card mb-3 col-md-6">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div class="row ">
-                        <label for="testSelect">Chọn cận lâm sàng:</label>
-                        <select id="testSelect" class="form-control right" onchange="addTest()">
-                            <option value="">Chọn một cận lâm sàng</option>
-                            @foreach($service as $data)
-                                <option value="{{$data->service_id}}" data-price="{{$data->price}}">{{$data->name}}</option>
+                    Dịch vụ cận lâm sàng
+                    <div class="row">
+                        <select id="serviceSelect" class="form-control" onchange="addSelectedTest()">
+                            <option value="">Chọn dịch vụ cận lâm sàng</option>
+                            @foreach ($service as $item)
+                                <option value="{{ $item->service_id }}" data-name="{{ $item->name }}"
+                                    data-price="{{ $item->price }}">
+                                    {{ $item->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                 </div>
+
                 <div class="card-body">
                     <form id="labForm">
                         <table class="table table-bordered" id="selectedTestsTable">
@@ -240,11 +243,10 @@
                                     <th>#</th>
                                     <th>Tên cận lâm sàng</th>
                                     <th>Thành tiền</th>
-
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Đây là nơi các mục đã chọn sẽ được thêm vào -->
+                                <!-- Các mục đã chọn sẽ thêm vào đây -->
                             </tbody>
                         </table>
 
@@ -254,11 +256,69 @@
                     </form>
                 </div>
             </div>
+
+            <script>
+                function addSelectedTest() {
+                    const select = document.getElementById("serviceSelect");
+                    const selectedOption = select.options[select.selectedIndex];
+
+                    if (selectedOption.value === "") return; // Không làm gì nếu không có lựa chọn nào
+
+                    const serviceId = selectedOption.value;
+                    const serviceName = selectedOption.getAttribute("data-name");
+                    const servicePrice = selectedOption.getAttribute("data-price");
+
+                    // Gọi hàm thêm dịch vụ vào bảng
+                    addTestFromDropdown(serviceId, serviceName, servicePrice);
+
+                    // Reset lại lựa chọn về giá trị đầu tiên (Chọn một dịch vụ)
+                    select.selectedIndex = 0;
+                }
+
+                // Hàm thêm dịch vụ từ danh sách vào bảng cận lâm sàng
+                function addTestFromDropdown(serviceId, serviceName, servicePrice) {
+                    const tableBody = document.querySelector("#selectedTestsTable tbody");
+
+                    // Kiểm tra xem đã chọn dịch vụ với serviceId này chưa
+                    const existingRow = Array.from(tableBody.rows).find(row => row.dataset.serviceId === serviceId);
+                    if (existingRow) {
+                        alert("Cận lâm sàng này đã được thêm!");
+                        return;
+                    }
+
+                    // Thêm một hàng mới với serviceId dưới dạng data attribute
+                    const newRow = tableBody.insertRow();
+                    newRow.setAttribute("data-service-id", serviceId); // Gán serviceId vào hàng để kiểm tra
+
+                    const rowIndex = tableBody.rows.length;
+                    newRow.innerHTML = `
+                        <td>${rowIndex}</td>
+                        <td>${serviceName}</td>
+                        <td>${new Intl.NumberFormat('vi-VN').format(servicePrice)}.000 VNĐ</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="removeTest(this)">x</button></td>
+                    `;
+                }
+
+                // Hàm xóa dịch vụ
+                function removeTest(button) {
+                    const row = button.closest("tr");
+                    row.parentNode.removeChild(row);
+
+                    // Cập nhật lại số thứ tự
+                    const tableBody = document.querySelector("#selectedTestsTable tbody");
+                    Array.from(tableBody.rows).forEach((row, index) => {
+                        row.cells[0].innerText = index + 1; // Cập nhật lại số thứ tự
+                    });
+                }
+            </script>
+
+
         </div>
+
         <!-- Prescription Section -->
         <div class="card mb-3">
             <div class="card-header row col-md-12 justify-content-around align-items-center">
-                <div class="col-md-4">Chỉ định dùng thuốc: 12/09/24 20:26</div>
+                <div class="col-md-4">Chỉ định dùng thuốc: {{ Carbon\Carbon::now()->format('d/m/Y') }}</div>
                 <div class="mb-3 col-md-8 d-flex mt-3">
                     <label for="days" class="form-label fw-bold mt-2">Ngày uống: </label>
                     <div class="d-flex align-items-center">
@@ -298,70 +358,56 @@
                     </div>
                 </div>
             </div>
-
+            <div class="card-body">
+                <div class="form-group p-3 col-md-6">
+                    <label for="search_drug">Tìm thuốc:</label>
+                    <input type="text" id="search_drug" class="form-control" placeholder="Nhập tên thuốc..."
+                        oninput="searchDrug()">
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên thuốc</th>
+                            <th>DVT</th>
+                            <th class="w-25">Ngày uống</th>
+                            <th>Lúc</th>
+                            <th>SL</th>
+                            <th>Cách dùng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Atorhasan 20 (Atorvastatin 20mg)</td>
+                            <td>Viên</td>
+                            <td><input type="number" class="form-control"id="day_drink" value="3"></td>
+                            <td>
+                                <select class="form-control">
+                                    <option value="Sau ăn" selected>Sau ăn</option>
+                                    <option value="Trước ăn">Trước ăn</option>
+                                </select>
+                            </td>
+                            <td id="total_day_drink"></td>
+                            <td>
+                                <input type="text" class="form-control" value="Uống sáng 1 viên chiều 1 viên">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Tên thuốc</th>
-                        <th>DVT</th>
-                        <th>Ngày uống</th>
-                        <th>Lúc</th>
-                        <th>SL</th>
-                        <th>Cách dùng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Atorhasan 20 (Atorvastatin 20mg)</td>
-                        <td>Viên</td>
-                        <td><input type="number" class="form-control" id="day_drink" value="3"></td>
-                        <td>
-                            <select class="form-control">
-                                <option value="Sau ăn" selected>Sau ăn</option>
-                                <option value="Trước ăn">Trước ăn</option>
-                            </select>
-                        </td>
-                        <td> <span id="total_day_drink"></span></td>
-                        <td>
-                            <input type="text" class="form-control" value="Uống sáng 1 viên chiều 1 viên">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>NOKLOT (Clopidogrel 75mg)</td>
-                        <td>Viên</td>
-                        <td><input type="number" class="form-control" value="3"></td>
-                        <td>
-                            <select class="form-control">
-                                <option value="Sốt > 38 độ" selected>Sốt > 38 độ</option>
-                                <option value="Khác">Khác</option>
-                            </select>
-                        </td>
-                        <td><input type="number" class="form-control" value="12"></td>
-                        <td>
-                            <input type="text" class="form-control"
-                                value="Uống sáng 1 viên | chiều 1 viên | tối 1 viên | Sốt > 38 độ">
-                        </td>
-                    </tr>
-                </tbody>
 
-            </table>
-        </div>
     </div>
     <script>
         // JavaScript to update the selected day
         function updateSelectedDay(day) {
             document.getElementById('selectedDay').innerText = day + ' ngày';
             const drink = document.getElementById('day_drink').value;
-            const ngay = document.getElementById('selectedDay').innerText;
-            const total_day_drink = parseInt(drink) + parseInt(ngay);
+            const ngay = document.getElementById('selectedDay').innerText.replace(' ngày', '');
+            const total_day_drink = parseInt(drink) * parseInt(ngay);
             document.getElementById('total_day_drink').innerText = total_day_drink;
-            console.log(total_day_drink);
         }
     </script>
 
@@ -424,6 +470,7 @@
         // Logic để thêm cận lâm sàng mới
         alert("Chức năng thêm cận lâm sàng chưa được thực hiện.");
     }
+
     function addTest() {
         const select = document.getElementById("testSelect");
         const selectedOption = select.options[select.selectedIndex];

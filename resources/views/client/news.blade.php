@@ -9,7 +9,7 @@
                 <div class="container">
                     <div class="breadcrumbs-nav">
                         <div class="item">
-                            <a href="https://phongkhamtuean.com.vn" title="Trang chủ">Trang chủ</a>
+                            <a href="" title="Trang chủ">Trang chủ</a>
                         </div>
                         <div class="item sep">/</div>
                         <div class="item">Tin tức</div>
@@ -41,13 +41,13 @@
                                                     </div>
                                                     <div class="item__body">
                                                         <h2 class="item__title">
-                                                            <a href="https://phongkhamtuean.com.vn/tin-tuc/su-ki-dieu-cua-phuong-phap-nan-chinh-cot-song-bang-tay-chiropractic"
+                                                            <a href=""
                                                                class="item__link title">Sự kì diệu của Phương pháp
                                                                 nắn chỉnh cột
                                                                 sống bằng tay Chiropractic</a>
                                                         </h2>
                                                         <div class="item__body--wrap">
-                                                            <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                            <a href=""
                                                                class="item__category">Tin tức</a>
                                                             <div class="sep"></div>
                                                             <div class="item__published">05/05/2024</div>
@@ -63,8 +63,7 @@
                                                             ph&aacute;p nắn chỉnh cột sống bằng tay được
                                                             rất nhiều c&aacute;c chuy&ecirc;n gia về xương
                                                             khớp đ&aacute;nh gi&aacute; cao. H&atilde;y
-                                                            c&ugrave;ng ph&ograve;ng kh&aacute;m Tuệ
-                                                            An&nbsp;t&igrave;m hiểu về phương ph&aacute;p
+                                                            c&ugrave;ng ph&ograve;ng kh&aacute;m VIETCARE &nbsp;t&igrave;m hiểu về phương ph&aacute;p
                                                             điều trị đau cột sống n&agrave;y nh&eacute;.
                                                         </div>
                                                     </div>
@@ -73,22 +72,22 @@
                                             <div class="item">
                                                 <div class="item__frame">
                                                     <div class="item__thumb">
-                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/chiropractic-cong-nghe-tri-lieu-than-kinh-cot-song-dot-pha-tu-my"
+                                                        <a href=""
                                                            class="item__thumb--link">
                                                             <img
-                                                                src="https://phongkhamtuean.com.vn/uploads/static/Blog/chiropractic/thuml.jpg"
+                                                                src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                 alt="Chiropractic - Công nghệ Trị liệu thần kinh cột sống đột phá từ Mỹ"/>
                                                         </a>
                                                     </div>
                                                     <div class="item__body">
                                                         <h2 class="item__title">
-                                                            <a href="https://phongkhamtuean.com.vn/tin-tuc/chiropractic-cong-nghe-tri-lieu-than-kinh-cot-song-dot-pha-tu-my"
+                                                            <a href=""
                                                                class="item__link title">Chiropractic - Công nghệ
                                                                 Trị liệu thần kinh
                                                                 cột sống đột phá từ Mỹ</a>
                                                         </h2>
                                                         <div class="item__body--wrap">
-                                                            <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                            <a href=""
                                                                class="item__category">Tin tức</a>
                                                             <div class="sep"></div>
                                                             <div class="item__published">01/05/2024</div>
@@ -105,7 +104,7 @@
                                                             ph&aacute;p chiropractic l&agrave; g&igrave;
                                                             v&agrave; c&oacute; ưu điểm ra sao&hellip;
                                                             H&atilde;y c&ugrave;ng ph&ograve;ng
-                                                            kh&aacute;m Tuệ An&nbsp;t&igrave;m hiểu qua
+                                                            kh&aacute;m VIETCARE &nbsp;t&igrave;m hiểu qua
                                                             b&agrave;i viết h&ocirc;m nay nh&eacute;!
                                                         </div>
                                                     </div>
@@ -114,22 +113,22 @@
                                             <div class="item">
                                                 <div class="item__frame">
                                                     <div class="item__thumb">
-                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/dau-hieu-va-trieu-chung-gu-lung-o-tre-can-luu-y"
+                                                        <a href=""
                                                            class="item__thumb--link">
                                                             <img
-                                                                src="https://phongkhamtuean.com.vn/uploads/static/Blog/gu-lung/thuml.jpg"
+                                                                src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                 alt="Dấu hiệu và triệu chứng gù lưng ở trẻ cần lưu ý"/>
                                                         </a>
                                                     </div>
                                                     <div class="item__body">
                                                         <h2 class="item__title">
-                                                            <a href="https://phongkhamtuean.com.vn/tin-tuc/dau-hieu-va-trieu-chung-gu-lung-o-tre-can-luu-y"
+                                                            <a href=""
                                                                class="item__link title">Dấu hiệu và triệu chứng gù
                                                                 lưng ở trẻ cần
                                                                 lưu ý</a>
                                                         </h2>
                                                         <div class="item__body--wrap">
-                                                            <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                            <a href=""
                                                                class="item__category">Tin tức</a>
                                                             <div class="sep"></div>
                                                             <div class="item__published">29/04/2024</div>
@@ -151,22 +150,22 @@
                                             <div class="item">
                                                 <div class="item__frame">
                                                     <div class="item__thumb">
-                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/huong-di-moi-cho-benh-nhan-thoai-hoa-dot-song-that-lung"
+                                                        <a href=""
                                                            class="item__thumb--link">
                                                             <img
-                                                                src="https://phongkhamtuean.com.vn/uploads/static/Blog/huong-di-moi/thuml.jpg"
+                                                                src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                 alt="Hướng đi nào cho bệnh nhân bị thoái hóa cột sống thắt lưng"/>
                                                         </a>
                                                     </div>
                                                     <div class="item__body">
                                                         <h2 class="item__title">
-                                                            <a href="https://phongkhamtuean.com.vn/tin-tuc/huong-di-moi-cho-benh-nhan-thoai-hoa-dot-song-that-lung"
+                                                            <a href=""
                                                                class="item__link title">Hướng đi nào cho bệnh nhân
                                                                 bị thoái hóa cột
                                                                 sống thắt lưng</a>
                                                         </h2>
                                                         <div class="item__body--wrap">
-                                                            <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                            <a href=""
                                                                class="item__category">Tin tức</a>
                                                             <div class="sep"></div>
                                                             <div class="item__published">27/04/2024</div>
@@ -199,22 +198,22 @@
                                                         <div class="item">
                                                             <div class="item__frame">
                                                                 <div class="item__thumb">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/nhung-thuc-pham-nen-han-che-khi-bi-thoat-vi-dia-dem"
+                                                                    <a href=""
                                                                        class="item__thumb--link">
-                                                                        <img
-                                                                            src="https://phongkhamtuean.com.vn/uploads/static/Blog/thuc-pham-han-che/thuml2.jpg"
-                                                                            alt="Những thực phẩm nên hạn chế khi bị thoát vị đĩa đệm"/>
+                                                                       <img
+                                                                       src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
+                                                                       alt=""/>
                                                                     </a>
                                                                 </div>
                                                                 <div class="item__body">
                                                                     <h2 class="item__title">
-                                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/nhung-thuc-pham-nen-han-che-khi-bi-thoat-vi-dia-dem"
+                                                                        <a href=""
                                                                            class="item__link title">Những thực phẩm
                                                                             nên hạn chế khi bị
                                                                             thoát vị đĩa đệm</a>
                                                                     </h2>
                                                                     <div class="item__body--wrap">
-                                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                        <a href=""
                                                                            class="item__category">Tin tức</a>
                                                                         <div class="sep"></div>
                                                                         <div class="item__published">
@@ -247,22 +246,22 @@
                                                         <div class="item">
                                                             <div class="item__frame">
                                                                 <div class="item__thumb">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/su-ki-dieu-cua-phuong-phap-nan-chinh-cot-song-bang-tay-chiropractic"
+                                                                    <a href=""
                                                                        class="item__thumb--link">
                                                                         <img
-                                                                            src="https://phongkhamtuean.com.vn/uploads/static/Blog/su-ki-dieu/thuml1.jpg"
+                                                                            src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                             alt="Sự kì diệu của Phương pháp nắn chỉnh cột sống bằng tay Chiropractic"/>
                                                                     </a>
                                                                 </div>
                                                                 <div class="item__body">
                                                                     <h2 class="item__title">
-                                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/su-ki-dieu-cua-phuong-phap-nan-chinh-cot-song-bang-tay-chiropractic"
+                                                                        <a href=""
                                                                            class="item__link title">Sự kì diệu của
                                                                             Phương pháp nắn chỉnh
                                                                             cột sống bằng tay Chiropractic</a>
                                                                     </h2>
                                                                     <div class="item__body--wrap">
-                                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                        <a href=""
                                                                            class="item__category">Tin tức</a>
                                                                         <div class="sep"></div>
                                                                         <div class="item__published">
@@ -283,7 +282,7 @@
                                                                         c&aacute;c chuy&ecirc;n gia về xương
                                                                         khớp đ&aacute;nh gi&aacute; cao.
                                                                         H&atilde;y c&ugrave;ng ph&ograve;ng
-                                                                        kh&aacute;m Tuệ An&nbsp;t&igrave;m hiểu
+                                                                        kh&aacute;m VIETCARE&nbsp;t&igrave;m hiểu
                                                                         về phương ph&aacute;p điều trị đau cột
                                                                         sống n&agrave;y nh&eacute;.
                                                                     </div>
@@ -295,22 +294,22 @@
                                                         <div class="item">
                                                             <div class="item__frame">
                                                                 <div class="item__thumb">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/chiropractic-cong-nghe-tri-lieu-than-kinh-cot-song-dot-pha-tu-my"
+                                                                    <a href=""
                                                                        class="item__thumb--link">
                                                                         <img
-                                                                            src="https://phongkhamtuean.com.vn/uploads/static/Blog/chiropractic/thuml.jpg"
+                                                                            src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                             alt="Chiropractic - Công nghệ Trị liệu thần kinh cột sống đột phá từ Mỹ"/>
                                                                     </a>
                                                                 </div>
                                                                 <div class="item__body">
                                                                     <h2 class="item__title">
-                                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/chiropractic-cong-nghe-tri-lieu-than-kinh-cot-song-dot-pha-tu-my"
+                                                                        <a href=""
                                                                            class="item__link title">Chiropractic -
                                                                             Công nghệ Trị liệu
                                                                             thần kinh cột sống đột phá từ Mỹ</a>
                                                                     </h2>
                                                                     <div class="item__body--wrap">
-                                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                        <a href=""
                                                                            class="item__category">Tin tức</a>
                                                                         <div class="sep"></div>
                                                                         <div class="item__published">
@@ -330,8 +329,8 @@
                                                                         Vậy phương ph&aacute;p chiropractic
                                                                         l&agrave; g&igrave; v&agrave; c&oacute;
                                                                         ưu điểm ra sao&hellip; H&atilde;y
-                                                                        c&ugrave;ng ph&ograve;ng kh&aacute;m Tuệ
-                                                                        An&nbsp;t&igrave;m hiểu qua b&agrave;i
+                                                                        c&ugrave;ng ph&ograve;ng kh&aacute;m
+                                                                        VIETCARE&nbsp;t&igrave;m hiểu qua b&agrave;i
                                                                         viết h&ocirc;m nay nh&eacute;!
                                                                     </div>
                                                                 </div>
@@ -342,22 +341,22 @@
                                                         <div class="item">
                                                             <div class="item__frame">
                                                                 <div class="item__thumb">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/dau-hieu-va-trieu-chung-gu-lung-o-tre-can-luu-y"
+                                                                    <a href=""
                                                                        class="item__thumb--link">
                                                                         <img
-                                                                            src="https://phongkhamtuean.com.vn/uploads/static/Blog/gu-lung/thuml.jpg"
+                                                                            src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                             alt="Dấu hiệu và triệu chứng gù lưng ở trẻ cần lưu ý"/>
                                                                     </a>
                                                                 </div>
                                                                 <div class="item__body">
                                                                     <h2 class="item__title">
-                                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/dau-hieu-va-trieu-chung-gu-lung-o-tre-can-luu-y"
+                                                                        <a href="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                            class="item__link title">Dấu hiệu và
                                                                             triệu chứng gù lưng ở trẻ
                                                                             cần lưu ý</a>
                                                                     </h2>
                                                                     <div class="item__body--wrap">
-                                                                        <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                        <a href="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                            class="item__category">Tin tức</a>
                                                                         <div class="sep"></div>
                                                                         <div class="item__published">
@@ -401,22 +400,22 @@
                                                     <div class="item">
                                                         <div class="item__frame">
                                                             <div class="item__thumb">
-                                                                <a href="https://phongkhamtuean.com.vn/tin-tuc/nhung-thuc-pham-nen-han-che-khi-bi-thoat-vi-dia-dem"
+                                                                <a href=""
                                                                    class="item__thumb--link">
                                                                     <img
-                                                                        src="https://phongkhamtuean.com.vn/uploads/static/Blog/thuc-pham-han-che/thuml2.jpg"
+                                                                        src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                         alt="Những thực phẩm nên hạn chế khi bị thoát vị đĩa đệm"/>
                                                                 </a>
                                                             </div>
                                                             <div class="item__body">
                                                                 <h2 class="item__title">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/nhung-thuc-pham-nen-han-che-khi-bi-thoat-vi-dia-dem"
+                                                                    <a href=""
                                                                        class="item__link title">Những thực phẩm nên
                                                                         hạn chế khi bị
                                                                         thoát vị đĩa đệm</a>
                                                                 </h2>
                                                                 <div class="item__body--wrap">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                    <a href=""
                                                                        class="item__category">Tin tức</a>
                                                                     <div class="sep"></div>
                                                                     <div class="item__published">
@@ -448,22 +447,22 @@
                                                     <div class="item">
                                                         <div class="item__frame">
                                                             <div class="item__thumb">
-                                                                <a href="https://phongkhamtuean.com.vn/tin-tuc/su-ki-dieu-cua-phuong-phap-nan-chinh-cot-song-bang-tay-chiropractic"
+                                                                <a href=""
                                                                    class="item__thumb--link">
                                                                     <img
-                                                                        src="https://phongkhamtuean.com.vn/uploads/static/Blog/su-ki-dieu/thuml1.jpg"
+                                                                        src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                         alt="Sự kì diệu của Phương pháp nắn chỉnh cột sống bằng tay Chiropractic"/>
                                                                 </a>
                                                             </div>
                                                             <div class="item__body">
                                                                 <h2 class="item__title">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/su-ki-dieu-cua-phuong-phap-nan-chinh-cot-song-bang-tay-chiropractic"
+                                                                    <a href=""
                                                                        class="item__link title">Sự kì diệu của
                                                                         Phương pháp nắn chỉnh
                                                                         cột sống bằng tay Chiropractic</a>
                                                                 </h2>
                                                                 <div class="item__body--wrap">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                    <a href=""
                                                                        class="item__category">Tin tức</a>
                                                                     <div class="sep"></div>
                                                                     <div class="item__published">
@@ -483,7 +482,7 @@
                                                                     được rất nhiều c&aacute;c chuy&ecirc;n gia
                                                                     về xương khớp đ&aacute;nh gi&aacute; cao.
                                                                     H&atilde;y c&ugrave;ng ph&ograve;ng
-                                                                    kh&aacute;m Tuệ An&nbsp;t&igrave;m hiểu về
+                                                                    kh&aacute;m VIETCARE&nbsp;t&igrave;m hiểu về
                                                                     phương ph&aacute;p điều trị đau cột sống
                                                                     n&agrave;y nh&eacute;.
                                                                 </div>
@@ -495,22 +494,22 @@
                                                     <div class="item">
                                                         <div class="item__frame">
                                                             <div class="item__thumb">
-                                                                <a href="https://phongkhamtuean.com.vn/tin-tuc/chiropractic-cong-nghe-tri-lieu-than-kinh-cot-song-dot-pha-tu-my"
+                                                                <a href=""
                                                                    class="item__thumb--link">
                                                                     <img
-                                                                        src="https://phongkhamtuean.com.vn/uploads/static/Blog/chiropractic/thuml.jpg"
+                                                                        src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                         alt="Chiropractic - Công nghệ Trị liệu thần kinh cột sống đột phá từ Mỹ"/>
                                                                 </a>
                                                             </div>
                                                             <div class="item__body">
                                                                 <h2 class="item__title">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/chiropractic-cong-nghe-tri-lieu-than-kinh-cot-song-dot-pha-tu-my"
+                                                                    <a href=""
                                                                        class="item__link title">Chiropractic - Công
                                                                         nghệ Trị liệu thần
                                                                         kinh cột sống đột phá từ Mỹ</a>
                                                                 </h2>
                                                                 <div class="item__body--wrap">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                    <a href=""
                                                                        class="item__category">Tin tức</a>
                                                                     <div class="sep"></div>
                                                                     <div class="item__published">
@@ -530,8 +529,7 @@
                                                                     phương ph&aacute;p chiropractic l&agrave;
                                                                     g&igrave; v&agrave; c&oacute; ưu điểm ra
                                                                     sao&hellip; H&atilde;y c&ugrave;ng
-                                                                    ph&ograve;ng kh&aacute;m Tuệ
-                                                                    An&nbsp;t&igrave;m hiểu qua b&agrave;i
+                                                                    ph&ograve;ng kh&aacute;m VIETCARE &nbsp;t&igrave;m hiểu qua b&agrave;i
                                                                     viết h&ocirc;m nay nh&eacute;!
                                                                 </div>
                                                             </div>
@@ -542,22 +540,22 @@
                                                     <div class="item">
                                                         <div class="item__frame">
                                                             <div class="item__thumb">
-                                                                <a href="https://phongkhamtuean.com.vn/tin-tuc/dau-hieu-va-trieu-chung-gu-lung-o-tre-can-luu-y"
+                                                                <a href=""
                                                                    class="item__thumb--link">
                                                                     <img
-                                                                        src="https://phongkhamtuean.com.vn/uploads/static/Blog/gu-lung/thuml.jpg"
+                                                                        src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                         alt="Dấu hiệu và triệu chứng gù lưng ở trẻ cần lưu ý"/>
                                                                 </a>
                                                             </div>
                                                             <div class="item__body">
                                                                 <h2 class="item__title">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/dau-hieu-va-trieu-chung-gu-lung-o-tre-can-luu-y"
+                                                                    <a href=""
                                                                        class="item__link title">Dấu hiệu và triệu
                                                                         chứng gù lưng ở trẻ
                                                                         cần lưu ý</a>
                                                                 </h2>
                                                                 <div class="item__body--wrap">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                    <a href=""
                                                                        class="item__category">Tin tức</a>
                                                                     <div class="sep"></div>
                                                                     <div class="item__published">
@@ -584,22 +582,22 @@
                                                     <div class="item">
                                                         <div class="item__frame">
                                                             <div class="item__thumb">
-                                                                <a href="https://phongkhamtuean.com.vn/tin-tuc/huong-di-moi-cho-benh-nhan-thoai-hoa-dot-song-that-lung"
+                                                                <a href=""
                                                                    class="item__thumb--link">
                                                                     <img
-                                                                        src="https://phongkhamtuean.com.vn/uploads/static/Blog/huong-di-moi/thuml.jpg"
+                                                                        src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                         alt="Hướng đi nào cho bệnh nhân bị thoái hóa cột sống thắt lưng"/>
                                                                 </a>
                                                             </div>
                                                             <div class="item__body">
                                                                 <h2 class="item__title">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/huong-di-moi-cho-benh-nhan-thoai-hoa-dot-song-that-lung"
+                                                                    <a href=""
                                                                        class="item__link title">Hướng đi nào cho
                                                                         bệnh nhân bị thoái hóa
                                                                         cột sống thắt lưng</a>
                                                                 </h2>
                                                                 <div class="item__body--wrap">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                    <a href=""
                                                                        class="item__category">Tin tức</a>
                                                                     <div class="sep"></div>
                                                                     <div class="item__published">
@@ -630,22 +628,22 @@
                                                     <div class="item">
                                                         <div class="item__frame">
                                                             <div class="item__thumb">
-                                                                <a href="https://phongkhamtuean.com.vn/tin-tuc/dau-that-lung-tiem-an-5-benh-ly-co-xuong-khop-nguy-hiem-ban-phai-biet"
+                                                                <a href=""
                                                                    class="item__thumb--link">
                                                                     <img
-                                                                        src="https://phongkhamtuean.com.vn/uploads/static/Blog/dau-that-lung/thum.jpg"
+                                                                        src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                                                         alt="Đau thắt lưng - Tiềm ẩn 5 bệnh lý cơ xương khớp nguy hiểm bạn phải biết"/>
                                                                 </a>
                                                             </div>
                                                             <div class="item__body">
                                                                 <h2 class="item__title">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/dau-that-lung-tiem-an-5-benh-ly-co-xuong-khop-nguy-hiem-ban-phai-biet"
+                                                                    <a href=""
                                                                        class="item__link title">Đau thắt lưng -
                                                                         Tiềm ẩn 5 bệnh lý cơ
                                                                         xương khớp nguy hiểm bạn phải biết</a>
                                                                 </h2>
                                                                 <div class="item__body--wrap">
-                                                                    <a href="https://phongkhamtuean.com.vn/tin-tuc/"
+                                                                    <a href=""
                                                                        class="item__category">Tin tức</a>
                                                                     <div class="sep"></div>
                                                                     <div class="item__published">
@@ -661,7 +659,7 @@
                                                                     cảnh b&aacute;o c&oacute; thể tiềm ẩn 5
                                                                     bệnh l&yacute; cơ xương khớp nguy hiểm.
                                                                     T&igrave;m hiểu ngay c&ugrave;ng
-                                                                    Ph&ograve;ng kh&aacute;m Tuệ An
+                                                                    Ph&ograve;ng kh&aacute;m VIETCARE
                                                                     nh&eacute;.
                                                                 </div>
                                                             </div>
@@ -677,7 +675,7 @@
 
                         <script>
                             $(".news__main .btn-add").click(function () {
-                                var uri = "https://phongkhamtuean.com.vn/add_item";
+                                var uri = "";
                                 var num_items = $(".news__main--result .item").length;
                                 var param = new Object();
                                 param.offset = num_items;
@@ -737,13 +735,13 @@
                   "@type": "ListItem",
                   "position": 1,
                   "name": "Home",
-                  "item": "https://phongkhamtuean.com.vn"
+                  "item": ""
                 },
                 {
                   "@type": "ListItem",
                   "position": 2,
                   "name": "Tin tức",
-                  "item": "https://phongkhamtuean.com.vn/tin-tuc"
+                  "item": ""
                 }
               ]
             }

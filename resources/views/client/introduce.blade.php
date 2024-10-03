@@ -1,6 +1,6 @@
 @extends('layouts.client.master')
 
-@section('meta_title', 'Phòng khám an khang')
+@section('meta_title', 'Phòng khám VIETCARE')
 
 @section('content')
 
@@ -41,7 +41,7 @@
                                                 tai, mũi,
                                                 họng đạt chuẩn, mang lại hiệu quả điều trị tối ưu, đồng thời
                                                 nâng cao sự trải nghiệm của bệnh nhân,
-                                                phòng khám An Khang đã và đang liên tục hoàn thiện
+                                                phòng khám VIETCARE đã và đang liên tục hoàn thiện
                                                 – nâng cấp các tiêu chuẩn chung ở tất cả các yếu tố then chốt
                                                 theo những quy chuẩn khắt khe nhất.
                                             </p>
@@ -59,11 +59,11 @@
         <div class="container">
             <div class="row align-items-center" style="height: 90vh;">
                 <div class="col-md-5 d-flex justify-content-center align-items-center">
-                    <img src="{{asset('frontend/assets/image/logo2.png')}}" alt="Logo" class="logo-inproduce">
+                    <img src="{{asset('frontend/assets/image/logo.png')}}" alt="Logo" class="logo-inproduce">
                 </div>
                 <div class="col-md-7">
                     <h2 class="text-success">Sứ mệnh</h2>
-                    <p>Phòng khám Tuệ An cam kết mang lại dịch vụ y tế chất lượng cao, an toàn và hiệu quả nhất
+                    <p>Phòng khám VIETCARE cam kết mang lại dịch vụ y tế chất lượng cao, an toàn và hiệu quả nhất
                         cho mọi bệnh nhân. Chúng tôi nỗ lực không ngừng để đem đến sự thoải mái và hài lòng tối
                         đa cho bệnh nhân, đồng thời đề cao giá trị nhân văn và tôn trọng đạo đức nghề nghiệp.
                     </p>
@@ -77,7 +77,7 @@
                     <h2 class="text-success">Giá trị cốt lỗi</h2>
                     <p>Chúng tôi luôn đặt chất lượng dịch vụ lên hàng đầu, với cam kết sử dụng công nghệ tiên
                         tiến và phương pháp điều trị an toàn nhất.</p>
-                    <p>Đội ngũ bác sĩ và nhân viên của phòng khám An Khang luôn tận tâm và chu đáo trong mọi quá
+                    <p>Đội ngũ bác sĩ và nhân viên của phòng khám VIETCARE luôn tận tâm và chu đáo trong mọi quá
                         trình điều trị và chăm sóc bệnh nhân.</p>
                     <p>Mỗi bệnh nhân được đánh giá và thiết kế kế hoạch điều trị cá nhân hóa, đảm bảo phù hợp và
                         hiệu quả nhất.</p>

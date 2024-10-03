@@ -1,6 +1,6 @@
 @extends('layouts.client.master')
 
-@section('meta_title', 'Phòng khám an khang')
+@section('meta_title', 'Bệnh viện')
 
 @section('content')
     <div class="main-body">
@@ -26,7 +26,7 @@
                                 <div class="col l-12 mc-12 c-12">
                                     <h2 class="box-title highlight">
                                         <p>Các con số <span>Ấn tượng</span></p>
-                                        TẠI PHÒNG KHÁM <p>AN KHANG</p>
+                                        TẠI BỆNH VIỆN <p>VIETCARE</p>
                                     </h2>
                                 </div>
                                 <div class="col l-12 mc-12 c-12">
@@ -167,9 +167,9 @@
                 <!-- Hàng 1 -->
                 <div class="col-lg-3 col-md-4 col-sm-6 p-3">
                     <div class="item">
-                        <a href="https://phongkhamtuean.com.vn/dich-vu/vung-tay" class="item__frame">
+                        <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_service_1.svg"
+                                <img src="{{ asset('frontend/assets/image/icon-index/ear.png') }}"
                                      alt="Bệnh về tai"/>
                             </div>
                             <h3 class="item__title title">Bệnh về tai</h3>
@@ -178,31 +178,31 @@
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 p-3">
                     <div class="item">
-                        <a href="https://phongkhamtuean.com.vn/dich-vu/vung-chan" class="item__frame">
+                        <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_service_2.svg"
-                                     alt="Bệnh về mũi"/>
+                                <img src="{{ asset('frontend/assets/image/icon-index/body.png') }}"
+                                     alt="Bệnh xương khớp"/>
                             </div>
-                            <h3 class="item__title title">Bệnh về mũi</h3>
+                            <h3 class="item__title title">Bệnh về xương</h3>
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 p-3">
                     <div class="item">
-                        <a href="https://phongkhamtuean.com.vn/dich-vu/vung-co-vai-gay" class="item__frame">
+                        <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_service_3.svg"
-                                     alt="Bệnh về họng"/>
+                                <img src="{{ asset('frontend/assets/image/icon-index/heartt.png') }}"
+                                     alt="Bệnh về tim"/>
                             </div>
-                            <h3 class="item__title title">Bệnh về họng</h3>
+                            <h3 class="item__title title">Bệnh về tim</h3>
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 p-3">
                     <div class="item">
-                        <a href="https://phongkhamtuean.com.vn/dich-vu/vung-ham" class="item__frame">
+                        <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_service_4.svg"
+                                <img src="{{ asset('frontend/assets/image/icon-index/throat.png') }}"
                                      alt="Viêm xoan"/>
                             </div>
                             <h3 class="item__title title">Viêm xoan</h3>
@@ -215,20 +215,20 @@
                 <!-- Hàng 2 -->
                 <div class="col-lg-3 col-md-4 col-sm-6 p-3">
                     <div class="item">
-                        <a href="https://phongkhamtuean.com.vn/dich-vu/vung-lung" class="item__frame">
+                        <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_service_5.svg"
+                                <img src="{{ asset('frontend/assets/image/icon-index/eye.png') }}"
                                      alt="Viêm mũi"/>
                             </div>
-                            <h3 class="item__title title">Viêm mũi</h3>
+                            <h3 class="item__title title">Bệnh về mắt</h3>
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 p-3">
                     <div class="item">
-                        <a href="https://phongkhamtuean.com.vn/dich-vu/sau-tai-bien" class="item__frame">
+                        <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_service_6.svg"
+                                <img src="{{ asset('frontend/assets/image/icon-index/stethoscope.png') }}"
                                      alt="Phẫu thuật"/>
                             </div>
                             <h3 class="item__title title">Phẫu thuật</h3>
@@ -237,9 +237,9 @@
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6 p-3">
                     <div class="item">
-                        <a href="https://phongkhamtuean.com.vn/dich-vu/vung-khac" class="item__frame">
+                        <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="https://phongkhamtuean.com.vn/frontend/home/images/icon_service_7.svg"
+                                <img src="{{ asset('frontend/assets/image/icon-index/crutches.png') }}"
                                      alt="Xét nghiệm"/>
                             </div>
                             <h3 class="item__title title">Xét nghiệm</h3>

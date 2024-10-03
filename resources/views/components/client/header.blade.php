@@ -2,7 +2,7 @@
     <div class="container">
         <div class="header__frame">
             <a href="{{ route('client.home') }}" class="header__logo">
-                <img src="{{ asset('frontend/assets/image/logo2.png') }}" alt="PHÒNG KHÁM AN KHANG" />
+                <img src="{{ asset('frontend/assets/image/logo-header.png') }}" alt="VIETCARE HOSPITAL" />
             </a>
             <div class="header__wrap">
                 <ul class="header__menu mt-3">

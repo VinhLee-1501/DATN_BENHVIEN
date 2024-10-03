@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Phòng Khám</title>
-    <link rel="shortcut icon" type="text/css" href="{{ asset('frontend/assets/image/logo.png') }}" />
+    <link rel="shortcut icon" type="text/css" href="{{ asset('frontend/assets/image/logo-icon.png') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/fontawesome-6/css/all.min.css') }}" />
     <link rel="stylesheet" type="text/css"
         href="{{ asset('frontend/library/fancybox-master/dist/jquery.fancybox.css') }}" />
@@ -108,17 +108,17 @@
                 $popupLogin.addClass('active');
                 console.log('Popup should now be visible');
             }
-            
+
             if (showPopup === 'register') {
                 $popupRegister.addClass('active');
                 console.log('Popup should now be visible');
             }
-            
+
             if (showPopup === 'forgot-password') {
                 $popupForgotPassword.addClass('active');
                 console.log('Popup should now be visible');
             }
-            
+
 
             // Đóng popup
             $('.closePopup').on('click', function() {

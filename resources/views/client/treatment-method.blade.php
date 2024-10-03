@@ -8,7 +8,7 @@
             <div class="breadcrumbs">
                 <div class="container">
                     <div class="breadcrumbs-nav">
-                        <div class="item"><a href="https://phongkhamtuean.com.vn" title="Trang chủ">Trang chủ</a>
+                        <div class="item"><a href="=" title="Trang chủ">Trang chủ</a>
                         </div>
                         <div class="item sep">/</div>
                         <div class="item">Phương pháp điều trị</div>
@@ -24,7 +24,7 @@
                             </div>
                             <div class="description">Với định hướng trở thành một trong những hệ thống phòng khám cơ
                                 xương khớp cột sống đạt chuẩn, mang lại hiệu quả điều trị tối ưu, đồng thời nâng cao
-                                sự trải nghiệm của bệnh nhân, phòng khám Tuệ An đã và đang liên tục hoàn thiện –
+                                sự trải nghiệm của bệnh nhân, phòng khám VietCare đã và đang liên tục hoàn thiện –
                                 nâng cấp các tiêu chuẩn chung ở tất cả các yếu tố then chốt theo những quy chuẩn
                                 khắt khe nhất.
                             </div>
@@ -41,16 +41,16 @@
                                                 <div class="col l-4 mc-6 c-12">
                                                     <div class="item">
                                                         <div class="item__frame">
-                                                            <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/vat-ly-tri-lieu"
+                                                            <a href=""
                                                                class="item__thumb">
                                                                 <img
-                                                                    src="https://phongkhamtuean.com.vn/uploads/static/dich-v%E1%BB%A5/phuong-phap-dieu-tri/massage-vat-ly-tri-lieu/screenshot_1704257108.png"
+                                                                    src="{{asset('frontend/assets/image/z3884679789508_29efd6963da4e1c4a498847890f2a00f.jpg')}}"
                                                                     alt="Massage vật lý trị liệu">
                                                             </a>
                                                             <div class="item__body">
                                                                 <div class="item__title hint--top hint--rounded"
                                                                      aria-label="Massage vật lý trị liệu">
-                                                                    <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/vat-ly-tri-lieu"
+                                                                    <a href=""
                                                                        class="item__link title">Massage vật lý trị
                                                                         liệu</a>
                                                                 </div>
@@ -66,7 +66,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="item__action">
-                                                                <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/vat-ly-tri-lieu"
+                                                                <a href=""
                                                                    class="button btn-small">Xem chi tiết <i
                                                                         class="fa-solid fa-arrow-right"></i></a>
                                                             </div>
@@ -76,16 +76,16 @@
                                                 <div class="col l-4 mc-6 c-12">
                                                     <div class="item">
                                                         <div class="item__frame">
-                                                            <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/song-xung-kich"
+                                                            <a href=""
                                                                class="item__thumb">
                                                                 <img
-                                                                    src="https://phongkhamtuean.com.vn/uploads/static/dich-v%E1%BB%A5/phuong-phap-dieu-tri/May-song-xung-kich-Shockwave-1-tay-c%E1%BA%A7m.jpg"
+                                                                    src="{{asset('frontend/assets/image/z3884679789508_29efd6963da4e1c4a498847890f2a00f.jpg')}}"
                                                                     alt="Sóng xung kích Shockwave">
                                                             </a>
                                                             <div class="item__body">
                                                                 <div class="item__title hint--top hint--rounded"
                                                                      aria-label="Sóng xung kích Shockwave">
-                                                                    <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/song-xung-kich"
+                                                                    <a href=""
                                                                        class="item__link title">Sóng xung kích
                                                                         Shockwave</a>
                                                                 </div>
@@ -107,7 +107,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="item__action">
-                                                                <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/song-xung-kich"
+                                                                <a href=""
                                                                    class="button btn-small">Xem chi tiết <i
                                                                         class="fa-solid fa-arrow-right"></i></a>
                                                             </div>
@@ -117,16 +117,16 @@
                                                 <div class="col l-4 mc-6 c-12">
                                                     <div class="item">
                                                         <div class="item__frame">
-                                                            <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/chieu-den-hong-ngoai"
+                                                            <a href=""
                                                                class="item__thumb">
                                                                 <img
-                                                                    src="https://phongkhamtuean.com.vn/uploads/static/dich-v%E1%BB%A5/phuong-phap-dieu-tri/chieu-den-hong-ngoai/tg_image_2254468545.jpeg"
+                                                                    src="{{asset('frontend/assets/image/z3884679789508_29efd6963da4e1c4a498847890f2a00f.jpg')}}"
                                                                     alt="Ánh sáng hồng ngoại">
                                                             </a>
                                                             <div class="item__body">
                                                                 <div class="item__title hint--top hint--rounded"
                                                                      aria-label="Ánh sáng hồng ngoại">
-                                                                    <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/chieu-den-hong-ngoai"
+                                                                    <a href=""
                                                                        class="item__link title">Ánh sáng hồng
                                                                         ngoại</a>
                                                                 </div>
@@ -146,7 +146,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="item__action">
-                                                                <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/chieu-den-hong-ngoai"
+                                                                <a href=""
                                                                    class="button btn-small">Xem chi tiết <i
                                                                         class="fa-solid fa-arrow-right"></i></a>
                                                             </div>
@@ -156,16 +156,16 @@
                                                 <div class="col l-4 mc-6 c-12">
                                                     <div class="item">
                                                         <div class="item__frame">
-                                                            <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/keo-gian-cot-song"
+                                                            <a href=""
                                                                class="item__thumb">
                                                                 <img
-                                                                    src="https://phongkhamtuean.com.vn/uploads/static/dich-v%E1%BB%A5/phuong-phap-dieu-tri/may-keo-gian-cot-song/tg_image_2048712056.jpeg"
+                                                                    src="{{asset('frontend/assets/image/z3884679789508_29efd6963da4e1c4a498847890f2a00f.jpg')}}"
                                                                     alt="Máy kéo giãn cột sống">
                                                             </a>
                                                             <div class="item__body">
                                                                 <div class="item__title hint--top hint--rounded"
                                                                      aria-label="Máy kéo giãn cột sống">
-                                                                    <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/keo-gian-cot-song"
+                                                                    <a href=""
                                                                        class="item__link title">Máy kéo giãn cột
                                                                         sống</a>
                                                                 </div>
@@ -194,7 +194,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="item__action">
-                                                                <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/keo-gian-cot-song"
+                                                                <a href=""
                                                                    class="button btn-small">Xem chi tiết <i
                                                                         class="fa-solid fa-arrow-right"></i></a>
                                                             </div>
@@ -204,16 +204,16 @@
                                                 <div class="col l-4 mc-6 c-12">
                                                     <div class="item">
                                                         <div class="item__frame">
-                                                            <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/tri-lieu-than-kinh"
+                                                            <a href=""
                                                                class="item__thumb">
                                                                 <img
-                                                                    src="https://phongkhamtuean.com.vn/uploads/static/dich-v%E1%BB%A5/phuong-phap-dieu-tri/chiropractic/%E1%BA%A2nh%20ch%E1%BB%A5p%20Man%20hinh%202024-05-10%20luc%2018_18_38.png"
+                                                                    src="{{asset('frontend/assets/image/z3884679789508_29efd6963da4e1c4a498847890f2a00f.jpg')}}"
                                                                     alt="Trị liệu thần kinh cột sống (Chiropractic)">
                                                             </a>
                                                             <div class="item__body">
                                                                 <div class="item__title hint--top hint--rounded"
                                                                      aria-label="Trị liệu thần kinh cột sống (Chiropractic)">
-                                                                    <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/tri-lieu-than-kinh"
+                                                                    <a href=""
                                                                        class="item__link title">Trị liệu thần kinh
                                                                         cột sống (Chiropractic)</a>
                                                                 </div>
@@ -229,7 +229,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="item__action">
-                                                                <a href="https://phongkhamtuean.com.vn/phuong-phap-dieu-tri/tri-lieu-than-kinh"
+                                                                <a href=""
                                                                    class="button btn-small">Xem chi tiết <i
                                                                         class="fa-solid fa-arrow-right"></i></a>
                                                             </div>
@@ -260,7 +260,7 @@
                                 <div class="box-booking__wrap">
                                     <div class="row gap-y-20">
                                         <div class="col l-12 mc-12 c-12">
-                                            <h2 class="box-title text-center">ĐẶT HẸN TẠI PHÒNG KHÁM TUỆ AN ĐỂ ĐƯỢC
+                                            <h2 class="box-title text-center">ĐẶT HẸN TẠI PHÒNG KHÁM VIETCARE ĐỂ ĐƯỢC
                                                 CÁC BÁC SĨ THĂM KHÁM VÀ ĐIỀU TRỊ KỊP THỜI!</h2>
                                         </div>
                                         <div class="col l-12 mc-12 c-12">
@@ -284,7 +284,7 @@
                         <div class="row no-gutters gap-y-40">
                             <div class="col l-7 mc-12 c-12">
                                 <div class="box-contact__image">
-                                    <img src="https://phongkhamtuean.com.vn/uploads/static/contact/image_contact.jpeg"
+                                    <img src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
                                          alt="Hình minh hoạ">
                                 </div>
                             </div>
