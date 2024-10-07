@@ -1,0 +1,94 @@
+.container {
+    margin-top: 20px;
+}
+
+.schedule-table table thead tr {
+    background: #86d4f5;
+}
+
+@media screen and (max-width: 1199px) {
+    .schedule-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .schedule-table table thead th {
+        padding: 25px 40px;
+    }
+
+    .schedule-table table tbody td {
+        padding: 20px;
+    }
+
+    .schedule-table table tbody td.active h4 {
+        font-size: 18px;
+    }
+
+    .schedule-table table tbody td.active p {
+        font-size: 15px;
+    }
+
+    .schedule-table table tbody td.day {
+        font-size: 20px;
+    }
+
+    .schedule-table table tbody td .hover {
+        padding: 15px 0;
+    }
+
+    .schedule-table table tbody td .hover span {
+        font-size: 17px;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .schedule-table table thead th {
+        font-size: 18px;
+        padding: 20px;
+    }
+
+    .schedule-table table tbody td.day {
+        font-size: 18px;
+    }
+
+    .schedule-table table tbody td.active h4 {
+        font-size: 17px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .schedule-table table thead th {
+        padding: 15px;
+    }
+
+    .schedule-table table tbody td {
+        padding: 15px;
+    }
+
+    .schedule-table table tbody td.active h4 {
+        font-size: 16px;
+    }
+
+    .schedule-table table tbody td.active p {
+        font-size: 14px;
+    }
+
+    .schedule-table table tbody td .hover {
+        padding: 10px 0;
+    }
+
+    .schedule-table table tbody td.day {
+        font-size: 18px;
+    }
+
+    .schedule-table table tbody td .hover span {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .schedule-table table tbody td.day {
+        min-width: 135px;
+    }
+}

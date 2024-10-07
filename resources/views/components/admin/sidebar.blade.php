@@ -158,7 +158,7 @@
                             </a>
                         </li>
                         <li
-                            class="sidebar-item {{ request()->routeIs('system.chckupHealth') ? 'active' : '' }}">
+                            class="sidebar-item {{ request()->routeIs('system.checkupHealth') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.checkupHealth') }}"
                                 aria-expanded="false">
                                 <span>
@@ -167,8 +167,19 @@
                                 <span class="hide-menu">Quản lý lịch khám</span>
                             </a>
                         </li>
+                        <li
+                            class="sidebar-item {{ request()->routeIs('system.scheduleDoctor') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.scheduleDoctor') }}"
+                               aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-calendar-event"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý lịch làm</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
+            </div>
                 <!-- Kết thúc Điều hướng thanh bên -->
 
                 <!-- Kết thúc Cuộn thanh bên -->

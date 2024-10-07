@@ -200,6 +200,20 @@ $(function () {
     // Earning
     // =====================================
     $(() => {
+        if (typeof transactionsMonthData === "undefined"){
+            console.error('Không có dữ liệu nào')
+            return;
+        }
+        const total_data = transactionsMonthData.map((item) => item.total_price);
+        const total_element = total_data.length;
+
+
+        const total_price = total_data.reduce((acc, val) => acc + val, 0);
+        document.querySelector('#totalPriceLineChart').innerText = total_price.toFixed(3);
+
+        const totalPercentageMonth = (total_price / total_element) * 100;
+
+        document.querySelector('#percentagePriceMonthLineChart').innerText = totalPercentageMonth;
         var earning = {
             chart: {
                 id: "sparkline3",
@@ -214,9 +228,9 @@ $(function () {
             },
             series: [
                 {
-                    name: "Earnings",
+                    name: "Tổng",
                     color: "#49BEFF",
-                    data: [25, 66, 20, 40, 12, 58, 20],
+                    data: total_data,
                 },
             ],
             stroke: {

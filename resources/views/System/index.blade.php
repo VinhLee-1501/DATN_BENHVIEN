@@ -32,7 +32,7 @@
                     <!-- Yearly Breakup -->
                     <div class="card overflow-hidden">
                         <div class="card-body p-4">
-                            <h5 class="card-title mb-9 fw-semibold">Tổng doanh thu tháng</h5>
+                            <h5 class="card-title mb-9 fw-semibold">Doanh thu tháng</h5>
                             <div class="row align-items-center">
                                 <div class="col-8">
                                     <h4 class="fw-semibold mb-3" id="price"></h4>
@@ -76,15 +76,16 @@
                         <div class="card-body">
                             <div class="row alig n-items-start">
                                 <div class="col-8">
-                                    <h5 class="card-title mb-9 fw-semibold"> Monthly Earnings </h5>
-                                    <h4 class="fw-semibold mb-3">$6,820</h4>
+                                    <h5 class="card-title mb-9 fw-semibold">Tổng doanh thu tháng </h5>
+                                    <h4 class="fw-semibold mb-3" id="totalPriceLineChart"></h4>
                                     <div class="d-flex align-items-center pb-1">
                           <span
                               class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-arrow-down-right text-danger"></i>
+{{--                            <i class="ti ti-arrow-down-right text-danger"></i>--}}
+                            <i class="ti ti-arrow-up-left text-success"></i>
                           </span>
-                                        <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                                        <p class="fs-3 mb-0">last year</p>
+                                        <p class="text-dark me-1 fs-3 mb-0" id="percentagePriceMonthLineChart">%</p>
+{{--                                        <p class="fs-3 mb-0">last year</p>--}}
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -98,6 +99,10 @@
                             </div>
                         </div>
                         <div id="earning"></div>
+
+                        <script>
+                            var transactionsMonthData = @json($transactionsMonthData);
+                        </script>
                     </div>
                 </div>
             </div>

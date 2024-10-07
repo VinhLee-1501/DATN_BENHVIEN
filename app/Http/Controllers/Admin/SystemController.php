@@ -16,13 +16,15 @@ class SystemController extends Controller
         $dashboardPieChartData = $this->getDashboardPieChart();
         $getService = $this->getServiceTop();
         $getRecentTransactions = $this->getRecentTransactions();
+        $transactionsMonthData = $this->getDashboardLineChart();
 
         return view('System.index',
             [
                 'patientData' => $dashboardColumnChartData,
                 'priceData' => $dashboardPieChartData,
                 'serviceTop' => $getService,
-                'transactions' => $getRecentTransactions
+                'transactions' => $getRecentTransactions,
+                'transactionsMonthData' => $transactionsMonthData
             ]);
     }
 
@@ -72,7 +74,20 @@ class SystemController extends Controller
 
     public function getDashboardLineChart()
     {
-        //
+        Carbon::setLocale('vi');
+        $now = Carbon::now();
+
+        $transactionsMonthData = TreatmentDetail::join('services', 'services.service_id', '=', 'treatment_details.service_id')
+            ->select(DB::raw('DATE(treatment_details.created_at) as day'),
+                DB::raw('SUM(services.price) as total_price'))
+            ->whereMonth('treatment_details.created_at', $now->format('m'))
+            ->whereYear('treatment_details.created_at', $now->format('Y'))
+            ->groupBy(DB::raw('DATE(treatment_details.created_at)'))
+            ->orderBy(DB::raw('DATE(treatment_details.created_at)'))
+            ->get();
+//        dd($transactionsMonthData);
+
+        return $transactionsMonthData;
     }
 
     public function getServiceTop()
