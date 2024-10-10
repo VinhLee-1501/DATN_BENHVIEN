@@ -69,7 +69,7 @@
 
     <x-client.fixed></x-client.fixed>
     {{-- popup start --}}
-    <x-client.popupBooking></x-client.popupBooking>
+    <x-client.popupBooking :specialties="$specialties"/>
     <x-client.popupLogin></x-client.popupLogin>
 
     {{-- popup end --}}
@@ -98,6 +98,7 @@
             var $popupLogin = $('#popupLogin');
             var $popupRegister = $('#popupRegister');
             var $popupForgotPassword = $('#popupForgotPassword');
+            var $popupBooking = $('#popupBooking');
 
 
 
@@ -116,6 +117,10 @@
 
             if (showPopup === 'forgot-password') {
                 $popupForgotPassword.addClass('active');
+                console.log('Popup should now be visible');
+            }
+            if (showPopup === 'booking') {
+                $popupBooking.addClass('active');
                 console.log('Popup should now be visible');
             }
 

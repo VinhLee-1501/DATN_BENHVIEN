@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\User\RegisterRequest;
 use App\Http\Requests\Client\User\LoginRequest;
 use App\Models\User;
+use App\Models\Book;
+use App\Models\Specialty;
 use App\Repositories\User\UserInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -50,9 +52,9 @@ class UserController extends Controller
         }
     }
     protected function generateUserId()
-{
-    return strtoupper(Str::random(10)); // Chuỗi 10 ký tự ngẫu nhiên
-}
+    {
+        return strtoupper(Str::random(10)); // Chuỗi 10 ký tự ngẫu nhiên
+    }
     public function login()
     {
 
@@ -83,9 +85,22 @@ class UserController extends Controller
         Auth::logout();
         return redirect()->route('client.login')->with('success', 'Đăng xuất thành công');
     }
-    public function index()
+    public function index(Request $request)
     {
+        $userId = Auth::user()->user_id;
 
-        return view('client.profile');
+      
+        $medicalHistory = Book::where('user_id', $userId)->get();
+
+        foreach ($medicalHistory as $history) {
+            $history->specialty = Specialty::where('specialty_id', $history->specialty_id)
+                ->where('status', 1)
+                ->first();
+        }
+
+        return view('client.profile', [
+            'userId' => $userId,
+            'medicalHistory' => $medicalHistory,
+        ]);
     }
 }

@@ -18,7 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 'page.php',
                 'auth.php',
-                'profile.php'
+                'profile.php',
+                'book.php'
 
             ];
 

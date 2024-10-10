@@ -13,7 +13,7 @@ class Book extends Model
 
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['book_id', 'day', 'name', 'phone', 'email', 'symptoms'];
+    protected $fillable = ['book_id', 'day', 'name', 'phone', 'email', 'symptoms', 'hour', 'user_id'];
 
     public function scheduleForeignKey()
     {

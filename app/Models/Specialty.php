@@ -15,4 +15,8 @@ class Specialty extends Model
     {
         return $this->hasOne(User::class);
     }
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'specialty_id'); // Mối quan hệ 1-n với bảng 'books'
+    }
 }

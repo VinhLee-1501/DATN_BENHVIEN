@@ -46,7 +46,7 @@
                             <div class="form__link text-center p-3">
                                 <a href="#" class="openPopup" data-popup="#popupForgotPassword">Quên mật khẩu?</a>
                                 |
-                                <a href="{{ route('client.register') }}" class=" openPopup" data-popup="">Đăng ký</a>
+                                <a href="{{ route('client.register') }}" class="openPopup">Đăng ký</a>
 
                             </div>
                             <div class="form__social-login text-center">

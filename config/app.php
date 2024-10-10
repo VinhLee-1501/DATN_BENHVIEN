@@ -131,6 +131,7 @@ return [
          * Modules User Service Providers...
          * 
          */
+        App\Providers\CommonServiceProvider::class,
         App\Providers\EventServiceProvider::class,
 
     ])->toArray(),

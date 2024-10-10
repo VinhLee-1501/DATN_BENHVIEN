@@ -1,5 +1,6 @@
 .profile__page {
     padding: 20px;
+    background-color: #f8f9fa; /* Thêm màu nền nhẹ cho trang */
 }
 
 .profile__info {
@@ -7,23 +8,40 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+.profile__info p strong {
+    color: #000 !important;
+}
+
+.profile__info:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Thêm hiệu ứng khi hover */
 }
 
 .profile__avatar {
     display: flex;
     justify-content: center; /* Căn giữa theo chiều ngang */
-    align-items: center;     /* Căn giữa theo chiều dọc */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    margin-bottom: 20px; /* Khoảng cách giữa ảnh đại diện và thông tin cá nhân */
 }
 
 .profile__avatar img {
     width: 30%;
     object-fit: cover;
+    border-radius: 50%; /* Thêm bo tròn ảnh */
     border: 2px solid #ddd;
+    transition: transform 0.3s ease;
+}
+
+.profile__avatar img:hover {
+    transform: scale(1.1); /* Hiệu ứng phóng to khi hover ảnh */
 }
 
 .profile__details p {
     margin: 10px 0;
+    font-size: 16px; /* Kích thước chữ lớn hơn cho dễ đọc */
+    color: #333;
 }
 
 .profile__medical-history {
@@ -31,24 +49,123 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Khoảng cách dưới để không sát tab */
 }
 
 .medical-history__table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.medical-history__table th, .medical-history__table td {
+.medical-history__table th,
+.medical-history__table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
+    font-size: 14px; /* Tăng kích thước font chữ */
 }
 
 .medical-history__table th {
     background-color: #f4f4f4;
     font-weight: bold;
+    color: #333;
 }
 
 .medical-history__table tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    border-radius: 5px; /* Thêm bo tròn cho nút */
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+    background-color: #048647;
+    color: white;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+/* Modal */
+.modal {
+    display: none; /* Ẩn modal mặc định */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Màu nền mờ */
+    animation: fadeIn 0.5s ease-out; /* Thêm hiệu ứng mờ dần */
+}
+
+/* Nội dung của modal */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: zoomIn 0.5s ease-out; /* Thêm hiệu ứng zoom in */
+}
+
+/* Nút đóng modal */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Hiệu ứng mờ dần */
+@keyframes fadeIn {
+    from {
+        background-color: rgba(0, 0, 0, 0); /* Không có màu */
+    }
+    to {
+        background-color: rgba(0, 0, 0, 0.4); /* Màu nền mờ */
+    }
+}
+
+/* Hiệu ứng zoom vào modal */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8); /* Bắt đầu từ kích thước nhỏ */
+        opacity: 0; /* Mờ dần */
+    }
+    to {
+        transform: scale(1); /* Phóng to về kích thước ban đầu */
+        opacity: 1; /* Hiển thị hoàn toàn */
+    }
 }

@@ -49,23 +49,6 @@ $(document).ready(function(){
 		filterGallery(idType);
 	});
 
-    var $popup = $('.popup');
-    var $openPopup = $('.openPopup');
-    var $closePopup = $('.closePopup');
-
-    $openPopup.on('click', function (e) {
-        e.stopPropagation();
-        var idPopup = $(this).data('popup');
-        $(idPopup).addClass('active');
-        removeScrollbar();
-    });
-
-
-    $closePopup.on('click', function (e) {
-        e.stopPropagation();
-        $popup.removeClass('active');
-        removeScrollbar();
-    });
 
 
     var $popupPromotion = $('.popup.promotion');
@@ -412,3 +395,28 @@ var notifyOptions = {
 // 			removeScrollbar();
 // 	}, 3000);
 // });
+
+function openTab(evt, tabId) {
+    var i, tabcontent, tablinks;
+
+    // Hide all tabs
+    tabcontent = document.getElementsByClassName("tab");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Remove active class from buttons
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab and add an "active" class to the clicked button
+    document.getElementById(tabId).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Show default tab on page load
+document.getElementById("history").style.display = "block";
+
+

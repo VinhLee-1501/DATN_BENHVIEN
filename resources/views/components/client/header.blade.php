@@ -41,7 +41,7 @@
                                     Đăng nhập người dùng
                                 </div>
                             </a>
-                            <a href="{{route('system.auth.login')}}">
+                            <a href="{{ route('system.auth.login') }}">
                                 <div style="border-radius: 0px; width: 240px" class="button btn-small">
                                     Đăng nhập với bác sĩ
                                 </div>
@@ -70,9 +70,13 @@
             @endif
 
             <div class="header__booking">
-                <div class="button btn-small btn-cta openPopup" data-popup="#popupBooking">
-                    <i class="fa-regular fa-calendar-check"></i> Đặt lịch
-                </div>
+
+                <a href="{{ route('client.booking') }}">
+                    <div class="button btn-small btn-cta openPopup">
+                        <i class="fa-regular fa-calendar-check"></i> Đặt lịch
+                    </div>
+                </a>
+
             </div>
         </div>
     </div>
@@ -86,9 +90,11 @@
         </div>
     </div>
     <div class="rd-panel__btn">
-        <div class="button btn-flex openPopup" data-popup="#popupBooking">
-            <i class="fa-regular fa-calendar-check"></i> Đặt lịch
-        </div>
+        <a href="{{ route('client.booking') }}">
+            <div class="button btn-flex openPopup" data-popup="#popupBooking">
+                <i class="fa-regular fa-calendar-check"></i> Đặt lịch
+            </div>
+        </a>
     </div>
     @if (auth()->check())
         <div style="width: 200px" class="header__login">

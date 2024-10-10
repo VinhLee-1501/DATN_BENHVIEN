@@ -15,15 +15,37 @@ return new class extends Migration
             $table->id('row_id')->primary();
             $table->string('book_id', 10)->unique();
             $table->dateTime('day');
+            $table->time('hour');
             $table->string('name', 50);
             $table->integer('phone');
             $table->string('email', 255);
-            $table->string('symptoms', 255);
+            $table->string('symptoms', 255)->nullable();
             $table->string('shift_id', 10)->nullable();
+
+            // Thêm cột specialty_id
+            $table->string('specialty_id');
+
+            // Thêm cột user_id làm khóa ngoại
+            $table->string('user_id')->nullable(); // Nullable để có thể không có người dùng
+
+            // Khóa ngoại cho specialty_id
+            $table->foreign('specialty_id')
+                ->references('specialty_id')
+                ->on('specialties')
+                ->onDelete('cascade'); // Xóa các bản ghi liên quan khi chuyên khoa bị xóa
+
+            // Khóa ngoại cho shift_id
             $table->foreign('shift_id')
                 ->references('shift_id')
                 ->on('schedules')
                 ->onDelete('set null');
+
+            // Khóa ngoại cho user_id
+            $table->foreign('user_id')
+                ->references('user_id') // 'id' là khóa chính trong bảng 'users'
+                ->on('users')
+                ->onDelete('set null'); // Xóa các bản ghi liên quan khi người dùng bị xóa
+
             $table->softDeletes();
             $table->timestamps();
         });

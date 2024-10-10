@@ -2,7 +2,7 @@
     <div class="popup__container">
         <div class="popup__frame">
             <div class="popup__image">
-                <img src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}" alt="Hình ảnh"/>
+                <img src="{{ asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg') }}" alt="Hình ảnh" />
             </div>
             <div class="popup__form">
                 <div class="popup__close closePopup">
@@ -15,7 +15,7 @@
                     <div class="form booking">
                         <div id="loading">
                             <img src="https://phongkhamtuean.com.vn/frontend/home/images/loading.gif"
-                                 alt="Background"/>
+                                alt="Background" />
                         </div>
                         <div class="form__notice">
                             <div class="notice success">Thông tin đã gửi thành công!</div>
@@ -24,40 +24,140 @@
                                 Vui lòng nhập đúng định dạng!
                             </div>
                         </div>
-                        <div class="form__frame">
+                        <form action="{{ route('client.booking') }}" method="POST">
+                            @csrf
+                            <div class="form__frame">
+                                <div class="form__flex">
+                                    <div class="form__group">
+                                        <input id="day" type="text" name="day" placeholder="Chọn ngày"
+                                            onfocus="this.type='date'" onclick="hidePast()"
+                                            value="{{ old('day') }}" />
+                                        @if ($errors->has('day'))
+                                            <span class="text-danger">{{ $errors->first('day') }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="form__group">
+                                        <input id="hour" type="time" name="hour" placeholder="Chọn giờ"
+                                            value="{{ old('day') }}" />
+                                        @if ($errors->has('hour'))
+                                            <span class="text-danger">{{ $errors->first('hour') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
 
-                            <div class="form__flex">
+                                @if (Auth::check())
+                                    @php
+                                        $user = Auth::user();
+                                        $userInfo = \App\Models\Patient::where('phone', $user->phone)->first();
+                                    @endphp
+                                    @if ($userInfo)
+                                        <div class="form__group">
+                                            <input id="name" type="text" name="name"
+                                                value="{{ $userInfo->first_name }} {{ $userInfo->last_name }}"
+                                                placeholder="Họ tên" />
+                                            @if ($errors->has('name'))
+                                                <span class="text-danger">{{ $errors->first('name') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="form__group">
+                                            <input id="phone" type="text" name="phone"
+                                                value="{{ $userInfo->phone }}" placeholder="Số điện thoại" />
+                                            @if ($errors->has('phone'))
+                                                <span class="text-danger">{{ $errors->first('phone') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="form__group">
+                                            <input id="email" type="text" name="email"
+                                                value="{{ Auth::user()->email ?? '' }}" placeholder="Email (nếu có)" />
+                                            @if ($errors->has('email'))
+                                                <span class="text-danger">{{ $errors->first('email') }}</span>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <div class="form__group">
+                                            <input id="name" type="text" name="name"
+                                                value="{{ old('name') }}" placeholder="Họ tên" />
+                                            @if ($errors->has('name'))
+                                                <span class="text-danger">{{ $errors->first('name') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="form__group">
+                                            <input id="phone" type="text" name="phone"
+                                                value="{{ old('phone') }}" placeholder="Số điện thoại" />
+                                            @if ($errors->has('phone'))
+                                                <span class="text-danger">{{ $errors->first('phone') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="form__group">
+                                            <input id="email" type="text" name="email"
+                                                value="{{ old('email') }}" placeholder="Email (nếu có)" />
+                                            @if ($errors->has('email'))
+                                                <span class="text-danger">{{ $errors->first('email') }}</span>
+                                            @endif
+                                        </div>
+                                    @endif
+                                @else
+                                    <div class="form__group">
+                                        <input id="name" type="text" name="name" value="{{ old('name') }}"
+                                            placeholder="Họ tên" />
+                                        @if ($errors->has('name'))
+                                            <span class="text-danger">{{ $errors->first('name') }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="form__group">
+                                        <input id="phone" type="text" name="phone" value="{{ old('phone') }}"
+                                            placeholder="Số điện thoại" />
+                                        @if ($errors->has('phone'))
+                                            <span class="text-danger">{{ $errors->first('phone') }}</span>
+                                        @endif
+                                    </div>
+
+                                    <div class="form__group">
+                                        <input id="email" type="text" name="email"
+                                            value="{{ old('email') }}" placeholder="Email (nếu có)" />
+                                        @if ($errors->has('email'))
+                                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                                        @endif
+                                    </div>
+
+
+                                @endif
+
                                 <div class="form__group">
-                                    <input id="date" type="text" name="date" placeholder="Chọn ngày"
-                                           onfocus="this.type='date'" onclick="hidePast()"/>
+                                    <select style="width: 100%" id="specialty" name="specialty_id">
+                                        <option value="" disabled
+                                            {{ old('specialty_id') == '' ? 'selected' : '' }}>Chọn chuyên khoa</option>
+                                        @foreach ($specialties as $specialty)
+                                            <option value="{{ $specialty->specialty_id }}"
+                                                {{ old('specialty_id') == $specialty->specialty_id ? 'selected' : '' }}>
+                                                {{ $specialty->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('specialty_id'))
+                                        <span class="text-danger">{{ $errors->first('specialty_id') }}</span>
+                                    @endif
+
                                 </div>
+
                                 <div class="form__group">
-                                    <input id="time" type="text" name="time" min="08:30" max="17:00"
-                                           placeholder="Chọn thời gian" onfocus="this.type='time'"/>
+                                    <textarea id="symptoms" name="symptoms" value="" placeholder="Triệu chứng (nếu có)">{{ old('symptoms') }}</textarea>
+                                    @if ($errors->has('symptoms'))
+                                        <span class="text-danger">{{ $errors->first('symptoms') }}</span>
+                                    @endif
+                                </div>
+
+                                <div class="form__action">
+                                    <button type="submit" class="button btn-booking btn-flex">
+                                        <i class="fa-regular fa-calendar-check"></i> Đặt lịch
+                                    </button>
+                                    <div class="button btn-secondary btn-cancel btn-flex closePopup">Huỷ</div>
                                 </div>
                             </div>
-                            <div class="form__group">
-                                <input id="fullname" type="text" name="fullname" placeholder="Họ tên"/>
-                            </div>
-                            <div class="form__group">
-                                <input id="phone" type="text" name="phone" placeholder="Số điện thoại"/>
-                            </div>
-                            <div class="form__group">
-                                <input id="email" type="text" name="email" placeholder="Email (nếu có)"/>
-                            </div>
-                            <div class="form__group">
-                                <input id="content" type="text" name="content" placeholder="Nội dung (nếu có)"/>
-                                <input id="webiste" type="text" name="website" style="display: none"/>
-                            </div>
-                            <div class="form__action">
-                                <div class="button btn-booking btn-flex">
-                                    <i class="fa-regular fa-calendar-check"></i> Đặt lịch
-                                </div>
-                                <div class="button btn-secondary btn-cancel btn-flex closePopup">
-                                    Huỷ
-                                </div>
-                            </div>
-                        </div>
+                        </form>
+
+
+
                     </div>
                 </div>
             </div>
