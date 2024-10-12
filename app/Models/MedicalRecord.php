@@ -10,6 +10,9 @@ class MedicalRecord extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $primaryKey = 'medical_id';
+    protected $keyType = 'string';
+    public $incrementing = false;
     protected $fillable = [
       'medical_id',
       'date',
@@ -23,7 +26,8 @@ class MedicalRecord extends Model
         'weight',
         'height',
         'patien_id', //Khóa ngoại
-        'book_id' //Khóa ngoại
+        'book_id' ,//Khóa ngoại
+        'user_id' //Khóa ngoại
     ];
 
     public function bookForeignKey()
@@ -34,5 +38,10 @@ class MedicalRecord extends Model
     public function patientForeignKey()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'patient_id');
+    }
+
+    public function userForeignKey()
+    {
+        return $this->belongsTo(Patient::class, 'user_id', 'user_id');
     }
 }

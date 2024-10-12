@@ -25,183 +25,88 @@
         <div class="card mb-3">
             <div class="card-header">Thông tin bệnh nhân</div>
             <div class="card-body">
-                @if (!$patient)
-                    <form action="{{route('system.checkupHealth.storePatient',$book[0]->book_id)}}" method="post">
-                        @csrf
-                    <div class="row">
-                        <div class="col-md-2">
-                            <label for="patient_id">Mã bệnh nhân</label>
-                            <input type="text" class="form-control" id="patient_id" name="patient_id"
-                                value="{{ strtoupper(Str::random(10)) }}" >
-                        </div>
-                        <div class="col-md-3">
-                            <label for="patient_name">Họ</label>
-                            <input type="text" class="form-control" id="patient_name" name="last_name"
-                                value="{{ $book[0]->name }}" >
-                        </div>
-                        <div class="col-md-3">
-                            <label for="patient_name">Tên</label>
-                            <input type="text" class="form-control" id="patient_name" name="first_name"
-                                value="{{ $book[0]->name }}" >
-                        </div>
-                        <div class="col-md-2">
-                            <label for="gender">Giới tính</label>
-                            <select class="form-select" id="gender" name="gender">
-                                <option value="1">Nam
-                                </option>
-                                <option value="0">Nữ
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="age">Ngày sinh</label>
-                            <input type="date" class="form-control" id="age" name="age"
-                                value="{{ old('age') }}">
-                                @error('age')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="patient_id">Mã bệnh nhân</label>
+                        <input type="text" class="form-control" id="patient_id" name="patient_id"
+                            value="{{ $patient->patient_id }}" readonly>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <label for="address">Địa chỉ</label>
-                            <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
-                                value="{{ old('address') }}">
-                                @error('address')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <label for="phone">Số điện thoại</label>
-                            <input type="text" class="form-control" id="phone" name="phone"
-                                value="0{{ $book[0]->phone }}" readonly>
-                            @error('phone')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <label for="occupation">Nghề nghiệp</label>
-                            <input type="text" class="form-control @error('occupation') is-invalid @enderror"
-                                id="occupation" name="occupation" value="{{ old('occupation') }}">
-                            @error('occupation')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="col-md-3">
+                        <label for="patient_name">Họ</label>
+                        <input type="text" class="form-control" id="patient_name" name="patient_name"
+                            value="{{ $patient->last_name }}" readonly>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-3">
-                            <label for="emergency_contact">Liên hệ khẩn cấp</label>
-                            <input type="text" class="form-control @error('emergency_contact') is-invalid @enderror"
-                                id="emergency_contact" name="emergency_contact" value="{{ old('emergency_contact') }}">
-                            @error('emergency_contact')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <label for="national">Quốc tịch</label>
-                            <input type="text" class="form-control @error('national') is-invalid @enderror"
-                                id="national" name="national" value="{{ old('national') }}">
-                            @error('national')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <label for="insurance_number">Số bảo hiểm</label>
-                            <input type="text" class="form-control @error('insurance_number') is-invalid @enderror"
-                                id="insurance_number" name="insurance_number" value="{{ old('insurance_number') }}">
-                            @error('insurance_number')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-success btn-sm m-md-4">Lưu bệnh nhân</button>
-                        </div>
+                    <div class="col-md-3">
+                        <label for="patient_name">Tên</label>
+                        <input type="text" class="form-control" id="patient_name" name="patient_name"
+                            value="{{ $patient->first_name }}" readonly>
                     </div>
+                    <div class="col-md-2">
+                        <label for="gender">Giới tính</label>
+                        <select class="form-select" id="gender" name="gender" disabled>
+                            <option value="1" {{ $patient->gender == 1 ? 'selected' : '' }}>Nam
+                            </option>
+                            <option value="0" {{ $patient->gender == 0 ? 'selected' : '' }}>Nữ
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="age">Ngày sinh</label>
+                        <input type="text" class="form-control" id="age" name="age"
+                            value="{{ Carbon\Carbon::parse($patient->birthday)->format('d/m/Y') }}">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" class="form-control" id="address" name="address"
+                            value="{{ $patient->address }}" readonly>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="text" class="form-control" id="phone" name="phone"
+                            value="0{{ $patient->phone }}" readonly>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="occupation">Nghề nghiệp</label>
+                        <input type="text" class="form-control @error('occupation') is-invalid @enderror" id="occupation"
+                            name="occupation" value="{{ $patient->occupation }}">
+                        @error('occupation')
+                            <div class="text-danger">*{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
 
-                    </form>
-                @else
-                    <div class="row">
-                        <div class="col-md-2">
-                            <label for="patient_id">Mã bệnh nhân</label>
-                            <input type="text" class="form-control" id="patient_id" name="patient_id"
-                                value="{{ $user['patient']->patient_id }}" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="patient_name">Họ</label>
-                            <input type="text" class="form-control" id="patient_name" name="patient_name"
-                                value="{{ $user['patient']->first_name }}" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="patient_name">Tên</label>
-                            <input type="text" class="form-control" id="patient_name" name="patient_name"
-                                value="{{ $user['patient']->last_name }}" readonly>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="gender">Giới tính</label>
-                            <select class="form-select" id="gender" name="gender" disabled>
-                                <option value="1" {{ $user['patient']->gender == 1 ? 'selected' : '' }}>Nam
-                                </option>
-                                <option value="0" {{ $user['patient']->gender == 0 ? 'selected' : '' }}>Nữ
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="age">Ngày sinh</label>
-                            <input type="text" class="form-control" id="age" name="age"
-                                value="{{ Carbon\Carbon::parse($user['patient']->birthday)->format('d/m/Y') }}">
-                        </div>
+                <div class="row mt-2">
+                    <div class="col-md-3">
+                        <label for="emergency_contact">Liên hệ khẩn cấp</label>
+                        <input type="text" class="form-control @error('emergency_contact') is-invalid @enderror"
+                            id="emergency_contact" name="emergency_contact" value="{{ $patient->emergency_contact }}">
+                        @error('emergency_contact')
+                            <div class="text-danger">*{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <label for="address">Địa chỉ</label>
-                            <input type="text" class="form-control" id="address" name="address"
-                                value="{{ $user['patient']->address }}" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="phone">Số điện thoại</label>
-                            <input type="text" class="form-control" id="phone" name="phone"
-                                value="{{ $user['patient']->phone }}" readonly>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="occupation">Nghề nghiệp</label>
-                            <input type="text" class="form-control @error('occupation') is-invalid @enderror"
-                                id="occupation" name="occupation" value="{{ $user['patient']->occupation }}">
-                            @error('occupation')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="col-md-3">
+                        <label for="national">Quốc tịch</label>
+                        <input type="text" class="form-control @error('national') is-invalid @enderror" id="national"
+                            name="national" value="{{ $patient->national }}">
+                        @error('national')
+                            <div class="text-danger">*{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-3">
-                            <label for="emergency_contact">Liên hệ khẩn cấp</label>
-                            <input type="text" class="form-control @error('emergency_contact') is-invalid @enderror"
-                                id="emergency_contact" name="emergency_contact"
-                                value="0{{ $user['patient']->emergency_contact }}">
-                            @error('emergency_contact')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <label for="national">Quốc tịch</label>
-                            <input type="text" class="form-control @error('national') is-invalid @enderror"
-                                id="national" name="national" value="{{ $user['patient']->national }}">
-                            @error('national')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <label for="insurance_number">Số bảo hiểm</label>
-                            <input type="text" class="form-control @error('insurance_number') is-invalid @enderror"
-                                id="insurance_number" name="insurance_number"
-                                value="{{ $user['patient']->Insurance_number }}">
-                            @error('insurance_number')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="col-md-3">
+                        <label for="insurance_number">Số bảo hiểm</label>
+                        <input type="text" class="form-control @error('insurance_number') is-invalid @enderror"
+                            id="insurance_number" name="insurance_number" value="{{ $patient->Insurance_number }}">
+                        @error('insurance_number')
+                            <div class="text-danger">*{{ $message }}</div>
+                        @enderror
                     </div>
-                @endif
+                </div>
             </div>
         </div>
+        <form action="{{route('system.checkupHealth.store', $medical->medical_id)}}" method="post">
+            @csrf
         <div class="d-flex col-md-12">
             <!-- Clinical Tests -->
             <div class="card mb-3 col-md-6">
@@ -220,8 +125,6 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('system.checkupHealth.saveService', $book[0]->book_id)}}" method="post"> 
-                        @csrf
                     <table class="table table-bordered" id="selectedTestsTable">
                         <thead>
                             <tr>
@@ -232,26 +135,31 @@
                         </thead>
                         <tbody>
                             <input type="hidden" id="selectService" name="selectedService" value="">
-
-                            <!-- Các mục đã chọn sẽ thêm vào đây -->
+                            @php  $count =  1;  @endphp
+                            @foreach ( $services as $data )
+                            @php  $int = $count++ @endphp
+                            <tr>
+                            <td>{{$int}}</td>
+                            <td>{{$data->name}}</td>
+                            <td>{{$data->price}}.000 VNĐ</td>
+                                    @endforeach
                         </tbody>
                     </table>
-                    <span id="totalAmout"></span>
+                    <span id="totalAmout">Tổng cộng: {{$totalprice[0]->total_price}}.000 VNĐ</span>
                     <div class="float-xxl-end">
-                        <button type="submit" class="btn btn-success btn-sm" type="btn">Chọn</button>
+                        <button type="" class="btn btn-success btn-sm" type="btn">Chọn</button>
                     </div>
-                </form>
                 </div>
             </div>
-            <!-- Vitals -->
-            <div class="card mb-3 col-md-6">
+
+            <div class="card mb-3 ms-2 col-md-6">
                 <div class="card-header">Chỉ số sinh hiệu</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
                             <label for="blood_pressure">Huyết áp</label>
                             <div class="d-flex">
-                                <input type="text" class="form-control m-lg-6 p-0 w-25 " id="bloodPressure"
+                                <input type="text" class="form-control m-lg-6 p-0 w-25 @error('blood_pressure') is-invalid @enderror" id="bloodPressure"
                                     name="blood_pressure" value="{{ old('blood_pressure') }}">
                                 <p class="mt-3">mmHg</p>
                             </div>
@@ -262,7 +170,7 @@
                         <div class="col">
                             <label for="respiratory_rate">Nhịp thở</label>
                             <div class="d-flex">
-                                <input type="text" class="form-control m-lg-6 p-0 w-25 " id="respiration"
+                                <input type="text" class="form-control m-lg-6 p-0 w-25 @error('respiratory_rate') is-invalid @enderror" id="respiration"
                                     name="respiratory_rate" value="{{ old('respiratory_rate') }}">
                                 <p class="mt-3">nhịp/phút</p>
                             </div>
@@ -275,7 +183,7 @@
                         <div class="col">
                             <label for="height">Chiều cao</label>
                             <div class="d-flex">
-                                <input type="text" class="form-control m-lg-6 p-0 w-25" id="height" name="height"
+                                <input type="text" class="form-control m-lg-6 p-0 w-25 @error('height') is-invalid @enderror" id="height" name="height"
                                     value="{{ old('height') }}">
                                 <p class="mt-3">cm</p>
                             </div>
@@ -286,7 +194,7 @@
                         <div class="col">
                             <label for="weight">Cân nặng</label>
                             <div class="d-flex">
-                                <input type="text" class="form-control m-lg-6 p-0 w-25" id="weight" name="weight"
+                                <input type="text" class="form-control m-lg-6 p-0 w-25 @error('weight') is-invalid @enderror" id="weight" name="weight"
                                     value="{{ old('weight') }}">
                                 <p class="mt-3">kg</p>
                             </div>
@@ -298,6 +206,7 @@
                 </div>
             </div>
         </div>
+
         <div class="d-flex col-md-12">
             <!-- New Diagnosis Section (Bảng chẩn đoán bệnh) -->
             <div class="card mb-3 me-2 col-md-6">
@@ -305,10 +214,9 @@
                         {{ Carbon\Carbon::now()->format('d/m/Y') }} </p>
                 </div>
                 <div class="card-body">
-
                     <div class="col mb-2">
                         <label for="symptoms">Triệu chứng</label>
-                        <textarea class="form-control @error('symptoms') is-invalid @enderror" id="symptoms" name="symptoms">{{ old('symptoms', $book[0]->symptoms) }}</textarea>
+                        <textarea class="form-control @error('symptoms') is-invalid @enderror" id="symptoms" name="symptoms">{{ old('symptoms', $book->symptoms) }}</textarea>
                         @error('symptoms')
                             <div class="text-danger">*{{ $message }}</div>
                         @enderror
@@ -348,13 +256,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($user['medicalRecord'] as $data)
+                                @foreach ($medical_patient as $data)
                                     <tr>
                                         <td class="border-bottom-0">
                                             {{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</td>
                                         <td class="border-bottom-0">{{ $data->diaginsis }}</td>
                                         <td class="border-bottom-0">{{$data->lastname}} {{$data->firstname}}</td>
-                                        <td class="border-bottom-0"> <a href="{{route('system.recordDoctors.detail', $data->medical_id)}}"
+                                        <td class="border-bottom-0"> <a herf="{{route('system.recordDoctors.detail', $data->medical_id)}}"
                                                 class="btn btn-success btn-sm">Xem</a></td>
                                     </tr>
                                 @endforeach
@@ -365,6 +273,7 @@
             @endif
 
         </div>
+
         <!-- Prescription Section -->
         <div class="card mb-3">
             <div class="card-header row col-md-12 justify-content-around align-items-center">
@@ -409,7 +318,8 @@
                 </div>
             </div>
             <div class="card-body">
-             
+                {{-- <form action="{{ route('system.checkupHealth.saveMedicine') }}" method="post">
+                    @csrf --}}
                     <div class="form-group p-3 col-md-6">
                         <select id="myAjaxSelect" class="form-control mb-6 myAjaxSelect" name="myAjaxSelect[]"
                             onchange="addSelectedMidicine()">
@@ -438,12 +348,12 @@
                         </tbody>
                     </table>
                     <div class="float-xxl-end">
-                        <a type="" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <a type="" class="btn btn-success btn-sm">
                             Tạo đơn thuốc
-                            </a>
+                        </a>
                     </div>
-                
-                <!-- Modal -->
+                {{-- </form> --}}
+                {{-- <!-- Modal -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -486,7 +396,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>
@@ -497,11 +407,12 @@
         <div class="card-body d-flex justify-content-between align-items-center">
             <div class="d-flex">
                 <span class="badge bg-danger me-2">CLS</span>
-                <span class="me-3" id="total_service"></span>
+                <span class="me-3" id="total_service">{{$totalprice[0]->total_price}}.000</span>
                 <span class="badge bg-success me-2">PK</span>
                 <span class="me-3" id="cost">30.000</span>
                 <span class="badge bg-danger me-2">TC</span>
-                <span class="me-3" id="total_fullcost">30.000 VNĐ</span>
+                @php $total = $totalprice[0]->total_price + 30  @endphp
+                <span class="me-3" id="total_fullcost"> {{$total}}.000 VNĐ</span>
             </div>
 
             <div class="d-flex align-items-center">
@@ -530,10 +441,10 @@
                     @enderror
                 </div>
                 <button type="submit" class="btn btn-success me-2">Lưu</button>
-                <button type="" class="btn btn-danger">Hủy</button>
+                <a type="" class="btn btn-danger">Hủy</a>
             </div>
         </div>
     </div>
-    </form>
+</form>
 
 @endsection

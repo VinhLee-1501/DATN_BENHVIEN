@@ -27,8 +27,11 @@ class MedicineController extends Controller
     )
     ->where('medicines.status',1)
     ->get();
-
-        return view('System.medicines.index', compact('medicine'));
+    $medicineType = MedicineType::get();
+        return view('System.medicines.index', [
+            'medicine' => $medicine,
+            'medicineType' => $medicineType
+        ]);
     }
 
     public function end()
@@ -48,8 +51,11 @@ class MedicineController extends Controller
     )
     ->where('medicines.status',0)
     ->get();
-
-        return view('System.medicines.index', compact('medicine'));
+    $medicineType = MedicineType::get();
+    return view('System.medicines.index', [
+        'medicine' => $medicine,
+        'medicineType' => $medicineType
+    ]);
     }
 
 

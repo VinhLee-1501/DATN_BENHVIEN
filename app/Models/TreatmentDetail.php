@@ -9,6 +9,9 @@ class TreatmentDetail extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'treatment_id';
+    protected $keyType = 'string';
+    public $incrementing = false;
     protected $fillable = [
       'treatment_id',
       'quantity',

@@ -8,6 +8,10 @@ Route::prefix('checkupHealths')->middleware('check_login_admin')
    ->group(function () {
       Route::get('/', [CheckupHealthController::class, 'index'])->name('checkupHealth');
       Route::get('/create/{book_id}', [CheckupHealthController::class, 'create'])->name('checkupHealth.create');
-    //   Route::get('/detail/{medical_id}/prescription/{treatment_id}', [MedicalRecordDocotrController::class, 'prescription'])->name('prescription_medical_record');
-    //   Route::delete('/delete/{medical_id}', [MedicalRecordDocotrController::class, 'destroy'])->name('delete_medical_record');
+      Route::post('/storePatient/{book_id}', [CheckupHealthController::class, 'storePatient'])->name('checkupHealth.storePatient');
+      Route::post('/savemedicine', [CheckupHealthController::class, 'saveMedicine'])->name('checkupHealth.saveMedicine');
+      Route::post('/saveservice/{book_id}', [CheckupHealthController::class, 'saveService'])->name('checkupHealth.saveService');
+      Route::get('/record/{medical}', [CheckupHealthController::class, 'record'])->name(name: 'checkupHealth.record');
+      Route::post('/store/{medical_id}', [CheckupHealthController::class, 'store'])->name('checkupHealth.store');
+
    });

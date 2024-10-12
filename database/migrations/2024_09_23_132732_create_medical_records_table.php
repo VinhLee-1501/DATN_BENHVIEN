@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id('row_id')->primary();
             $table->string('medical_id', 10)->unique();
             $table->dateTime('date');
-            $table->string('diaginsis', 255);
-            $table->date('re_examination_date');
-            $table->string('symptom');
+            $table->string('diaginsis', 255)->nullable();
+            $table->date('re_examination_date')->nullable();
+            $table->string('symptom')->nullable();
             $table->tinyInteger('status');
-            $table->string('advice');
-            $table->string('blood_pressure', 50);
-            $table->string('respiratory_rate', 50);
-            $table->string('weight', 50);
-            $table->string('height', 50);
+            $table->string('advice')->nullable();
+            $table->string('blood_pressure', 50)->nullable();
+            $table->string('respiratory_rate', 50)->nullable();
+            $table->string('weight', 50)->nullable();
+            $table->string('height', 50)->nullable();
 
             $table->string('patient_id', 10)->nullable();
             $table->foreign('patient_id')
