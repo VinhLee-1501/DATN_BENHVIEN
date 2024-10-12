@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('treatment_medications', function (Blueprint $table) {
-            $table->integer('quantity');
-            $table->string('usage');
-            $table->string('dosage');
-            $table->string('note');
+            $table->integer('quantity')->nullable();
+            $table->string('usage')->nullable();
+            $table->string('dosage')->nullable();
+            $table->string('note')->nullable();
         });
     }
 
