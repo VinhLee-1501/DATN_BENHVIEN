@@ -21,7 +21,7 @@ class AppointmentSchedule extends Controller
             ->select('books.*', 'users.lastname as lastname', 'users.firstname as firstname',
                 'users.avatar', 'specialties.name as specialtyName', 'sclinics.name as sclinicsName')
             ->paginate(5);
-//        dd($book);
+//       dd($book);
         return view('System.appointmentschedule.index', ['book' => $book,]);
     }
 
@@ -31,6 +31,7 @@ class AppointmentSchedule extends Controller
 
         $doctor = Schedule::join('users', 'users.user_id', '=', 'schedules.user_id')
             ->where('schedules.shift_id', $book->shift_id)
+            ->where('users.role', 2)
             ->select('users.*')
             ->first();
 //        Log::info('Doc: ', $doctor);

@@ -34,14 +34,15 @@ class SpecialtyController extends Controller
 
     public function store(CreateRequest $request)
     {
+        Log::info('Storing', $request->all());
         $specialty = new Specialty();
 
         $specialty->specialty_id = strtoupper(Str::random('10'));
         $specialty->name = $request->input('name');
         $specialty->status = $request->input('status', false);
 
-//        Log::info('Specialty Created', $specialty->toArray());
         $specialty->save();
+        Log::info('Specialty Created', $specialty->toArray());
 
         return response()->json(['success' => true, 'message' => 'Thêm dữ liệu thành công']);
     }

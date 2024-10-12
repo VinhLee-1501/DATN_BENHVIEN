@@ -29,9 +29,9 @@
                     <th class="border-bottom-0">
                         <h6 class="fw-semibold mb-0">Tên chuyên khoa</h6>
                     </th>
-{{--                    <th class="border-bottom-0">--}}
-{{--                        <h6 class="fw-semibold mb-0">Số lượng bác sĩ</h6>--}}
-{{--                    </th>--}}
+                    {{--                    <th class="border-bottom-0">--}}
+                    {{--                        <h6 class="fw-semibold mb-0">Số lượng bác sĩ</h6>--}}
+                    {{--                    </th>--}}
                     <th class="border-bottom-0">
                         <h6 class="fw-semibold mb-0">Thao tác</h6>
                     </th>
@@ -45,9 +45,9 @@
                     <tr class="text-center">
                         <td class="border-bottom-0">{{$count++}}</td>
                         <td class="border-bottom-0">{{$specialty->name}}</td>
-{{--                        <td class="border-bottom-0">--}}
-{{--                            {{$specialty->doctors_count }}--}}
-{{--                        </td>--}}
+                        {{--                        <td class="border-bottom-0">--}}
+                        {{--                            {{$specialty->doctors_count }}--}}
+                        {{--                        </td>--}}
                         <td class="border-bottom-0">
                             <a href="{{ route('system.detail', $specialty->specialty_id) }}" class="btn btn-primary">
                                 <i class="ti ti-notes"></i>
@@ -61,10 +61,10 @@
                                 @csrf
                                 @method('DELETE')
                             </form>
-                                <button type="submit" class="btn btn-danger btn-delete"
-                                        data-id="{{ $specialty->specialty_id }}">
-                                    <i class="ti ti-trash"></i>
-                                </button>
+                            <button type="submit" class="btn btn-danger btn-delete"
+                                    data-id="{{ $specialty->specialty_id }}">
+                                <i class="ti ti-trash"></i>
+                            </button>
 
                         </td>
                     </tr>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" id="save-btn">Lưu</button>
+                    <button type="submit" class="btn btn-primary" id="save-btn">Lưu</button>
                 </div>
             </div>
         </div>
@@ -139,43 +139,46 @@
             $('#exampleModal').modal('show');
         }
 
-        $(document).ready(function () {
-            $('#save-btn').click(function () {
-                const specialtyName = $('#specialtyName').val();
-                const specialtyStatus = $('#specialtyStatus').is(':checked') ? 1 : 0;
+        $('#save-btn').click(function () {
+            console.log('aaaa')
+            const specialtyName = $('#specialtyName').val();
+            const specialtyStatus = $('#specialtyStatus').is(':checked') ? 1 : 0;
+            // console.log(specialtyName);
 
-                // Kiểm tra lỗi
-                if (specialtyName === "") {
-                    $('#name-error').text("Tên chuyên khoa không được để trống");
-                    return;
-                } else {
-                    $('#name-error').text("");
-                }
-                $.ajax({
-                    url: '/system/specialties/create',
-                    type: 'POST',
-                    data: {
-                        'name': specialtyName,
-                        'status': specialtyStatus,
-                        '_token': '{{ csrf_token() }}'
-                    },
-                    success: function (response) {
-                        console.log(response);
-                        $('#exampleModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function (error) {
-                        if (error.status === 422) {
-                            let errors = error.responseJSON.errors;
-                            if (errors.name) {
-                                $('#name-error').text(errors.name[0]);
-                            }
-                        } else {
-                            console.error(error);
+            // Kiểm tra lỗi
+            if (specialtyName === "") {
+                $('#name-error').text("Tên chuyên khoa không được để trống");
+                return;
+            } else {
+                $('#name-error').text("");
+            }
+            $.ajax({
+                url: '/system/specialties/create',
+                type: 'POST',
+                data: {
+                    'name': specialtyName,
+                    'status': specialtyStatus,
+                    '_token': '{{ csrf_token() }}'
+                },
+                success: function (response) {
+                    console.log(response);
+                    $('#exampleModal').modal('hide');
+                    location.reload();
+                },
+                error: function (error) {
+                    if (error.status === 422) {
+                        let errors = error.responseJSON.errors;
+                        if (errors.name) {
+                            $('#name-error').text(errors.name[0]);
                         }
+                    } else {
+                        console.error(error);
                     }
-                });
+                }
             });
+        });
+        $(document).ready(function () {
+
         });
 
         function openModalEdit(id) {

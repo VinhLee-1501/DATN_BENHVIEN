@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('specialties', function (Blueprint $table) {
             $table->id('row_id')->primary();
             $table->string('specialty_id', 10)->unique();
-            $table->string('name', 20);
+            $table->string('name', 255);
             $table->tinyInteger('status');
             $table->softDeletes();
             $table->timestamps();

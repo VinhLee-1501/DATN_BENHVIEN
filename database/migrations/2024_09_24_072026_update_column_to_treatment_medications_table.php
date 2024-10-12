@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::table('treatment_medications', function (Blueprint $table) {
             $table->integer('quantity');
             $table->string('usage');
+            $table->string('dosage');
+            $table->string('note');
         });
     }
 

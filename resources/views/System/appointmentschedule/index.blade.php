@@ -59,11 +59,11 @@
                             <td class="border-bottom-0">
                                 <span class="fw-semibold mb-0">
                                     @if( $item->status === 0)
-                                        <span class="badge bg-danger">Chưa khám</span>
+                                        <span class="badge bg-danger">Đã đặt</span>
                                     @elseif($item->status === 1)
-                                        <span class="badge bg-success">Đã khám</span>
+                                        <span class="badge bg-success">Xác nhận</span>
                                     @else
-                                        <span class="badge bg-warning">Hủy</span>
+                                        <span class="badge bg-warning">Đã hủy</span>
                                     @endif
                                 </span>
                             </td>
@@ -164,13 +164,13 @@
                                 <label class="form-check-label" for="cancel-check">Hủy</label>
                             </div>
                         </form>
-                        <script>
+                        {{-- <script>
                             document.addEventListener('DOMContentLoaded', (event) => {
                                 const now = new Date();
                                 const formattedDateTime = now.toISOString().slice(0, 16);
                                 document.getElementById('appointment-time').value = formattedDateTime;
                             });
-                        </script>
+                        </script> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -229,7 +229,6 @@
                         $('#cancelstatus-check').prop('checked', response.status === 2);
                         $('#exampleModal').data('id', id);
                         $('#exampleModal').modal('show');
-                        // location.reload();
                     },
                     error: function (err) {
                         console.error("Lỗi khi lấy dữ liệu:", err);
@@ -267,6 +266,8 @@
                         } else if (response.error) {
                             toastr.error(response.message);
                         }
+                        location.reload();
+
                     },
                     error: function (err) {
                         console.error("Error updating data:", err);

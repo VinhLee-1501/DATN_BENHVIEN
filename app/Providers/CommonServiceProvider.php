@@ -29,6 +29,6 @@ class CommonServiceProvider extends ServiceProvider
     public function boot()
     {
         // Chia sẻ biến $specialties cho tất cả các view
-        View::share('specialties', Specialty::where('status', 1)->get());
+         View::share('specialties', Specialty::where('status', 1)->get());
     }
 }
