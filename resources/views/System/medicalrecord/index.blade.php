@@ -89,6 +89,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                {!! $medicalRecord->links() !!}
             </div>
         </div>
     </div>

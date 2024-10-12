@@ -72,9 +72,6 @@
                                 <a href="javascript:void(0)"
                                    class="btn btn-primary me-1" onclick="openModal('{{ $item->book_id }}')"><i
                                         class="ti ti-pencil"></i></a>
-                                {{--                                <button type="button" class="btn btn-primary me-1" data-id="{{ $item->book_id }}" data-bs-toggle="" >--}}
-                                {{--                                    <i class="ti ti-pencil"></i>--}}
-                                {{--                                </button>--}}
                                 <form action="{{ route('system.deleteAppointmentSchedule', $item->book_id) }}"
                                       id="form-delete{{ $item->book_id }}" method="post">
                                     @method('delete')
@@ -137,6 +134,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                {!! $book->links() !!}
             </div>
         </div>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -182,10 +180,10 @@
             </div>
         </div>
         <script>
-            $('#doctor_name').on('change', function() {
-                var selectedUserId = $(this).val();
-                console.log("User ID được chọn:", selectedUserId);
-            });
+            // $('#doctor_name').on('change', function() {
+            //     var selectedUserId = $(this).val();
+            //     console.log("User ID được chọn:", selectedUserId);
+            // });
             function openModal(id) {
                 console.log('openModal: id:', id);
                 var selectedDay = $('#selectedDay').val();
@@ -231,6 +229,7 @@
                         $('#cancelstatus-check').prop('checked', response.status === 2);
                         $('#exampleModal').data('id', id);
                         $('#exampleModal').modal('show');
+                        // location.reload();
                     },
                     error: function (err) {
                         console.error("Lỗi khi lấy dữ liệu:", err);
@@ -240,6 +239,7 @@
 
             $('#save-btn').click(function () {
                 var id = $('#exampleModal').data('id');
+                // console.log(id);
                 var appointmentTime = $('#selectedDay').val();
                 var doctorName = $('#doctor_name').val();
                 var confirmation = $('#confirmation-check').is(':checked');

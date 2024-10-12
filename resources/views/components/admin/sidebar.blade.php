@@ -33,7 +33,7 @@
                         <li class="sidebar-item {{ request()->routeIs('system.medicalRecord') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.medicalRecord') }}" aria-expanded="false">
                                 <span>
-                                    <i class="ti ti-checkup-list"></i>
+                                    <i class="ti ti-report-medical"></i>
                                 </span>
                                 <span class="hide-menu">Quản lý bệnh án</span>
                             </a>
@@ -44,6 +44,14 @@
                                     <i class="ti ti-user-plus"></i>
                                 </span>
                                 <span class="hide-menu">Quản lý bác sĩ</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('system.specialty') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.specialty') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-stethoscope"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý chuyên khoa</span>
                             </a>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('system.medicine') ? 'active' : '' }}">
@@ -152,7 +160,7 @@
                             <a class="sidebar-link" href="{{ route('system.recordDoctor') }}"
                                 aria-expanded="false">
                                 <span>
-                                    <i class="ti ti-checkup-list"></i>
+                                    <i class="ti ti-report-medical"></i>
                                 </span>
                                 <span class="hide-menu">Quản lý bệnh án</span>
                             </a>

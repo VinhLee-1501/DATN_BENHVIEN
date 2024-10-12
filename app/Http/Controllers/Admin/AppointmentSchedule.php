@@ -20,7 +20,7 @@ class AppointmentSchedule extends Controller
             ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
             ->select('books.*', 'users.lastname as lastname', 'users.firstname as firstname',
                 'users.avatar', 'specialties.name as specialtyName', 'sclinics.name as sclinicsName')
-            ->get();
+            ->paginate(5);
 //        dd($book);
         return view('System.appointmentschedule.index', ['book' => $book,]);
     }

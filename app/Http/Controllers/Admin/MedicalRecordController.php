@@ -13,7 +13,7 @@ class MedicalRecordController extends Controller
         $medicalRecord = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->distinct()
-            ->get();
+            ->paginate(5);
 
         return view('System.medicalrecord.index', ['medicalRecord' => $medicalRecord]);
     }
@@ -34,7 +34,7 @@ class MedicalRecordController extends Controller
                 'treatment_details.treatment_id'
             )
             ->orderBy('medical_records.medical_id')
-            ->first(); 
+            ->first();
 
         return view('System.medicalrecord.detail', ['medical' => $medical]);
     }
