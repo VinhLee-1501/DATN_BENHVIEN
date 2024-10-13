@@ -45,13 +45,6 @@
                                             {{ \Carbon\Carbon::parse(auth()->user()->birthday)->format('d/m/Y') }}
                                         @endif
                                     </p>
-                                    <p><strong>Địa chỉ:</strong>
-                                        @if (empty(auth()->user()->address))
-                                            Chưa cập nhật
-                                        @else
-                                            {{ auth()->user()->address }}
-                                        @endif
-                                    </p>
                                 </div>
                                 <div class="button-container">
                                     <a href="{{ route('client.logout') }}" class="button btn-small btn-cta">Đăng xuất</a>
@@ -61,8 +54,6 @@
                                         mật khẩu</button>
                                     <a href="{{ route('client.logout') }}" class="button btn-small btn-cta">Khác</a>
                                 </div>
-
-
                             </div>
 
                         </div>
@@ -260,7 +251,8 @@
                                             <div class="col">
                                                 <label for="birthday">Ngày sinh</label>
                                                 <input type="date" id="birthday" name="birthday"
-                                                    value="{{ \Carbon\Carbon::parse(auth()->user()->birthday)->format('Y-m-d') }}" />
+                                                    value="{{ auth()->check() && auth()->user()->birthday ? auth()->user()->birthday->format('Y-m-d') : '' }}" 
+                                                onchange="updateBirthdayFormat(this)" />
                                                 @error('birthday')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
