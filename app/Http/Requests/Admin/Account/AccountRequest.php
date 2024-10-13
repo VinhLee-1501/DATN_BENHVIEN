@@ -20,43 +20,45 @@ class AccountRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
-        $userId = $this->route('user_id'); // Lấy user_id từ route để phân biệt giữa thêm mới và chỉnh sửa
+        $userId = $this->route('user_id'); // Lấy user_id từ route
 
         // Nếu là phương thức thêm mới (POST)
         if ($this->isMethod('post')) {
             return [
-                'role' => 'required|in:0,1,2',
-                'email' => 'required|email|unique:users,email', // Kiểm tra tính duy nhất khi thêm mới
-                'phone' => 'required|regex:/^[0-9]{10}$/|unique:users,phone', // Kiểm tra tính duy nhất khi thêm mới
-                'firstname' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
-                'password' => 'required|min:6',
+                'firstname' => 'required|string|max:50',
+                'lastname' => 'required|string|max:50',
+                'email' => 'required|email|max:255|unique:users,email', // Kiểm tra tính duy nhất khi thêm mới
+                'phone' => 'required|string|min:10|unique:users,phone', // Kiểm tra tính duy nhất khi thêm mới
+                'birthday' => 'required|date',
             ];
         }
 
+        // Nếu là phương thức cập nhật (PATCH/PUT)
         if ($this->isMethod('patch') || $this->isMethod('put')) {
             return [
-                'role' => 'required|in:0,1,2',
+                'firstname' => 'required|string|max:50',
+                'lastname' => 'required|string|max:50',
                 'email' => [
                     'required',
                     'email',
-                    Rule::unique('users')->ignore($userId, 'user_id'),
+                    'max:255',
+                    Rule::unique('users')->ignore($userId), // Bỏ qua email của người dùng hiện tại
                 ],
                 'phone' => [
                     'required',
-                    'regex:/^[0-9]{10}$/',
-                    Rule::unique('users')->ignore($userId, 'user_id'),
+                    'string',
+                    'min:10',
+                    Rule::unique('users')->ignore($userId), // Bỏ qua số điện thoại của người dùng hiện tại
                 ],
-                'firstname' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
-                'password' => 'nullable|min:6',
+                'birthday' => 'required|date',
             ];
         }
 
         return [];
     }
+
 
 
 
@@ -87,5 +89,4 @@ class AccountRequest extends FormRequest
             'lastname.max' => 'Họ tối đa 10 ký tự.',
         ];
     }
-
 }

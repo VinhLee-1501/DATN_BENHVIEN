@@ -15,7 +15,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $primaryKey = 'row_id';
+    protected $primaryKey = 'row_id'; // Đặt primary key nếu không phải là 'id'
+
     protected $fillable = [
         'user_id',
         'firstname',
@@ -24,6 +25,8 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
+        'birthday',
+        'address',
         'expertise',
         'role',
         'status',
@@ -50,16 +53,31 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed', // Dùng hashed để mã hóa mật khẩu
+        'birthday' => 'date',
+        'password' => 'hashed',
     ];
 
-    public function specialtyForeignKey()
+    /**
+     * Một người dùng có thể có một chuyên khoa
+     */
+    public function specialty()
     {
         return $this->belongsTo(Specialty::class, 'user_id', 'user_id');
     }
 
-    public function schedule()
+    /**
+     * Một người dùng có thể có nhiều lịch
+     */
+    public function schedules()
     {
         return $this->hasMany(Schedule::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Một người dùng có thể có một bệnh nhân
+     */
+    public function patient()
+    {
+        return $this->hasOne(Patient::class, 'phone', 'phone');
     }
 }

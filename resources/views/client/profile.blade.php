@@ -38,7 +38,13 @@
                                         @endif
                                     </p>
                                     <p><strong>Email:</strong>{{ auth()->user()->email }}</p>
-                                    <p><strong>Ngày sinh:</strong> Chưa cập nhật</p>
+                                    <p><strong>Ngày sinh:</strong>
+                                        @if (empty(auth()->user()->birthday))
+                                            Chưa cập nhật
+                                        @else
+                                            {{ \Carbon\Carbon::parse(auth()->user()->birthday)->format('d/m/Y') }}
+                                        @endif
+                                    </p>
                                     <p><strong>Địa chỉ:</strong>
                                         @if (empty(auth()->user()->address))
                                             Chưa cập nhật
@@ -47,9 +53,16 @@
                                         @endif
                                     </p>
                                 </div>
-                                <a href="{{ route('client.logout') }}"><button style="border:none"
-                                        class="button btn-small btn-cta">Đăng
-                                        xuất</button></a>
+                                <div class="button-container">
+                                    <a href="{{ route('client.logout') }}" class="button btn-small btn-cta">Đăng xuất</a>
+                                    <button class="button btn-small btn-cta" onclick="openTab(event, 'update_info')">Cập
+                                        nhật thông tin</button>
+                                    <button class="button btn-small btn-cta" onclick="openTab(event, 'change_password')">Đổi
+                                        mật khẩu</button>
+                                    <a href="{{ route('client.logout') }}" class="button btn-small btn-cta">Khác</a>
+                                </div>
+
+
                             </div>
 
                         </div>
@@ -63,7 +76,8 @@
                             </div>
                             <div class="tab-content">
                                 <!-- Tab Lịch sử khám bệnh -->
-                                <div id="history" class="tab active">
+                                <div id="history"
+                                    class="tab {{ $errors->any() ? '' : (session('success') || session('error') ? '' : 'active') }}">
 
                                     <div class="profile__medical-history">
                                         <h1 class="text-center">Lịch sử khám bệnh</h1>
@@ -207,6 +221,87 @@
                                     </div>
 
                                 </div>
+                                <!-- Form Cập nhật thông tin -->
+                                <div id="update_info"
+                                    class="tab {{ $errors->any() ? 'active' : (session('success') || session('error') ? 'active' : '') }}">
+                                    <h1 class="text-center">Cập nhật thông tin</h1>
+                                    <form class="profile__form" action="{{ route('client.profile.update') }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('PATCH');
+                                        <div class="form-group row">
+                                            <div class="col">
+                                                <label for="firstname">Họ</label>
+                                                <input type="text" id="firstname" name="firstname"
+                                                    value="{{ auth()->user()->firstname }}" />
+                                                @error('firstname')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col">
+                                                <label for="lastname">Tên</label>
+                                                <input type="text" id="lastname" name="lastname"
+                                                    value="{{ auth()->user()->lastname }}" />
+                                                @error('lastname')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col">
+                                                <label for="phone">Số điện thoại</label>
+                                                <input type="text" id="phone" name="phone"
+                                                    value="{{ auth()->user()->phone }}" />
+                                                @error('phone')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col">
+                                                <label for="birthday">Ngày sinh</label>
+                                                <input type="date" id="birthday" name="birthday"
+                                                    value="{{ \Carbon\Carbon::parse(auth()->user()->birthday)->format('Y-m-d') }}" />
+                                                @error('birthday')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" id="email" name="email"
+                                                value="{{ old('email', auth()->user()->email) }}" />
+                                            @error('email')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <button type="submit" class="button btn-cta">Cập nhật</button>
+                                    </form>
+                                </div>
+
+
+
+
+                                <!-- Form Đổi mật khẩu -->
+                                <div id="change_password" class="tab">
+                                    <h1 class="text-center">Đổi mật khẩu</h1>
+                                    <form class="profile__form">
+                                        <div class="form-group">
+                                            <label for="current_password">Mật khẩu hiện tại</label>
+                                            <input type="password" id="current_password" name="current_password" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="new_password">Mật khẩu mới</label>
+                                            <input type="password" id="new_password" name="new_password" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirm_password">Xác nhận mật khẩu mới</label>
+                                            <input type="password" id="confirm_password" name="confirm_password" />
+                                        </div>
+                                        <button type="submit" class="button btn-cta">Đổi mật khẩu</button>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
                     </div>

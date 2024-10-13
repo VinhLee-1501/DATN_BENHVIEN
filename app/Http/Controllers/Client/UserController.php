@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\User\RegisterRequest;
 use App\Http\Requests\Client\User\LoginRequest;
+use App\Http\Requests\Client\User\UpdateProfileRequest;
 use App\Models\User;
 use App\Models\Book;
 use App\Models\Specialty;
@@ -89,7 +90,7 @@ class UserController extends Controller
     {
         $userId = Auth::user()->user_id;
 
-      
+
         $medicalHistory = Book::where('user_id', $userId)->get();
 
         foreach ($medicalHistory as $history) {
@@ -102,5 +103,41 @@ class UserController extends Controller
             'userId' => $userId,
             'medicalHistory' => $medicalHistory,
         ]);
+    }
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        // Lấy người dùng hiện tại từ Auth
+        $user = Auth::user();
+
+        // Kiểm tra nếu người dùng không tồn tại
+        if (!$user) {
+            return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để cập nhật hồ sơ.');
+        }
+
+        // Lưu số điện thoại cũ
+        $oldPhone = $user->phone;
+
+        // Cập nhật thông tin người dùng
+        $updatedUser = $user->update([
+            'firstname' => $request->input('firstname'),
+            'lastname' => $request->input('lastname'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'), // Cập nhật email
+            'birthday' => $request->input('birthday'),
+        ]);
+
+        // Cập nhật số điện thoại trong bảng patients nếu số điện thoại đã thay đổi
+        if ($updatedUser && $oldPhone !== $request->input('phone')) {
+            // Cập nhật số điện thoại trong bảng patients
+            $patient = $user->patient;
+            if ($patient) {
+                $patient->update(['phone' => $request->input('phone')]);
+            }
+        }
+
+        // Trả về thông báo thành công hoặc thất bại
+        return $updatedUser
+            ? redirect()->route('client.profile.index')->with(['success' => 'Cập nhật hồ sơ thành công!', 'activeTab' => 'update_info'])
+            : redirect()->route('client.profile.index')->with(['error' => 'Cập nhật hồ sơ thất bại, vui lòng thử lại.', 'activeTab' => 'update_info']);
     }
 }

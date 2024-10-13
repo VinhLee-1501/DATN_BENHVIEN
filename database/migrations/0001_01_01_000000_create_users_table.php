@@ -9,24 +9,26 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id('row_id')->primary();
+            $table->id('row_id');
             $table->string('user_id')->unique();
             $table->string('firstname');
             $table->string('lastname');
             $table->string('avatar')->nullable();
             $table->string('email')->unique();
-            $table->string('password');
-            $table->string('phone')->unique();
+            $table->string('password'); // Chỉ cần khai báo một lần
+            $table->date('birthday')->nullable();
+            $table->string('phone')->unique()->nullable();
             $table->string('google_id')->nullable();
             $table->string('zalo_id')->nullable();
             $table->string('facebook_id')->nullable();
-            $table->tinyInteger(column: 'role')->default(0)->comment('1 là admin');
+            $table->tinyInteger('role')->default(0)->comment('1 là admin');
             $table->tinyInteger('status')->default(1)->comment('1 là hoạt động');
             $table->timestamp('email_verified_at')->nullable();
 
             $table->rememberToken();
             $table->timestamps();
         });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
