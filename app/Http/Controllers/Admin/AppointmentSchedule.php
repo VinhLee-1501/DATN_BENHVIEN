@@ -14,37 +14,50 @@ class AppointmentSchedule extends Controller
 {
     public function index()
     {
-        $book = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-            ->join('users', 'users.user_id', '=', 'schedules.user_id')
-            ->join('sclinics', 'sclinics.sclinic_id', '=', 'schedules.sclinic_id')
-            ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
-            ->select('books.*', 'users.lastname as lastname', 'users.firstname as firstname',
-                'users.avatar', 'specialties.name as specialtyName', 'sclinics.name as sclinicsName')
+        $book = Book::join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->select('books.*',  'specialties.name as specialtyName')
             ->paginate(5);
-//       dd($book);
+        //       dd($book);
+
         return view('System.appointmentschedule.index', ['book' => $book,]);
     }
 
     public function edit($id)
     {
         $book = Book::where('book_id', $id)->first();
+        $specialty_id = $book->specialty_id;
+        $selectedDay = \request()->input('selectedDay');
 
-        $doctor = Schedule::join('users', 'users.user_id', '=', 'schedules.user_id')
-            ->where('schedules.shift_id', $book->shift_id)
-            ->where('users.role', 2)
-            ->select('users.*')
-            ->first();
-//        Log::info('Doc: ', $doctor);
-        $doctors = User::where('specialty_id', $book->specialty_id)->get();
-//        Log::info('Doc: ', $doctors);
+        $doctor = User::where('role', 2)
+        ->where('users.specialty_id', $specialty_id)
+        ->join('schedules', 'schedules.user_id', '=', 'users.user_id')
+            ->whereDate('schedules.day', $selectedDay)
+            ->select('users.*', 'schedules.*')
+            ->get();
 
         return response()->json([
             'appointment_time' => $book->day,
             'doctor_name' => $doctor,
-            'doctors' => $doctors,
+            'specialty_id' => $specialty_id,
             'status' => $book->status
         ]);
     }
+
+    public function getDoctorsByDate(Request $request)
+    {
+        $date = $request->input('date');
+        $specialtyId = $request->input('specialty_id');
+
+        $doctors = User::join('schedules', 'schedules.user_id', '=', 'users.user_id')
+            ->where('users.role', 2)
+            ->where('users.specialty_id', $specialtyId)
+            ->whereDate('schedules.day', $date)
+            ->select('users.user_id', 'users.firstname', 'users.lastname')
+            ->get();
+
+        return response()->json(['doctors' => $doctors]);
+    }
+
 
     public function update($id, Request $request)
     {
@@ -75,7 +88,7 @@ class AppointmentSchedule extends Controller
         $schedule = Schedule::where('user_id', $doctorUserId)
             ->whereDate('day', $date)
             ->first();
-//        Log::info("schedule:", $schedule);
+        //        Log::info("schedule:", $schedule);
 
         if (!$schedule) {
             return response()->json(['error' => 'Bác sĩ này không có lịch khám vào ngày này'], 400);

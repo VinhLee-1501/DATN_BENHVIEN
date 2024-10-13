@@ -155,22 +155,27 @@
                                 <select class="form-control" id="doctor_name" name="doctor_name"></select>
                                 <input type="text" name="specialty_id" id="specialty_id" hidden>
                             </div>
-                            <div class="mb-3">
-                                <input class="form-check-input" type="checkbox" value="" id="confirmation-check">
-                                <label class="form-check-label" for="confirmation-check">Xác nhận</label>
+{{--                            <div class="mb-3">--}}
+{{--                                <input class="form-check-input" type="radio" value="" >--}}
+{{--                                <label class="form-check-label" for="confirmation-check">Xác nhận</label>--}}
+{{--                                <input class="form-check-input" type="radio" value="" >--}}
+{{--                            </div>--}}
+{{--                            <div class="mb-3">--}}
+{{--                                <label class="form-check-label" for="cancel-check">Hủy</label>--}}
+{{--                            </div>--}}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="check" id="confirmation-check" checked>
+                                <label class="form-check-label" for="confirmation-check">
+                                    Xác nhận
+                                </label>
                             </div>
-                            <div class="mb-3">
-                                <input class="form-check-input" type="checkbox" value="" id="cancelstatus-check">
-                                <label class="form-check-label" for="cancel-check">Hủy</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="check" id="cancelstatus-check">
+                                <label class="form-check-label" for="cancelstatus-check">
+                                    Hủy
+                                </label>
                             </div>
                         </form>
-                        {{-- <script>
-                            document.addEventListener('DOMContentLoaded', (event) => {
-                                const now = new Date();
-                                const formattedDateTime = now.toISOString().slice(0, 16);
-                                document.getElementById('appointment-time').value = formattedDateTime;
-                            });
-                        </script> --}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -180,63 +185,60 @@
             </div>
         </div>
         <script>
-            // $('#doctor_name').on('change', function() {
-            //     var selectedUserId = $(this).val();
-            //     console.log("User ID được chọn:", selectedUserId);
-            // });
             function openModal(id) {
-                console.log('openModal: id:', id);
-                var selectedDay = $('#selectedDay').val();
-                var selectedSpecialtyId = $('#specialty_id').val();
                 $.ajax({
                     url: '/system/appointmentSchedules/edit/' + id,
                     type: 'GET',
-                    success: function (response) {
-                        console.log(response)
-
-                        $('#selectedDay').val(response.appointment_time);
-                        $('#doctor_name').empty();
-
-                        response.doctors.forEach(function (doctor) {
-
-                            if (doctor.user_id === response.doctor_name.user_id) {
-                                $('#doctor_name').append(
-                                    $('<option>', {
-                                        value: doctor.user_id,
-                                        text: response.doctor_name.lastname + ' ' + response.doctor_name.firstname,
-                                        selected: true
-                                    })
-                                );
-                            } else if (doctor.specialty_id === response.doctor_name.specialty_id) {
-                                $('#doctor_name').append(
-                                    $('<option>', {
-                                        value: doctor.user_id,
-                                        text: doctor.lastname + ' ' +  doctor.firstname,
-                                    })
-                                );
-                            } else {
-                                $('#doctor_name').append(
-                                    $('<option>', {
-                                        value: doctor.user_id,
-                                        text: doctor.lastname + ' ' +  doctor.firstname,
-                                    })
-                                );
-                            }
-                            console.log(doctor.user_id);
-                        });
-
+                    success: function(response) {
+                        console.log(response);
+                        $('#selectedDay').val(response.appointment_time); // Ensure initial load sets the correct date
+                        $('#specialty_id').val(response.specialty_id);
+                        updateDoctors(response.appointment_time, response.specialty_id);
                         $('#confirmation-check').prop('checked', response.status === 1);
                         $('#cancelstatus-check').prop('checked', response.status === 2);
                         $('#exampleModal').data('id', id);
                         $('#exampleModal').modal('show');
                     },
-                    error: function (err) {
+                    error: function(err) {
                         console.error("Lỗi khi lấy dữ liệu:", err);
                     }
                 });
             }
 
-            $('#save-btn').click(function () {
+            function updateDoctors(date, specialty_id) {
+                $.ajax({
+                    url: '/system/appointmentSchedules/doctors',
+                    type: 'GET',
+                    data: {
+                        date: date,
+                        specialty_id: specialty_id
+                    },
+                    success: function(response) {
+                        $('#doctor_name').empty();
+                        response.doctors.forEach(function(doctor) {
+                            $('#doctor_name').append(
+                                $('<option>', {
+                                    value: doctor.user_id,
+                                    text: doctor.lastname + ' ' + doctor.firstname
+                                })
+                            );
+                        });
+                    },
+                    error: function(err) {
+                        console.error("Error fetching doctors:", err);
+                    }
+                });
+            }
+
+            $('#selectedDay').change(function() {
+                var selectedDate = $(this).val();
+                console.log('Selected Date:', selectedDate); // Log the selected date
+                var specialtyId = $('#specialty_id').val();
+                updateDoctors(selectedDate, specialtyId);
+
+            });
+
+                $('#save-btn').click(function () {
                 var id = $('#exampleModal').data('id');
                 // console.log(id);
                 var appointmentTime = $('#selectedDay').val();
@@ -277,5 +279,6 @@
             });
 
         </script>
+
 
 @endsection
