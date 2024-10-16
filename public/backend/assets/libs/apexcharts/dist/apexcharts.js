@@ -3105,7 +3105,7 @@
             "July",
             "August",
             "September",
-            "October",
+            "Tháng 10",
             "November",
             "December"
         ],
