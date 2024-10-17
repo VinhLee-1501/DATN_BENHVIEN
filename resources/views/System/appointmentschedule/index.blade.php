@@ -43,32 +43,32 @@
                         </tr>
                     </thead>
                     <tbody id="myTable">
-                        @php
-                            $count = 1;
-                        @endphp
-                        @foreach ($book as $item)
-                            <tr>
-                                <td class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">{{ $count++ }}</h6>
-                                </td>
-                                <td class="border-bottom-0">
-                                    <p class="mb-0 fw-semibold">{{ $item->name }}</p>
-                                </td>
-                                <td class="border-bottom-0">
-                                    <span class="fw-semibold mb-0">{{ '0' . $item->phone }}</span>
-                                </td>
-                                <td class="border-bottom-0">
-                                    <span class="fw-semibold mb-0">
-                                        @if ($item->status === 0)
-                                            <span class="badge bg-danger">Đã đặt</span>
-                                        @elseif($item->status === 1)
-                                            <span class="badge bg-success">Xác nhận</span>
-                                        @else
-                                            <span class="badge bg-warning">Đã hủy</span>
-                                        @endif
-                                    </span>
-                                </td>
-                                <td class="border-bottom-0 d-flex">
+                    @php
+                        $count = 1;
+                    @endphp
+                    @foreach( $book as $item)
+                        <tr>
+                            <td class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">{{ $count++ }}</h6>
+                            </td>
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-semibold">{{ $item->name }}</p>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold mb-0">{{$item->phone }}</span>
+                            </td>
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold mb-0">
+                                    @if( $item->status === 0)
+                                        <span class="badge bg-danger">Đã đặt</span>
+                                    @elseif($item->status === 1)
+                                        <span class="badge bg-success">Xác nhận</span>
+                                    @else
+                                        <span class="badge bg-warning">Đã hủy</span>
+                                    @endif
+                                </span>
+                            </td>
+                            <td class="border-bottom-0 d-flex">
 
                                     <a href="javascript:void(0)" class="btn btn-primary me-1"
                                         onclick="openModal('{{ $item->book_id }}')"><i class="ti ti-pencil"></i></a>
@@ -156,14 +156,6 @@
                                 <select class="form-control" id="doctor_name" name="doctor_name"></select>
                                 <input type="text" name="specialty_id" id="specialty_id" hidden>
                             </div>
-                            {{--                            <div class="mb-3"> --}}
-                            {{--                                <input class="form-check-input" type="radio" value="" > --}}
-                            {{--                                <label class="form-check-label" for="confirmation-check">Xác nhận</label> --}}
-                            {{--                                <input class="form-check-input" type="radio" value="" > --}}
-                            {{--                            </div> --}}
-                            {{--                            <div class="mb-3"> --}}
-                            {{--                                <label class="form-check-label" for="cancel-check">Hủy</label> --}}
-                            {{--                            </div> --}}
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="check" id="confirmation-check"
                                     checked>
@@ -189,7 +181,7 @@
         <script>
             function openModal(id) {
                 $.ajax({
-                    url: '/system/appointmentSchedules/edit/' + id,
+                    url: '/system.medicineTypes.update'+ $medicine->medicine_type_id,
                     type: 'GET',
                     success: function(response) {
                         console.log(response);

@@ -74,7 +74,7 @@
                         <div class="col-md-3">
                             <label for="phone">Số điện thoại</label>
                             <input type="text" class="form-control" id="phone" name="phone"
-                                value="0{{ $book[0]->phone }}" readonly>
+                                value="{{ $book[0]->phone }}" readonly>
                             @error('phone')
                                 <div class="text-danger">*{{ $message }}</div>
                             @enderror
