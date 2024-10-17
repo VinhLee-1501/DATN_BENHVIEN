@@ -187,7 +187,7 @@ class ScheduleController extends Controller
         $this->Sclinic($schedule->sclinic_id);
 
         $schedule->delete();
-        return redirect()->route('system.schedule')->with('success', 'Xóa thành công.');
+        return response()->json(['success' => true, 'message' => 'Xóa thành công.']);
     }
     public function Sclinic($sclinic_id)
     {

@@ -352,13 +352,24 @@
                     if (info.event.start < new Date()) {
                         info.revert();
                         alert('Bạn không thể thêm sự kiện vào ngày trước ngày hiện tại.');
-                        return;
+                        return false;
                     }
 
                     var userId = info.event.extendedProps.user_id;
                     var newDay = formatDate(info.event.start);
                     var sclinicId = info.event.extendedProps.sclinic_id;
                     // console.log(userId, newDay, sclinicId);
+
+                    var eventsOnSameDay = calendar.getEvents().filter(function(event) {
+                        return formatDate(event.start) === newDay && event.id !== info.event.id;
+                    });
+
+                    if (eventsOnSameDay.length > 0) {
+                        // If there is already an event on the same day, revert the drop and show an error
+                        info.revert();
+                        alert('Đã có bác sĩ được lên lịch vào ngày này. Vui lòng chọn ngày khác.');
+                        return;
+                    }
 
                     if (userId && sclinicId) {
                         showEditPopup(info.event.id, newDay, userId, sclinicId);
@@ -372,7 +383,8 @@
                 // Event truy xuất dữ liệu, hiển thị thông tin item
                 eventRender: function(info) {
                     info.el.querySelector('.fc-title').innerHTML =
-                        '<b>' + info.event.title + '</b><br>' +
+                        '<b class="delete-event" data-event-id="' + info.event.id + '">' + info.event
+                        .title + '</b><br>' +
                         'SDT: ' + info.event.extendedProps.phone + '<br>' +
                         'CK: ' + info.event.extendedProps.specialty_name;
                 },
@@ -380,7 +392,9 @@
                 dateClick: function(info) {
                     if (new Date(info.dateStr) < new Date()) {
                         alert('Bạn không thể thêm sự kiện vào ngày trước ngày hiện tại.');
+                        return;
                     }
+
 
                     $('#addEventModal').modal('show');
                     $('#daySelect').val(info.dateStr);
@@ -392,6 +406,17 @@
                         var note = $('#note').val();
                         var confirmationCheck = $('#cancelstatusCheck').is(
                             ':checked');
+
+                        var eventsOnSameDay = calendar.getEvents().filter(function(event) {
+                            return formatDate(event.start) === daySelect;
+                        });
+
+                        if (eventsOnSameDay.length > 0) {
+                            alert(
+                                'Đã có bác sĩ được lên lịch vào ngày này. Vui lòng chọn ngày khác.'
+                            );
+                            return;
+                        }
                         $.ajax({
                             url: '/system/schedules/create',
                             type: 'POST',
@@ -460,6 +485,43 @@
                     }
                 });
             });
+
+            // Chức năng xóa event
+            $(document).on('click', '.delete-event', function() {
+                var eventId = $(this).data('event-id');
+                Swal.fire({
+                    title: "Bạn có chắc muốn xóa?",
+                    text: "Bạn sẽ không thể hoàn tác lại",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Đồng ý"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/system/schedules/delete/' + eventId,
+                            type: "DELETE",
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if(response.success){
+                                    toastr.success(response.message);
+                                    calendar.refetchEvents();
+                                }else{
+                                    toastr.error(response.message);
+                                }
+                            },error: function(err){
+                                alert('Có lỗi xảy ra: ' + (err.responseJSON.message || 'Không thấy lỗi'));
+                            }
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+
+            })
             document.getElementById('specialty-filter').addEventListener('change', function() {
                 calendar.refetchEvents();
             });

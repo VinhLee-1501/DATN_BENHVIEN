@@ -10,7 +10,7 @@
                         <a href="{{ route('system.medicineTypes.create') }}" class="btn btn-success">Thêm</a>
                     </div>
                     <div class="col-md-4">
-                        <input type="text" id="myInput" class="form-control" placeholder="Nhập tên thuốc">
+                        <input type="text" id="inputName" class="form-control" placeholder="Nhập tên thuốc">
                     </div>
 
                 </form>
@@ -59,7 +59,6 @@
                         @endforeach
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
