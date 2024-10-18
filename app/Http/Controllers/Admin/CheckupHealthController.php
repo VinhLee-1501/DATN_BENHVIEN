@@ -149,7 +149,7 @@ class CheckupHealthController extends Controller
             $user->firstname = $request->input('first_name');
             $user->lastname = $request->input('last_name');
             $user->email = $book->email;
-            $user->password = $request->input('last_name').'123';
+            $user->password = $user->user_id.'12345';
             $user->phone = $phone;
             $user->role = 0;
             // dd($user->password);

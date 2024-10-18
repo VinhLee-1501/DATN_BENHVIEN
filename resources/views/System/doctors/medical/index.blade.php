@@ -8,7 +8,7 @@
                     <h5 class="card-title fw-semibold mb-4">Quản lý bệnh án</h5>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" id="myInput" class="form-control" placeholder="Tìm bệnh nhân">
+                    <input type="text" id="inputName" class="form-control" placeholder="Tìm bệnh nhân">
                 </div>
             </div>
             <div class="table-responsive">

@@ -15,9 +15,10 @@ class MedicineTypeController extends Controller
         $medicineType = MedicineType::orderBy('created_at', 'desc')->paginate(5);
         return view('System.medicineTypes.index', compact('medicineType'));
 
+
     }
     public function create(){
-        return view('System.medicineTypes.create');
+       
     }
     public function store(MedicineTypeRequest $request){
         $validatedData = $request->validated();

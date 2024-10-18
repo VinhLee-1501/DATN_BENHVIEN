@@ -35,7 +35,7 @@
                                             <span class="item__label">Email:</span>
                                             <a href="/cdn-cgi/l/email-protection#8eedfde5e6cefee6e1e0e9e5e6efe3fafbebefe0a0ede1e3a0f8e0"
                                                class="item__link"><span class="__cf_email__"
-                                                                        data-cfemail="f596869e9db5859d9a9b929e9d9498818090949bdb969a98db839b">[email&#160;protected]</span></a>
+                                                                        data-cfemail="f596869e9db5859d9a9b929e9d9498818090949bdb969a98db839b">vietcare@gmail.com</span></a>
                                         </div>
                                     </div>
                                     <div class="item">
@@ -45,10 +45,7 @@
                                         <div class="item__wrap">
                                             <span class="item__label">Trụ sở chính:</span>
                                             <a href="" class="item__link"
-                                               target="_blank">48
-                                                Đường Số
-                                                6 KDC Cityland Park Hill, Phường 10,
-                                                Quận Gò Vấp, TP. Hồ Chí Minh</a>
+                                               target="_blank">48 Hưng Thạnh quận Cái Răng TP Cần Thơ </a>
                                         </div>
                                     </div>
                                 </div>

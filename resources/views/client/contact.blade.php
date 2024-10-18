@@ -8,7 +8,7 @@
         <div class="contact__page">
             <div class="container">
                 <div class="contact__page--frame">
-                    <div class="row gap-y-40">
+                    <div class=" gap-y-40">
                         <div class="col l-12 mc-12 c-12">
                             <div class="box-heading text-center">
                                 <h1>
@@ -74,7 +74,7 @@
                                     </div>
                                     <div class="col l-6 mc-12 c-12">
                                         <div class="contact__main">
-                                            <div class="row gap-y-20">
+                                            <div class=" gap-y-20">
                                                 <div class="col l-12 mc-12 c-12">
                                                     <h3 class="title">Thông tin địa chỉ cơ sở</h3>
                                                 </div>
@@ -105,7 +105,7 @@
                                                             <div class="item__wrap">
                                                                 <span class="item__label">Email:</span>
                                                                 <a href=""
-                                                                   class="item__link"><span>ankhang@gmail.com</span></a>
+                                                                   class="item__link"><span>vietcare@gmail.com</span></a>
                                                             </div>
                                                         </div>
                                                         <div class="item">
@@ -116,7 +116,7 @@
                                                                 <span class="item__label">Địa chỉ:</span>
                                                                 <a href="https://maps.app.goo.gl/kjpVxAW2goAAK95g7"
                                                                    class="item__link" target="_blank">Đường 22
-                                                                    Phường Hưng Thanhk Cái Răng</a>
+                                                                    Phường Hưng Thạnh Cái Răng</a>
                                                             </div>
                                                         </div>
                                                     </div>

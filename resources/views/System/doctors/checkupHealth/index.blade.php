@@ -14,7 +14,7 @@
                                 <input type="text" class="form-control" placeholder="Họ tên" name="name">
                             </div>
                             <div class="col-md-4">
-                                <input type="text" id="myInput" class="form-control" placeholder="SDT" name="phone">
+                                <input type="text" id="inputName" class="form-control" placeholder="SDT" name="phone">
                             </div>
 
                         </form>
