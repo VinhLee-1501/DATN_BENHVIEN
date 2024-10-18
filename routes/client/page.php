@@ -17,6 +17,9 @@ Route::get('/chuan-doan-benh', function () {
 Route::get('/phuong-phap-dieu-tri', function () {
     return view('client.treatment-method');
 })->name('treatment-method');
+Route::get('/meeting', function () {
+    return view('client.meeting');
+})->name('meeting');
 
 Route::get('/tin-tuc', function () {
     return view('client.news');

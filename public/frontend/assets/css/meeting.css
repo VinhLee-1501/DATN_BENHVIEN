@@ -1,0 +1,101 @@
+/* Container chính */
+.header {
+    position: unset;
+}
+
+.meeting-container-main {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    flex-direction: column; 
+    height: 100vh; 
+ /* Gradient từ xanh lá đậm sang xanh lá nhạt */
+    padding: 1rem; /* Padding cho container */
+    background-image: url('http://127.0.0.1:8000/frontend/assets/image/banner-3.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Tiêu đề */
+.header-title {
+    font-size: 2.5rem; /* Kích thước chữ lớn hơn */
+    margin-bottom: 1rem;
+    color: #ffffff; /* Màu trắng cho tiêu đề */
+    text-align: center; /* Căn giữa tiêu đề */
+}
+
+/* Nhấn mạnh tiêu đề */
+.highlight {
+    color: #fff !important;
+    font-weight: bold;
+}
+
+/* Các nút */
+.action-button {
+    margin: 0.5rem;
+    padding: 1rem 2rem; /* Padding lớn hơn cho nút */
+    border-radius: 5px;
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+    font-size: 1rem; 
+    border: none;/* Kích thước chữ cho nút */
+    cursor: pointer; /* Con tr�� chuột chuột */
+}
+
+/* Nút chính */
+.action-button.is-primary {
+    background-color: #1a73e8; /* Màu nền chính giống Google Meet */
+}
+
+/* Nút thông tin */
+.action-button.is-info {
+    background-color: #048647; /* Màu nền thông tin */
+}
+
+/* Hiệu ứng hover cho nút */
+.action-button:hover {
+    opacity: 0.9; /* Giảm độ trong suốt khi hover */
+}
+
+/* Thông tin room */
+.info-box {
+    margin-top: 1.5rem; /* Khoảng cách trên */
+    padding: 1rem; /* Padding cho info */
+    border: 1px solid #d1d1d1; /* Đường viền */
+    border-radius: 5px; /* Bo tròn */
+    background-color: #ffffff; /* Màu nền trắng cho info */
+    color: #333; /* Màu chữ */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng cho thông tin */
+}
+
+/* Phần tử code */
+code {
+    background-color: #eef; /* Nền cho code */
+    padding: 0.2rem 0.4rem; /* Padding cho code */
+    border-radius: 4px; /* Bo tròn */
+}
+
+/* Phần video */
+.video-wrapper {
+    margin-top: 2rem; /* Khoảng cách trên */
+    display: flex; /* Hiển thị flex */
+    justify-content: center; /* Căn giữa */
+    gap: 1rem; 
+    flex-wrap: wrap; /* Cho phép wrap các video */
+}
+
+/* Video trong video-wrapper */
+.video-wrapper video {
+    width: 100%; /* Chiều rộng video 100% */
+    max-width: 300px; /* Giới hạn chiều rộng tối đa cho video */
+    border-radius: 8px; /* Bo tròn cho video */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Đổ bóng cho video */
+}
+
+/* Đối tượng video đang hoạt động */
+.video-wrapper video.active {
+    border: 2px solid #1a73e8; /* Đường viền cho video đang hoạt động */
+}
+.footer{
+    margin: 0px;
+}
