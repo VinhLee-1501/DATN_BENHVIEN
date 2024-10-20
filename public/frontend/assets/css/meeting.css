@@ -1,6 +1,6 @@
 /* Container chính */
 .header {
-    position: unset;
+    position: fixed; /* Giữ thanh menu cố định */
 }
 
 .meeting-container-main {
@@ -9,9 +9,10 @@
     align-items: center; 
     flex-direction: column; 
     height: 100vh; 
- /* Gradient từ xanh lá đậm sang xanh lá nhạt */
     padding: 1rem; /* Padding cho container */
-    background-image: url('http://127.0.0.1:8000/frontend/assets/image/banner-3.png');
+    background-image: 
+        linear-gradient(to bottom, rgba(76, 175, 80, 0.7), rgba(76, 175, 80, 0.2)), /* Màu xanh lá */
+        url('http://127.0.0.1:8000/frontend/assets/image/banner-3.png'); /* Hình ảnh nền */
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -43,13 +44,23 @@
 }
 
 /* Nút chính */
+.button-container-main{
+    display: flex;
+    justify-content: center;
+}
 .action-button.is-primary {
     background-color: #1a73e8; /* Màu nền chính giống Google Meet */
+}
+.action-button.is-warning {
+    background-color: #ffcc00; /* Màu nền chính giống Google Meet */
 }
 
 /* Nút thông tin */
 .action-button.is-info {
     background-color: #048647; /* Màu nền thông tin */
+}
+.action-button.is-danger {
+    background-color: rgb(156, 7, 7); /* Màu nền thông tin */
 }
 
 /* Hiệu ứng hover cho nút */
@@ -74,6 +85,11 @@ code {
     padding: 0.2rem 0.4rem; /* Padding cho code */
     border-radius: 4px; /* Bo tròn */
 }
+.copy-notification {
+    margin-left: 10px;
+    color: green;
+    font-size: 0.9em;
+  }
 
 /* Phần video */
 .video-wrapper {

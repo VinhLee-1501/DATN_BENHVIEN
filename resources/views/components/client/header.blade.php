@@ -20,6 +20,10 @@
                     <li class="item">
                         <a class="item__link" href="{{ route('client.contact') }}">Liên hệ</a>
                     </li>
+
+                    <li class="item">
+                        <a class="item__link" href="{{ route('client.meeting') }}">Cuộc họp</a>
+                    </li>
                 </ul>
 
             </div>
@@ -34,7 +38,7 @@
                         <div class="button btn-small btn-cta openPopup">
                             Đăng nhập
                         </div>
-
+                        
                         <div class="login-options" style="display: none;">
                             <a href="{{ route('client.login') }}">
                                 <div style="border-radius: 0px; width: 240px" class="button btn-small">

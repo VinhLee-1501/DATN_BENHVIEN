@@ -456,7 +456,7 @@ a.button {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    border-radius: 8px;
+    border-radius: 5px;
     box-shadow: none;
     margin: auto;
     -webkit-transition: all 0.3s ease;

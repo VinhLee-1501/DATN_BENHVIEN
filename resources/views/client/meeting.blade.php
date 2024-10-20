@@ -44,44 +44,70 @@
 </head>
 
 <body>
+    <div class="page home">
+        <x-client.header></x-client.header>
+        <div class="meeting-container-main">
+            <div class="meeting-container has-text-centered" v-cloak id="app">
+                <h1 class="header-title">
+                    Cuộc Họp
+                    <span class="highlight">VietCare</span>
+                </h1>
+                <h4 style="color: #fff; text-align:center">Tính năng họp và gọi video dành cho tất cả mọi người</h4>
 
-    <x-client.header></x-client.header>
-    <div class="meeting-container-main">
-        <div class="meeting-container has-text-centered" v-cloak id="app">
-            <h1 class="header-title">
-                Tạo cuộc họp
-                <span class="highlight">VietCare</span>
-            </h1>
+                <div class="button-container-main">
+                    @php
+                        $user = auth()->user();
+                    @endphp
 
-            <div>
-                <button class="action-button is-primary" v-if="!room" @click="createRoom">
-                    Tạo Cuộc Họp
-                </button>
+                    @if (auth()->check() && $user->role != 0)
+                        <button class="action-button is-primary" v-if="!room" @click="createRoom">
+                            Tạo Cuộc Họp <i class="fa-solid fa-video"></i>
+                        </button>
+                    @endif
 
-                <button class="action-button is-info" v-if="!room" @click="joinWithId">
-                    Tham Gia Cuộc Họp
-                </button>
+                    <button class="action-button is-info" v-if="!room" @click="joinWithId">
+                        Tham Gia Cuộc Họp <i class="fa-solid fa-user-plus"></i>
+                    </button>
 
-                <button class="action-button is-info" v-if="room" @click="publish(true)">
-                    Chia sẻ màn hình
-                </button>
+                    <button class="action-button is-info" v-if="room" @click="publish(true)">
+                        Chia sẻ màn hình <i class="fa-duotone fa-solid fa-square-arrow-up-right"></i>
+                    </button>
+
+                    <button class="action-button is-danger" v-if="room" @click="endCall">
+                        Kết Thúc Cuộc Họp <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+
+                    <button class="action-button is-warning" v-if="room" @click="toggleScreenRecording">
+                        <span v-if="isRecording">Dừng Ghi Màn Hình</span>
+                        <span v-else>Ghi Màn Hình</span> <i class="fa-solid fa-record-vinyl"></i>
+                    </button>
+                </div>
+
+                <div v-if="roomId" class="info-box">
+                    <p>Bạn đang ở trong room <strong>@{{ roomId }}</strong>
+                        <i class="fas fa-copy" @click="copyToClipboard(roomId, 'roomIdCopied')"
+                            style="cursor: pointer;"></i>
+                        <span v-if="roomIdCopied" class="copy-notification">Đã copy</span>
+                        <!-- Thông báo copy cho roomId -->
+                    </p>
+                    <p>
+                        Link tham gia
+                        <code><a :href="roomUrl" target="_blank">@{{ roomUrl }}</a></code>
+                        <i class="fas fa-copy" @click="copyToClipboard(roomUrl, 'roomUrlCopied')"
+                            style="cursor: pointer;"></i>
+                        <span v-if="roomUrlCopied" class="copy-notification">Đã copy</span>
+                        <!-- Thông báo copy cho roomUrl -->
+                    </p>
+                    <p>Hoặc bạn cũng có thể copy <code>@{{ roomId }}</code> để share.</p>
+                </div>
             </div>
 
-            <div v-if="roomId" class="info-box">
-                <p>Bạn đang ở trong room <strong>@{{ roomId }}</strong>.</p>
-                <p>
-                    Gửi link này cho bạn bè cùng join room nhé
-                    <a :href="roomUrl" target="_blank">@{{ roomUrl }}</a>.
-                </p>
-                <p>Hoặc bạn cũng có thể copy <code>@{{ roomId }}</code> để share.</p>
+            <div class="meeting-container">
+                <div class="video-wrapper" id="videos"></div>
             </div>
-        </div>
-
-        <div class="meeting-container">
-            <div class="video-wrapper" id="videos"></div>
         </div>
     </div>
-    
+    <x-client.fixed></x-client.fixed>
     <x-client.footer></x-client.footer>
 
     <!-- Include local JS files -->

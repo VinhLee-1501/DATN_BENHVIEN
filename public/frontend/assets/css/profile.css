@@ -169,7 +169,7 @@
     background-color: #048647;
     border: none;
     color: white;
-    border-radius: 25px !important;
+    border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 

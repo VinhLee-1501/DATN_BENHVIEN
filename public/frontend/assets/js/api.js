@@ -1,5 +1,5 @@
-const PROJECT_ID = "SK.0.gLwlwRg9xeFYlKb3OJ0pKwmkKq6Gjs2q";
-const PROJECT_SECRET = "bXlOOXVqc0V1Z0d6dk1JQVJXZGdYYTlMaFNvQkFjbkg=";
+const PROJECT_ID = "SK.0.3Ie7089EG75QA7uCn8yoSgsQbVdGRBqY";
+const PROJECT_SECRET = "c1UzcTM2WnB6cFNnYkdVaFFOUWpvQWYxRGlQQUpES0I=";
 const BASE_URL = "https://api.stringee.com/v1/room2";
 
 class API {
@@ -23,7 +23,7 @@ class API {
     );
 
     const room = response.data;
-    console.log({ room });
+    // console.log({ room });
     return room;
   }
 
@@ -33,7 +33,7 @@ class API {
     });
 
     const rooms = response.data.list;
-    console.log({ rooms });
+    // console.log({ rooms });
     return rooms;
   }
   
@@ -44,7 +44,7 @@ class API {
       headers: this._authHeader()
     })
     
-    console.log({response})
+    // console.log({response})
     
     return response.data;
   }
@@ -89,7 +89,7 @@ class API {
     );
 
     const tokens = response.data;
-    console.log({ tokens });
+    // console.log({ tokens });
     return tokens;
   }
 
