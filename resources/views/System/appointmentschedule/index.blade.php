@@ -156,14 +156,10 @@
                                 <select class="form-control" id="doctor_name" name="doctor_name"></select>
                                 <input type="text" name="specialty_id" id="specialty_id" hidden>
                             </div>
-                            {{--                            <div class="mb-3"> --}}
-                            {{--                                <input class="form-check-input" type="radio" value="" > --}}
-                            {{--                                <label class="form-check-label" for="confirmation-check">Xác nhận</label> --}}
-                            {{--                                <input class="form-check-input" type="radio" value="" > --}}
-                            {{--                            </div> --}}
-                            {{--                            <div class="mb-3"> --}}
-                            {{--                                <label class="form-check-label" for="cancel-check">Hủy</label> --}}
-                            {{--                            </div> --}}
+                            <div class="mb-3">
+                                <label for="" class="col-form-lable">Link</label>
+                                <input type="text" name="url" id="urlMeeting" class="form-control">
+                            </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="check" id="confirmation-check"
                                     checked>
@@ -179,7 +175,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" id="btnRole">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                         <button type="button" class="btn btn-primary" id="save-btn">Lưu</button>
                     </div>
@@ -188,13 +184,27 @@
         </div>
         <script>
             function openModal(id) {
+                console.log(id);
+
                 $.ajax({
                     url: '/system/appointmentSchedules/edit/' + id,
                     type: 'GET',
                     success: function(response) {
                         console.log(response);
+                        // $('#createMeetingBtn').remove();
+                        // if (response.role === 1) {
+                        //     $('#btnRole').append(
+                        //         `
+                        //     <button type="button" class="btn btn-success" id="createMeetingBtn">Tạo Cuộc Họp</button>`);
+
+                        //     $('#createMeetingBtn').on('click', function() {
+                        //         createRoom();
+                        //     })
+                        // }else{
+                        //     $('#urlMeeting')
+                        // }
                         $('#selectedDay').val(response
-                        .appointment_time); // Ensure initial load sets the correct date
+                            .appointment_time);
                         $('#specialty_id').val(response.specialty_id);
                         updateDoctors(response.appointment_time, response.specialty_id);
                         $('#confirmation-check').prop('checked', response.status === 1);
@@ -207,6 +217,79 @@
                     }
                 });
             }
+
+            // function generateRoomUrl() {
+            //     return `http://127.0.0.1:8000/meeting/?room=${this.roomId}`;
+            // }
+
+            // async function createRoom() {
+            //     try {
+            //         const room = await api.createRoom(); // Tạo phòng từ API
+            //         const roomId = room.roomId;
+            //         const roomToken = await api.getRoomToken(roomId);
+
+            //         console.log({
+            //             roomId,
+            //             roomToken
+            //         });
+
+            //         const roomUrl = generateRoomUrl(roomId);
+            //         document.getElementById('urlMeeting').value = roomUrl;
+
+            //         await authen(roomToken);
+            //         await publish(roomToken); // Xuất bản video/phòng họp
+            //     } catch (error) {
+            //         console.error("Lỗi khi tạo phòng họp:", error);
+            //         if (error.response) {
+            //             console.error("Chi tiết lỗi:", error.response.data);
+            //         }
+            //     }
+            // }
+
+
+            // async function authen(userToken) {
+            //     const client = new StringeeClient();
+
+            //     return new Promise((resolve, reject) => {
+            //         client.on('authen', function(res) {
+            //             console.log("on authen: ", res);
+            //             resolve(res);
+            //         });
+            //         client.on('error', function(err) {
+            //             reject(err);
+            //         });
+            //         client.connect(userToken);
+            //     });
+            // }
+
+            // async function publish(roomToken, screenSharing = false) {
+            //     const localTrack = await StringeeVideo.createLocalVideoTrack(callClient, {
+            //         audio: true,
+            //         video: true,
+            //         screen: screenSharing,
+            //         videoDimensions: {
+            //             width: 640,
+            //             height: 360
+            //         }
+            //     });
+
+            //     const videoElement = localTrack.attach(); // Tạo phần tử video
+            //     document.querySelector("#videos").appendChild(videoElement); // Thêm video vào container
+
+            //     const roomData = await StringeeVideo.joinRoom(callClient, roomToken);
+            //     const room = roomData.room;
+            //     console.log("Đã vào phòng:", room);
+
+            //     await room.publish(localTrack); // Xuất bản phòng họp
+            //     console.log("Xuất bản thành công");
+            // }
+
+            // function addVideo(videoElement) {
+            //     const videoContainer = document.querySelector("#videos");
+            //     videoContainer.appendChild(videoElement);
+            // }
+
+
 
             function updateDoctors(date, specialty_id) {
                 $.ajax({
@@ -249,10 +332,14 @@
                 var confirmation = $('#confirmation-check').is(':checked');
                 var cancel = $('#cancelstatus-check').is(':checked');
                 var status = cancel ? 2 : (confirmation ? 1 : 0);
+                var url = $('#urlMeeting').val() ? $('#urlMeeting').val() : null;
 
                 console.log(doctorName)
                 console.log(status)
                 console.log(appointmentTime)
+                console.log(url);
+                // break;
+                
                 $.ajax({
                     url: '/system/appointmentSchedules/update/' + id,
                     type: 'patch',
@@ -260,6 +347,7 @@
                         appointment_time: appointmentTime,
                         doctor_name: doctorName,
                         status: status,
+                        url: url,
                         _token: '{{ csrf_token() }}'
                     },
 
@@ -281,4 +369,9 @@
                 });
             });
         </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
+        <script src="https://cdn.stringee.com/sdk/web/2.2.1/stringee-web-sdk.min.js"></script>
+        <script src="{{ asset('frontend/assets/js/api.js') }}"></script>
     @endsection

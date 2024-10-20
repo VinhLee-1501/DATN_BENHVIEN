@@ -39,7 +39,9 @@ class AppointmentSchedule extends Controller
             'appointment_time' => $book->day,
             'doctor_name' => $doctor,
             'specialty_id' => $specialty_id,
-            'status' => $book->status
+            'status' => $book->status,
+            'role' => $book->role,
+            'url' => $book->url
         ]);
     }
 
@@ -111,6 +113,7 @@ class AppointmentSchedule extends Controller
         $book->day = $date;
 
         $book->status = $status;
+        $book->url = $request->input('url');
         // Lưu bản ghi
         $book->save();
 

@@ -7,6 +7,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
     <title>@yield('title', 'Benh Vien')</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('backend/assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="{{ asset('backend/assets/css/styles.min.css') }}" />
@@ -24,6 +25,7 @@
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.4.2/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.4.2/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js'></script>
+
 </head>
 
 <body>
@@ -62,6 +64,7 @@
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('backend/assets/js/checkup.js') }}"></script>
+
 
     <x-message.message></x-message.message>
 </body>
