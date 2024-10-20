@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\User\RegisterRequest;
 use App\Http\Requests\Client\User\LoginRequest;
 use App\Http\Requests\Client\User\UpdateProfileRequest;
+use App\Http\Requests\Client\User\ChangePasswordRequest;
 use App\Models\User;
 use App\Models\Book;
 use App\Models\Specialty;
@@ -106,18 +107,18 @@ class UserController extends Controller
     }
     public function updateProfile(UpdateProfileRequest $request)
     {
-        // Lấy người dùng hiện tại từ Auth
+
         $user = Auth::user();
 
-        // Kiểm tra nếu người dùng không tồn tại
+
         if (!$user) {
             return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để cập nhật hồ sơ.');
         }
 
-        // Lưu số điện thoại cũ
+
         $oldPhone = $user->phone;
 
-        // Cập nhật thông tin người dùng
+
         $updatedUser = $user->update([
             'firstname' => $request->input('firstname'),
             'lastname' => $request->input('lastname'),
@@ -126,18 +127,39 @@ class UserController extends Controller
             'birthday' => $request->input('birthday'),
         ]);
 
-        // Cập nhật số điện thoại trong bảng patients nếu số điện thoại đã thay đổi
+
         if ($updatedUser && $oldPhone !== $request->input('phone')) {
-            // Cập nhật số điện thoại trong bảng patients
             $patient = $user->patient;
             if ($patient) {
                 $patient->update(['phone' => $request->input('phone')]);
             }
         }
 
-        // Trả về thông báo thành công hoặc thất bại
+
         return $updatedUser
-            ? redirect()->route('client.profile.index')->with(['success' => 'Cập nhật hồ sơ thành công!', 'activeTab' => 'update_info'])
-            : redirect()->route('client.profile.index')->with(['error' => 'Cập nhật hồ sơ thất bại, vui lòng thử lại.', 'activeTab' => 'update_info']);
+            ? redirect()->route('client.profile.index')->with(['info_success' => 'Cập nhật hồ sơ thành công!', 'activeTab' => 'update_info'])
+            : redirect()->route('client.profile.index')->with(['info_error' => 'Cập nhật hồ sơ thất bại, vui lòng thử lại.', 'activeTab' => 'update_info']);
+    }
+    public function changePassword(ChangePasswordRequest $request)
+    {
+
+        $user = Auth::user();
+
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không chính xác.']);
+        }
+
+
+        if (Hash::check($request->new_password, $user->password)) {
+            return back()->withErrors(['new_password' => 'Mật khẩu mới không được giống với mật khẩu cũ.']);
+        }
+
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return back()->with('change_password_success', 'Thay đổi mật khẩu thành công')->with('activeTab', 'change_password');
     }
 }

@@ -68,7 +68,7 @@
                             <div class="tab-content">
                                 <!-- Tab Lịch sử khám bệnh -->
                                 <div id="history"
-                                    class="tab {{ $errors->any() ? '' : (session('success') || session('error') ? '' : 'active') }}">
+                                    class="tab {{ $errors->any() ? '' : (session('info_success') || session('info_error') || session('change_password_success') || session('change_password_error') ? '' : 'active') }}">
 
                                     <div class="profile__medical-history">
                                         <h1 class="text-center">Lịch sử khám bệnh</h1>
@@ -214,7 +214,7 @@
                                 </div>
                                 <!-- Form Cập nhật thông tin -->
                                 <div id="update_info"
-                                    class="tab {{ $errors->any() ? 'active' : (session('success') || session('error') ? 'active' : '') }}">
+                                    class="tab {{ $errors->has('firstname') || $errors->has('lastname') || $errors->has('phone') || $errors->has('birthday') || $errors->has('email') || session('info_success') || session('info_error') ? 'active' : '' }}">
                                     <h1 class="text-center">Cập nhật thông tin</h1>
                                     <form class="profile__form" action="{{ route('client.profile.update') }}"
                                         method="POST">
@@ -251,8 +251,8 @@
                                             <div class="col">
                                                 <label for="birthday">Ngày sinh</label>
                                                 <input type="date" id="birthday" name="birthday"
-                                                    value="{{ auth()->check() && auth()->user()->birthday ? auth()->user()->birthday->format('Y-m-d') : '' }}" 
-                                                onchange="updateBirthdayFormat(this)" />
+                                                    value="{{ auth()->check() && auth()->user()->birthday ? auth()->user()->birthday->format('Y-m-d') : '' }}"
+                                                    onchange="updateBirthdayFormat(this)" />
                                                 @error('birthday')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
@@ -275,25 +275,45 @@
 
 
                                 <!-- Form Đổi mật khẩu -->
-                                <div id="change_password" class="tab">
+                                <div id="change_password" class="tab {{ $errors->has('current_password') || $errors->has('new_password') || session('change_password_success') || session('change_password_error') ? 'active' : '' }}">
                                     <h1 class="text-center">Đổi mật khẩu</h1>
-                                    <form class="profile__form">
+                                    <form method="POST" action="{{ route('client.profile.change-password') }}"
+                                        class="profile__form">
+                                        @csrf
+                                        @method('PATCH')
+
+                                        <!-- Mật khẩu hiện tại -->
                                         <div class="form-group">
                                             <label for="current_password">Mật khẩu hiện tại</label>
                                             <input type="password" id="current_password" name="current_password" />
+                                            @error('current_password')
+                                                <div class="error-message" style="color: red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
+
+                                        <!-- Mật khẩu mới -->
                                         <div class="form-group">
                                             <label for="new_password">Mật khẩu mới</label>
                                             <input type="password" id="new_password" name="new_password" />
+                                            @error('new_password')
+                                                <div class="error-message" style="color: red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
+
+                                        <!-- Xác nhận mật khẩu mới -->
                                         <div class="form-group">
-                                            <label for="confirm_password">Xác nhận mật khẩu mới</label>
-                                            <input type="password" id="confirm_password" name="confirm_password" />
+                                            <label for="new_password_confirmation">Xác nhận mật khẩu mới</label>
+                                            <input type="password" id="new_password_confirmation"
+                                                name="new_password_confirmation" />
+                                            @error('new_password_confirmation')
+                                                <div class="error-message" style="color: red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
+
+                                        <!-- Nút submit -->
                                         <button type="submit" class="button btn-cta">Đổi mật khẩu</button>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>
