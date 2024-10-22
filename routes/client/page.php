@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use Illuminate\Support\Facades\Route;
 
 //HomeController
@@ -21,10 +22,8 @@ Route::get('/meeting', function () {
     return view('client.meeting');
 })->name('meeting');
 
-Route::get('/tin-tuc', function () {
-    return view('client.news');
-})->name('news');
-
+Route::get('/tin-tuc', [BlogController::class, 'blogviewclient'])->name('news');
+Route::get('/tin-tuc/{slug}', [BlogController::class, 'detailblog'])->name('detailnews');
 Route::get('/lien-he', function () {
     return view('client.contact');
 })->name('contact');

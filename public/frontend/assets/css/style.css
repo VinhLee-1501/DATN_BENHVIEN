@@ -4874,6 +4874,48 @@ i.icon-cps-face {
 }
 
 /*------------------------------------------------
+** btn view more
+**------------------------------------------------*/
+.box-btn-view-more{
+    margin: 20px;
+    text-align: center;
+}
+.btn-view-more {
+    position: relative; /* Để định vị pseudo-element */
+    display: inline-block;
+    padding: 10px 20px; /* Kích thước nút */
+    background-color: #03B75F; /* Màu nền của nút */
+    color: #fff !important; /* Màu chữ của nút */
+    border-radius: 5px; /* Bo góc */
+    text-decoration: none; /* Bỏ gạch chân */
+    font-weight: bold; /* Chữ đậm */
+    overflow: hidden; /* Ẩn phần tràn ra ngoài */
+    transition: color 0.3s; /* Thêm hiệu ứng chuyển đổi cho màu chữ */
+    cursor: pointer;
+    border: none;
+}
+
+.btn-view-more::after {
+    content: ''; /* Nội dung trống cho pseudo-element */
+    position: absolute; /* Định vị tuyệt đối */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3); /* Màu trắng mờ */
+    opacity: 0; /* Ban đầu không hiển thị */
+    transition: opacity 0.3s; /* Thêm hiệu ứng chuyển đổi */
+}
+
+.btn-view-more:hover::after {
+    opacity: 1; /* Hiển thị lớp phủ khi hover */
+}
+
+.btn-view-more:hover {
+    color: #0d0d0d !important; /* Giữ nguyên màu chữ khi hover */
+}
+
+/*------------------------------------------------
 ** Common
 **------------------------------------------------*/
 .popup {

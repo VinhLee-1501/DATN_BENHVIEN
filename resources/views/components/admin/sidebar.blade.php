@@ -120,6 +120,24 @@
                                 <span class="hide-menu">Quản lý lịch khám</span>
                             </a>
                         </li>
+                        <li class="sidebar-item {{ request()->routeIs('system.blog') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.blog') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-news"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý bài viết</span>
+                            </a>
+                        </li>
+                        {{-- <li class="sidebar-item  ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.blog') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-calendar-event"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý bài viết</span>
+                            </a>
+                        </li> --}}
                     </ul>
                     </li>
                 </nav>
