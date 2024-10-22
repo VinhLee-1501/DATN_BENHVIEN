@@ -158,7 +158,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="" class="col-form-lable">Link</label>
-                                <input type="text" name="url" id="urlMeeting" class="form-control">
+                                <input type="text" name="url" id="urlMeeting" readonly class="form-control">
+                                <input type="text" name="email" id="emailUser" hidden class="form-control">
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="check" id="confirmation-check"
@@ -191,21 +192,22 @@
                     type: 'GET',
                     success: function(response) {
                         console.log(response);
-                        // $('#createMeetingBtn').remove();
-                        // if (response.role === 1) {
-                        //     $('#btnRole').append(
-                        //         `
-                        //     <button type="button" class="btn btn-success" id="createMeetingBtn">Tạo Cuộc Họp</button>`);
+                        $('#createMeetingBtn').remove();
+                        if (response.role === 1) {
+                            $('#btnRole').append(
+                                `
+                            <button type="button" class="btn btn-success" id="createMeetingBtn">Tạo Cuộc Họp</button>`);
 
-                        //     $('#createMeetingBtn').on('click', function() {
-                        //         createRoom();
-                        //     })
-                        // }else{
-                        //     $('#urlMeeting')
-                        // }
+                            $('#createMeetingBtn').on('click', function() {
+                                createRoom();
+                            })
+                        } else {
+                            $('#urlMeeting')
+                        }
                         $('#selectedDay').val(response
                             .appointment_time);
                         $('#specialty_id').val(response.specialty_id);
+                        $('#emailUser').val(response.email);
                         updateDoctors(response.appointment_time, response.specialty_id);
                         $('#confirmation-check').prop('checked', response.status === 1);
                         $('#cancelstatus-check').prop('checked', response.status === 2);
@@ -217,79 +219,89 @@
                     }
                 });
             }
+            const appState = {
+                userToken: "",
+                roomId: "",
+                roomToken: "",
+                callClient: undefined,
+                isRecording: false,
+                mediaRecorder: null,
+                recordedChunks: [],
+            };
 
-            // function generateRoomUrl() {
-            //     return `http://127.0.0.1:8000/meeting/?room=${this.roomId}`;
-            // }
+            function generateRoomUrl(roomId) {
+                return `http://127.0.0.1:8000/meeting/?room=${roomId}`;
+            }
 
-            // async function createRoom() {
-            //     try {
-            //         const room = await api.createRoom(); // Tạo phòng từ API
-            //         const roomId = room.roomId;
-            //         const roomToken = await api.getRoomToken(roomId);
+            async function createRoom() {
+                try {
+                    await api.setRestToken();
+                    const room = await api.createRoom();
+                    const roomId = room.roomId;
+                    const roomToken = await api.getRoomToken(roomId);
 
-            //         console.log({
-            //             roomId,
-            //             roomToken
-            //         });
+                    console.log({
+                        roomId,
+                        roomToken
+                    });
 
-            //         const roomUrl = generateRoomUrl(roomId);
-            //         document.getElementById('urlMeeting').value = roomUrl;
+                    const roomUrl = generateRoomUrl(roomId);
+                    document.getElementById('urlMeeting').value = roomUrl;
+                    console.log(`Room created. Room ID: ${roomId}, Room URL: ${roomUrl}`);
 
-            //         await authen(roomToken);
-            //         await publish(roomToken); // Xuất bản video/phòng họp
-            //     } catch (error) {
-            //         console.error("Lỗi khi tạo phòng họp:", error);
-            //         if (error.response) {
-            //             console.error("Chi tiết lỗi:", error.response.data);
-            //         }
-            //     }
-            // }
+                    // Xác thực và xuất bản video
+                    await authen();
+                    await publish(roomToken);
 
+                    appState.roomId = roomId; // Lưu roomId
+                    appState.roomToken = roomToken; // Lưu roomToken
 
-            // async function authen(userToken) {
-            //     const client = new StringeeClient();
+                } catch (error) {
+                    console.error("Lỗi khi tạo phòng họp:", error);
+                    if (error.response) {
+                        console.error("Chi tiết lỗi:", error.response.data);
+                    }
+                }
+            }
 
-            //     return new Promise((resolve, reject) => {
-            //         client.on('authen', function(res) {
-            //             console.log("on authen: ", res);
-            //             resolve(res);
-            //         });
-            //         client.on('error', function(err) {
-            //             reject(err);
-            //         });
-            //         client.connect(userToken);
-            //     });
-            // }
+            async function authen() {
+                const userId = `${(Math.random() * 100000).toFixed(6)}`;
+                const userToken = await api.getUserToken(userId);
+                appState.userToken = userToken;
 
-            // async function publish(roomToken, screenSharing = false) {
-            //     const localTrack = await StringeeVideo.createLocalVideoTrack(callClient, {
-            //         audio: true,
-            //         video: true,
-            //         screen: screenSharing,
-            //         videoDimensions: {
-            //             width: 640,
-            //             height: 360
-            //         }
-            //     });
+                if (!appState.callClient) {
+                    const client = new StringeeClient();
+                    client.on("authen", function(res) {
+                        console.log("on authen: ", res);
+                    });
+                    appState.callClient = client;
+                }
+                await appState.callClient.connect(userToken);
+            }
 
-            //     const videoElement = localTrack.attach(); // Tạo phần tử video
-            //     document.querySelector("#videos").appendChild(videoElement); // Thêm video vào container
+            async function publish(roomToken, screenSharing = false) {
+                const localTrack = await StringeeVideo.createLocalVideoTrack(appState.callClient, {
+                    audio: true,
+                    video: true,
+                    screen: screenSharing,
+                    videoDimensions: {
+                        width: 640,
+                        height: 360
+                    }
+                });
 
-            //     const roomData = await StringeeVideo.joinRoom(callClient, roomToken);
-            //     const room = roomData.room;
-            //     console.log("Đã vào phòng:", room);
+                const videoElement = localTrack.attach();
+                document.querySelector("#videos").appendChild(videoElement);
 
-            //     await room.publish(localTrack); // Xuất bản phòng họp
-            //     console.log("Xuất bản thành công");
-            // }
+                const roomData = await StringeeVideo.joinRoom(appState.callClient, roomToken);
+                const room = roomData.room;
+                await room.publish(localTrack);
+            }
 
-            // function addVideo(videoElement) {
-            //     const videoContainer = document.querySelector("#videos");
-            //     videoContainer.appendChild(videoElement);
-            // }
-
-
+            function addVideo(videoElement) {
+                const videoContainer = document.querySelector("#videos");
+                videoContainer.appendChild(videoElement);
+            }
 
             function updateDoctors(date, specialty_id) {
                 $.ajax({
@@ -331,15 +343,16 @@
                 var doctorName = $('#doctor_name').val();
                 var confirmation = $('#confirmation-check').is(':checked');
                 var cancel = $('#cancelstatus-check').is(':checked');
+                var email = $('#emailUser').val();
                 var status = cancel ? 2 : (confirmation ? 1 : 0);
                 var url = $('#urlMeeting').val() ? $('#urlMeeting').val() : null;
 
                 console.log(doctorName)
                 console.log(status)
                 console.log(appointmentTime)
-                console.log(url);
+                console.log(email);
                 // break;
-                
+
                 $.ajax({
                     url: '/system/appointmentSchedules/update/' + id,
                     type: 'patch',
@@ -347,6 +360,7 @@
                         appointment_time: appointmentTime,
                         doctor_name: doctorName,
                         status: status,
+                        email: email,
                         url: url,
                         _token: '{{ csrf_token() }}'
                     },
@@ -359,7 +373,7 @@
                         } else if (response.error) {
                             toastr.error(response.message);
                         }
-                        location.reload();
+                        // location.reload();
 
                     },
                     error: function(err) {
@@ -373,5 +387,4 @@
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
         <script src="https://cdn.stringee.com/sdk/web/2.2.1/stringee-web-sdk.min.js"></script>
-        <script src="{{ asset('frontend/assets/js/api.js') }}"></script>
     @endsection

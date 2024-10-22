@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\BookingConfirmationLink;
 use App\Models\Book;
 use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+
 
 class AppointmentSchedule extends Controller
 {
@@ -29,8 +32,8 @@ class AppointmentSchedule extends Controller
         $selectedDay = \request()->input('selectedDay');
 
         $doctor = User::where('role', 2)
-        ->where('users.specialty_id', $specialty_id)
-        ->join('schedules', 'schedules.user_id', '=', 'users.user_id')
+            ->where('users.specialty_id', $specialty_id)
+            ->join('schedules', 'schedules.user_id', '=', 'users.user_id')
             ->whereDate('schedules.day', $selectedDay)
             ->select('users.*', 'schedules.*')
             ->get();
@@ -41,6 +44,7 @@ class AppointmentSchedule extends Controller
             'specialty_id' => $specialty_id,
             'status' => $book->status,
             'role' => $book->role,
+            'email' => $book->email,
             'url' => $book->url
         ]);
     }
@@ -116,6 +120,8 @@ class AppointmentSchedule extends Controller
         $book->url = $request->input('url');
         // Lưu bản ghi
         $book->save();
+        Mail::to($book->email)->send(new BookingConfirmationLink($book));
+
 
         return response()->json(['success' => true, 'message' => 'Dữ liệu đã được cập nhật thành công.']);
     }

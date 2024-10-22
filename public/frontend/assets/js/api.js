@@ -11,6 +11,8 @@ class API {
 
   async createRoom() {
     const roomName = Math.random().toFixed(4);
+    // console.log(roomName);
+    
     const response = await axios.post(
       `${BASE_URL}/create`,
       {
