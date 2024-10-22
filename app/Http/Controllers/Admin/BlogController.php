@@ -99,18 +99,17 @@ class BlogController extends Controller
 
 
         if (!session()->has('uploaded_file_base64')) {
-            
-                $firstImageData = $matches['data'][0]; // Dữ liệu base64 của ảnh đầu tiên
 
-                // Gán chỉ dữ liệu base64 làm thumbnail
-                $blog->thumbnail = $firstImageData;
-            
+            $firstImageData = $matches['data'][0]; // Dữ liệu base64 của ảnh đầu tiên
+
+            // Gán chỉ dữ liệu base64 làm thumbnail
+            $blog->thumbnail = $firstImageData;
         } else {
             $base64Image = session('uploaded_file_base64');
             $blog->thumbnail = $base64Image;
             session()->forget('uploaded_file_base64');
         }
-        
+
         $blog->save();
 
 
@@ -280,6 +279,7 @@ class BlogController extends Controller
     {
         // Tìm kiếm blog dựa trên slug
         $blog = Blog::where('slug', $slug)->firstOrFail();
+        // dd($blog);
 
         return view('client.detailnews', ['blog' => $blog]);
     }

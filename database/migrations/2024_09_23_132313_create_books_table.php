@@ -24,6 +24,9 @@ return new class extends Migration
 
             // Thêm cột specialty_id
             $table->string('specialty_id');
+            //
+            $table->string('url', 255)->nullable();
+            $table->boolean('role')->default(0)->comment('0: off; 1: onl');
 
             // Thêm cột user_id làm khóa ngoại
             $table->string('user_id')->nullable(); // Nullable để có thể không có người dùng

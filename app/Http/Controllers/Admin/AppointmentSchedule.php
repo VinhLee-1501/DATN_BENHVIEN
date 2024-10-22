@@ -120,6 +120,7 @@ class AppointmentSchedule extends Controller
         $book->url = $request->input('url');
         // Lưu bản ghi
         $book->save();
+        // dd($book);
         Mail::to($book->email)->send(new BookingConfirmationLink($book));
 
 

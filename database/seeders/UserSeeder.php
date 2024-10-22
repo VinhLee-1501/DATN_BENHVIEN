@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $specialty_id = Specialty::first();
         User::create([
             'user_id' => strtoupper(Str::random(10)),
             'firstname' => 'admin',
@@ -32,6 +33,7 @@ class UserSeeder extends Seeder
             'email' => 'doctor@example.com',
             'password' => bcrypt('doctor123'),
             'phone' => '0847258369',
+            'specialty_id' => $specialty_id->specialty_id,
             'role' => 2,
             'status' => 1,
         ]);
@@ -43,6 +45,7 @@ class UserSeeder extends Seeder
             'email' => 'bacsi@example.com',
             'password' => bcrypt('123456'),
             'phone' => '0847243242',
+            'specialty_id' => $specialty_id->specialty_id,
             'role' => 2,
             'status' => 1,
         ]);
