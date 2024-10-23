@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\Medical\CheckupPatientRequest;
 use App\Models\Book;
 use App\Models\MedicalRecord;
 use App\Models\Medicine;
+use App\Models\Order;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Models\TreatmentDetail;
@@ -238,7 +239,7 @@ class CheckupHealthController extends Controller
                 return response()->json(['error' => 'Invalid data format'], 400);
             }
         }
-        // $book = Book::where('book_id', $book_id)->get();
+
         $phone = $book->phone;
         $services = Service::join('treatment_services', 'treatment_services.service_id', '=', 'services.service_id')
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'treatment_services.treatment_id')
@@ -258,7 +259,15 @@ class CheckupHealthController extends Controller
         $service = Service::get();
         $medicine = Medicine::select('*')->distinct()->get();
         $medical = MedicalRecord::orderBy('row_id', 'desc')->first();
-        // dd($medical);
+        
+        $order = new Order();
+        $order->order_id = strtoupper(Str::random(10));
+        $order->treatment_id = $treatment->treatment_id;
+        $order->status = 0;
+        $order->role = 0;
+        $order->total_price = $totalprice[0]->total_price;
+        $order->save();
+
         
         return view(
             'System.doctors.checkupHealth.medicalRecord',

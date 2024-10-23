@@ -63,6 +63,8 @@
                                             <span class="badge bg-danger">Đã đặt</span>
                                         @elseif($item->status === 1)
                                             <span class="badge bg-success">Xác nhận</span>
+                                        @elseif ($item->status === 2)
+                                            <span class="badge bg-success">Đã khám</span>
                                         @else
                                             <span class="badge bg-warning">Đã hủy</span>
                                         @endif
@@ -185,7 +187,7 @@
         </div>
         <script>
             function openModal(id) {
-                console.log(id);
+                // console.log(id);
 
                 $.ajax({
                     url: '/system/appointmentSchedules/edit/' + id,
@@ -240,21 +242,17 @@
                     const roomId = room.roomId;
                     const roomToken = await api.getRoomToken(roomId);
 
-                    console.log({
-                        roomId,
-                        roomToken
-                    });
 
                     const roomUrl = generateRoomUrl(roomId);
                     document.getElementById('urlMeeting').value = roomUrl;
-                    console.log(`Room created. Room ID: ${roomId}, Room URL: ${roomUrl}`);
 
                     // Xác thực và xuất bản video
-                    await authen();
-                    await publish(roomToken);
+                    // await authen();
+                    // await publish(roomToken);
 
                     appState.roomId = roomId; // Lưu roomId
                     appState.roomToken = roomToken; // Lưu roomToken
+                    
 
                 } catch (error) {
                     console.error("Lỗi khi tạo phòng họp:", error);
@@ -272,7 +270,7 @@
                 if (!appState.callClient) {
                     const client = new StringeeClient();
                     client.on("authen", function(res) {
-                        console.log("on authen: ", res);
+                        // console.log("on authen: ", res);
                     });
                     appState.callClient = client;
                 }
@@ -291,6 +289,7 @@
                 });
 
                 const videoElement = localTrack.attach();
+                
                 document.querySelector("#videos").appendChild(videoElement);
 
                 const roomData = await StringeeVideo.joinRoom(appState.callClient, roomToken);
@@ -330,7 +329,6 @@
 
             $('#selectedDay').change(function() {
                 var selectedDate = $(this).val();
-                console.log('Selected Date:', selectedDate); // Log the selected date
                 var specialtyId = $('#specialty_id').val();
                 updateDoctors(selectedDate, specialtyId);
 
@@ -347,10 +345,6 @@
                 var status = cancel ? 2 : (confirmation ? 1 : 0);
                 var url = $('#urlMeeting').val() ? $('#urlMeeting').val() : null;
 
-                console.log(doctorName)
-                console.log(status)
-                console.log(appointmentTime)
-                console.log(email);
                 // break;
 
                 $.ajax({

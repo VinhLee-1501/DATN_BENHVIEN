@@ -146,9 +146,7 @@
                         </tbody>
                     </table>
                     <span id="totalAmout">Tổng cộng: {{$totalprice[0]->total_price}}.000 VNĐ</span>
-                    <div class="float-xxl-end">
-                        <button type="" class="btn btn-success btn-sm" type="btn">Chọn</button>
-                    </div>
+                 
                 </div>
             </div>
 

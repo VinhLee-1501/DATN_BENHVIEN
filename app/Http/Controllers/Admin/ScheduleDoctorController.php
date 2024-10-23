@@ -19,7 +19,7 @@ class ScheduleDoctorController extends Controller
             ->whereMonth('schedules.day', $now->format('m'))
             ->select('schedules.*', 'users.firstname', 'users.lastname', 'sclinics.name')
             ->get();
-       dd($schedules);
+   
         return view('System.doctors.schedules.index', ['schedules' => $schedules, 'now' => $now]);
     }
 }

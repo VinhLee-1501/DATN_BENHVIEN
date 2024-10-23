@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <!-- Điều hướng thanh bên -->
-                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                <nav class="sidebar-nav scroll-sidebar " data-simplebar="">
                     <ul id="sidebarnav">
                         <li class="sidebar-item {{ request()->routeIs('system.dashboard') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.dashboard') }}" aria-expanded="false">
@@ -129,15 +129,6 @@
                                 <span class="hide-menu">Quản lý bài viết</span>
                             </a>
                         </li>
-                        {{-- <li class="sidebar-item  ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.blog') }}"
-                                aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-calendar-event"></i>
-                                </span>
-                                <span class="hide-menu">Quản lý bài viết</span>
-                            </a>
-                        </li> --}}
                     </ul>
                     </li>
                 </nav>

@@ -30,4 +30,5 @@ class TreatmentDetail extends Model
     {
         return $this->belongsTo(MedicalRecord::class, 'medical_id', 'medical_id');
     }
+    
 }
