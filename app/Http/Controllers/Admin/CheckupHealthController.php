@@ -149,29 +149,28 @@ class CheckupHealthController extends Controller
             $user->user_id = strtoupper(Str::random(10));
             $user->firstname = $request->input('first_name');
             $user->lastname = $request->input('last_name');
-            $user->email = $book->email;
             $user->password = $user->user_id.'12345';
             $user->phone = $phone;
             $user->role = 0;
-            // dd($user->password);
             $user->save();
         }
 
-        $patient = new Patient();
-        $patient->patient_id = $request->input('patient_id');
-        $patient->first_name = $request->input('first_name');
-        $patient->last_name = $request->input('last_name');
-        $patient->phone = $phone; // Sử dụng phone từ book
-        $patient->gender = $request->input('gender');
-        $patient->birthday = $request->input('age');
-        $patient->address = $request->input('address');
-        $patient->occupation = $request->input('occupation');
-        $patient->national = $request->input('national');
-        $patient->insurance_number = $request->input('insurance_number');
-        $patient->emergency_contact = $request->input('emergency_contact');
 
-        $patient->save();
+            $patient = new Patient();
+            $patient->patient_id = $request->input('patient_id');
+            $patient->first_name = $request->input('first_name');
+            $patient->last_name = $request->input('last_name');
+            $patient->phone = $phone; // Sử dụng phone từ book
+            $patient->gender = $request->input('gender');
+            $patient->birthday = $request->input('age');
+            $patient->address = $request->input('address');
+            $patient->occupation = $request->input('occupation');
+            $patient->national = $request->input('national');
+            $patient->insurance_number = $request->input('insurance_number');
+            $patient->emergency_contact = $request->input('emergency_contact');
 
+            $patient->save();
+        
         return redirect()->route('system.checkupHealth.create', $book_id)->with('success', 'Lưu thông tin bệnh nhân thành công.');
     }
 

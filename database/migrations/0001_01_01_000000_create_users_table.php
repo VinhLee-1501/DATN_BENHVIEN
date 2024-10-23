@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('avatar')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('password'); // Chỉ cần khai báo một lần
             $table->date('birthday')->nullable();
             $table->string('phone')->unique()->nullable();

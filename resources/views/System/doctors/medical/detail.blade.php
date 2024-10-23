@@ -27,7 +27,7 @@
                             <div class="birthday">
                                 <span>
                                     <i class="ti ti-calendar"></i>
-                                </span> {{ $medical[0]->birthday }}
+                                </span> {{ \Carbon\Carbon::parse($medical[0]->birthday)->format('d-m-Y') }}
                             </div>
                             <div class="address">
                                 <span>

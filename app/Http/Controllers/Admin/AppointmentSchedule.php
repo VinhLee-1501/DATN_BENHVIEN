@@ -19,6 +19,7 @@ class AppointmentSchedule extends Controller
     {
         $book = Book::join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
             ->select('books.*',  'specialties.name as specialtyName')
+            ->orderBy('row_id', 'DESC')
             ->paginate(5);
         //       dd($book);
 
@@ -93,12 +94,15 @@ class AppointmentSchedule extends Controller
 
         $schedule = Schedule::where('user_id', $doctorUserId)
             ->whereDate('day', $date)
-            ->first();
-        //        Log::info("schedule:", $schedule);
+            ->get();
+
+        // $bookDay = Book::where('day', $date)->get();
 
         if (!$schedule) {
             return response()->json(['error' => 'Bác sĩ này không có lịch khám vào ngày này'], 400);
         }
+
+
         $scheduleDate = Schedule::whereDate('day', $date)
             ->where('user_id', $doctorUserId)
             ->first();
