@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="section news__detail">
-                        <div class="row gap-y-20">
+                        <div class="gap-y-20">
                             <div class="col l-12 mc-12 c-12">
                                 <div class="page__head">
                                     <div class="box-header">

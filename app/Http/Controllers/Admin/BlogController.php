@@ -85,7 +85,7 @@ class BlogController extends Controller
                 // } while ($fileSize > 500 * 1024 && $quality > 0);
                 Storage::disk('public')->put('uploads/' . $imageName, $imageData);
 
-                $content = str_replace($matches[0][$key], '<img src="http://127.0.0.1:8000/storage/uploads/' . $imageName . '"', $content);
+                $content = str_replace($matches[0][$key], '<img src="' . asset('storage/uploads/' . $imageName) . '"', $content);
             }
         }
 
@@ -96,7 +96,6 @@ class BlogController extends Controller
         $blog->slug = Str::slug($request->input('title'));
         // $blog->blog_id = $uniqueId;
         $blog->status = $request->input('status');
-
 
         if (!session()->has('uploaded_file_base64')) {
 

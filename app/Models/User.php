@@ -34,6 +34,7 @@ class User extends Authenticatable
         'zalo_id',
         'facebook_id',
         'email_verified_at',
+        'specialty_id',
     ];
 
     /**

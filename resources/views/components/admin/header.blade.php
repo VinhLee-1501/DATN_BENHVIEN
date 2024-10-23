@@ -16,26 +16,42 @@
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
                 <li class="nav-item dropdown">
-                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}" alt="" width="35" height="35"
-                             class="rounded-circle">
+                    <a class="nav-link d-flex align-items-center" href="javascript:void(0)" id="drop2"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="mx-3">
+                            @if (auth()->user()->role == 1)
+                                <div class="badge bg-danger">
+                                    Quản trị viên
+                                </div>
+                            @elseif (auth()->user()->role == 2)
+                                <div class="badge bg-success">
+                                    Tài khoản bác sĩ
+                                </div>
+                            @endif
+
+                        </span>
+                        <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}" alt="" width="35"
+                            height="35" class="rounded-circle">
                     </a>
+
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                         <div class="message-body">
-                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                            <div class="d-flex justify-content-center align-items-center gap-2 p-2">
+                                <span class="badge bg-primary">{{ Auth::user()->firstname }}
+                                    {{ Auth::user()->lastname }}</span>
+                            </div>
+                            <a href="{{ route('system.profile') }}"
+                                class="d-flex align-items-center gap-2 dropdown-item">
                                 <i class="ti ti-user fs-6"></i>
-                                <p class="mb-0 fs-3">My Profile</p>
+                                <p class="mb-0 fs-3">Thông tin tài khoản</p>
                             </a>
-                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                <i class="ti ti-mail fs-6"></i>
-                                <p class="mb-0 fs-3">My Account</p>
+                            <a href="{{ route('system.change-password') }}"
+                                class="d-flex align-items-center gap-2 dropdown-item">
+                                <i class="ti ti-key fs-6"></i>
+                                <p class="mb-0 fs-3">Đổi mật khẩu</p>
                             </a>
-                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                <i class="ti ti-list-check fs-6"></i>
-                                <p class="mb-0 fs-3">My Task</p>
-                            </a>
-                            <a href="{{route('system.auth.logout')}}" class="btn btn-outline-primary mx-3 mt-2 d-block">Đăng xuất</a>
+                            <a href="{{ route('system.auth.logout') }}"
+                                class="btn btn-outline-primary mx-3 mt-2 d-block">Đăng xuất</a>
                         </div>
                     </div>
                 </li>
