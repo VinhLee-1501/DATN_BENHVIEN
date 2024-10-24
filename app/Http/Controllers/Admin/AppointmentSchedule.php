@@ -41,6 +41,7 @@ class AppointmentSchedule extends Controller
 
         return response()->json([
             'appointment_time' => $book->day,
+            'hour' => $book->hour,
             'doctor_name' => $doctor,
             'specialty_id' => $specialty_id,
             'status' => $book->status,
@@ -75,7 +76,19 @@ class AppointmentSchedule extends Controller
         }
 
         $status = $request->input('status');
+        $hour = $request->input('hour');
+        // dd($hour);
 
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $hourNow = Carbon::parse($hour)->format('H:i:s');
+        $hourDeadline = Carbon::createFromTime(16, 0, 0)->toTimeString();
+
+        // dd($hourNow);
+        // dd($hourDeadline);
+
+        if($hourNow > $hourDeadline){
+            return response()->json(['error' => 'Giờ không hợp lệ'], 400);
+        }
 
         if ($status == 2) {
             $book->status = $status;
@@ -83,7 +96,10 @@ class AppointmentSchedule extends Controller
             return response()->json(['success' => true, 'message' => 'Trạng thái đã được cập nhật thành công.']);
         }
 
-        $date = Carbon::parse($request->input('appointment_time'));
+        $appointmentTime = $request->input('appointment_time');
+
+        $date = Carbon::parse($appointmentTime)->toDateString();
+        // dd($date);
         $currentDate = Carbon::now()->toDateString();
 
         if ($date < $currentDate) {
@@ -95,13 +111,13 @@ class AppointmentSchedule extends Controller
         $schedule = Schedule::where('user_id', $doctorUserId)
             ->whereDate('day', $date)
             ->get();
+        // dd('đây là ' . $schedule);
 
         // $bookDay = Book::where('day', $date)->get();
 
         if (!$schedule) {
             return response()->json(['error' => 'Bác sĩ này không có lịch khám vào ngày này'], 400);
         }
-
 
         $scheduleDate = Schedule::whereDate('day', $date)
             ->where('user_id', $doctorUserId)
@@ -121,6 +137,7 @@ class AppointmentSchedule extends Controller
         $book->day = $date;
 
         $book->status = $status;
+        $book->hour = $hour;
         $book->url = $request->input('url');
         // Lưu bản ghi
         $book->save();

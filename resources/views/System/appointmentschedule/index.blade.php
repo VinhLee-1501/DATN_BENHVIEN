@@ -148,10 +148,17 @@
                     </div>
                     <div class="modal-body">
                         <form>
-                            <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Thời gian khám:</label>
-                                <input type="datetime-local" name="selectedDay" class="form-control" id="selectedDay"
-                                    value="">
+                            <div class="col-md-12 d-flex">
+                                <div class="mb-3 col-md-6 pe-1">
+                                    <label for="recipient-name" class="col-form-label">Thời gian khám:</label>
+                                    <input type="date" name="selectedDay" class="form-control" id="selectedDay"
+                                        value="">
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="recipient-name" class="col-form-label">Giờ khám:</label>
+                                    <input type="time" name="hour" class="form-control" id="hour"
+                                        value="">
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="doctor_name" class="col-form-label">Bác sĩ:</label>
@@ -206,8 +213,16 @@
                         } else {
                             $('#urlMeeting')
                         }
-                        $('#selectedDay').val(response
-                            .appointment_time);
+
+                        // Chuyển đổi từ định dạng ISO (nếu là chuỗi ISO)
+                        var appointmentTime = new Date(response.appointment_time);
+                        var formattedDate = appointmentTime.toISOString().split('T')[
+                            0]; // Lấy phần ngày trong định dạng 'Y-m-d'
+
+                        $('#selectedDay').val(formattedDate);
+                        $('#hour').val(response.hour);
+
+
                         $('#specialty_id').val(response.specialty_id);
                         $('#emailUser').val(response.email);
                         updateDoctors(response.appointment_time, response.specialty_id);
@@ -252,7 +267,7 @@
 
                     appState.roomId = roomId; // Lưu roomId
                     appState.roomToken = roomToken; // Lưu roomToken
-                    
+
 
                 } catch (error) {
                     console.error("Lỗi khi tạo phòng họp:", error);
@@ -289,7 +304,7 @@
                 });
 
                 const videoElement = localTrack.attach();
-                
+
                 document.querySelector("#videos").appendChild(videoElement);
 
                 const roomData = await StringeeVideo.joinRoom(appState.callClient, roomToken);
@@ -338,12 +353,14 @@
                 var id = $('#exampleModal').data('id');
                 // console.log(id);
                 var appointmentTime = $('#selectedDay').val();
+                var hour = $('#hour').val();
                 var doctorName = $('#doctor_name').val();
                 var confirmation = $('#confirmation-check').is(':checked');
                 var cancel = $('#cancelstatus-check').is(':checked');
                 var email = $('#emailUser').val();
                 var status = cancel ? 2 : (confirmation ? 1 : 0);
                 var url = $('#urlMeeting').val() ? $('#urlMeeting').val() : null;
+
 
                 // break;
 
@@ -352,6 +369,7 @@
                     type: 'patch',
                     data: {
                         appointment_time: appointmentTime,
+                        hour: hour,
                         doctor_name: doctorName,
                         status: status,
                         email: email,
