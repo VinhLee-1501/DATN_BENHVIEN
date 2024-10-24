@@ -7,13 +7,13 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.0",
+        "intervention/image": "^2.0",
         "laracasts/flash": "^3.2",
         "laravel/framework": "^11.9",
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
         "mckenziearts/laravel-notify": "^2.5",
-        "socialiteproviders/zalo": "^5.0",
-          "intervention/image": "^2.0"
+        "socialiteproviders/zalo": "^5.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

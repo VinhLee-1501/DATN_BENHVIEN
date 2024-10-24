@@ -122,7 +122,7 @@ class AppointmentSchedule extends Controller
         $scheduleDate = Schedule::whereDate('day', $date)
             ->where('user_id', $doctorUserId)
             ->first();
-
+        // dd($scheduleDate);
         $bookCount = Book::join('schedules', 'schedules.shift_id', 'books.shift_id')
             ->where('books.shift_id', $scheduleDate->shift_id)
             ->whereDate('schedules.day', $date)

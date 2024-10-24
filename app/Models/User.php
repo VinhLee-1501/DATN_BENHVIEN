@@ -18,6 +18,7 @@ class User extends Authenticatable
     protected $primaryKey = 'row_id'; // Khóa chính
 
     protected $fillable = [
+        'user_id',
         'firstname',
         'lastname',
         'phone',

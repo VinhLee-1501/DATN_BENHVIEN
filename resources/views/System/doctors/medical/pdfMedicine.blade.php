@@ -32,6 +32,7 @@
 
         .header .hospital-info {
             text-align: left;
+            position: absolute;
         }
 
         .header h4,

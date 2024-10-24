@@ -106,76 +106,8 @@
         </div>
         <form action="{{ route('system.checkupHealth.store', $medical->medical_id) }}" method="post">
             @csrf
-        <div class="d-flex col-md-12">
-            <!-- Clinical Tests -->
-            <div class="card mb-3 col-md-6">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    Dịch vụ cận lâm sàng
-                    <div class="row">
-                        <select id="serviceSelect" class="form-control" onchange="addSelectedTest()">
-                            <option value="">Chọn dịch vụ cận lâm sàng</option>
-                            @foreach ($service as $item)
-                                <option value="{{ $item->service_id }}" data-name="{{ $item->name }}"
-                                    data-price="{{ $item->price }}">
-                                    {{ $item->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered" id="selectedTestsTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên cận lâm sàng</th>
-                                <th>Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <input type="hidden" id="selectService" name="selectedService" value="">
-                            @php  $count =  1;  @endphp
-                            @foreach ( $services as $data )
-                            @php  $int = $count++ @endphp
-                            <tr>
-                            <td>{{$int}}</td>
-                            <td>{{$data->name}}</td>
-                            <td>{{$data->price}}.000 VNĐ</td>
-                                    @endforeach
-                        </tbody>
-                    </table>
-                    <span id="totalAmout">Tổng cộng: {{$totalprice[0]->total_price}}.000 VNĐ</span>
-                 
-                </div>
-            </div>
-
-            <div class="card mb-3 ms-2 col-md-6">
-                <div class="card-header">Chỉ số sinh hiệu</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <label for="blood_pressure">Huyết áp</label>
-                            <div class="d-flex">
-                                <input type="text" class="form-control m-lg-6 p-0 w-25 @error('blood_pressure') is-invalid @enderror" id="bloodPressure"
-                                    name="blood_pressure" value="{{ old('blood_pressure') }}">
-                                <p class="mt-3">mmHg</p>
-                            </div>
-                            @error('blood_pressure')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col">
-                            <label for="respiratory_rate">Nhịp thở</label>
-                            <div class="d-flex">
-                                <input type="text" class="form-control m-lg-6 p-0 w-25 @error('respiratory_rate') is-invalid @enderror" id="respiration"
-                                    name="respiratory_rate" value="{{ old('respiratory_rate') }}">
-                                <p class="mt-3">nhịp/phút</p>
-                            </div>
-                            @error('respiratory_rate')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+            <div class="d-flex col-md-12">
+                <div class="card mb-3 ms-2 col-md-6">
                     <div class="card-body">
                         <table class="table table-bordered" id="selectedTestsTable">
                             <thead>
@@ -318,10 +250,12 @@
                                             <td class="border-bottom-0">
                                                 {{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</td>
                                             <td class="border-bottom-0">{{ $data->diaginsis }}</td>
-                                            <td class="border-bottom-0">{{ $data->lastname }} {{ $data->firstname }}</td>
-                                            <td class="border-bottom-0"> 
+                                            <td class="border-bottom-0">{{ $data->lastname }} {{ $data->firstname }}
+                                            </td>
+                                            <td class="border-bottom-0">
                                                 <a herf="{{ route('system.recordDoctors.detail', $data->medical_id) }}"
-                                                    class="btn btn-success btn-sm">Xem</a></td>
+                                                    class="btn btn-success btn-sm">Xem</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -409,8 +343,8 @@
 
     </div>
 
-    <div class="card mt-3">
-        <div class="card-body d-flex justify-content-between align-items-center">
+    <div class="card mt-3" >
+        <div class="align-items-center card-body d-flex justify-content-between">
             <div class="d-flex">
                 <span class="badge bg-danger me-2">CLS</span>
                 <span class="me-3" id="total_service">{{ $totalprice[0]->total_price }}.000</span>
@@ -421,7 +355,7 @@
                 <span class="me-3" id="total_fullcost"> {{ $total }}.000 VNĐ</span>
             </div>
 
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center overflow-x" style="overflow-x: auto !important">
                 <label for="reexam" class="me-3">Ngày tái khám</label>
                 <input type="text" id="reexamDateInput"
                     class="form-control me-2 @error('re_examination_date') is-invalid @enderror"
@@ -452,11 +386,11 @@
         </div>
     </div>
     </form>
-    @if(session('pdf_data'))
-    <script>
-        window.onload = function() {
-            window.location.href = "{{ route('system.downloadPdf') }}"; // Gọi route để tải PD
-        };
-    </script>
+    @if (session('pdf_data'))
+        <script>
+            window.onload = function() {
+                window.location.href = "{{ route('system.downloadPdf') }}"; // Gọi route để tải PD
+            };
+        </script>
     @endif
 @endsection
