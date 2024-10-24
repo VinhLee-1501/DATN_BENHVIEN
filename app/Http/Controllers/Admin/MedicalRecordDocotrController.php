@@ -15,6 +15,7 @@ use App\Models\TreatmentMedication;
 use App\Models\TreatmentService;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,8 @@ class MedicalRecordDocotrController extends Controller
                 $query->where('status', 3)
                     ->orWhere('status', 2);
             })
-            ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
         // dd($medicalRecord);
 
@@ -67,9 +69,13 @@ class MedicalRecordDocotrController extends Controller
             ->groupBy('treatment_services.treatment_id')
             ->get();
 
-            $medical_patient = MedicalRecord::where('patient_id', $patient_id)
-            ->where('date', '>', now())
+        $medical_patient = MedicalRecord::where('patient_id', $patient_id)
+            ->join('users', 'users.user_id', '=', 'medical_records.user_id')
+            ->select('medical_records.*', 'users.lastname as lastname', 'users.firstname as firstname')
+            ->orderBy('medical_records.created_at', 'desc')
+            ->limit(5)
             ->get();
+
         $service = Service::get();
         $medicine = Medicine::select('*')->distinct()->get();
 
@@ -109,7 +115,6 @@ class MedicalRecordDocotrController extends Controller
             $saveMedicine->dosage = $medicineData['dosage'];
             $saveMedicine->note = $medicineData['note'];
             $saveMedicine->quantity = $medicineData['quantity'];
-            // dd($saveMedicine);
             $saveMedicine->save();
         }
         $medical = MedicalRecord::where('medical_id', $medical_id)->first();
@@ -125,14 +130,53 @@ class MedicalRecordDocotrController extends Controller
         $medical->date  = now();
 
         $medical->update();
+
+        $medicals = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+            ->join('users', 'users.user_id', '=', 'medical_records.user_id')
+            ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
+            ->where('medical_id', $medical_id)
+            ->select(
+                'users.firstname as first_name_doctor',
+                'users.lastname as last_name_doctor',
+                'specialties.name as specialty',
+                'patients.*',
+                'medical_records.*'
+            )
+            ->get();
+
+        $data = [
+            'medicines' => $medicines,
+            'medicals' => $medicals,
+        ];
+
+        session()->put('pdf_data', $data);
+
         return redirect()->route('system.recordDoctor')->with('success', 'Lưu thông tin bệnh án thành công.');
     }
+
+    public function download()
+    {
+        $data = session('pdf_data'); 
+    
+        if (!$data) {
+            return redirect()->back()->with('error', 'Không có dữ liệu để tải.');
+        }
+    
+    
+        session()->forget('pdf_data');
+    
+        $pdf = Pdf::loadView('System.doctors.medical.pdfMedicine', ['data' => $data]);
+        $pdf->setPaper('A4', 'landscape');
+    
+        return $pdf->download('Donthuoc.pdf');
+    }
+    
 
 
     public function detail($medical_id)
     {
         // dd($medical_id);
-        $medical = MedicalRecord::select('medical_records.*', 'patients.*','users.*', 'treatment_details.*')
+        $medical = MedicalRecord::select('medical_records.*', 'patients.*', 'users.*', 'treatment_details.*')
             ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->join('treatment_details', 'treatment_details.medical_id', '=', 'medical_records.medical_id')
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')

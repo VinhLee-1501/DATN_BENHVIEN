@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime('day');
             $table->time('hour');
             $table->string('name', 50);
-            $table->integer('phone');
+            $table->string('phone',10);
             $table->string('email', 255);
             $table->string('symptoms', 255)->nullable();
             $table->string('shift_id', 10)->nullable();

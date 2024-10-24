@@ -1,5 +1,8 @@
 <?php
+
 use Illuminate\Support\ServiceProvider;
+// use Barryvdh\DomPDF\Facade as PDF;
+
 
 return [
 
@@ -136,5 +139,9 @@ return [
         App\Providers\EventServiceProvider::class,
 
     ])->toArray(),
+
+    // 'aliases' => [
+    //     'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+    // ],
 
 ];

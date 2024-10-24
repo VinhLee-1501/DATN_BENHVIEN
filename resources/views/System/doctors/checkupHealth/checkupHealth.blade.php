@@ -26,97 +26,97 @@
             <div class="card-header">Thông tin bệnh nhân</div>
             <div class="card-body">
                 @if (!$patient)
-                    <form action="{{route('system.checkupHealth.storePatient',$book[0]->book_id)}}" method="post">
+                    <form action="{{ route('system.checkupHealth.storePatient', $book[0]->book_id) }}" method="post">
                         @csrf
-                    <div class="row">
-                        <div class="col-md-2">
-                            <label for="patient_id">Mã bệnh nhân</label>
-                            <input type="text" class="form-control" id="patient_id" name="patient_id"
-                                value="{{ strtoupper(Str::random(10)) }}" >
-                        </div>
-                        <div class="col-md-3">
-                            <label for="patient_name">Họ</label>
-                            <input type="text" class="form-control" id="patient_name" name="last_name"
-                                value="{{ $book[0]->name }}" >
-                        </div>
-                        <div class="col-md-3">
-                            <label for="patient_name">Tên</label>
-                            <input type="text" class="form-control" id="patient_name" name="first_name"
-                                value="{{ $book[0]->name }}" >
-                        </div>
-                        <div class="col-md-2">
-                            <label for="gender">Giới tính</label>
-                            <select class="form-select" id="gender" name="gender">
-                                <option value="1">Nam
-                                </option>
-                                <option value="0">Nữ
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="age">Ngày sinh</label>
-                            <input type="date" class="form-control" id="age" name="age"
-                                value="{{ old('age') }}">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="patient_id">Mã bệnh nhân</label>
+                                <input type="text" class="form-control" id="patient_id" name="patient_id"
+                                    value="{{ strtoupper(Str::random(10)) }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="patient_name">Họ</label>
+                                <input type="text" class="form-control" id="patient_name" name="last_name"
+                                    value="{{ $book[0]->name }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="patient_name">Tên</label>
+                                <input type="text" class="form-control" id="patient_name" name="first_name"
+                                    value="{{ $book[0]->name }}">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="gender">Giới tính</label>
+                                <select class="form-select" id="gender" name="gender">
+                                    <option value="1">Nam
+                                    </option>
+                                    <option value="0">Nữ
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="age">Ngày sinh</label>
+                                <input type="date" class="form-control" id="age" name="age"
+                                    value="{{ old('age') }}">
                                 @error('age')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
+                                    <div class="text-danger">*{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <label for="address">Địa chỉ</label>
-                            <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
-                                value="{{ old('address') }}">
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <label for="address">Địa chỉ</label>
+                                <input type="text" class="form-control @error('address') is-invalid @enderror"
+                                    id="address" name="address" value="{{ old('address') }}">
                                 @error('address')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
+                                    <div class="text-danger">*{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                <label for="phone">Số điện thoại</label>
+                                <input type="text" class="form-control" id="phone" name="phone"
+                                    value="{{ $book[0]->phone }}" readonly>
+                                @error('phone')
+                                    <div class="text-danger">*{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                <label for="occupation">Nghề nghiệp</label>
+                                <input type="text" class="form-control @error('occupation') is-invalid @enderror"
+                                    id="occupation" name="occupation" value="{{ old('occupation') }}">
+                                @error('occupation')
+                                    <div class="text-danger">*{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="phone">Số điện thoại</label>
-                            <input type="text" class="form-control" id="phone" name="phone"
-                                value="{{ $book[0]->phone }}" readonly>
-                            @error('phone')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
+                        <div class="row mt-2">
+                            <div class="col-md-3">
+                                <label for="emergency_contact">Liên hệ khẩn cấp</label>
+                                <input type="text" class="form-control @error('emergency_contact') is-invalid @enderror"
+                                    id="emergency_contact" name="emergency_contact" value="{{ old('emergency_contact') }}">
+                                @error('emergency_contact')
+                                    <div class="text-danger">*{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                <label for="national">Quốc tịch</label>
+                                <input type="text" class="form-control @error('national') is-invalid @enderror"
+                                    id="national" name="national" value="{{ old('national') }}">
+                                @error('national')
+                                    <div class="text-danger">*{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                <label for="insurance_number">Số bảo hiểm</label>
+                                <input type="text" class="form-control @error('insurance_number') is-invalid @enderror"
+                                    id="insurance_number" name="insurance_number" value="{{ old('insurance_number') }}">
+                                @error('insurance_number')
+                                    <div class="text-danger">*{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-success btn-sm m-md-4">Lưu bệnh nhân</button>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="occupation">Nghề nghiệp</label>
-                            <input type="text" class="form-control @error('occupation') is-invalid @enderror"
-                                id="occupation" name="occupation" value="{{ old('occupation') }}">
-                            @error('occupation')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-3">
-                            <label for="emergency_contact">Liên hệ khẩn cấp</label>
-                            <input type="text" class="form-control @error('emergency_contact') is-invalid @enderror"
-                                id="emergency_contact" name="emergency_contact" value="{{ old('emergency_contact') }}">
-                            @error('emergency_contact')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <label for="national">Quốc tịch</label>
-                            <input type="text" class="form-control @error('national') is-invalid @enderror"
-                                id="national" name="national" value="{{ old('national') }}">
-                            @error('national')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <label for="insurance_number">Số bảo hiểm</label>
-                            <input type="text" class="form-control @error('insurance_number') is-invalid @enderror"
-                                id="insurance_number" name="insurance_number" value="{{ old('insurance_number') }}">
-                            @error('insurance_number')
-                                <div class="text-danger">*{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            <button type="submit" class="btn btn-success btn-sm m-md-4">Lưu bệnh nhân</button>
-                        </div>
-                    </div>
 
                     </form>
                 @else
@@ -220,27 +220,28 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('system.checkupHealth.saveService', $book[0]->book_id)}}" method="post"> 
+                    <form action="{{ route('system.checkupHealth.saveService', $book[0]->book_id) }}" method="post">
                         @csrf
-                    <table class="table table-bordered" id="selectedTestsTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên cận lâm sàng</th>
-                                <th>Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <input type="hidden" id="selectService" name="selectedService" value="">
+                        <table class="table table-bordered" id="selectedTestsTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên cận lâm sàng</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <input type="hidden" id="selectService" name="selectedService" value="">
 
-                            <!-- Các mục đã chọn sẽ thêm vào đây -->
-                        </tbody>
-                    </table>
-                    <span id="totalAmout"></span>
-                    <div class="float-xxl-end">
-                        <button type="submit" class="btn btn-success btn-sm" type="btn">Chọn</button>
-                    </div>
-                </form>
+                                <!-- Các mục đã chọn sẽ thêm vào đây -->
+                            </tbody>
+                        </table>
+                        <span id="totalAmout"></span>
+                        <div class="float-xxl-end">
+                            <button type="submit" class="btn btn-success btn-sm" type="btn">Chọn</button>
+
+                        </div>
+                    </form>
                 </div>
             </div>
             <!-- Vitals -->
@@ -353,8 +354,9 @@
                                         <td class="border-bottom-0">
                                             {{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</td>
                                         <td class="border-bottom-0">{{ $data->diaginsis }}</td>
-                                        <td class="border-bottom-0">{{$data->lastname}} {{$data->firstname}}</td>
-                                        <td class="border-bottom-0"> <a href="{{route('system.recordDoctors.detail', $data->medical_id)}}"
+                                        <td class="border-bottom-0">{{ $data->lastname }} {{ $data->firstname }}</td>
+                                        <td class="border-bottom-0"> <a
+                                                href="{{ route('system.recordDoctors.detail', $data->medical_id) }}"
                                                 class="btn btn-success btn-sm">Xem</a></td>
                                     </tr>
                                 @endforeach
@@ -409,40 +411,34 @@
                 </div>
             </div>
             <div class="card-body">
-             
-                    <div class="form-group p-3 col-md-6">
-                        <select id="myAjaxSelect" class="form-control mb-6 myAjaxSelect" name="myAjaxSelect[]"
-                            onchange="addSelectedMidicine()">
-                            <option disable>Tìm thuốc</option>
-                            @foreach ($medicine as $item)
-                                <option value='{{ $item->medicine_id }}' data-name='{{ $item->name }}'
-                                    data-unit='{{ $item->unit_of_measurement }}'>{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <table class="table table-bordered" id="tableMedicine">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tên thuốc</th>
-                                <th>DVT</th>
-                                <th style="width:15%">Ngày uống</th>
-                                <th>Lúc</th>
-                                <th>SL</th>
-                                <th>Cách dùng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <input type="hidden" id="selectedMedicines" name="selectedMedicines">
+                <div class="form-group p-3 col-md-6">
+                    <select id="myAjaxSelect" class="form-control mb-6 myAjaxSelect" name="myAjaxSelect[]"
+                        onchange="addSelectedMidicine()">
+                        <option disable>Tìm thuốc</option>
+                        @foreach ($medicine as $item)
+                            <option value='{{ $item->medicine_id }}' data-name='{{ $item->name }}'
+                                data-unit='{{ $item->unit_of_measurement }}'>{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <table class="table table-bordered" id="tableMedicine">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên thuốc</th>
+                            <th>DVT</th>
+                            <th style="width:15%">Ngày uống</th>
+                            <th>Lúc</th>
+                            <th>SL</th>
+                            <th>Cách dùng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <input type="hidden" id="selectedMedicines" name="selectedMedicines">
 
-                        </tbody>
-                    </table>
-                    <div class="float-xxl-end">
-                        <a type="" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            Tạo đơn thuốc
-                            </a>
-                    </div>
-                
+                    </tbody>
+                </table>
+
                 <!-- Modal -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                     tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

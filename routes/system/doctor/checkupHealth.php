@@ -13,5 +13,8 @@ Route::prefix('checkupHealths')->middleware('check_login_admin')
       Route::post('/saveservice/{book_id}', [CheckupHealthController::class, 'saveService'])->name('checkupHealth.saveService');
       Route::get('/record/{medical}', [CheckupHealthController::class, 'record'])->name(name: 'checkupHealth.record');
       Route::post('/store/{medical_id}', [CheckupHealthController::class, 'store'])->name('checkupHealth.store');
+      
+      Route::get('/download-pdf', [CheckupHealthController::class, 'download'])->name('downloadPdf');
+
 
    });

@@ -29,10 +29,10 @@ class CheckupPatientRequest extends FormRequest
             'age' => 'required|date',
             'address' => 'required',
             'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/|unique:users,phone',
-            'occupation' => 'required',
-            'emergency_contact' => 'required',
+            // 'occupation' => 'required',
+            // 'emergency_contact' => 'required',
             'national' => 'required',
-            'insurance_number' => 'required|unique:patients,insurance_number',
+            // 'insurance_number' => 'required|unique:patients,insurance_number',
             
         ];
     }
@@ -50,11 +50,11 @@ class CheckupPatientRequest extends FormRequest
             'phone.required' => ':attribute không để trống',
             'phone.regex' => ':attribute phải là số hợp lệ',
             'phone.unique' => ':attribute đã tồn tại',
-            'occupation.required' => ':attribute không để trống',
-            'emergency_contact.required' => ':attribute không để trống',
+            // 'occupation.required' => ':attribute không để trống',
+            // 'emergency_contact.required' => ':attribute không để trống',
             'national.required' => ':attribute không để trống',
-            'insurance_number.required' => ':attribute không để trống',
-            'insurance_number.unique' => ':attribute đã tồn tại',
+            // 'insurance_number.required' => ':attribute không để trống',
+            // 'insurance_number.unique' => ':attribute đã tồn tại',
 
         ];
     }
@@ -69,10 +69,10 @@ class CheckupPatientRequest extends FormRequest
             'gender' => 'Giới tính',
             'age' => 'Ngày sinh',
             'address' => 'Địa chỉ',
-            'occupation' => 'Nghề nghiệp',
+            // 'occupation' => 'Nghề nghiệp',
             'national' => 'Quốc tịch',
-            'insurance_number' => 'Số bảo hiểm',
-            'emergency_contact' => 'Liên hệ khẩn cấp',
+            // 'insurance_number' => 'Số bảo hiểm',
+            // 'emergency_contact' => 'Liên hệ khẩn cấp',
         ];
     }
 }

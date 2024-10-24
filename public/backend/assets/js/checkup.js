@@ -57,10 +57,18 @@ function addMedicineFromDropdown(MedicineId, MedicineName, MedicineUnit) {
 
     selectedMedicines.push({
         id: MedicineId,
+        name: MedicineName, // Adding MedicineName here
+        unit: MedicineUnit, // Optional: You can also add the unit if necessary
         usage: "Mỗi lần uống 1 viên",
         dosage: 3,
         note: "Sau ăn",
-        quantity: 3 * (parseInt(document.getElementById("selectedDay").innerText.replace(" ngày", "")) || 0)
+        quantity:
+            3 *
+            (parseInt(
+                document
+                    .getElementById("selectedDay")
+                    .innerText.replace(" ngày", "")
+            ) || 0),
     });
 
     updateRowDrink(uniqueId); // Cập nhật ngay sau khi thêm thuốc
@@ -68,10 +76,13 @@ function addMedicineFromDropdown(MedicineId, MedicineName, MedicineUnit) {
     console.log("Selected medicines:", selectedMedicines);
 }
 
+
 function removeMedicine(button) {
     const row = button.closest("tr");
     const MedicineId = row.getAttribute("data-select2-id");
-    selectedMedicines = selectedMedicines.filter(medicine => medicine.id !== MedicineId);
+    selectedMedicines = selectedMedicines.filter(
+        (medicine) => medicine.id !== MedicineId
+    );
     row.parentNode.removeChild(row);
 
     const tableBody = document.querySelector("#tableMedicine tbody");
@@ -87,8 +98,7 @@ function updateRowDrink(uniqueId) {
     const selectedDayElement = document.getElementById("selectedDay");
     const usageInput = document.querySelector(`#usage_${uniqueId}`);
     const timeSelect = document.querySelector(`#time_${uniqueId}`);
-console.log(selectedDayElement);
-
+    console.log(selectedDayElement);
 
     if (!dayInput || !selectedDayElement || !usageInput || !timeSelect) {
         console.error("Không tìm thấy phần tử cho uniqueId:", uniqueId);
@@ -96,20 +106,25 @@ console.log(selectedDayElement);
     }
 
     const day = parseInt(dayInput.value) || 0;
-    const selectedDay = parseInt(selectedDayElement.innerText.replace(" ngày", "")) || 0;
+    const selectedDay =
+        parseInt(selectedDayElement.innerText.replace(" ngày", "")) || 0;
     const totalDrink = day * selectedDay;
-    console.log(totalDrink);
-    
-    document.querySelector(`#total_day_drink_${uniqueId}`).innerText = totalDrink;
 
-    const row = document.querySelector(`[data-select2-id="${uniqueId.split('-')[1]}"]`);
+    document.querySelector(`#total_day_drink_${uniqueId}`).innerText =
+        totalDrink;
+
+    const row = document.querySelector(
+        `[data-select2-id="${uniqueId.split("-")[1]}"]`
+    );
     if (!row) {
         console.error("Không tìm thấy hàng cho uniqueId:", uniqueId);
         return;
     }
 
     // Cập nhật lại thông tin thuốc trong mảng selectedMedicines
-    const medicine = selectedMedicines.find(medicine => medicine.id === uniqueId.split('-')[1]);
+    const medicine = selectedMedicines.find(
+        (medicine) => medicine.id === uniqueId.split("-")[1]
+    );
     if (medicine) {
         medicine.dosage = day;
         medicine.note = timeSelect.value;
@@ -125,17 +140,17 @@ function updateHiddenInput() {
     hiddenInput.value = JSON.stringify(selectedMedicines);
 }
 
+
+
 function updateSelectedDay(day) {
-    document.getElementById('selectedDay').innerText = day + " ngày";
+    document.getElementById("selectedDay").innerText = day + " ngày";
     const tableBody = document.querySelector("#tableMedicine tbody");
     Array.from(tableBody.rows).forEach((row, index) => {
         const uniqueId = `row-${index + 1}`;
         updateRowDrink(uniqueId);
     });
 
-
-
-   // -- Cập nhật ngày tái khám theo ngày uống thuốc --
+    // -- Cập nhật ngày tái khám theo ngày uống thuốc --
     const today = new Date();
     today.setDate(today.getDate() + day);
 
@@ -145,14 +160,9 @@ function updateSelectedDay(day) {
 
     const reexamDate = `${dayOfMonth}/${month}/${year}`;
     document.querySelector("#reexamDateInput").value = reexamDate;
-
-
 }
 
 // --- Tìm thuốc end ---
-
-
-
 
 //--- Cận lâm sàng start ---
 
@@ -198,22 +208,24 @@ function addTestFromDropdown(serviceId, serviceName, servicePrice) {
     totalAmount += Number(servicePrice);
 
     const total1 = new Intl.NumberFormat("vi-VN").format(totalAmount);
-    document.getElementById('totalAmout').innerText = 'Tổng tiền: ' + new Intl.NumberFormat("vi-VN").format(totalAmount) + '.000 VNĐ';
-    document.getElementById('total_service').innerText = new Intl.NumberFormat("vi-VN").format(totalAmount) + '.000';
-    document.getElementById('cost').innerText = 30 + ".000";
+    document.getElementById("totalAmout").innerText =
+        "Tổng tiền: " +
+        new Intl.NumberFormat("vi-VN").format(totalAmount) +
+        ".000 VNĐ";
+    document.getElementById("total_service").innerText =
+        new Intl.NumberFormat("vi-VN").format(totalAmount) + ".000";
+    document.getElementById("cost").innerText = 30 + ".000";
 
     const total_end = Number(total1) + Number(30);
-    document.getElementById('total_fullcost').innerText = new Intl.NumberFormat("vi-VN").format(total_end) + '.000 VNĐ';
+    document.getElementById("total_fullcost").innerText =
+        new Intl.NumberFormat("vi-VN").format(total_end) + ".000 VNĐ";
 
     if (!selectService.includes(serviceId)) {
-        selectService.push(
-         serviceId );
+        selectService.push(serviceId);
     }
     console.log(selectService);
     updateHiddenInputService();
-
 }
-
 
 function removeTest(button, servicePrice) {
     const row = button.closest("tr");
@@ -222,28 +234,30 @@ function removeTest(button, servicePrice) {
 
     totalAmount -= Number(servicePrice);
 
-    document.getElementById('totalAmout').innerText = 'Tổng tiền: ' + new Intl.NumberFormat("vi-VN").format(totalAmount) + '.000 VNĐ';
-    document.getElementById('total_service').innerText = new Intl.NumberFormat("vi-VN").format(totalAmount) + '.000';
-    document.getElementById('total_fullcost').innerText = new Intl.NumberFormat("vi-VN").format(totalAmount + 30) + '.000 VNĐ';
+    document.getElementById("totalAmout").innerText =
+        "Tổng tiền: " +
+        new Intl.NumberFormat("vi-VN").format(totalAmount) +
+        ".000 VNĐ";
+    document.getElementById("total_service").innerText =
+        new Intl.NumberFormat("vi-VN").format(totalAmount) + ".000";
+    document.getElementById("total_fullcost").innerText =
+        new Intl.NumberFormat("vi-VN").format(totalAmount + 30) + ".000 VNĐ";
 
     // Xóa serviceId khỏi mảng selectService
     const index = selectService.indexOf(serviceId);
     if (index > -1) {
         selectService.splice(index, 1);
     }
-    console.log('xóa',selectService);
+    console.log("xóa", selectService);
     updateHiddenInputService();
 }
 function updateHiddenInputService() {
     const hiddenInput = document.getElementById("selectService");
     hiddenInput.value = JSON.stringify(selectService);
     // console.log(hiddenInput);
-
 }
 
 // --- Cận lâm sàng end ---
-
-
 
 // --- Thêm lời dặn  start----
 function toggleCustomInput() {
@@ -276,4 +290,6 @@ function updateSelectValue() {
 }
 
 // --- Thêm lời dặn  end----
+
+
 

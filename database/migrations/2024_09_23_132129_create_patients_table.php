@@ -16,11 +16,11 @@ return new class extends Migration
             $table->boolean('gender');
             $table->date('birthday');
             $table->string('address', 255);
-            $table->integer('insurance_number'); // Sửa lại cho đúng quy tắc đặt tên
-            $table->integer('emergency_contact');
-            $table->string('occupation', 30);
+            $table->integer('insurance_number')->nullable(); 
+            $table->integer('emergency_contact')->nullable();
+            $table->string('occupation', 30)->nullable();
             $table->string('national');
-            $table->string('phone')->nullable();
+            $table->string('phone',10)->nullable();
 
             $table
                 ->foreign('phone')

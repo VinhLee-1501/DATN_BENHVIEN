@@ -1,5 +1,4 @@
 @extends('layouts.admin.master')
-
 @section('content')
     <div class="card w-100">
         <div class="card-body p-4">
@@ -90,6 +89,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {!! $book->links() !!}
             </div>
         </div>
     </div>
