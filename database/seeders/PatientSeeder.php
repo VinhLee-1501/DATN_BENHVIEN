@@ -22,7 +22,7 @@ class PatientSeeder extends Seeder
             'gender' => '1',
             'birthday' => date('2004-05-01'),
             'address' => 'Ngã bảy, Hậu Giang',
-            'Insurance_number' => '8612385245',
+            'insurance_number' => '8612385245',
             'emergency_contact' => '0369852157',
             'occupation'=>'Sinh viên',
             'national'=> 'Việt Name',

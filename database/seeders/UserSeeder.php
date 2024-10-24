@@ -15,16 +15,16 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $specialty_id = Specialty::first();
-        User::create([
-            'user_id' => strtoupper(Str::random(10)),
-            'firstname' => 'admin',
-            'lastname' => 'foo',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('admin123'),
-            'phone' => '0147258369',
-            'role' => 1,
-            'status' => 1
-        ]);
+        // User::create([
+        //     'user_id' => strtoupper(Str::random(10)),
+        //     'firstname' => 'admin',
+        //     'lastname' => 'foo',
+        //     'email' => 'admin@example.com',
+        //     'password' => bcrypt('admin123'),
+        //     'phone' => '0147258369',
+        //     'role' => 1,
+        //     'status' => 1
+        // ]);
 
         User::create([
             'user_id' => strtoupper(Str::random(10)),
