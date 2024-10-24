@@ -22,8 +22,8 @@
                                 <span class="hide-menu">Thống kê (System)</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="#" aria-expanded="false">
+                        <li class="sidebar-item {{ request()->routeIs('system.patient') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.patient') }}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-user-plus"></i>
                                 </span>

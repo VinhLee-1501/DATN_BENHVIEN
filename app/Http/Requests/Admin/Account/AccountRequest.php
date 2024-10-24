@@ -27,19 +27,19 @@ class AccountRequest extends FormRequest
         // Nếu là phương thức thêm mới (POST)
         if ($this->isMethod('post')) {
             return [
-                'firstname' => 'required|string|max:50',
-                'lastname' => 'required|string|max:50',
-                'email' => 'required|email|max:255|unique:users,email', // Kiểm tra tính duy nhất khi thêm mới
-                'phone' => 'required|string|min:10|unique:users,phone', // Kiểm tra tính duy nhất khi thêm mới
-                'birthday' => 'required|date',
+                'firstname' => 'required|string',
+                'lastname' => 'required|string',
+                'email' => 'required|email|unique:users,email', // Kiểm tra tính duy nhất khi thêm mới
+                'specialty_id' => 'nullable|string ',
+                'phone' => 'required|min:10|unique:users,phone',
             ];
         }
 
         // Nếu là phương thức cập nhật (PATCH/PUT)
         if ($this->isMethod('patch') || $this->isMethod('put')) {
             return [
-                'firstname' => 'required|string|max:50',
-                'lastname' => 'required|string|max:50',
+                'firstname' => 'required|string',
+                'lastname' => 'required|string',
                 'email' => [
                     'required',
                     'email',
@@ -72,8 +72,6 @@ class AccountRequest extends FormRequest
             'email.unique' => 'Email đã tồn tại',
 
             'phone.required' => 'Số điện thoại không được để trống.',
-            'phone.string' => 'Số điện thoại phải là chuỗi ký tự.',
-            'phone.max' => 'Số điện thoại tối đa 10 ký tự.',
             'phone.unique' => 'Số điện thoại đã tồn tại',
 
             'password.required' => 'Mật khẩu không được để trống.',
@@ -82,11 +80,9 @@ class AccountRequest extends FormRequest
 
             'firstname.required' => 'Tên không được để trống.',
             'firstname.string' => 'Tên phải là chuỗi ký tự.',
-            'firstname.max' => 'Tên tối đa 40 ký tự.',
 
             'lastname.required' => 'Họ không được để trống.',
             'lastname.string' => 'Họ phải là chuỗi ký tự.',
-            'lastname.max' => 'Họ tối đa 10 ký tự.',
         ];
     }
 }

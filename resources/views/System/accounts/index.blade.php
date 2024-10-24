@@ -19,22 +19,32 @@
 
         <div class="tab-content" id="nav-tabContent">
 
-            <div class="col-md-6 d-flex py-3">
-                <form action="" class="col-md-12 row">
-                    <div class="col-md-6">
-                        <input type="text" id="nameInput" class="form-control" placeholder="Tìm theo Họ tên"
-                               name="name">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" id="phoneInput" class="form-control" placeholder="Tìm theo SDT" name="phone">
-                    </div>
 
-                </form>
+<div class="d-flex align-items-center justify-content-between py-3">
+
+    <div class="col-md-6 d-flex">
+        <form action="" class="col-md-12 row">
+            <div class="col-md-6">
+                <input type="text" id="nameInput" class="form-control" placeholder="Tìm theo Họ tên"
+                       name="name">
+            </div>
+            <div class="col-md-6">
+                <input type="text" id="phoneInput" class="form-control" placeholder="Tìm theo SDT" name="phone">
             </div>
 
-            <div class="mb-3">
-                <a href="{{ route('system.accounts.create') }}" class="btn btn-success me-2">Thêm Tài Khoản</a>
-            </div>
+        </form>
+    </div>
+
+    <div class="">
+        <a href="{{ route('system.accounts.create') }}" class="btn btn-success me-2">Thêm Tài Khoản</a>
+    </div>
+
+
+</div>
+
+
+
+
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
                 @include(('System.accounts.admin'))

@@ -6,27 +6,28 @@
 
         <div class="card w-100">
             <div class="card-body p-4">
-                <form action="{{ route('system.accounts.update', $account[0]->user_id) }}" method="POST">
+                <form action="{{ route('system.accounts.update', $account->user_id) }}" method="POST">
                     @csrf
                     @method('PATCH')
                     <h6 class="fw-semibold mb-4">I. Tài khoản</h6>
                     <div class="table-responsive ms-3">
                         <div class="col-md-12 row">
-{{--                            <div class="col-md-4 " style="display: none">--}}
-{{--                                <div class="mb-3">--}}
-{{--                                    <label for="codeInput" class="form-label">Mã ngẫu nhiên</label>--}}
-{{--                                    <input type="text" id="userid" name="user_id" class="form-control"--}}
-{{--                                           value="{{ $account[0]->user_id }}" readonly>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                            <div class="col-md-4 " style="display: none">
+                                <div class="mb-3">
+                                    <label for="codeInput" class="form-label">Mã ngẫu nhiên</label>
+                                    <input type="text" id="userid" name="user_id" class="form-control"
+                                           value="{{ old('userid', $account->user_id) }}" readonly>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label for="roleSelect" class="form-label">Vai trò</label>
                                 <select id="roleSelect" name="role" class="form-control" onchange="toggleInputs()">
                                     <option value="">Chọn vai trò</option>
-                                    <option value="0" {{ $account[0]->role == 0 ? 'selected' : '' }}>Người dùng</option>
-                                    <option value="1" {{ $account[0]->role == 1 ? 'selected' : '' }}>Quản trị</option>
-                                    <option value="2" {{ $account[0]->role == 2 ? 'selected' : '' }}>Bác sĩ</option>
+                                    <option value="0" {{ old('role', $account->role) == '0' ? 'selected' : '' }}>Người dùng</option>
+                                    <option value="1" {{ old('role', $account->role) == '1' ? 'selected' : '' }}>Quản trị</option>
+                                    <option value="2" {{ old('role', $account->role) == '2' ? 'selected' : '' }}>Bác sĩ</option>
                                 </select>
+
                                 @error('role')
                                 <div class="text-danger">*{{ $message }}</div>
                                 @enderror
@@ -34,10 +35,10 @@
                         </div>
                         <div class="col-md-12 row" id="inputFields">
                             <div class="col-md-6">
-                                <div class="mb-3" id="emailField" >
+                                <div class="mb-3" id="emailField">
                                     <label for="emailInput" class="form-label">Email</label>
                                     <input type="email" id="emailInput" name="email" class="form-control"
-                                           placeholder="Nhập email" value="{{ $account[0]->email }}">
+                                           placeholder="Nhập email" value="{{ old('email', $account->email) }}">
                                     @error('email')
                                     <div class="text-danger">*{{ $message }}</div>
                                     @enderror
@@ -62,7 +63,7 @@
                                 <div class="mb-3">
                                     <label for="lastname" class="form-label">Họ</label>
                                     <input type="text" id="lastname" name="lastname" class="form-control"
-                                           placeholder="Nhập họ" value="{{ $account[0]->lastname }}">
+                                           placeholder="Nhập họ" value="{{ old('lastname', $account->lastname) }}">
                                     @error('lastname')
                                     <div class="text-danger">*{{ $message }}</div>
                                     @enderror
@@ -72,7 +73,7 @@
                                 <div class="mb-3">
                                     <label for="firstName" class="form-label">Tên</label>
                                     <input type="text" id="firstname" name="firstname" class="form-control"
-                                           placeholder="Nhập tên" value="{{ $account[0]->firstname }}">
+                                           placeholder="Nhập tên" value="{{ old('firstname', $account->firstname) }}">
                                     @error('firstname')
                                     <div class="text-danger">*{{ $message }}</div>
                                     @enderror
@@ -82,7 +83,7 @@
                                 <div class="mb-3">
                                     <label for="phoneInput" class="form-label">Số điện thoại</label>
                                     <input type="text" id="phoneInput" name="phone" class="form-control"
-                                           placeholder="Nhập số điện thoại" value="{{ $account[0]->phone }}"
+                                           placeholder="Nhập số điện thoại" value="{{ old('phone', $account->phone) }}"
                                            oninput="updateAccountFromPhone()">
                                     @error('phone')
                                     <div class="text-danger">*{{ $message }}</div>
@@ -90,28 +91,25 @@
                                 </div>
                             </div>
                         </div>
-{{--                        <div class="col-md-12 row" id="specialtyField" style="display: none;">--}}
-{{--                            <div class="col-md-6">--}}
-{{--                                <div class="mb-3">--}}
-{{--                                    <label for="specialtyInput" class="form-label">Chuyên khoa</label>--}}
-{{--                                    <input type="text" id="specialtyInput" name="specialty" class="form-control"--}}
-{{--                                           placeholder="Nhập chuyên khoa" value="{{ $account[0]->specialty }}">--}}
-{{--                                    @error('specialty')--}}
-{{--                                    <div class="text-danger">*{{ $message }}</div>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-6">--}}
-{{--                                <div class="mb-3">--}}
-{{--                                    <label for="departmentInput" class="form-label">Phòng khám</label>--}}
-{{--                                    <input type="text" id="departmentInput" name="department" class="form-control"--}}
-{{--                                           placeholder="Nhập phòng khám" value="{{ $account[0]->department }}">--}}
-{{--                                    @error('department')--}}
-{{--                                    <div class="text-danger">*{{ $message }}</div>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+
+                        <div class="col-md-12 row" id="specialtyField" style="display: none;">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="specialtyInput" class="form-label">Chuyên khoa</label>
+                                    <select id="specialtyInput" name="specialty_id" class="form-control">
+                                        @foreach($specialties as $item) <!-- Thay đổi từ $account thành $specialties -->
+                                        <option value="{{ $item->specialty_id }}" {{ old('specialty_id', $account->specialty_id) == $item->specialty_id ? 'selected' : '' }}>
+                                            {{ $item->name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @error('specialty_id')
+                                    <div class="text-danger">*{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
@@ -120,31 +118,31 @@
         </div>
 
         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                toggleInputs(); // Gọi ngay khi trang load để hiển thị đúng
+
+                // Lắng nghe sự thay đổi của vai trò
+                const roleSelect = document.getElementById('roleSelect');
+                roleSelect.addEventListener('change', toggleInputs);
+            });
+
             function toggleInputs() {
                 const roleSelect = document.getElementById('roleSelect');
                 const inputFields = document.getElementById('inputFields');
                 const specialtyField = document.getElementById('specialtyField');
-                const emailField = document.getElementById('emailField');
 
-                if (roleSelect.value) {
-                    inputFields.style.display = 'flex';
-                    emailField.style.display = 'block';
-                    specialtyField.style.display = roleSelect.value === '2' ? 'flex' : 'none';
-                } else {
-                    inputFields.style.display = 'none';
-                    specialtyField.style.display = 'none';
-                    emailField.style.display = 'none';
-                }
+                // Hiển thị các trường input dựa trên vai trò
+                inputFields.style.display = roleSelect.value ? 'flex' : 'none';
+
+                // Nếu vai trò là Bác sĩ (giá trị là '2') thì hiển thị trường Chuyên khoa
+                specialtyField.style.display = roleSelect.value === '2' ? 'flex' : 'none';
             }
 
             function updateAccountFromPhone() {
-                const roleSelect = document.getElementById('roleSelect');
                 const phoneInput = document.getElementById('phoneInput');
                 const emailInput = document.getElementById('emailInput');
 
-                if (roleSelect.value === '0') {
-                    emailInput.value = phoneInput.value;
-                }
+                // Logic để tự động cập nhật email từ số điện thoại nếu cần
             }
         </script>
 @endsection

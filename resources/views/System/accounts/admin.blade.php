@@ -39,11 +39,11 @@
                             <a href="{{ route('system.accounts.edit', $item->user_id) }}" class="btn btn-primary"><i
                                     class="ti ti-notes"></i></a>
                             <form action="{{ route('system.accounts.destroy', $item->user_id) }}"
-                                  id="form-delete" method="post">
+                                  id="form-delete{{ $item->user_id }}" method="post">
                                 @method('delete')
                                 @csrf
                             </form>
-                            <button type="submit" class="btn btn-danger btn-delete ms-1" data-id="">
+                            <button type="submit" class="btn btn-danger btn-delete ms-1" data-id="{{ $item->user_id }}">
                                 <i class="ti ti-trash"></i>
                             </button>
                         </td>

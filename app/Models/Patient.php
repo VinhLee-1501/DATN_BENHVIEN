@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'row_id'; // Khóa chính
 
     protected $fillable = [
-      'patien_id',
+        'patien_id',
         'first_name',
         'last_name',
         'gender',

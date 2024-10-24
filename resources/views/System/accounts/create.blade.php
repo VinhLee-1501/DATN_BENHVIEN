@@ -94,19 +94,18 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="specialtyInput" class="form-label">Chuyên khoa</label>
-                                    <select id="specialtyInput" name="specialty" class="form-control"
+                                    <select id="specialtyInput" name="specialty_id" class="form-control"
                                             placeholder="Nhập chuyên khoa" value="{{ old('specialty') }}">
                                         @foreach($specialties as $item)
                                             <option value="{{ $item->specialty_id }}"> {{ $item->name }}</option>
 
                                         @endforeach
                                     </select>
-                                    @error('specialty')
+                                    @error('specialty_id')
                                     <div class="text-danger">*{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -116,26 +115,32 @@
         </div>
 
         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                toggleInputs(); // Gọi ngay khi trang load để hiển thị đúng
+
+                // Lắng nghe sự thay đổi của vai trò
+                const roleSelect = document.getElementById('roleSelect');
+                roleSelect.addEventListener('change', toggleInputs);
+            });
+
             function toggleInputs() {
                 const roleSelect = document.getElementById('roleSelect');
                 const inputFields = document.getElementById('inputFields');
                 const specialtyField = document.getElementById('specialtyField');
 
-                if (roleSelect.value) {
-                    inputFields.style.display = 'flex';
-                    emailField.style.display = 'block';
-                    specialtyField.style.display = roleSelect.value === '2' ? 'flex' : 'none';
-                } else {
-                    inputFields.style.display = 'none';
-                    specialtyField.style.display = 'none';
-                }
+                // Hiển thị các trường input dựa trên vai trò
+                inputFields.style.display = roleSelect.value ? 'flex' : 'none';
+
+                // Nếu vai trò là Bác sĩ (giá trị là '2') thì hiển thị trường Chuyên khoa
+                specialtyField.style.display = roleSelect.value === '2' ? 'flex' : 'none';
             }
 
             function updateAccountFromPhone() {
-                const roleSelect = document.getElementById('roleSelect');
                 const phoneInput = document.getElementById('phoneInput');
                 const emailInput = document.getElementById('emailInput');
 
+                // Logic để tự động cập nhật email từ số điện thoại nếu cần
             }
         </script>
+
 @endsection
