@@ -25,6 +25,7 @@ class BookingRequest extends FormRequest
             'name' => 'required|string|max:255',
             'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:15',
             'email' => 'required|nullable|email|max:255',
+            'role' => 'required',
             'specialty_id' => 'required|exists:specialties,specialty_id',
             'symptoms' => 'nullable|string|max:1000',
         ];
@@ -54,6 +55,7 @@ class BookingRequest extends FormRequest
             'specialty_id.required' => 'Vui lòng chọn chuyên khoa.',
             'specialty_id.exists' => 'Chuyên khoa không tồn tại hoặc đã bị khóa.',
             'symptoms.max' => 'Triệu chứng không được vượt quá 1000 ký tự.',
+            'role.required' => 'Hình thức khám không được để trống'
         ];
     }
     public function withValidator($validator)

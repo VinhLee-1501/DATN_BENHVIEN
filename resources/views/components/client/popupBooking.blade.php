@@ -122,22 +122,35 @@
 
 
                                 @endif
-
-                                <div class="form__group">
-                                    <select style="width: 100%" id="specialty" name="specialty_id">
-                                        <option value="" disabled
-                                            {{ old('specialty_id') == '' ? 'selected' : '' }}>Chọn chuyên khoa</option>
-                                        @foreach ($specialties as $specialty)
-                                            <option value="{{ $specialty->specialty_id }}"
-                                                {{ old('specialty_id') == $specialty->specialty_id ? 'selected' : '' }}>
-                                                {{ $specialty->name }}
+                                <div class="form__flex">
+                                    <div class="form__group">
+                                        <select style="width: 100%" id="specialty" name="specialty_id">
+                                            <option value="" disabled
+                                                {{ old('specialty_id') == '' ? 'selected' : '' }}>--Chọn chuyên khoa--
                                             </option>
-                                        @endforeach
-                                    </select>
-                                    @if ($errors->has('specialty_id'))
-                                        <span class="text-danger">{{ $errors->first('specialty_id') }}</span>
-                                    @endif
+                                            @foreach ($specialties as $specialty)
+                                                <option value="{{ $specialty->specialty_id }}"
+                                                    {{ old('specialty_id') == $specialty->specialty_id ? 'selected' : '' }}>
+                                                    {{ $specialty->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('specialty_id'))
+                                            <span class="text-danger">{{ $errors->first('specialty_id') }}</span>
+                                        @endif
 
+                                    </div>
+                                    <div class="form__group">
+                                        <select style="width: 100%" id="role" name="role">
+                                            <option value="" disabled {{ old('specialty_id') == '' ? 'selected' : '' }}>--Chọn hình thức khám--</option>
+                                            <option value="0">Trực tiếp</option>
+                                            <option value="1">Trực tuyến</option>
+                                        </select>
+                                        @if ($errors->has('role'))
+                                            <span class="text-danger">{{ $errors->first('role') }}</span>
+                                        @endif
+
+                                    </div>
                                 </div>
 
                                 <div class="form__group">

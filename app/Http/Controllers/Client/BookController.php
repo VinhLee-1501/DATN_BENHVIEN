@@ -40,11 +40,12 @@ class BookController extends Controller
         $book->hour = $request->hour;
         $book->shift_id = $request->shift_id ?? null;
         $book->specialty_id = $request->specialty_id;
+        $book->role = $request->role;
 
 
         $specialty = Specialty::where('specialty_id', $request->specialty_id)
             ->where('status', 1)
-            ->first();
+            ->get();
 
 
         if (!$specialty) {
