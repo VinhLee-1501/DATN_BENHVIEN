@@ -209,10 +209,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Tên thuốc</label>
-                                    <input type="text" name="name" class="form-control"
-                                        id="name">
-                                    <div class="invalid-feedback" id="name"></div>
+                                    <label for="medicine" class="form-label">Tên thuốc</label>
+                                    <select name="name" class="form-control" id="name">
+                                        <option value="">Chọn tên thuốc</option>
+                                        @foreach ($unique_medicine_names as $medicine_name)
+                                            <option value="{{ $medicine_name }}">{{ $medicine_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback" id="name_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -236,8 +240,12 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="unit_of_measurement" class="form-label">Đơn vị</label>
-                                    <input type="text" name="unit_of_measurement" class="form-control"
-                                        id="unit_of_measurement">
+                                    <select name="unit_of_measurement" class="form-control" id="unit_of_measurement">
+                                        <option value="">Chọn đơn vị</option>
+                                        @foreach ($unique_units as $units)
+                                            <option value="{{ $units }}">{{ $units }}</option>
+                                        @endforeach
+                                    </select>
                                     <div class="invalid-feedback" id="unit_of_measurement_error"></div>
                                 </div>
                             </div>

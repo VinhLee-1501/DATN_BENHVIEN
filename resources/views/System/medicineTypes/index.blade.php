@@ -34,8 +34,8 @@
                     </thead>
 
                     <tbody id="myTable">
-                        @php 
-                         $count = 1;
+                        @php
+                            $count = 1;
                         @endphp
                         @foreach ($medicineType as $data)
                             <tr>
@@ -94,8 +94,13 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Tên nhóm thuốc</label>
-                                    <input type="text" name="name" class="form-control " id="name">
+                                    <label for="medicine" class="form-label">Tên thuốc</label>
+                                    <select name="name" class="form-control" id="name">
+                                        <option value="">Chọn tên thuốc</option>
+                                        @foreach ($unique_categories as $category)
+                                            <option value="{{ $category }}">{{ $category }}</option>
+                                        @endforeach
+                                    </select>
                                     <div class="invalid-feedback" id="name_error"></div>
                                 </div>
                             </div>

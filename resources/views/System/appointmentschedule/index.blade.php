@@ -55,7 +55,7 @@
                                     <p class="mb-0 fw-semibold">{{ $item->name }}</p>
                                 </td>
                                 <td class="border-bottom-0">
-                                    <span class="fw-semibold mb-0">{{ '0' . $item->phone }}</span>
+                                    <span class="fw-semibold mb-0">{{ $item->phone }}</span>
                                 </td>
                                 <td class="border-bottom-0">
                                     <span class="fw-semibold mb-0">

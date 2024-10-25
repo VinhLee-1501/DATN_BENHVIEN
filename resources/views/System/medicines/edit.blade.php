@@ -22,12 +22,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="exampleInput1" class="form-label">Tên thuốc</label>
-                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id=""
-                                        value="{{ $medicine->name }}">
-                                    @error('name')
-                                        <div class="text-danger">*{{ $message }}</div>
-                                    @enderror
+                                    <label for="medicine" class="form-label">Tên thuốc</label>
+                                    <select name="name" class="form-control" id="name">
+                                        <option value="">Chọn tên thuốc</option>
+                                        @foreach ($medicine as $medicine_name)
+                                            <option value="{{ $medicine_name }}">{{ $medicine_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback" id="name_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
