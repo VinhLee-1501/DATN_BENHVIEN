@@ -15,12 +15,37 @@ class TreatmentDetailSeeder extends Seeder
      */
     public function run(): void
     {
-        $service = Service::first();
-        $medical = MedicalRecord::first();
+       
         TreatmentDetail::create([
-            'treatment_id' => strtoupper(Str::random(10)),
-            'service_id' =>$service->service_id,
-            'medical_id' => $medical->medical_id,
+            'treatment_id' => 'TREATMENT1',
+            'service_id' => 'SERVICEID1', // X-Quang ngực
+            'medical_id' => 'MEDICALID1', // Viêm họng cấp tính
         ]);
+        
+        TreatmentDetail::create([
+            'treatment_id' => 'TREATMENT2',
+            'service_id' => 'SERVICEID2', // Siêu âm bụng
+            'medical_id' => 'MEDICALID2', // Chẩn đoán khác
+        ]);
+        
+        TreatmentDetail::create([
+            'treatment_id' => 'TREATMENT3',
+            'service_id' => 'SERVICEID3', // Nội soi dạ dày
+            'medical_id' => 'MEDICALID3', // Đau dạ dày
+        ]);
+        
+        TreatmentDetail::create([
+            'treatment_id' => 'TREATMENT4',
+            'service_id' => 'SERVICEID4', // Xét nghiệm máu tổng quát
+            'medical_id' => 'MEDICALID4', // Khám sức khỏe tổng quát
+        ]);
+        
+        TreatmentDetail::create([
+            'treatment_id' => 'TREATMENT5',
+            'service_id' => 'SERVICEID5', // Chụp CT não
+            'medical_id' => 'MEDICALID5', // Chẩn đoán khác
+        ]);
+        
+        
     }
 }

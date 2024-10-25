@@ -47,13 +47,14 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="passwordInput" class="form-label">Mật khẩu</label>
-                                    <input type="password" id="passwordInput" name="password" class="form-control"
-                                           placeholder="Để trống nếu không muốn đổi mật khẩu">
+                                    <input type="password" id="passwordInput" name="password" class="form-control" placeholder="Để trống nếu không muốn đổi mật khẩu">
                                     @error('password')
                                     <div class="text-danger">*{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                     <h6 class="fw-semibold mb-4 mt-3">II. Thông tin cá nhân</h6>

@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\ServiceDirectory;
-use Illuminate\Support\Str;
 use App\Models\Service;
 class ServiceSeeder extends Seeder
 {
@@ -14,19 +11,40 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        $directory = ServiceDirectory::first();
-//        Service::create([
-//            'service_id' => strtoupper(Str::random(10)),
-//            'name' => 'Siêu âm bụng',
-//            'price' => 165.00,
-//            'directory_id' => $directory->directory_id,
-//        ]);
-
         Service::create([
-            'service_id' => strtoupper(Str::random(10)),
-            'name' => 'Chụp X-Quang',
+            'service_id' => 'SERVICEID1',
+            'name' => 'X-Quang ngực',
             'price' => 165.00,
-            'directory_id' => $directory->directory_id,
+            'directory_id' => 'DIRECTORY1', // X-Quang
         ]);
+        
+        Service::create([
+            'service_id' => 'SERVICEID2',
+            'name' => 'Siêu âm bụng',
+            'price' => 200.00,
+            'directory_id' => 'DIRECTORY2', // Siêu âm
+        ]);
+        
+        Service::create([
+            'service_id' => 'SERVICEID3',
+            'name' => 'Nội soi dạ dày',
+            'price' => 350.00,
+            'directory_id' => 'DIRECTORY3', // Nội soi
+        ]);
+        
+        Service::create([
+            'service_id' => 'SERVICEID4',
+            'name' => 'Xét nghiệm máu tổng quát',
+            'price' => 120.00,
+            'directory_id' => 'DIRECTORY4', // Xét nghiệm máu
+        ]);
+        
+        Service::create([
+            'service_id' => 'SERVICEID5',
+            'name' => 'Chụp CT não',
+            'price' => 500.00,
+            'directory_id' => 'DIRECTORY5', // Chụp CT
+        ]);
+        
     }
 }

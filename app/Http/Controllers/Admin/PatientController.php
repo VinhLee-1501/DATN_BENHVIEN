@@ -14,9 +14,9 @@ class PatientController extends Controller
     {
         // Lấy tất cả bệnh nhân và các hồ sơ y tế liên quan
         $patientsWithRecords = Patient::leftJoin('medical_records', 'patients.patient_id', '=', 'medical_records.patient_id')
-            ->select('patients.*', 'medical_records.medical_id', 'medical_records.diaginsis') // Chọn các cột cần thiết
+            ->select('patients.*', 'medical_records.medical_id', 'medical_records.diaginsis')
             ->get();
-
+//        dd($patientsWithRecords);
 
         // Trả về view với dữ liệu bệnh nhân và hồ sơ y tế
         return view('System.patients.index', ['patients' => $patientsWithRecords]);

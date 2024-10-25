@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Medicine;
-use Illuminate\Support\Str;
-use App\Models\MedicineType;
+
 class MedicineSeeder extends Seeder
 {
     /**
@@ -14,41 +12,50 @@ class MedicineSeeder extends Seeder
      */
     public function run(): void
     {
-        $type = MedicineType::first();
         Medicine::create([
-            'medicine_id' => strtoupper(Str::random(10)),
+            'medicine_id' => 'MEDICINE01',
             'name' => 'Panadol Extra',
             'active_ingredient' => 'paracetamol 500mg, codeine, vitamin C',
             'unit_of_measurement' => 'Bột sủi',
             'status'=> 0,
-            'medicine_type_id' => $type->medicine_type_id
+            'medicine_type_id' => 'MEDICINE01' // Đã sửa lại cho khớp với MedicineType
         ]);
 
         Medicine::create([
-            'medicine_id' => strtoupper(Str::random(10)),
-            'name' => 'Tatanol',
-            'active_ingredient' => 'paracetamol 500mg, codeine, vitamin C',
+            'medicine_id' => 'MEDICINE02',
+            'name' => 'Aspirin',
+            'active_ingredient' => 'acetylsalicylic acid 500mg',
             'unit_of_measurement' => 'Viên nén',
-            'status'=> 0,
-            'medicine_type_id' => $type->medicine_type_id
+            'status' => 1,
+            'medicine_type_id' => 'MEDICINE02' // Đã sửa lại cho khớp với MedicineType
         ]);
-
+        
         Medicine::create([
-            'medicine_id' => strtoupper(Str::random(10)),
-            'name' => 'LEVOLEO 750',
-            'active_ingredient' => 'Levofloxacin hemihydrat 768,7mg',
-            'unit_of_measurement' => 'Viên nén',
-            'status'=> 0,
-            'medicine_type_id' => $type->medicine_type_id
+            'medicine_id' => 'MEDICINE03',
+            'name' => 'Amoxicillin',
+            'active_ingredient' => 'amoxicillin 500mg',
+            'unit_of_measurement' => 'Viên nang',
+            'status' => 1,
+            'medicine_type_id' => 'MEDICINE03' // Đã sửa lại cho khớp với MedicineType
         ]);
-
+        
         Medicine::create([
-            'medicine_id' => strtoupper(Str::random(10)),
-            'name' => 'Cefurich 500',
-            'active_ingredient' => 'Cefuroxim 500mg',
+            'medicine_id' => 'MEDICINE04',
+            'name' => 'Ibuprofen',
+            'active_ingredient' => 'ibuprofen 400mg',
             'unit_of_measurement' => 'Viên nén',
-            'status'=> 0,
-            'medicine_type_id' => $type->medicine_type_id
+            'status' => 1,
+            'medicine_type_id' => 'MEDICINE04' // Đã sửa lại cho khớp với MedicineType
         ]);
+        
+        Medicine::create([
+            'medicine_id' => 'MEDICINE05',
+            'name' => 'Clarithromycin',
+            'active_ingredient' => 'clarithromycin 250mg',
+            'unit_of_measurement' => 'Viên nén',
+            'status' => 1,
+            'medicine_type_id' => 'MEDICINE05' // Đã sửa lại cho khớp với MedicineType
+        ]);
+        
     }
 }

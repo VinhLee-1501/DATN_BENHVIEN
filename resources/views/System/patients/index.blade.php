@@ -115,7 +115,7 @@
                                                             </td>
                                                             <td class="py-2"><a
                                                                     href="{{ route('system.detail_medical_record', $item->medical_id) }}"
-                                                                    class="">{{ $item->diagnosis }}</a></td>
+                                                                    class="">{{ $item->diaginsis }}</a></td>
                                                         </tr>
                                                     @else
                                                         <tr>

@@ -45,6 +45,10 @@ class AccountController extends Controller
 //
 //        // Tạo một đối tượng User mới
         $user = new User();
+        // Kiểm tra role và gán specialty_id
+        $role = $request->input('role');
+        $specialtyId = $role == 2 ? $request->input('specialty_id') : null;
+
 
         // Gán các giá trị từ validated data vào thuộc tính của model
         $user->user_id = $request->input('userid');
@@ -54,7 +58,7 @@ class AccountController extends Controller
         $user->password = bcrypt($request->input('password')); // Mã hóa mật khẩu
         $user->firstname = $request->input('firstname');
         $user->lastname = $request->input('lastname');
-        $user->specialty_id = $request->input('specialty_id');
+        $user->specialty_id = $specialtyId;
 
 
         $user->save();
@@ -70,13 +74,13 @@ class AccountController extends Controller
         // Join bảng users với bảng specialties
         $account = User::where('users.user_id', $user_id)
             ->first(); // Lấy bản ghi đầu tiên
-
+        $specialties = specialty::all();
         // Nếu không tìm thấy tài khoản, trả về thông báo lỗi
         if (!$account) {
             return redirect()->route('system.account')->with('error', 'Tài khoản không tồn tại!');
         }
         // Trả về view với thông tin account
-        return view('System.accounts.detail', compact('account'));
+        return view('System.accounts.detail', compact('account' , 'specialties'));
     }
 
 
@@ -87,22 +91,31 @@ class AccountController extends Controller
         // Tìm user theo user_id
         $user = User::where('user_id', $user_id)->firstOrFail();
 
-        // Cập nhật thông tin từ request vào user
-         $user->update([
-            'firstname' => $request->input('firstname'), // Tên input trong form là 'firstname'
-            'lastname'  => $request->input('lastname'),  // Tên input trong form là 'lastname'
-            'role'       => $request->input('role'),
-            'email'      => $request->input('email'),
-            'phone'      => $request->input('phone'),
-            'password'   => $request->filled('password') ? bcrypt($request->input('password')) : $user->password,
-             'specialty_id' => $request->input('specialty_id'), // Phải là specialty từ request
-        ]);
+        // Kiểm tra xem mật khẩu mới có được nhập không
+        if ($request->filled('password')) {
+            // Nếu có mật khẩu mới, mã hóa nó
+            $user->password = bcrypt($request->input('password'));
+        }
 
-        dd($user);
+        // Kiểm tra role và gán specialty_id
+        $role = $request->input('role');
+        $specialtyId = $role == 2 ? $request->input('specialty_id') : null;
+
+        // Cập nhật các trường khác từ request vào user
+        $user->update([
+            'firstname'   => $request->input('firstname'),
+            'lastname'    => $request->input('lastname'),
+            'role'        => $role,
+            'email'       => $request->input('email'),
+            'phone'       => $request->input('phone'),
+            'specialty_id' => $specialtyId,
+        ]);
 
         // Chuyển hướng về trang tài khoản với thông báo thành công
         return redirect()->route('system.account')->with('success', 'Cập nhật tài khoản thành công.');
     }
+
+
 
 
 

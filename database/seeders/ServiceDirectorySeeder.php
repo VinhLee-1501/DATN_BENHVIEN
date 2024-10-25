@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\ServiceDirectory;
-use Illuminate\Support\Str;
 
 class ServiceDirectorySeeder extends Seeder
 {
@@ -27,9 +25,34 @@ class ServiceDirectorySeeder extends Seeder
 //        ]);
 
         ServiceDirectory::create([
-            'directory_id' => strtoupper(Str::random(10)),
+            'directory_id' => 'DIRECTORY1',
             'name' => 'X-Quang',
             'status' => 'Hoạt động',
         ]);
+
+        ServiceDirectory::create([
+            'directory_id' => 'DIRECTORY2',
+            'name' => 'Siêu âm',
+            'status' => 'Hoạt động',
+        ]);
+        
+        ServiceDirectory::create([
+            'directory_id' => 'DIRECTORY3',
+            'name' => 'Nội soi',
+            'status' => 'Hoạt động',
+        ]);
+        
+        ServiceDirectory::create([
+            'directory_id' => 'DIRECTORY4',
+            'name' => 'Xét nghiệm máu',
+            'status' => 'Hoạt động',
+        ]);
+        
+        ServiceDirectory::create([
+            'directory_id' => 'DIRECTORY5',
+            'name' => 'Chụp CT',
+            'status' => 'Hoạt động',
+        ]);
+        
     }
 }

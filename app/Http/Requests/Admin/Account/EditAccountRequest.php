@@ -26,7 +26,7 @@ class EditAccountRequest extends FormRequest
                 'email',
                 Rule::unique('users', 'email')->ignore($account->row_id, 'row_id'),
             ],
-            'password'   => 'required|min:8',
+            'password'   => 'nullable|min:8',
             'phone'      => [
                 'required',
                 'string',

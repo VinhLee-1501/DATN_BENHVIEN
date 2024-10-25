@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\TreatmentDetail;
+use App\Models\TreatmentService;
 use Illuminate\Database\Seeder;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             MedicineSeeder::class,
             TreatmentDetailSeeder::class,
             TreatmentMedicationSeeder::class,
+            TreatmentServiceSeeder::class,
         ]);
     }
 }

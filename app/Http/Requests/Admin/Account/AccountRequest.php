@@ -32,6 +32,7 @@ class AccountRequest extends FormRequest
                 'email' => 'required|email|unique:users,email', // Kiểm tra tính duy nhất khi thêm mới
                 'specialty_id' => 'nullable|string ',
                 'phone' => 'required|min:10|unique:users,phone',
+                'password' => 'required|min:8',
             ];
         }
 
@@ -76,13 +77,15 @@ class AccountRequest extends FormRequest
 
             'password.required' => 'Mật khẩu không được để trống.',
             'password.string' => 'Mật khẩu phải là chuỗi ký tự.',
-            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
 
             'firstname.required' => 'Tên không được để trống.',
             'firstname.string' => 'Tên phải là chuỗi ký tự.',
 
             'lastname.required' => 'Họ không được để trống.',
             'lastname.string' => 'Họ phải là chuỗi ký tự.',
+
+
         ];
     }
 }

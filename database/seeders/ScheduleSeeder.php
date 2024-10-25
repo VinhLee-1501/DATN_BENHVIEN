@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Schedule;
 use App\Models\User;
-use Illuminate\Support\Str;
 class ScheduleSeeder extends Seeder
 {
     /**
@@ -14,29 +12,45 @@ class ScheduleSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where('role', 2)->first();
         Schedule::create([
-            'shift_id' => strtoupper(Str::random(10)),
+            'shift_id' => 'SHIFTID001',
             'note' => 'ngày 2',
             'status' => '1',
-            'day' => ' 2024-09-28',
-            'user_id' => $user->user_id
+            'day' => '2024-09-28',
+            'user_id' => 'USERID002', // Doctor với specialty_id SPECIALTY1
         ]);
 
         Schedule::create([
-            'shift_id' => strtoupper(Str::random(10)),
-            'note' => 'ngày 2',
+            'shift_id' => 'SHIFTID002',
+            'note' => 'ngày 3',
             'status' => '1',
-            'day' => ' 2024-09-27',
-            'user_id' => $user->user_id
+            'day' => '2024-09-29',
+            'user_id' => 'USERID005', // Doctor với specialty_id MEDICINE02
         ]);
 
         Schedule::create([
-            'shift_id' => strtoupper(Str::random(10)),
-            'note' => 'ngày 2',
+            'shift_id' => 'SHIFTID003',
+            'note' => 'ngày 4',
             'status' => '1',
-            'day' => ' 2024-09-27',
-            'user_id' => $user->user_id
+            'day' => '2024-09-30',
+            'user_id' => 'USERID006', // Doctor với specialty_id MEDICINE03
         ]);
+
+        Schedule::create([
+            'shift_id' => 'SHIFTID004',
+            'note' => 'ngày 5',
+            'status' => '1',
+            'day' => '2024-10-01',
+            'user_id' => 'USERID007', // Doctor với specialty_id MEDICINE04
+        ]);
+
+        Schedule::create([
+            'shift_id' => 'SHIFTID005',
+            'note' => 'ngày 6',
+            'status' => '1',
+            'day' => '2024-10-02',
+            'user_id' => 'USERID008', // Doctor với specialty_id MEDICINE05
+        ]);
+
     }
 }

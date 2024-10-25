@@ -58,7 +58,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endforeach                                        
+                                        @endforeach
                                         </div>
                                     </div>
                                     <div class="col l-6 mc-12 c-12">

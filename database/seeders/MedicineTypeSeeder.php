@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 use App\Models\MedicineType;
 class MedicineTypeSeeder extends Seeder
 {
@@ -14,19 +12,33 @@ class MedicineTypeSeeder extends Seeder
     public function run(): void
     {
         MedicineType::create([
-            'medicine_type_id' => strtoupper(Str::random(10)),
+            'medicine_type_id' => 'MEDICINE01',
             'name' => 'Giảm đau',
             'status' => 0,
         ]);
         MedicineType::create([
-            'medicine_type_id' => strtoupper(Str::random(10)),
-            'name' => 'Kháng viêm',
-            'status' => 0,
+            'medicine_type_id' => 'MEDICINE02',
+            'name' => 'Kháng sinh',
+            'status' => 1,
         ]);
+        
         MedicineType::create([
-            'medicine_type_id' => strtoupper(Str::random(10)),
-            'name' => 'Dạ dày',
-            'status' => 0,
+            'medicine_type_id' => 'MEDICINE03',
+            'name' => 'Hạ sốt',
+            'status' => 1,
         ]);
+        
+        MedicineType::create([
+            'medicine_type_id' => 'MEDICINE04',
+            'name' => 'Kháng viêm',
+            'status' => 1,
+        ]);
+        
+        MedicineType::create([
+            'medicine_type_id' => 'MEDICINE05',
+            'name' => 'Chống dị ứng',
+            'status' => 1,
+        ]);
+        
     }
 }

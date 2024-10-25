@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Medicine;
-use App\Models\TreatmentDetail;
 use App\Models\TreatmentMedication;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TreatmentMedicationSeeder extends Seeder
@@ -15,34 +12,41 @@ class TreatmentMedicationSeeder extends Seeder
      */
     public function run(): void
     {
-        $treatment = TreatmentDetail::first();
-        $medicine = Medicine::first();
+        
         TreatmentMedication::create([
-            'treatment_id' => $treatment->treatment_id,
-            'medicine_id' =>$medicine->medicine_id,
+            'treatment_id' => 'TREATMENT1',
+            'medicine_id' => 'MEDICINE01', // Panadol Extra
             'quantity' => 20,
             'usage' => '2/ngày',
         ]);
-
+        
         TreatmentMedication::create([
-            'treatment_id' => $treatment->treatment_id,
-            'medicine_id' =>$medicine->medicine_id,
-            'quantity' => 20,
-            'usage' => '2/ngày',
-        ]);
-
-        TreatmentMedication::create([
-            'treatment_id' => $treatment->treatment_id,
-            'medicine_id' =>$medicine->medicine_id,
-            'quantity' => 20,
-            'usage' => '2/ngày',
-        ]);
-
-        TreatmentMedication::create([
-            'treatment_id' => $treatment->treatment_id,
-            'medicine_id' =>$medicine->medicine_id,
-            'quantity' => 10,
+            'treatment_id' => 'TREATMENT2',
+            'medicine_id' => 'MEDICINE02', // Ibuprofen
+            'quantity' => 15,
             'usage' => '1/ngày',
         ]);
+        
+        TreatmentMedication::create([
+            'treatment_id' => 'TREATMENT3',
+            'medicine_id' => 'MEDICINE03', // Amoxicillin
+            'quantity' => 10,
+            'usage' => '3/ngày',
+        ]);
+        
+        TreatmentMedication::create([
+            'treatment_id' => 'TREATMENT4',
+            'medicine_id' => 'MEDICINE04', // Cetirizine
+            'quantity' => 30,
+            'usage' => '1/ngày',
+        ]);
+        
+        TreatmentMedication::create([
+            'treatment_id' => 'TREATMENT5',
+            'medicine_id' => 'MEDICINE05', // Paracetamol
+            'quantity' => 25,
+            'usage' => '2/ngày',
+        ]);
+        
     }
 }

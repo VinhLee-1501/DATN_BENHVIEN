@@ -14,15 +14,36 @@ class SpecialtySeeder extends Seeder
     public function run(): void
     {
         Specialty::create([
-            'specialty_id' => strtoupper(Str::random(10)),
+            'specialty_id' => 'SPECIALTY1',
+            'name' => 'Nội tổng quát',
+            'status'=> 1,
+        ]);
+        
+        Specialty::create([
+            'specialty_id' => 'SPECIALTY2',
+            'name' => 'Ngoại khoa',
+            'status'=> 1,
+        ]);
+        
+        Specialty::create([
+            'specialty_id' => 'SPECIALTY3',
+            'name' => 'Nhi khoa',
+            'status'=> 1,
+        ]);
+        
+        Specialty::create([
+            'specialty_id' => 'SPECIALTY4',
+            'name' => 'Da liễu',
+            'status'=> 1,
+        ]);
+        
+        Specialty::create([
+            'specialty_id' => 'SPECIALTY5',
             'name' => 'Tai mũi họng',
             'status'=> 1,
         ]);
+        
 
-        Specialty::create([
-            'specialty_id' => strtoupper(Str::random(10)),
-            'name' => 'Ngoại chấn thương',
-            'status'=> 1,
-        ]);
+       
     }
 }
