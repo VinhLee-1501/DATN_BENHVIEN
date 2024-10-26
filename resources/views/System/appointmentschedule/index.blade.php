@@ -385,7 +385,7 @@
                         } else if (response.error) {
                             toastr.error(response.message);
                         }
-                        // location.reload();
+                        location.reload();
 
                     },
                     error: function(err) {

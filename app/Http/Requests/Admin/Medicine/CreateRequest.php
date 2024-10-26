@@ -51,7 +51,7 @@ class CreateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'medicine_type_id' => 'Mã nhóm thuốc',
+            'medicine_type_id' => 'Nhóm thuốc',
             'medicine_id' => 'Mã thuốc',
             'name' => 'Tên thuốc',
             'active_ingredient' => 'Hoạt tính',

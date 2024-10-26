@@ -80,13 +80,9 @@ class MedicineTypeController extends Controller
     public function update(Request $request, $row_id)
     {
         $type = MedicineType::where('medicine_type_id', $row_id)->first();
-        // $type->medicine_type_id = $request->input('code');
         $type->name = $request->input('name');
         $type->status = $request->input('status');
-        // dd($type->status);
         $type->update();
-        // Log::info('JJJ', $type);
-        // return redirect()->route('system.medicineType')->with('success', 'Cập nhật thành công.');
         return response()->json(['success' => true, 'message' => 'Cập nhật thành công']);
     }
 }
