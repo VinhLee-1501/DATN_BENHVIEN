@@ -113,9 +113,9 @@
     z-index: 1000;
     left: 0;
     top: 0;
+    overflow: auto;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: rgba(0, 0, 0, 0.4); /* Màu nền mờ */
     animation: fadeIn 0.5s ease-out; /* Thêm hiệu ứng mờ dần */
 }
@@ -280,6 +280,44 @@ textarea {
         padding: 10px;
         font-size: 14px;
     }
+}
+.modal-body {
+    display: flex; /* Sử dụng Flexbox để tạo hai cột */
+    justify-content: space-between; /* Tạo không gian giữa hai cột */
+}
+
+.left-column {
+    flex: 0 0 48%; /* Chiếm 48% chiều rộng */
+    padding: 10px; /* Thêm khoảng cách bên trong */
+}
+
+.right-column {
+    flex: 0 0 48%; /* Chiếm 48% chiều rộng */
+    padding: 10px; /* Thêm khoảng cách bên trong */
+}
+
+.medicines-section {
+    margin-top: 20px; /* Thêm khoảng cách phía trên để tách khỏi phần trên */
+    padding: 10px; /* Thêm khoảng cách bên trong */
+}
+
+/* Cách định dạng bảng dịch vụ */
+.table {
+    width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
+    border-collapse: collapse; /* Xóa khoảng cách giữa các ô */
+    margin-top: 15px; /* Thêm khoảng cách giữa bảng và các phần khác */
+}
+
+.table thead th {
+    background-color: #048647; /* Màu nền cho tiêu đề bảng */
+    color: white; /* Màu chữ */
+    padding: 10px; /* Khoảng cách trong ô tiêu đề */
+    text-align: left; /* Căn trái chữ trong tiêu đề */
+}
+
+.table tbody td {
+    border: 1px solid #ddd; /* Đường viền cho các ô */
+    padding: 8px; /* Khoảng cách trong ô */
 }
 
 /* Hiệu ứng mờ dần */

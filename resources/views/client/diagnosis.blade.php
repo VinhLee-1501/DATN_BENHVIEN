@@ -5,15 +5,19 @@
 @section('content')
 
     <style>
+        .page {
+            background-image: url('http://127.0.0.1:8000/frontend/assets/image/background-diagnosis.png');
+        }
+
         .diagnosis-container {
             max-width: 600px;
             margin: auto;
-            background: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
             margin-top: 10%;
             border: 1px solid #03B75F;
+            background-color: #fff;
         }
 
         .diagnosis-title {
@@ -65,11 +69,15 @@
             background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 5px;
             font-size: 18px;
             cursor: pointer;
             transition: background-color 0.3s;
             margin-top: 10px;
+        }
+
+        .record-button {
+            margin-left: 5px
         }
 
         .record-button:hover,
@@ -111,7 +119,8 @@
         th {
             background-color: #f2f2f2;
         }
-        .warning{
+
+        .warning {
             font-size: 11px;
             color: red;
         }
@@ -137,7 +146,8 @@
         </div>
 
         <label for="diagnosis" class="input-label">Kết quả chuẩn đoán</label>
-        <span class="warning">*Đây chỉ là kết quả chuẩn đoán, vui lòng đến bệnh viện được bác sĩ đưa ra kết quả chính xác hơn</span>
+        <span class="warning">*Đây chỉ là kết quả chuẩn đoán, vui lòng đến bệnh viện được bác sĩ đưa ra kết quả chính xác
+            hơn</span>
         <div id="diagnosis" class="diagnosis-output" aria-placeholder="Kết quả chuẩn đoán ...">
             <table id="diagnosisTable" style="display:none;">
                 <thead>

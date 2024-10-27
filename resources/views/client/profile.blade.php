@@ -79,10 +79,12 @@
                                                     <th>Ngày</th>
                                                     <th>Nội dung</th>
                                                     <th>Trạng thái</th>
+                                                    <th>Hình thức khám</th>
+                                                    <th>Link khám trực tuyến</th>
                                                     <th>Chi tiết</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+
                                             <tbody>
                                                 @if ($medicalHistory->isEmpty())
                                                     <tr>
@@ -103,6 +105,22 @@
                                                                 @endif
                                                             </td>
                                                             <td>
+                                                                @if ($history->role == 0)
+                                                                    Trực tiếp
+                                                                @else
+                                                                    Trực tuyến
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                @if ($history->role != 0)
+                                                                    <a style="text-decoration: underline;"
+                                                                        href="{{ $history->url }}" target="_blank">[Nhấn
+                                                                        vào đây]</a>
+                                                                @else
+                                                                    (Trống)
+                                                                @endif
+                                                            </td>
+                                                            <td>
                                                                 <!-- Nút Chi tiết -->
                                                                 <button style="border:none" class="button btn-small btn-cta"
                                                                     onclick="openDetailsModal('{{ $history->user_id }}')">Chi
@@ -113,7 +131,7 @@
                                                 @endif
                                             </tbody>
 
-                                            </tbody>
+
                                         </table>
                                         <script>
                                             console.log('Script has been loaded');
@@ -140,6 +158,12 @@
                                                     document.getElementById('modal-symptoms').textContent = record.symptoms ?? 'Không có triệu chứng';
                                                     document.getElementById('modal-specialty-id').textContent = record.specialty['name'];
                                                     document.getElementById('modal-status').textContent = record.status === 0 ? 'Chưa xác nhận' : 'Đã xác nhận';
+                                                    document.getElementById('modal-role').textContent = record.role === 0 ? 'Trực tiếp' : 'Trực tuyến';
+                                                    if (record.role == 0) {
+                                                        document.getElementById('modal-url').textContent = '(Trống)'; // Để trống nếu role == 0
+                                                    } else {
+                                                        document.getElementById('modal-url').textContent = record.url; // Hiển thị url nếu role khác 0
+                                                    }
 
                                                     // Hiển thị modal
                                                     document.getElementById('detailsModal').style.display = 'block';
@@ -156,33 +180,162 @@
 
                                 <!-- Tab bệnh án -->
                                 <div id="medical_record" class="tab">
-                                    <div class="profile__medical-history">
+                                    <div class="profile__medical-history" style="overflow-x: auto;">
                                         <h1 class="text-center">Bệnh án</h1>
                                         <table class="medical-history__table">
                                             <thead>
                                                 <tr>
                                                     <th>STT</th>
-                                                    <th>Ngày</th>
-                                                    <th>Nội dung</th>
+                                                    <th>Mã bệnh án</th>
+                                                    <th>Chẩn đoán</th>
+                                                    <th>Ngày tái khám</th>
+                                                    <th>Lời khuyên</th>
+
+                                                    <th>Bệnh nhân</th>
+                                                    <th>Chi tiết</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>20/08/2024</td>
-                                                    <td>Paracetamol</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>20/08/2024</td>
-                                                    <td>Vitamin C</td>
-                                                </tr>
-                                            </tbody>
+                                                @foreach ($medicalRecordHistory as $key => $history)
+                                                    <tr>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ $history->medical_id }}</td>
+                                                        <td>{{ $history->diaginsis }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($history->re_examination_date)->format('d/m/Y') }}
+                                                        </td>
+                                                        <td>{{ $history->advice ?? 'Không có lời khuyên' }}</td>
+
+                                                        <td>{{ $history->first_name }} {{ $history->last_name }}</td>
+                                                        <td>
+                                                            <button style="border:none" class="button btn-small btn-cta"
+                                                                onclick="openDetailsMediaRecordModal({{ json_encode($history) }})">Chi
+                                                                tiết</button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                <script>
+                                    function openDetailsMediaRecordModal(history) {
+                                        document.getElementById("modal-medical-id").textContent = history.medical_id;
+                                        document.getElementById("modal-diagnosis").textContent = history.diaginsis;
+                                        if (history.re_examination_date) {
+                                            const date = new Date(history.re_examination_date);
+                                            const day = String(date.getDate()).padStart(2, '0'); // Đảm bảo có 2 chữ số
+                                            const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+                                            const year = date.getFullYear();
+
+                                            // Định dạng theo d-m-Y
+                                            document.getElementById("modal-re-exam-date").textContent = `${day}/${month}/${year}`;
+                                        } else {
+                                            document.getElementById("modal-re-exam-date").textContent = 'Không có thông tin';
+                                        }
+                                        document.getElementById("modal-advice").textContent = history.advice || 'Không có lời khuyên';
+                                        document.getElementById("modal-blood-pressure").textContent = history.blood_pressure;
+                                        document.getElementById("modal-respiratory-rate").textContent = history.respiratory_rate;
+                                        document.getElementById("modal-weight").textContent = history.weight;
+                                        document.getElementById("modal-height").textContent = history.height;
+                                        document.getElementById("modal-patient-name").textContent = `${history.first_name} ${history.last_name}`;
+
+
+
+                                        // Tạo bảng cho danh sách dịch vụ
+                                        let servicesList = document.getElementById("modal-services");
+                                        servicesList.innerHTML = ""; // Xóa nội dung cũ
+
+                                        let servicesTable = document.createElement("table");
+                                        servicesTable.classList.add("table", "table-bordered");
+
+                                        // Tạo tiêu đề cho bảng dịch vụ
+                                        let servicesThead = document.createElement("thead");
+                                        let servicesHeaderRow = document.createElement("tr");
+
+                                        let servicesHeaders = ["Tên dịch vụ", "Giá"];
+                                        servicesHeaders.forEach(headerText => {
+                                            let th = document.createElement("th");
+                                            th.textContent = headerText;
+                                            servicesHeaderRow.appendChild(th);
+                                        });
+                                        servicesThead.appendChild(servicesHeaderRow);
+                                        servicesTable.appendChild(servicesThead);
+
+                                        // Tạo phần thân cho bảng dịch vụ
+                                        let servicesTbody = document.createElement("tbody");
+
+                                        history.services.forEach(service => {
+                                            let row = document.createElement("tr");
+
+                                            let serviceData = [
+                                                service.name,
+                                                service.price + '.000 VNĐ'
+                                            ];
+
+                                            serviceData.forEach(data => {
+                                                let td = document.createElement("td");
+                                                td.textContent = data;
+                                                row.appendChild(td);
+                                            });
+
+                                            servicesTbody.appendChild(row);
+                                        });
+
+                                        servicesTable.appendChild(servicesTbody);
+                                        servicesList.appendChild(servicesTable); // Thêm bảng dịch vụ vào modal
+
+                                        // Cập nhật tổng giá
+                                        document.getElementById("modal-total-price").textContent = history.total_price + '.000 VNĐ';
+
+                                        let medicinesList = document.getElementById("modal-medicines");
+                                        medicinesList.innerHTML = ""; // Xóa nội dung cũ
+
+                                        // Tạo tiêu đề cho bảng thuốc
+                                        let table = document.createElement("table");
+                                        table.classList.add("table", "table-bordered");
+                                        let thead = document.createElement("thead");
+                                        let headerRow = document.createElement("tr");
+
+                                        let headers = ["Tên thuốc", "Liều dùng", "Số lượng", "Cách dùng", "Lúc uống"];
+                                        headers.forEach(headerText => {
+                                            let th = document.createElement("th");
+                                            th.textContent = headerText;
+                                            headerRow.appendChild(th);
+                                        });
+                                        thead.appendChild(headerRow);
+                                        table.appendChild(thead);
+
+                                        // Tạo phần thân cho bảng thuốc
+                                        let tbody = document.createElement("tbody");
+
+                                        history.medicines.forEach(medicine => {
+                                            let row = document.createElement("tr");
+
+                                            let medicineData = [
+                                                medicine.name,
+                                                medicine.dosage,
+                                                medicine.quantity,
+                                                medicine.usage,
+                                                medicine.note
+                                            ];
+
+                                            medicineData.forEach(data => {
+                                                let td = document.createElement("td");
+                                                td.textContent = data;
+                                                row.appendChild(td);
+                                            });
+
+                                            tbody.appendChild(row);
+                                        });
+
+                                        table.appendChild(tbody);
+                                        medicinesList.appendChild(table);
+
+                                        document.getElementById("detailsMediaRecordModal").style.display = "block";
+                                    }
+                                </script>
+
+
 
                                 <!-- Tab Đơn thuốc -->
                                 <div id="prescription" class="tab">
@@ -275,7 +428,8 @@
 
 
                                 <!-- Form Đổi mật khẩu -->
-                                <div id="change_password" class="tab {{ $errors->has('current_password') || $errors->has('new_password') || session('change_password_success') || session('change_password_error') ? 'active' : '' }}">
+                                <div id="change_password"
+                                    class="tab {{ $errors->has('current_password') || $errors->has('new_password') || session('change_password_success') || session('change_password_error') ? 'active' : '' }}">
                                     <h1 class="text-center">Đổi mật khẩu</h1>
                                     <form method="POST" action="{{ route('client.profile.change-password') }}"
                                         class="profile__form">
@@ -320,7 +474,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal Chi tiết -->
+        <!-- Modal 1: Chi tiết lịch sử khám bệnh -->
         <div id="detailsModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeDetailsModal()">&times;</span>
@@ -333,9 +487,60 @@
                 <p><strong>Email:</strong> <span id="modal-email"></span></p>
                 <p><strong>Triệu chứng:</strong> <span id="modal-symptoms"></span></p>
                 <p><strong>Chuyên khoa:</strong> <span id="modal-specialty-id"></span></p>
+                <p><strong>Hình thức khám:</strong> <span id="modal-role"></span></p>
                 <p><strong>Trạng thái:</strong> <span id="modal-status"></span></p>
+                <p><strong>Link khám trực tuyến:</strong> <a id="modal-url" href="" target="_blank">Khám trực
+                        tuyến</a></p>
             </div>
         </div>
-    </div>
 
-@endsection
+        <!-- Modal 2: Chi tiết bệnh án -->
+        <div id="detailsMediaRecordModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeDetailsMediaRecordModal()">&times;</span>
+                <h2>Chi tiết bệnh án</h2>
+
+                <div class="modal-body">
+                    <!-- Phần bên trái: Chi tiết bệnh án -->
+                    <div class="left-column">
+                        <p><strong>Mã bệnh án:</strong> <span id="modal-medical-id"></span></p>
+                        <p><strong>Chẩn đoán:</strong> <span id="modal-diagnosis"></span></p>
+                        <p><strong>Ngày tái khám:</strong> <span id="modal-re-exam-date"></span></p>
+                        <p><strong>Lời khuyên:</strong> <span id="modal-advice"></span></p>
+                        <p><strong>Huyết áp:</strong> <span id="modal-blood-pressure"></span></p>
+                        <p><strong>Nhịp thở:</strong> <span id="modal-respiratory-rate"></span></p>
+                        <p><strong>Cân nặng:</strong> <span id="modal-weight"></span> kg</p>
+                        <p><strong>Chiều cao:</strong> <span id="modal-height"></span> cm</p>
+                        <p><strong>Bệnh nhân:</strong> <span id="modal-patient-name"></span></p>
+                    </div>
+
+                    <!-- Phần bên phải: Dịch vụ -->
+                    <div class="right-column">
+                        <p><strong>Dịch vụ:</strong></p>
+                        <div id="modal-services"></div>
+                        <p><strong>Tổng chi phí:</strong> <span id="modal-total-price"></span></p>
+                    </div>
+                </div>
+
+                <!-- Bảng thuốc nằm dưới cùng -->
+                <div class="medicines-section">
+                    <p><strong>Đơn thuốc:</strong></p>
+                    <ul id="modal-medicines"></ul>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            // Function to close the details modal for booking history
+            function closeDetailsModal() {
+                document.getElementById("detailsModal").style.display = "none";
+            }
+
+            // Function to close the details modal for medical record
+            function closeDetailsMediaRecordModal() {
+                document.getElementById("detailsMediaRecordModal").style.display = "none";
+            }
+        </script>
+
+    @endsection

@@ -11,6 +11,9 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 1rem;
+    background-image: url('http://127.0.0.1:8000/backend/assets/images/backgrounds/background-login.png');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .ibox-content {
     background: #ffffff;

@@ -28,9 +28,9 @@
 
             </div>
             @if (auth()->check())
-                <div style="width: 200px" class="header__login">
-                    <a href="{{ route('client.profile.index') }}" class="">{{ auth()->user()->lastname }}
-                        {{ auth()->user()->firstname }}</a>
+                <div style="width: 400px" class="header__login">
+                    <a href="{{ route('client.profile.index') }}" class="">
+                        {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</a>
                 </div>
             @else
                 <div class="header__login">
@@ -38,7 +38,7 @@
                         <div class="button btn-small btn-cta openPopup">
                             Đăng nhập
                         </div>
-                        
+
                         <div class="login-options" style="display: none;">
                             <a href="{{ route('client.login') }}">
                                 <div style="border-radius: 0px; width: 240px" class="button btn-small">

@@ -10,11 +10,16 @@ use App\Http\Requests\Client\User\ChangePasswordRequest;
 use App\Models\User;
 use App\Models\Book;
 use App\Models\Specialty;
+use App\Models\MedicalRecord;
+use App\Models\Medicine;
+use App\Models\Service;
+use App\Models\TreatmentService;
 use App\Repositories\User\UserInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
@@ -89,20 +94,53 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
+        // Lấy user_id của người dùng đã đăng nhập
         $userId = Auth::user()->user_id;
+        $userPhone = Auth::user()->phone;
 
-
+        // Lấy lịch sử y tế của người dùng
         $medicalHistory = Book::where('user_id', $userId)->get();
-
         foreach ($medicalHistory as $history) {
             $history->specialty = Specialty::where('specialty_id', $history->specialty_id)
                 ->where('status', 1)
                 ->first();
         }
 
+        // Lấy dữ liệu lịch sử bệnh án cùng với thông tin bệnh nhân
+        $medicalRecordHistory = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+            ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
+            ->where('patients.phone', $userPhone) // Chỉ lấy bệnh án của người dùng này
+            ->distinct()
+            ->paginate(5);
+
+        // Duyệt từng bệnh án để lấy thêm các thông tin chi tiết điều trị, dịch vụ và thuốc
+        foreach ($medicalRecordHistory as $record) {
+            // Lấy thông tin điều trị
+            $record->treatment_details = DB::table('treatment_details')
+                ->where('medical_id', $record->medical_id)
+                ->get();
+
+            // Lấy danh sách dịch vụ
+            $record->services = Service::join('treatment_services', 'treatment_services.service_id', '=', 'services.service_id')
+                ->where('treatment_services.treatment_id', $record->treatment_details[0]->treatment_id ?? null)
+                ->get();
+
+            // Lấy tổng giá của dịch vụ
+            $record->total_price = TreatmentService::where('treatment_id', $record->treatment_details[0]->treatment_id ?? null)
+                ->join('services', 'treatment_services.service_id', '=', 'services.service_id')
+                ->sum('services.price');
+
+            // Lấy danh sách thuốc
+            $record->medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
+                ->where('treatment_medications.treatment_id', $record->treatment_details[0]->treatment_id ?? null)
+                ->get();
+        }
+
+        // Trả về view với các dữ liệu đã lấy
         return view('client.profile', [
             'userId' => $userId,
             'medicalHistory' => $medicalHistory,
+            'medicalRecordHistory' => $medicalRecordHistory
         ]);
     }
     public function updateProfile(UpdateProfileRequest $request)
