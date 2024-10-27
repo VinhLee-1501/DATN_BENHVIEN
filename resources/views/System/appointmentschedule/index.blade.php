@@ -216,10 +216,20 @@
                             $('#urlMeeting')
                         }
 
-                        // Chuyển đổi từ định dạng ISO (nếu là chuỗi ISO)
                         var appointmentTime = new Date(response.appointment_time);
-                        var formattedDate = appointmentTime.toISOString().split('T')[
-                            0]; // Lấy phần ngày trong định dạng 'Y-m-d'
+
+                        // Điều chỉnh thời gian để khớp múi giờ Asia/Ho_Chi_Minh
+                        appointmentTime.setMinutes(appointmentTime.getMinutes() - appointmentTime
+                        .getTimezoneOffset() + 420); // 420 phút = 7 giờ
+
+                        // Lấy ngày, tháng và năm để định dạng lại theo Y-m-d
+                        var year = appointmentTime.getFullYear();
+                        var month = (appointmentTime.getMonth() + 1).toString().padStart(2,
+                        '0'); // tháng bắt đầu từ 0 nên +1
+                        var day = appointmentTime.getDate().toString().padStart(2, '0');
+
+                        // Định dạng ngày thành 'Y-m-d'
+                        var formattedDate = `${year}-${month}-${day}`;
 
                         $('#selectedDay').val(formattedDate);
                         $('#hour').val(response.hour);

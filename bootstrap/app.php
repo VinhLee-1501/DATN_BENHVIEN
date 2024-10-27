@@ -43,6 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'specialty.php',
                 'profile.php',
                 'patient.php',
+                'sclinic.php',
 
             ];
 

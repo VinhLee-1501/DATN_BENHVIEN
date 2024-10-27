@@ -154,10 +154,13 @@
         }
 
         // Hiển thị dnah sách phòng
-        function loadClinic(selectedClinicId) {
+        function loadClinic(selectedClinicId, specialty_id) {
             return $.ajax({
                 url: '/system/schedules/clinic',
                 type: 'GET',
+                data: {
+                    specialty_id: specialty_id
+                },
                 success: function(response) {
                     // console.log(response);
                     $('#clinicsId').empty();
@@ -194,6 +197,8 @@
                 var specialtyId = $(this).val();
                 document.getElementById('specialty_id').value = specialtyId;
                 loadDoctor(specialtyId);
+                loadClinic(specialtyId, specialtyId);
+
             });
         });
 
@@ -329,6 +334,8 @@
                                 specialty_id: specialtyId
                             },
                             success: function(data) {
+                                // Lưu thông tin bác sĩ và phòng khám cho mỗi ngày
+
                                 successCallback(data);
                             },
                             error: function(xhr, status, error) {
@@ -349,25 +356,30 @@
 
                 // Event cập nhật dữ liệu
                 eventDrop: function(info) {
-                    if (info.event.start < new Date()) {
-                        info.revert();
-                        alert('Bạn không thể thêm sự kiện vào ngày trước ngày hiện tại.');
-                        return false;
-                    }
 
                     var userId = info.event.extendedProps.user_id;
                     var newDay = formatDate(info.event.start);
                     var sclinicId = info.event.extendedProps.sclinic_id;
                     // console.log(userId, newDay, sclinicId);
 
-                    var eventsOnSameDay = calendar.getEvents().filter(function(event) {
-                        return formatDate(event.start) === newDay && event.id !== info.event.id;
-                    });
+                    const eventsOnSameDay = calendar.getEvents().filter(event =>
+                        formatDate(event.start) === newDay && event.id !== info.event.id
+                    );
 
-                    if (eventsOnSameDay.length > 0) {
-                        // If there is already an event on the same day, revert the drop and show an error
+                    // Ensure max 3 doctors per day
+                    if (eventsOnSameDay.length >= 3) {
                         info.revert();
-                        alert('Đã có bác sĩ được lên lịch vào ngày này. Vui lòng chọn ngày khác.');
+                        alert('Chỉ có thể lên lịch tối đa 3 bác sĩ cho mỗi ngày.');
+                        return;
+                    }
+
+                    // Ensure doctor is only assigned to one clinic on the same day
+                    const doctorInAnotherClinic = eventsOnSameDay.some(event =>
+                        event.extendedProps.user_id === userId
+                    );
+                    if (doctorInAnotherClinic) {
+                        info.revert();
+                        alert('Bác sĩ này đã được lên lịch cho phòng khác vào ngày này.');
                         return;
                     }
 
@@ -382,6 +394,22 @@
                 },
                 // Event truy xuất dữ liệu, hiển thị thông tin item
                 eventRender: function(info) {
+                    // console.log(doctorData);
+
+                    var doctorData = info.event.extendedProps.doctorData;
+                    // Lấy thông tin bác sĩ và phòng khám từ doctorData
+                    var doctorName = '';
+                    var clinicName = '';
+                    if (doctorData) {
+                        var doctorInfo = doctorData.find(function(item) {
+                            return item.user_id === info.event.extendedProps.user_id;
+                        });
+                        if (doctorInfo) {
+                            // Hiển thị thông tin bác sĩ và phòng khám
+                            doctorName = info.event.title;
+                            clinicName = 'Phòng khám: ' + doctorInfo.sclinic_id;
+                        }
+                    }
                     info.el.querySelector('.fc-title').innerHTML =
                         '<b class="delete-event" data-event-id="' + info.event.id + '">' + info.event
                         .title + '</b><br>' +
@@ -392,6 +420,15 @@
                 dateClick: function(info) {
                     if (new Date(info.dateStr) < new Date()) {
                         alert('Bạn không thể thêm sự kiện vào ngày trước ngày hiện tại.');
+                        return;
+                    }
+
+                    var eventsOnSameDay = calendar.getEvents().filter(function(event) {
+                        return formatDate(event.start) === info.dateStr;
+                    });
+
+                    if (eventsOnSameDay.length >= 3) {
+                        alert('Chỉ có thể lên lịch tối đa 3 bác sĩ cho mỗi ngày.');
                         return;
                     }
 
@@ -407,16 +444,16 @@
                         var confirmationCheck = $('#cancelstatusCheck').is(
                             ':checked');
 
-                        var eventsOnSameDay = calendar.getEvents().filter(function(event) {
-                            return formatDate(event.start) === daySelect;
-                        });
+                        // var eventsOnSameDay = calendar.getEvents().filter(function(event) {
+                        //     return formatDate(event.start) === daySelect;
+                        // });
 
-                        if (eventsOnSameDay.length > 0) {
-                            alert(
-                                'Đã có bác sĩ được lên lịch vào ngày này. Vui lòng chọn ngày khác.'
-                            );
-                            return;
-                        }
+                        // if (eventsOnSameDay.length > 0) {
+                        //     alert(
+                        //         'Đã có bác sĩ được lên lịch vào ngày này. Vui lòng chọn ngày khác.'
+                        //     );
+                        //     return;
+                        // }
                         $.ajax({
                             url: '/system/schedules/create',
                             type: 'POST',
@@ -506,14 +543,16 @@
                                 _token: '{{ csrf_token() }}'
                             },
                             success: function(response) {
-                                if(response.success){
+                                if (response.success) {
                                     toastr.success(response.message);
                                     calendar.refetchEvents();
-                                }else{
+                                } else {
                                     toastr.error(response.message);
                                 }
-                            },error: function(err){
-                                alert('Có lỗi xảy ra: ' + (err.responseJSON.message || 'Không thấy lỗi'));
+                            },
+                            error: function(err) {
+                                alert('Có lỗi xảy ra: ' + (err.responseJSON.message ||
+                                    'Không thấy lỗi'));
                             }
                         });
                     } else {

@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('description', 255);
             $table->tinyInteger('status')->default(0);
+
+            $table->string('specialty_id', 10)->nullable();
+            $table->foreign('specialty_id')
+                ->references('specialty_id')
+                ->on('specialties')
+                ->onDelete('set null');
             $table->softDeletes();
             $table->timestamps();
         });
