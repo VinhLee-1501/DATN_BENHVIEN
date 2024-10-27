@@ -119,11 +119,13 @@
                                                     <ul class="list-unstyled mb-0">
                                                         <li><strong>Trạng thái:</strong>
                                                             @if ($item->status === 0)
-                                                                <span class="badge bg-danger">Chưa khám</span>
-                                                            @elseif($item->status === 2)
-                                                                <span class="badge bg-warning">Hủy</span>
-                                                            @else
+                                                                <span class="badge bg-danger">Đã đặt</span>
+                                                            @elseif($item->status === 1)
                                                                 <span class="badge bg-success">Xác nhận</span>
+                                                            @elseif ($item->status === 2)
+                                                                <span class="badge bg-success">Đã khám</span>
+                                                            @else
+                                                                <span class="badge bg-warning">Đã hủy</span>
                                                             @endif
                                                         </li>
                                                     </ul>
@@ -227,7 +229,7 @@
                         $('#emailUser').val(response.email);
                         updateDoctors(response.appointment_time, response.specialty_id);
                         $('#confirmation-check').prop('checked', response.status === 1);
-                        $('#cancelstatus-check').prop('checked', response.status === 2);
+                        $('#cancelstatus-check').prop('checked', response.status === 4);
                         $('#exampleModal').data('id', id);
                         $('#exampleModal').modal('show');
                     },
@@ -358,7 +360,7 @@
                 var confirmation = $('#confirmation-check').is(':checked');
                 var cancel = $('#cancelstatus-check').is(':checked');
                 var email = $('#emailUser').val();
-                var status = cancel ? 2 : (confirmation ? 1 : 0);
+                var status = cancel ? 4 : (confirmation ? 1 : 0);
                 var url = $('#urlMeeting').val() ? $('#urlMeeting').val() : null;
 
 
