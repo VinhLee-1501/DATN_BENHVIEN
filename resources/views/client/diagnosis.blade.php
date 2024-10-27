@@ -257,8 +257,8 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "App-Id": "217bf5c7",
-                    "App-Key": "c8013e640d1c2e8412ab9e8eaeb36b15",
+                    "App-Id": "263de5b3",
+                    "App-Key": "d725d6b43df5f3b2ffcebc23a7dd1923",
                 },
                 body: JSON.stringify({
                     text: translatedSymptoms,
@@ -280,8 +280,8 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "App-Id": "217bf5c7",
-                    "App-Key": "c8013e640d1c2e8412ab9e8eaeb36b15",
+                    "App-Id": "263de5b3",
+                    "App-Key": "d725d6b43df5f3b2ffcebc23a7dd1923",
                 },
                 body: JSON.stringify({
                     age: {
