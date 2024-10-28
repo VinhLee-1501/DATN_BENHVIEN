@@ -359,6 +359,17 @@
                 // Event cập nhật dữ liệu
                 eventDrop: function(info) {
 
+                    
+                    const today = new Date();
+                    const selectedDate = new Date(info.event.start);
+
+                    // Check if the new date is in the past
+                    if (selectedDate < today) {
+                        info.revert();
+                        alert('Không thể di chuyển sự kiện vào ngày trong quá khứ.');
+                        return;
+                    }
+
                     var userId = info.event.extendedProps.user_id;
                     var newDay = formatDate(info.event.start);
                     var sclinicId = info.event.extendedProps.sclinic_id;
@@ -397,6 +408,10 @@
                 // Event truy xuất dữ liệu, hiển thị thông tin item
                 eventRender: function(info) {
                     // console.log(doctorData);
+                    if (new Date(info.dateStr) < new Date()) {
+                        alert('Bạn không thể thêm sự kiện vào ngày trước ngày hiện tại.');
+                        return;
+                    }
 
                     var doctorData = info.event.extendedProps.doctorData;
                     // Lấy thông tin bác sĩ và phòng khám từ doctorData

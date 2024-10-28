@@ -374,11 +374,13 @@
                 var url = $('#urlMeeting').val() ? $('#urlMeeting').val() : null;
 
 
+                console.log(appointmentTime, hour, doctorName, email, status, url);
+                
                 // break;
 
                 $.ajax({
                     url: '/system/appointmentSchedules/update/' + id,
-                    type: 'patch',
+                    type: 'PATCH',
                     data: {
                         appointment_time: appointmentTime,
                         hour: hour,

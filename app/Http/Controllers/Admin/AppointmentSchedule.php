@@ -77,7 +77,7 @@ class AppointmentSchedule extends Controller
 
         $status = $request->input('status');
         $hour = $request->input('hour');
-        // dd($hour);
+        // dd($hour, $status);
 
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $hourNow = Carbon::parse($hour)->format('H:i:s');
@@ -128,14 +128,15 @@ class AppointmentSchedule extends Controller
             ->whereDate('schedules.day', $date)
             ->count();
 
-        if ($bookCount > 5) {
-            return response()->json(['error' => 'Khống có'], 400);
+        if ($bookCount > 30) {
+            return response()->json(['error' => 'Bác sĩ đã đầy lịch'], 400);
         }
 
 
+        // dd($book);
         $book->shift_id = $scheduleDate->shift_id;
         $book->day = $date;
-
+        
         $book->status = $status;
         $book->hour = $hour;
         $book->url = $request->input('url');
