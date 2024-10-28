@@ -17,4 +17,8 @@ class Sclinic extends Model
     {
         return $this->hasOne(Schedule::class);
     }
+
+    public function specialtyForgikey(){
+        return $this->belongsTo(Specialty::class,'specialty_id','specialty_id');
+    }
 }

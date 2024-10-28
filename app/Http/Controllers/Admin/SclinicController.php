@@ -3,43 +3,93 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Clinic\CreateRequest;
+use App\Http\Requests\Admin\Clinic\UpdateRequest;
 use App\Models\Sclinic;
 use App\Models\Specialty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SclinicController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $clinics = Sclinic::join('specialties', 'specialties.specialty_id', '=', 'sclinics.specialty_id')
-            ->select('sclinics.*', 'specialties.name as specialtyName')
-            ->paginate(5);
+        $selectSpecialty = $request->input('specialty_id');
+        $query = Sclinic::join('specialties', 'specialties.specialty_id', '=', 'sclinics.specialty_id')
+            ->select('sclinics.*', 'specialties.name as specialtyName')->orderBy('row_id', 'DESC');
 
-        $specialties = Specialty::all(); // Lấy danh sách chuyên khoa
+        if ($selectSpecialty) {
+            $query->where('sclinics.specialty_id', $selectSpecialty);
+        }
 
-        return view('System.clinic.index', compact('clinics', 'specialties'));
+        $clinics = $query->paginate(10);
+
+        if ($request->ajax()) {
+            return response()->json(['clinics' => $clinics->items()]);
+        }
+
+        $specialties = Specialty::all();
+
+        return view('System.clinic.index', ['clinics' => $clinics, 'specialties' => $specialties]);
     }
 
-    public function filterClinicsBySpecialty(Request $request)
+    public function create()
     {
-        $specialtyId = $request->input('specialty_id');
+        $specialties = Specialty::all();
 
-        $activeClinics = Sclinic::join('specialties', 'specialties.specialty_id', '=', 'sclinics.specialty_id')
-            ->where('sclinics.specialty_id', $specialtyId)
-            ->where('sclinics.status', 1)
-            ->select('sclinics.sclinic_id', 'sclinics.name', 'specialties.specialty_id', 'specialties.name as specialtyName')
-            ->get();
-            // dd($activeClinics);
+        return response()->json(['specialties' => $specialties]);
+    }
 
-        $inactiveClinics = Sclinic::join('specialties', 'specialties.specialty_id', '=', 'sclinics.specialty_id')
-            ->where('sclinics.specialty_id', $specialtyId)
-            ->where('sclinics.status', 0)
-            ->select('sclinics.sclinic_id', 'sclinics.name', 'specialties.specialty_id', 'specialties.name as specialtyName')
-            ->get();
+    public function store(CreateRequest $request)
+    {
+
+        $sclinic = new Sclinic();
+        $sclinic->sclinic_id = strtoupper(Str::random('10'));
+        $sclinic->name = $request->input('name');
+        $sclinic->specialty_id = $request->input('specialty_id');
+        $sclinic->description = $request->input('description');
+        $sclinic->status = $request->input('status') ? 1 : 0;
+        $sclinic->save();
+
+        return response()->json(['success' => true, 'message' => 'Phòng khám đã được thêm thành công!']);
+    }
+
+    public function edit($id)
+    {
+        $sclinic = Sclinic::where('sclinic_id', $id)->first();
+        $specialties = Specialty::all();
 
         return response()->json([
-            'activeClinics' => $activeClinics,
-            'inactiveClinics' => $inactiveClinics,
+            'sclinic' => $sclinic,
+            'sclinicId' => $sclinic->sclinic_id,
+            'sclinicName' => $sclinic->name,
+            'sclinicSpecialty' => $sclinic->specialty_id,
+            'sclinicStatus' => $sclinic->status,
+            'sclinicNote' => $sclinic->description,
+            // 'specialties' => $specialties,
+            // 'specialtyName' => $specialties->name,
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $sclinic = Sclinic::where('sclinic_id',$id)->first();
+        // dd($sclinic->name);
+        // dd(
+        //     $request->input('sclinicNameEdit'),
+        //     $request->input('specialtyNameEdit'),
+        //     $request->input('descriptionEdit'),
+        //     $request->input('checkEdit')
+        // );
+        $sclinic->name = $request->input('sclinicName');
+        $sclinic->specialty_id = $request->input('sclinicSpecialty');
+        $sclinic->description = $request->input('sclinicNote');
+        $sclinic->status = $request->input('sclinicStatus');
+
+        $sclinic->save();
+
+
+        return response()->json(['success' => true, 'message' => 'Thông tin phòng khám đã được cập nhật thành công!']);
     }
 }
