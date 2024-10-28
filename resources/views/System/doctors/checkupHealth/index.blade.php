@@ -37,6 +37,9 @@
                                 <h6 class="fw-semibold mb-0">Triệu chứng</h6>
                             </th>
                             <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Hình thức</h6>
+                            </th>
+                            <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">Trạng thái</h6>
                             </th>
                             <th class="border-bottom-0">
@@ -61,31 +64,32 @@
                                     <span class="fw-semibold mb-0">{{ $item->symptoms }}</span>
                                 </td>
                                 <td class="border-bottom-0">
-                                    <span class="fw-semibold mb-0">
-                                        @if ($item->status == 2)
-                                            <span class="badge bg-success">Đang khám</span>
-                                    </span>
+                                    @if ($item->role == 1)
+                                        <span class="badge bg-success">Online</span>
+                                    @else
+                                        <span class="badge bg-danger">Offline</span>
+                                    @endif
+                                </td>
+                                <td class="border-bottom-0">
+                                    @if ($item->status == 2)
+                                        <span class="badge bg-success">Đang khám</span>
+                                    @elseif ($item->status == 1)
+                                        <span class="badge bg-danger">Chưa khám</span>
+                                    @endif
                                 </td>
                                 <td class="border-bottom-0 d-flex">
-                                   
-                                    <a href="{{ route('system.checkupHealth.record', $item->book_id) }}"
-                                        class="btn btn-success text-sm ms-1">
-                                        Khám
-                                    </a>
-                                </td>
-                            @elseif (($item->status == 1))
-                                <span class="badge bg-danger">Chưa khám</span>
-                                </span>
-                                </td>
-                                <td class="border-bottom-0 d-flex">
-                                 
                                     <a href="{{ route('system.checkupHealth.create', $item->book_id) }}"
                                         class="btn btn-success text-sm ms-1">
                                         Khám
                                     </a>
+                                    @if($item->role == 1)
+                                    <a href="{{ $item->url}}" target="_blank"
+                                        class="btn btn-primary text-sm ms-1">
+                                        Link
+                                    </a>
+                                    @endif
                                 </td>
-                        @endif
-                        </tr>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -94,10 +98,10 @@
         </div>
     </div>
     <script>
-        $(document).ready(function () {
-            $("#phoneInput, #nameInput").on("keyup", function () {
+        $(document).ready(function() {
+            $("#phoneInput, #nameInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function () {
+                $("#myTable tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });

@@ -165,25 +165,34 @@ function updateSelectedDay(day) {
 // --- Tìm thuốc end ---
 
 //--- Cận lâm sàng start ---
+$(document).ready(function () {
+    $("#myAjaxSelectService").select2({
+        placeholder: "Tìm cận lâm sàng",
+        allowClear: true,
+        minimumInputLength: 1 // Người dùng phải nhập ít nhất 1 ký tự để tìm kiếm
+    });
+});
 
-function addSelectedTest() {
-    const select = document.getElementById("serviceSelect");
+function addSelectService() {
+    const select = document.getElementById("myAjaxSelectService");
     const selectedOption = select.options[select.selectedIndex];
 
-    if (selectedOption.value === "") return;
+    if (!selectedOption || selectedOption.value === "") return;
 
     const serviceId = selectedOption.value;
     const serviceName = selectedOption.getAttribute("data-name");
-    const servicePrice = selectedOption.getAttribute("data-price");
+    const servicePrice = selectedOption.getAttribute("data-price"); // Lấy giá dịch vụ
 
-    addTestFromDropdown(serviceId, serviceName, servicePrice);
+    // Gọi hàm để thêm dịch vụ đã chọn
+    addTestFromDropdown(serviceId, serviceName, servicePrice); // Truyền giá dịch vụ
 
+    // Đặt lại lựa chọn
     select.selectedIndex = 0;
 }
 
 let totalAmount = 0;
-
 let selectService = [];
+
 function addTestFromDropdown(serviceId, serviceName, servicePrice) {
     const tableBody = document.querySelector("#selectedTestsTable tbody");
 
@@ -201,24 +210,12 @@ function addTestFromDropdown(serviceId, serviceName, servicePrice) {
     newRow.innerHTML = `
         <td>${rowIndex}</td>
         <td>${serviceName}</td>
-        <td>${new Intl.NumberFormat("vi-VN").format(servicePrice)}.000 VNĐ</td>
+        <td>${new Intl.NumberFormat("vi-VN").format(servicePrice)} VNĐ</td>
         <td><button class="btn btn-danger btn-sm" onclick="removeTest(this, ${servicePrice})">x</button></td>
     `;
 
     totalAmount += Number(servicePrice);
-
-    const total1 = new Intl.NumberFormat("vi-VN").format(totalAmount);
-    document.getElementById("totalAmout").innerText =
-        "Tổng tiền: " +
-        new Intl.NumberFormat("vi-VN").format(totalAmount) +
-        ".000 VNĐ";
-    document.getElementById("total_service").innerText =
-        new Intl.NumberFormat("vi-VN").format(totalAmount) + ".000";
-    document.getElementById("cost").innerText = 30 + ".000";
-
-    const total_end = Number(total1) + Number(30);
-    document.getElementById("total_fullcost").innerText =
-        new Intl.NumberFormat("vi-VN").format(total_end) + ".000 VNĐ";
+    updateTotalAmount();
 
     if (!selectService.includes(serviceId)) {
         selectService.push(serviceId);
@@ -233,15 +230,7 @@ function removeTest(button, servicePrice) {
     row.remove();
 
     totalAmount -= Number(servicePrice);
-
-    document.getElementById("totalAmout").innerText =
-        "Tổng tiền: " +
-        new Intl.NumberFormat("vi-VN").format(totalAmount) +
-        ".000 VNĐ";
-    document.getElementById("total_service").innerText =
-        new Intl.NumberFormat("vi-VN").format(totalAmount) + ".000";
-    document.getElementById("total_fullcost").innerText =
-        new Intl.NumberFormat("vi-VN").format(totalAmount + 30) + ".000 VNĐ";
+    updateTotalAmount();
 
     // Xóa serviceId khỏi mảng selectService
     const index = selectService.indexOf(serviceId);
@@ -251,11 +240,38 @@ function removeTest(button, servicePrice) {
     console.log("xóa", selectService);
     updateHiddenInputService();
 }
+
+function updateTotalAmount() {
+    document.getElementById("totalAmout").innerText =
+        "Tổng tiền: " +
+        new Intl.NumberFormat("vi-VN").format(totalAmount) +
+        " VNĐ";
+    document.getElementById("total_service").innerText =
+        new Intl.NumberFormat("vi-VN").format(totalAmount) + " VNĐ";
+    document.getElementById("cost").innerText = "30.000 VNĐ";
+
+    const total_end = totalAmount + 30;
+    document.getElementById("total_fullcost").innerText =
+        new Intl.NumberFormat("vi-VN").format(total_end) + " VNĐ";
+}
+
 function updateHiddenInputService() {
     const hiddenInput = document.getElementById("selectService");
     hiddenInput.value = JSON.stringify(selectService);
-    // console.log(hiddenInput);
 }
+
+
+function Chose() {
+    let serviceSelect = [];
+    if (serviceSelect.length === 0) {
+        alert("Bạn chưa xác định cận lâm sàng");
+    
+    
+   }
+}
+
+
+
 
 // --- Cận lâm sàng end ---
 

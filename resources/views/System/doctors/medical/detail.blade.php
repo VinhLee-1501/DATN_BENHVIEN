@@ -102,6 +102,7 @@
                                 <p>{{ \Carbon\Carbon::parse($medical[0]->re_examination_date)->format('d-m-Y') }}</p>
                             </div>
                             <div class="mb-3">
+                                @if (isset($services) && !$services->isEmpty())
                                 <label class="form-label">Dịch vụ</label>
                                 <table class="table table-bordered" id="selectedTestsTable">
                                     <thead>
@@ -113,21 +114,31 @@
                                     </thead>
                                     <tbody>
                                         <input type="hidden" id="selectService" name="selectedService" value="">
-                                        @php  $count =  1;  @endphp
+                                        @php $count = 1; @endphp
                                         @foreach ($services as $data)
-                                            @php  $int = $count++ @endphp
                                             <tr>
-                                                <td>{{ $int }}</td>
+                                                <td>{{ $count++ }}</td>
                                                 <td>{{ $data->name }}</td>
                                                 <td>{{ $data->price }}.000 VNĐ</td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <div class="d-flex justify-content-end">
-                                    <span id="totalAmout">Tổng cộng: {{ $totalprice[0]->total_price }}.000 VNĐ</span>
-                                </div>
-                                
+                                @else
+                                  <div></div>
+                                @endif
+                            
+                                @if (isset($totalprice) && !$totalprice->isEmpty())
+                                    <div class="d-flex justify-content-end">
+                                        <span id="totalAmout">Tổng cộng: {{ $totalprice[0]->total_price }}.000 VNĐ</span>
+                                    </div>
+                                @else
+                                    <div class="d-flex justify-content-end">    
+                                    </div>
+                                @endif
                             </div>
+                            
+
 
                             <div class="mb-3">
                                 <label class="form-label">Đơn thuốc</label>

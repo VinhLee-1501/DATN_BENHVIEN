@@ -42,7 +42,6 @@ class UserSeeder extends Seeder
             'email' => 'user@example.com',
             'password' => bcrypt('user123'),
             'phone' => '0123456789', // Số điện thoại duy nhất
-            'specialty_id' => 'SPECIALTY1',
             'role' => 0,
             'status' => 1,
         ]);
