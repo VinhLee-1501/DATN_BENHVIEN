@@ -32,6 +32,59 @@
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.4.2/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.4.2/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js'></script>
+    <style>
+        #show td {
+            padding: 0;
+        }
+
+        .profile-img img {
+            padding: 10px;
+            width: 100%;
+        }
+
+        .table-responsive {
+            max-height: 56vh;
+            overflow-y: auto;
+            /* Cho phép cuộn dọc */
+        }
+
+
+        .table-responsive thead {
+            position: sticky;
+            top: 0;
+            /* background-color: gray; Màu nền của phần đầu bảng */
+            z-index: 1;
+            /* Đảm bảo phần thead nằm trên tbody khi cuộn */
+        }
+
+        .table-responsive table thead,
+        .card .card-header {
+            background-color: #E8F9F1;
+        }
+
+        /* Tùy chỉnh thanh cuộn phong cách bệnh viện */
+        .table-responsive::-webkit-scrollbar {
+            width: 10px;
+            /* Tăng độ rộng để dễ cuộn */
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background-color: gray;
+            border-radius: 5px;
+            border: 2px solid #ffffff;
+            /* Để tạo viền trắng xung quanh thanh cuộn */
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background-color: #378CE7;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            /* background: gray; Màu xanh nhạt cho cảm giác nhẹ nhàng và thoải mái */
+            border-radius: 5px;
+        }
+    </style>
+
 </head>
 
 
@@ -78,13 +131,14 @@
     <script src="{{ asset('backend/assets/libs/filepond/dist/filepond.js') }}"></script>
     <script
         src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js') }}">
-    </script>
+        </script>
     <script
         src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js') }}">
+        </script>
     </script>
-    </script>
-    <script src="{{ asset('backend/assets/libs/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
-    </script>
+    <script
+        src="{{ asset('backend/assets/libs/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
+        </script>
     @stack('scripts')
 
     <x-message.message></x-message.message>

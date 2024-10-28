@@ -17,6 +17,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="accordion" id="accordionExample">
                 @foreach($doctorsSpecialty as $doctor)
                     <div class="accordion-item" id="myList">
@@ -30,27 +31,27 @@
                             <div id="collapse{{ $doctor->user_id }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ $doctor->user_id }}"
                                  data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    <div class="col-md-12 d-flex justify-content-around align-items-center">
-                                        <div class="col-md-4">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
                                             <img
                                                 src="{{ $doctor->avatar ? $doctor->avatar : asset('backend/assets/images/profile/user-1.jpg') }}"
-                                                class="img-thumbnail w-50"/>
+                                                class="img-thumbnail" style="min-width: 150; "/>
                                         </div>
-                                        <div class="col-md-6 d-block">
-                                            <div class="mb-3 ">
-                                                <label for="exampleInputPassword1" class="form-label">
+                                        <div class="col-12 col-md-6">
+                                            <div class="mb-3">
+                                                <label for="specialty" class="form-label">
                                                     Chuyên khoa:
                                                 </label>
                                                 <span>{{ $doctor->name }}</span>
                                             </div>
-                                            <div class="mb-3 ">
-                                                <label for="exampleInputPassword1" class="form-label">
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">
                                                     Số điện thoại:
                                                 </label>
                                                 <span>{{ $doctor->phone }}</span>
                                             </div>
-                                            <div class="mb-3 ">
-                                                <label for="exampleInputPassword1" class="form-label">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">
                                                     Email:
                                                 </label>
                                                 <span>{{ $doctor->email }}</span>
@@ -62,7 +63,6 @@
                         </section>
                     </div>
                 @endforeach
-
             </div>
         </div>
     </div>

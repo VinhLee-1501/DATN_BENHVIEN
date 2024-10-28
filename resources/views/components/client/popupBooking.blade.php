@@ -1,3 +1,7 @@
+<style>
+
+</style>
+
 <div id="popupBooking" class="popup booking">
     <div class="popup__container">
         <div class="popup__frame">

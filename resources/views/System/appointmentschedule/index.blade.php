@@ -3,27 +3,22 @@
 @section('content')
     <div class="card w-100">
         <div class="card-body p-4">
-            <div class="col-md-12 d-flex justify-content-around align-items-center">
-                <div class="col-md-12 d-flex justify-content-center align-items-center">
                     <div class="col-md-4">
                         <h5 class="card-title fw-semibold mb-4">Quản lý lịch khám</h5>
                     </div>
-                    <div class="col-md-8 d-flex justify-content-end">
+                    
                         <form action="" class="col-md-12 row">
-                            <div class="col-md-6">
+                            <div class="col-md-4 mb-3">
                                 <input type="text" id="inputName" class="form-control" placeholder="Họ tên"
                                     name="name">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4 mb-3">
                                 <input type="text" id="inputPhone" class="form-control" placeholder="SDT" name="phone">
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
             <div class="table-responsive">
                 <table class="table text-nowrap mb-0 align-middle">
-                    <thead class="text-dark fs-4">
+                <thead class="text-dark fs-4  ">
                         <tr>
                             <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">ID</h6>
@@ -138,9 +133,12 @@
                         @endforeach
                     </tbody>
                 </table>
-                {!! $book->links() !!}
+                <!-- {!! $book->links() !!} -->
             </div>
         </div>
+
+
+        
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -194,6 +192,8 @@
                 </div>
             </div>
         </div>
+
+
         <script>
             function openModal(id) {
                 // console.log(id);

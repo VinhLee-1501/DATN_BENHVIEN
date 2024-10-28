@@ -3,8 +3,8 @@
         <h5 class="card-title fw-semibold mb-4">Quản lý tài khoản bác sĩ</h5>
         <div class="table-responsive">
             <table class="table text-nowrap mb-0 align-middle">
-                <thead class="text-dark fs-4">
-                <tr>
+            <thead class="text-dark fs-4  ">
+            <tr>
                     <th class="border-bottom-0">
                         <h6 class="fw-semibold mb-0">ID</h6>
                     </th>
@@ -39,8 +39,7 @@
                             <p class="badge bg-success mb-0 fw-semibold">Bác sĩ</p>
                         </td>
                         <td class="border-bottom-0 d-flex">
-                            <a href="{{ route('system.accounts.edit', $item->user_id) }}" class="btn btn-primary"><i
-                                    class="ti ti-notes"></i></a>
+                            <a href="{{ route('system.accounts.edit', $item->user_id) }}" class="btn btn-primary"> <i class="ti ti-pencil"></i></a>
                             <form action="{{ route('system.accounts.destroy', $item->user_id) }}"
                                   id="form-delete{{ $item->user_id }}" method="post">
                                 @method('delete')

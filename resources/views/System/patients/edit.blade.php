@@ -4,21 +4,10 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title fw-semibold mb-4">Chỉnh sửa thông tin bệnh nhân</h5>
-            <div class="card">
-                <div class="card-body">
+            
                     <form action="{{ route('system.patients.update', $patient->patient_id) }}" method="POST">
                         @csrf
                         @method('PATCH')
-
-{{--                        @if ($errors->any())--}}
-{{--                            <div class="alert alert-danger">--}}
-{{--                                <ul>--}}
-{{--                                    @foreach ($errors->all() as $error)--}}
-{{--                                        <li>{{ $error }}</li>--}}
-{{--                                    @endforeach--}}
-{{--                                </ul>--}}
-{{--                            </div>--}}
-{{--                        @endif--}}
 
                         <div class="col-md-12 row">
                             <div class="col-md-3">
@@ -158,8 +147,7 @@
 
                         <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </form>
-                </div>
-            </div>
+              
         </div>
     </div>
 

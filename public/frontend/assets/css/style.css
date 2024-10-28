@@ -375,7 +375,7 @@ body.removeScrollbar {
     color: #2a2a2b;
     border-radius: 4px;
     background: #fff;
-    padding: 15px 20px;
+    padding: 5px 20px;
     border: 1px solid #aaa;
     line-height: 2;
 }
@@ -2077,6 +2077,11 @@ i.icon-cps-face {
     margin-left: 91.66667%;
 }
 
+@media (max-width: 739px){
+    .popup.booking .popup__image {
+       display: none !important;
+    }
+}
 /* >= Tablet */
 @media (min-width: 740px) {
     .row {
@@ -2371,8 +2376,19 @@ i.icon-cps-face {
 
 /* Tablet - PC low resolution */
 @media (min-width: 740px) and (max-width: 1023px) {
-    .container {
+    /* .container {
         max-width: 644px;
+    } */
+    .popup.booking .popup__form{
+        width: 100% !important;
+    }
+    .popup.booking .popup__frame{
+        width: 100% !important;
+    }
+    .form__frame {
+        display: flex;
+        flex-direction: column;
+
     }
 }
 
@@ -4430,6 +4446,7 @@ i.icon-cps-face {
         max-width: 600px;
         margin: auto;
     }
+
 }
 
 .box-doctor__slider .slick-list {
@@ -5052,7 +5069,7 @@ i.icon-cps-face {
 .popup.booking .popup__frame {
     overflow: hidden;
     max-width: 1200px;
-    max-height: calc(100vh - 20px);
+    max-height: calc(100vh - 100px);
     border-radius: 16px;
 }
 
@@ -5358,7 +5375,8 @@ i.icon-cps-face {
     object-fit: contain;
 }
 
-@media only screen and (max-width: 1239px) {
+
+@media (max-width: 1239px) {
     .header__frame,
     .header__wrap {
         gap: 12px;
@@ -5377,16 +5395,27 @@ i.icon-cps-face {
         font-size: 14px;
     }
 }
+@media (max-width: 375px) {
+    .popup.booking .popup__form {
+        width: 100% !important;
+    }
+}
 
-@media only screen and (max-width: 1023px) {
+@media (max-width: 1023px) {
     body {
         font-size: 14px;
     }
-
+    
     .page {
         padding-top: 56px;
     }
-
+   
+        .popup.booking .popup__image {
+            width: 45%;
+            margin: 0;
+            display: none;
+        }
+    
     .page .rd-menu,
     .page .rd-panel {
         display: flex;
@@ -5624,7 +5653,7 @@ i.icon-cps-face {
     }
 }
 
-@media only screen and (max-width: 739px) {
+@media (max-width: 739px) {
     .about__list > .row > .col:nth-child(even) .about__block > .row {
         flex-direction: column-reverse;
         flex-wrap: nowrap;
@@ -5745,7 +5774,7 @@ i.icon-cps-face {
     }
 }
 
-@media only screen and (max-width: 576px) {
+@media (max-width: 576px) {
     .page.home .box-branch {
         margin-top: 20px;
     }
@@ -6364,5 +6393,3 @@ i.icon-cps-face {
         box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
     }
 }
-
-/*# sourceMappingURL=style.css.map */

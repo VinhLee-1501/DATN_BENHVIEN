@@ -176,7 +176,7 @@
 
                             <!-- Link đến đăng nhập -->
                             <div class="form__link text-center">
-                                Đã có tài khoản? <a href="#" class="openPopup" data-popup="#popupLogin">Đăng
+                                Đã có tài khoản? <a href="{{ route('client.login')}}">Đăng
                                     nhập</a>
                             </div>
                         </div>

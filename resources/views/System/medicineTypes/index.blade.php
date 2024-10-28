@@ -4,18 +4,22 @@
     <div class="card w-100">
         <div class="card-body p-4">
             <h5 class="card-title fw-semibold mb-4">Quản lý nhóm thuốc</h5>
-            <div class="table-responsive">
-                <form action="" class="col-md-12 row">
-                    <div class="col-md-4">
-                        <a href="javascript:void(0)" class="btn btn-success me-1" onclick='openAddModal()'>Thêm</a>
-                    </div>
-                    <div class="col-md-4">
+
+            <form action="" class="col-md-12 row">
+                   
+                    <div class="col-md-4 mb-3">
                         <input type="text" id="inputName" class="form-control" placeholder="Nhập tên thuốc">
                     </div>
 
+                    <div class="col-md-4 mb-3">
+                        <a href="javascript:void(0)" class="btn btn-success me-1" onclick='openAddModal()'>Thêm</a>
+                    </div>
+
                 </form>
+                
+            <div class="table-responsive">
                 <table class="table text-nowrap mb-0 align-middle">
-                    <thead class="text-dark fs-4">
+                <thead class="text-dark fs-4  ">
                         <tr>
                             <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">Mã nhóm</h6>
@@ -29,7 +33,10 @@
                             <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">Trạng thái</h6>
                             </th>
+                            <th class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0">Thao tác</h6>
                             </th>
+                            
                         </tr>
                     </thead>
 

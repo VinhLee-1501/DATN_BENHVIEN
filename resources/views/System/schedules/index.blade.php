@@ -12,7 +12,9 @@
                 </select>
             </div>
             <div class="table-responsive">
-                <div id="calendar"></div>
+                <div id="calendar">
+                    
+                </div>
             </div>
 
             {{-- Modal form create value to database at table schedules --}}
