@@ -77,7 +77,7 @@ class MedicalRecordDocotrController extends Controller
 
         $service = Service::get();
         $medicine = Medicine::select('*')->distinct()->get();
-// dd($medical_id);
+
         $content = MedicalRecord::join('users', 'users.user_id', '=', 'medical_records.user_id')
         ->join('books', 'books.book_id', '=', 'medical_records.book_id')
         ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
@@ -86,7 +86,7 @@ class MedicalRecordDocotrController extends Controller
         ->where('medical_records.medical_id', $medical_id)
         ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
         ->get();
-// dd($content);
+
         return view(
             'System.doctors.medical.medicalRecording',
             [

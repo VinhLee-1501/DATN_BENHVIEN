@@ -129,14 +129,14 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    @if (isset($totalprice) && !$totalprice->isEmpty())
-                                        <span id="totalAmout">Tổng cộng: {{ $totalprice[0]->total_price }}.000 VNĐ</span>
+                                    @if ($totalprice == 20)
+                                        <span></span>
+                                    @else
+                                        <span id="totalAmout">Tổng cộng: {{ $totalprice}}.000 VNĐ</span>
                                         <div class="float-xxl-end">
                                             <a href="{{ route('system.pdfService', $data->treatment_id) }}"
                                                 class="btn btn-success btn-sm" type="btn">In Phiếu</a>
                                         </div>
-                                    @else
-                                        <tr></tr>
                                     @endif
                                 </form>
                             </div>

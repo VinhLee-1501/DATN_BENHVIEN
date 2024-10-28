@@ -51,16 +51,14 @@ class CheckupHealthController extends Controller
         $phone = $book->phone;
         $patient = Patient::where('phone', $phone)->first();
 
-        $content = Book::join('users', 'users.user_id', '=', 'books.user_id')
-            ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
-            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-            ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
-            ->where('books.book_id', $book_id)
-            ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
-            // ->select('books.specialty_id')
-            ->get();
+        $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+        ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
+        ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
+        ->where('books.book_id', $book_id)
+        ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
+        ->get();
 
-            // dd($content);
+          
 
         if (!$patient) {
             $user = $book->first();
@@ -301,7 +299,7 @@ class CheckupHealthController extends Controller
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'treatment_services.treatment_id')
             ->where('treatment_services.treatment_id', $treatment_id)
             ->get();
-        $totalprice = TreatmentService::where('treatment_id', $treatment_id)
+        $totalprices = TreatmentService::where('treatment_id', $treatment_id)
             ->join('services', 'treatment_services.service_id', '=', 'services.service_id')
             ->select(
                 'treatment_services.treatment_id',
@@ -311,6 +309,7 @@ class CheckupHealthController extends Controller
             ->groupBy('treatment_services.treatment_id')
             ->get();
 
+            $totalprice = $totalprices[0]->total_price;
         $medical_patient = MedicalRecord::where('patient_id', $patient_id)
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->select('medical_records.*', 'users.lastname as lastname', 'users.firstname as firstname')
@@ -326,17 +325,15 @@ class CheckupHealthController extends Controller
         $order->treatment_id = $treatment->treatment_id;
         $order->status = 0;
         $order->role = 0;
-        $order->total_price = $totalprice[0]->total_price;
+        $order->total_price = $totalprice;
         $order->save();
 
-        $content = Book::join('users', 'users.user_id', '=', 'books.user_id')
-            ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
-            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-            ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
-            ->where('books.book_id', $book_id)
-            ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
-            // ->select('books.specialty_id')
-            ->get();
+        $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+        ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
+        ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
+        ->where('books.book_id', $book_id)
+        ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
+        ->get();
 
         return view(
             'System.doctors.checkupHealth.medicalRecord',
@@ -410,20 +407,21 @@ class CheckupHealthController extends Controller
         $order = new Order();
         $order->order_id = strtoupper(Str::random(10));
         $order->treatment_id = $treatment->treatment_id;
+        $order->total_price = 20;
         $order->status = 0;
         $order->role = 0;
 
         $order->save();
 
-        $content = Book::join('users', 'users.user_id', '=', 'books.user_id')
-        ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
-        ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-        ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
-        ->where('books.book_id', $book_id)
-        ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
-        ->get();
+          $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
+            ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
+            ->where('books.book_id', $book_id)
+            ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
+            ->get();
 
-        // dd($service);
+        $totalprice = 20;
+
         return view(
             'System.doctors.checkupHealth.medicalRecord',
             [
@@ -434,8 +432,9 @@ class CheckupHealthController extends Controller
                 'medicine' => $medicine,
                 'content' => $content,
                 'doctor' => $user,
+                'totalprice' => $totalprice,
                 'medical_patient' => $medical_patient
             ]
-        )->with('success', 'Lưu cận lâm sàng thành công.');;
+        )->with('success', 'Lưu cận lâm sàng thành công.');
     }
 }
