@@ -455,7 +455,7 @@ a.button {
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis;    
     border-radius: 5px;
     box-shadow: none;
     margin: auto;
@@ -2730,10 +2730,46 @@ i.icon-cps-face {
     object-fit: contain;
 }
 
-/* .header__booking .button {
-    box-shadow: 0 0 0 rgba(255, 188, 17, 0.4);
-    animation: pulse 2s infinite;
-} */
+.header__login {
+    position: relative; /* Để menu con được định vị tương đối */
+    cursor: pointer; /* Thay đổi con trỏ khi di chuột qua */
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%; 
+    right: 0; 
+    width: 250px;
+    margin-top: 10px;
+    background-color: white; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+    z-index: 1000; 
+    padding: 10px 0;
+    border: none !important;
+    border-radius: 0px !important;
+    margin-top: 10px !important;
+}
+
+.dropdown-menu ul {
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0;
+}
+
+.dropdown-menu li {
+    padding: 8px 16px; /* Khoảng cách cho từng mục */
+}
+
+.dropdown-menu li a {
+    text-decoration: none; /* Bỏ gạch chân cho link */
+    color: black; /* Màu chữ */
+}
+
+.dropdown-menu li:hover {
+    background-color: #048647;
+    color: #fff 
+}
+
 
 .header.stick {
     box-shadow: rgba(0, 0, 0, 0.1) 1.95px 1.95px 2.6px;

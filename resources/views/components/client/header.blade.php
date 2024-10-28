@@ -28,9 +28,15 @@
 
             </div>
             @if (auth()->check())
-                <div style="width: 400px" class="header__login">
-                    <a href="{{ route('client.profile.index') }}" class="">
-                        {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</a>
+                <div style="width: 4%;" class="header__login" onclick="toggleMenu()">
+                    <img style="max-width: 100%; border-radius:100%" src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
+                        alt="{{ auth()->user()->firstname }}">
+                    <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                        <ul>
+                            <a href="{{ route('client.profile.index') }}"><li><i class="fa-regular fa-user"></i> Thông tin tài khoản</li></a>
+                            <a href="{{ route('client.logout') }}"><li><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</li></a>
+                        </ul>
+                    </div>
                 </div>
             @else
                 <div class="header__login">
@@ -38,18 +44,11 @@
                         <div class="button btn-small btn-cta openPopup">
                             Đăng nhập
                         </div>
-
-                        <div class="login-options" style="display: none;">
-                            <a href="{{ route('client.login') }}">
-                                <div style="border-radius: 0px; width: 240px" class="button btn-small">
-                                    Đăng nhập người dùng
-                                </div>
-                            </a>
-                            <a href="{{ route('system.auth.login') }}">
-                                <div style="border-radius: 0px; width: 240px" class="button btn-small">
-                                    Đăng nhập với bác sĩ
-                                </div>
-                            </a>
+                        <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+                            <ul>
+                                <a href="{{ route('client.login') }}"><li><i class="fa-regular fa-user"></i> Đăng nhập người dùng</li></a>
+                                <a href="{{ route('system.auth.login') }}"><li><i class="fa-solid fa-user-doctor"></i> Đăng nhập bác sĩ</li></a>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -57,7 +56,7 @@
                 <script>
                     // Lấy các phần tử cần thiết
                     const loginContainer = document.querySelector('.login-container');
-                    const loginOptions = document.querySelector('.login-options');
+                    const loginOptions = document.querySelector('.dropdown-menu');
                     const loginButton = loginContainer.querySelector('.openPopup');
 
                     // Hiện/ẩn login-options khi nhấn vào nút Đăng nhập

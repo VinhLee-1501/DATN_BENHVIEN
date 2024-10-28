@@ -420,3 +420,20 @@ function openTab(evt, tabId) {
 document.getElementById("history").style.display = "block";
 
 
+function toggleMenu() {
+    var menu = document.getElementById('dropdownMenu');
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+}
+
+// Đóng menu khi nhấp ra ngoài
+window.onclick = function(event) {
+    if (!event.target.matches('.header__login img')) {
+        var dropdowns = document.getElementsByClassName("dropdown-menu");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.style.display === 'block') {
+                openDropdown.style.display = 'none';
+            }
+        }
+    }
+}

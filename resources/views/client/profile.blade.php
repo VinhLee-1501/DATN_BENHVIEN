@@ -11,7 +11,7 @@
                     <div class="item"><a href="" title="Trang chủ">Trang chủ</a>
                     </div>
                     <div class="item sep">/</div>
-                    <div class="item">Lịch sử</div>
+                    <div class="item">Thông tin cá nhân</div>
                 </div>
             </div>
         </div>
@@ -22,10 +22,53 @@
 
                         <div class="col l-4 mc-12 c-12">
                             <div class="profile__info">
-
                                 <div class="profile__avatar">
-                                    <img src="{{ auth()->user()->avatar }}" alt="Avatar" />
+
+                                    @if (empty(auth()->user()->avatar))
+                                        <img src="{{ auth()->user()->avatar }}" alt="Default Avatar" />
+                                    @else
+                                        <img src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
+                                            alt="Avatar" />
+                                    @endif
+
+                                    <!-- Icon máy ảnh -->
+                                    <div class="camera-icon" onclick="openPopup()">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
                                 </div>
+                                <script>
+                                    function openPopup() {
+                                        document.getElementById("uploadPopup").style.display = "flex"; // Hiển thị popup
+                                    }
+
+                                    function closePopup() {
+                                        document.getElementById("uploadPopup").style.display = "none"; // Ẩn popup
+                                        // Xóa preview khi đóng popup
+                                        document.getElementById("previewImg").src = "";
+                                        document.getElementById("previewImg").style.display = "none";
+                                    }
+                                    
+
+                                    function previewImage(event) {
+                                        const input = event.target;
+                                        const previewImg = document.getElementById("previewImg");
+
+                                        if (input.files && input.files[0]) {
+                                            const reader = new FileReader();
+
+                                            reader.onload = function(e) {
+                                                previewImg.src = e.target.result; // Gán đường dẫn cho ảnh preview
+                                                previewImg.style.display = "block"; // Hiển thị ảnh
+                                            }
+
+                                            reader.readAsDataURL(input.files[0]); // Đọc file hình ảnh
+                                        }
+                                    }
+                                </script>
+                                <!-- Popup form upload ảnh -->
+
+
+
                                 <h1 class="text-center">Thông tin cá nhân</h1>
                                 <div class="profile__details">
                                     <p><strong>Họ tên:</strong> {{ auth()->user()->firstname }}
@@ -88,7 +131,7 @@
                                             <tbody>
                                                 @if ($medicalHistory->isEmpty())
                                                     <tr>
-                                                        <td colspan="5" class="text-center">Chưa có lịch khám nào</td>
+                                                        <td colspan="7" class="text-center">Chưa có lịch khám nào</td>
                                                     </tr>
                                                 @else
                                                     @foreach ($medicalHistory as $key => $history)
@@ -196,23 +239,29 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($medicalRecordHistory as $key => $history)
+                                                @if ($medicalRecordHistory->isEmpty())
                                                     <tr>
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $history->medical_id }}</td>
-                                                        <td>{{ $history->diaginsis }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($history->re_examination_date)->format('d/m/Y') }}
-                                                        </td>
-                                                        <td>{{ $history->advice ?? 'Không có lời khuyên' }}</td>
-
-                                                        <td>{{ $history->first_name }} {{ $history->last_name }}</td>
-                                                        <td>
-                                                            <button style="border:none" class="button btn-small btn-cta"
-                                                                onclick="openDetailsMediaRecordModal({{ json_encode($history) }})">Chi
-                                                                tiết</button>
-                                                        </td>
+                                                        <td colspan="7" class="text-center">Chưa có bệnh án nào</td>
                                                     </tr>
-                                                @endforeach
+                                                @else
+                                                    @foreach ($medicalRecordHistory as $key => $history)
+                                                        <tr>
+                                                            <td>{{ $key + 1 }}</td>
+                                                            <td>{{ $history->medical_id }}</td>
+                                                            <td>{{ $history->diaginsis }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($history->re_examination_date)->format('d/m/Y') }}
+                                                            </td>
+                                                            <td>{{ $history->advice ?? 'Không có lời khuyên' }}</td>
+
+                                                            <td>{{ $history->first_name }} {{ $history->last_name }}</td>
+                                                            <td>
+                                                                <button style="border:none" class="button btn-small btn-cta"
+                                                                    onclick="openDetailsMediaRecordModal({{ json_encode($history) }})">Chi
+                                                                    tiết</button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
@@ -370,9 +419,10 @@
                                     class="tab {{ $errors->has('firstname') || $errors->has('lastname') || $errors->has('phone') || $errors->has('birthday') || $errors->has('email') || session('info_success') || session('info_error') ? 'active' : '' }}">
                                     <h1 class="text-center">Cập nhật thông tin</h1>
                                     <form class="profile__form" action="{{ route('client.profile.update') }}"
-                                        method="POST">
+                                        method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        @method('PATCH');
+                                        @method('PATCH')
+
                                         <div class="form-group row">
                                             <div class="col">
                                                 <label for="firstname">Họ</label>
@@ -404,8 +454,7 @@
                                             <div class="col">
                                                 <label for="birthday">Ngày sinh</label>
                                                 <input type="date" id="birthday" name="birthday"
-                                                    value="{{ auth()->check() && auth()->user()->birthday ? auth()->user()->birthday->format('Y-m-d') : '' }}"
-                                                    onchange="updateBirthdayFormat(this)" />
+                                                    value="{{ auth()->check() && auth()->user()->birthday ? auth()->user()->birthday->format('Y-m-d') : '' }}" />
                                                 @error('birthday')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
@@ -415,13 +464,15 @@
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <input type="email" id="email" name="email"
-                                                value="{{ old('email', auth()->user()->email) }}" />
+                                                value="{{ auth()->user()->email }}" />
                                             @error('email')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+
                                         <button type="submit" class="button btn-cta">Cập nhật</button>
                                     </form>
+
                                 </div>
 
 
@@ -526,6 +577,34 @@
                 <div class="medicines-section">
                     <p><strong>Đơn thuốc:</strong></p>
                     <ul id="modal-medicines"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="modal_upload" id="uploadPopup" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <h2>Tải lên ảnh đại diện</h2>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <form class="profile__form" action="{{ route('client.profile.change-avatar') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @method('PATCH')
+                            <label for="avatar">Chọn ảnh mới:</label>
+                            <input type="file" id="avatar" name="avatar" accept="image/*" required
+                                onchange="previewImage(event)">
+                            @error('avatar')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                            <button class="button btn-cta" type="submit">Tải lên</button>
+                        </form>
+                    </div>
+
+                    <div id="imagePreview" style="width: 30%">
+                        <img id="previewImg" src="" alt="Image Preview"
+                            style="display: none; max-width: 100%; border-radius: 5px">
+                    </div>
                 </div>
             </div>
         </div>

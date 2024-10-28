@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 
@@ -48,7 +49,7 @@ class UserController extends Controller
             'phone' => $validatedData['phone'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
-            'avatar' => 'https://topcode.vn/assets/images/avanta2.png',
+            'avatar' => 'avatar.png',
             'email_verified_at' => now(),
         ]);
 
@@ -145,39 +146,73 @@ class UserController extends Controller
     }
     public function updateProfile(UpdateProfileRequest $request)
     {
-
         $user = Auth::user();
-
-
         if (!$user) {
-            return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để cập nhật hồ sơ.');
+            return redirect()->route('system.auth.login')->with('error', 'Bạn cần phải đăng nhập để cập nhật hồ sơ.');
         }
-
 
         $oldPhone = $user->phone;
 
+        // Lấy specialty_id từ request
+        $specialty_id = $request->input('specialty_id');
 
+        // Cập nhật thông tin người dùng
         $updatedUser = $user->update([
             'firstname' => $request->input('firstname'),
             'lastname' => $request->input('lastname'),
             'phone' => $request->input('phone'),
-            'email' => $request->input('email'), // Cập nhật email
+            'email' => $request->input('email'),
             'birthday' => $request->input('birthday'),
+            'specialty_id' => $specialty_id,  // sử dụng specialty_id từ request
         ]);
 
+        // Kiểm tra cập nhật thành công
+        if (!$updatedUser) {
+            return redirect()->back()->withErrors(['update' => 'Không thể cập nhật thông tin.']);
+        }
 
-        if ($updatedUser && $oldPhone !== $request->input('phone')) {
+        // Cập nhật thông tin bệnh nhân nếu số điện thoại thay đổi
+        if ($oldPhone !== $request->input('phone')) {
             $patient = $user->patient;
             if ($patient) {
                 $patient->update(['phone' => $request->input('phone')]);
             }
         }
 
-
-        return $updatedUser
-            ? redirect()->route('client.profile.index')->with(['info_success' => 'Cập nhật hồ sơ thành công!', 'activeTab' => 'update_info'])
-            : redirect()->route('client.profile.index')->with(['info_error' => 'Cập nhật hồ sơ thất bại, vui lòng thử lại.', 'activeTab' => 'update_info']);
+        return redirect()->route('system.profile')->with('success', 'Cập nhật thông tin thành công');
     }
+    public function updateAvatar(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để cập nhật hồ sơ.');
+        }
+
+
+        if ($request->hasFile('avatar')) {
+            $request->validate(['avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048']);
+
+            // Xóa avatar cũ nếu tồn tại
+            if ($user->avatar) {
+                Storage::disk('public')->delete('uploads/avatars/' . $user->avatar);
+            }
+
+            // Lưu avatar mới vào thư mục 'uploads/avatars'
+            $avatarName = time() . '.' . $request->avatar->extension();
+            $request->avatar->storeAs('uploads/avatars', $avatarName, 'public');
+
+            // Gán tên file avatar mới vào user
+            $user->avatar = $avatarName;
+
+            // Cập nhật avatar trong cơ sở dữ liệu
+            $user->save();
+        }
+
+        return redirect()->route('client.profile.index')->with('success', 'Cập nhật ảnh đại diện thành công!');
+    }
+
+
     public function changePassword(ChangePasswordRequest $request)
     {
 

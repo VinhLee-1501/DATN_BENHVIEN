@@ -16,26 +16,26 @@
 }
 
 .profile__info:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Thêm hiệu ứng khi hover */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); 
 }
 
 .profile__avatar {
     display: flex;
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    margin-bottom: 20px; /* Khoảng cách giữa ảnh đại diện và thông tin cá nhân */
+    justify-content: center; 
+    align-items: center; 
+    margin-bottom: 20px; 
 }
 
 .profile__avatar img {
     width: 30%;
     object-fit: cover;
-    border-radius: 50%; /* Thêm bo tròn ảnh */
     border: 2px solid #ddd;
     transition: transform 0.3s ease;
 }
 
 .profile__avatar img:hover {
-    transform: scale(1.1); /* Hiệu ứng phóng to khi hover ảnh */
+    transform: scale(1.1); 
+    filter: brightness(0.7); 
 }
 
 .profile__details p {
@@ -89,7 +89,7 @@
     margin-right: 5px;
     font-size: 16px;
     transition: background-color 0.3s;
-    border-radius: 5px; /* Thêm bo tròn cho nút */
+    border-radius: 5px; 
 }
 
 .tab-btn.active,
@@ -108,7 +108,7 @@
 
 /* Modal */
 .modal {
-    display: none; /* Ẩn modal mặc định */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -116,8 +116,18 @@
     overflow: auto;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Màu nền mờ */
-    animation: fadeIn 0.5s ease-out; /* Thêm hiệu ứng mờ dần */
+
+}
+.modal_upload {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    width: 100%;
+    height: auto;
+
 }
 
 /* Nội dung của modal */
@@ -125,12 +135,11 @@
     background-color: #fff;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
     width: 80%;
     max-width: 600px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    animation: zoomIn 0.5s ease-out; /* Thêm hiệu ứng zoom in */
+    animation: zoomIn 0.5s ease-out; 
 }
 
 /* Nút đóng modal */
@@ -150,18 +159,18 @@
 .button-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Tạo khoảng cách đều giữa các nút */
-    gap: 10px; /* Khoảng cách giữa các nút */
+    justify-content: space-between; 
+    gap: 10px;
 }
 
 .button-container a,
 .button-container button {
     width: calc(
         50% - 10px
-    ); /* Mỗi nút chiếm 50% chiều rộng và trừ đi khoảng cách */
+    ); 
     padding: 10px 20px;
     box-sizing: border-box;
-    text-align: center; /* Canh giữa text */
+    text-align: center; 
     cursor: pointer;
 }
 
@@ -203,7 +212,7 @@
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
-    border-radius: 25px;
+    border-radius: 10px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: border 0.3s ease, box-shadow 0.3s ease;
 }
@@ -214,31 +223,31 @@
     outline: none;
 }
 .row {
-    display: flex; /* Sử dụng Flexbox để tạo hàng */
-    justify-content: space-between; /* Căn giữa các cột */
-    margin-bottom: 15px; /* Khoảng cách giữa các hàng */
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 15px; 
 }
 
 .col {
-    flex: 1; /* Để các cột có cùng kích thước */
-    margin-right: 10px; /* Khoảng cách giữa các cột */
+    flex: 1; 
+    margin-right: 10px; 
 }
 
 .col:last-child {
-    margin-right: 0; /* Xóa khoảng cách bên phải của cột cuối */
+    margin-right: 0; 
 }
 
 textarea {
-    width: 100%; /* Chiếm toàn bộ chiều rộng */
-    padding: 10px; /* Padding cho textarea */
-    border: 1px solid #ccc; /* Viền cho textarea */
-    border-radius: 10px; /* Bo góc cho textarea */
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 10px; 
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .text-danger {
-    color: red; /* Màu đỏ cho thông báo lỗi */
-    font-size: 0.875em; /* Kích thước chữ nhỏ hơn */
-    margin-top: 5px; /* Khoảng cách giữa input và thông báo lỗi */
+    color: red; 
+    font-size: 0.875em; 
+    margin-top: 5px; 
 }
 
 .button {
@@ -282,62 +291,101 @@ textarea {
     }
 }
 .modal-body {
-    display: flex; /* Sử dụng Flexbox để tạo hai cột */
-    justify-content: space-between; /* Tạo không gian giữa hai cột */
+    display: flex;
+    justify-content: space-between;
 }
 
 .left-column {
-    flex: 0 0 48%; /* Chiếm 48% chiều rộng */
-    padding: 10px; /* Thêm khoảng cách bên trong */
+    flex: 0 0 48%; 
+    padding: 10px; 
 }
 
 .right-column {
-    flex: 0 0 48%; /* Chiếm 48% chiều rộng */
-    padding: 10px; /* Thêm khoảng cách bên trong */
+    flex: 0 0 48%; 
+    padding: 10px; 
 }
 
 .medicines-section {
-    margin-top: 20px; /* Thêm khoảng cách phía trên để tách khỏi phần trên */
-    padding: 10px; /* Thêm khoảng cách bên trong */
+    margin-top: 20px; 
+    padding: 10px; 
 }
 
-/* Cách định dạng bảng dịch vụ */
+
 .table {
-    width: 100%; /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
-    border-collapse: collapse; /* Xóa khoảng cách giữa các ô */
-    margin-top: 15px; /* Thêm khoảng cách giữa bảng và các phần khác */
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
 }
 
 .table thead th {
-    background-color: #048647; /* Màu nền cho tiêu đề bảng */
-    color: white; /* Màu chữ */
-    padding: 10px; /* Khoảng cách trong ô tiêu đề */
-    text-align: left; /* Căn trái chữ trong tiêu đề */
+    background-color: #048647; 
+    color: white; 
+    padding: 10px; 
+    text-align: left; 
 }
 
 .table tbody td {
-    border: 1px solid #ddd; /* Đường viền cho các ô */
-    padding: 8px; /* Khoảng cách trong ô */
+    border: 1px solid #ddd; 
+    padding: 8px;
+}
+.profile__avatar {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: relative; 
+    width: 70%; 
+    height: auto; 
+    padding: 10%; 
+    margin: 0 auto; 
+    overflow: hidden;
 }
 
-/* Hiệu ứng mờ dần */
+.profile__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.camera-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    cursor: pointer;
+}
+
+.profile__avatar:hover .camera-icon {
+    opacity: 1;
+}
+
+input[type="file"] {
+    margin-bottom: 20px;
+    display: block; 
+}
+
+
 @keyframes fadeIn {
     from {
-        background-color: rgba(0, 0, 0, 0); /* Không có màu */
+        background-color: rgba(0, 0, 0, 0); 
     }
     to {
-        background-color: rgba(0, 0, 0, 0.4); /* Màu nền mờ */
+        background-color: rgba(0, 0, 0, 0.4);
     }
 }
 
-/* Hiệu ứng zoom vào modal */
+
 @keyframes zoomIn {
     from {
-        transform: scale(0.8); /* Bắt đầu từ kích thước nhỏ */
-        opacity: 0; /* Mờ dần */
+        transform: scale(0.8);
+        opacity: 0; 
     }
     to {
-        transform: scale(1); /* Phóng to về kích thước ban đầu */
-        opacity: 1; /* Hiển thị hoàn toàn */
+        transform: scale(1); 
+        opacity: 1; 
     }
 }
