@@ -96,7 +96,6 @@
                     @endforeach
                 </tbody>
             </table>
-            {!! $medicine->links() !!}
         </div>
     </div>
 </div>

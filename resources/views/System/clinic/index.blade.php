@@ -274,9 +274,13 @@
                     '_token': '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    console.log(response);
                     $('#exampleModal').modal('hide');
-                    location.reload();
+                    if (response.success) {
+                        toastr.success(response.message);
+                        location.reload();
+                    } else if (response.error) {
+                        toastr.error(response.message);
+                    }
                 },
                 error: function(error) {
                     if (error.status === 422) {
