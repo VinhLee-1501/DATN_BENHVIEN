@@ -25,13 +25,20 @@
                                 <div class="profile__avatar">
 
                                     @if (empty(auth()->user()->avatar))
-                                        <img src="{{ auth()->user()->avatar }}" alt="Default Avatar" />
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                            alt="Avatar" />
                                     @else
                                         @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
                                             <img src="{{ auth()->user()->avatar }}" alt="Default Avatar" />
                                         @else
-                                            <img src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
-                                                alt="Avatar" />
+                                            @if (auth()->user()->avatar ===
+                                                    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png')
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                                    alt="Avatar" />
+                                            @else
+                                                <img src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
+                                                    alt="Avatar" />
+                                            @endif
                                         @endif
                                     @endif
 

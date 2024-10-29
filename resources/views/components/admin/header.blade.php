@@ -30,8 +30,14 @@
                             @endif
 
                         </span>
-                        <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}" alt="" width="35"
-                            height="35" class="rounded-circle">
+                        @if (empty(auth()->user()->avatar))
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png" alt="" width="35"
+                                height="35">
+                        @else
+                            <img src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}" alt=""
+                                width="35" height="35">
+                        @endif
+
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">

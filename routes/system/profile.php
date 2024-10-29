@@ -8,4 +8,5 @@ Route::middleware('check_login_admin')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::get('/change-password', [ProfileController::class, 'changePasswordForm'])->name('change-password');   
     Route::patch('/change-password', [ProfileController::class, 'changePassword'])->name('change-password.update');   
+    Route::patch('/change-avatar', [ProfileController::class, 'updateAvatar'])->name('change-avatar');   
 });

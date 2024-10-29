@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\Profile\ChangePasswordRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Specialty;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Psy\Command\WhereamiCommand;
 
 class ProfileController extends Controller
@@ -61,6 +62,36 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('system.profile')->with('success', 'Cập nhật thông tin thành công');
+    }
+    public function updateAvatar(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để cập nhật hồ sơ.');
+        }
+
+
+        if ($request->hasFile('avatar')) {
+            $request->validate(['avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048']);
+
+            // Xóa avatar cũ nếu tồn tại
+            if ($user->avatar) {
+                Storage::disk('public')->delete('uploads/avatars/' . $user->avatar);
+            }
+
+            // Lưu avatar mới vào thư mục 'uploads/avatars'
+            $avatarName = time() . '.' . $request->avatar->extension();
+            $request->avatar->storeAs('uploads/avatars', $avatarName, 'public');
+
+            // Gán tên file avatar mới vào user
+            $user->avatar = $avatarName;
+
+            // Cập nhật avatar trong cơ sở dữ liệu
+            $user->save();
+        }
+
+        return back()->with('success', 'Cập nhật ảnh đại diện thành công!');
     }
 
 

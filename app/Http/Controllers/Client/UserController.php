@@ -49,7 +49,7 @@ class UserController extends Controller
             'phone' => $validatedData['phone'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
-            'avatar' => 'avatar.png',
+            'avatar' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png',
             'email_verified_at' => now(),
         ]);
 

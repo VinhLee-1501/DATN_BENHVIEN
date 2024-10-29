@@ -29,14 +29,28 @@
             </div>
             @if (auth()->check())
                 <div style="width: 4%;" class="header__login" onclick="toggleMenu()">
-                    @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
-                        <img style="width: 100px; height: 100px; border: 1px solid #048647; object-fit: cover;"
-                            src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->firstname }}">
-                    @else
+                    @if (empty(auth()->user()->avatar))
                         <img style="max-width: 100%; border: 1px solid #048647;"
-                            src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
                             alt="{{ auth()->user()->firstname }}">
+                    @else
+                        @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
+                            <img style="max-width: 100%; border: 1px solid #048647;"
+                                src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->firstname }}">
+                        @else
+                            @if (auth()->user()->avatar ===
+                                    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png')
+                                <img style="max-width: 100%; border: 1px solid #048647;"
+                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                    alt="{{ auth()->user()->firstname }}">
+                            @else
+                                <img style="max-width: 100%; border: 1px solid #048647;"
+                                    src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
+                                    alt="{{ auth()->user()->firstname }}">
+                            @endif
+                        @endif
                     @endif
+
 
                     <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
                         <ul>
