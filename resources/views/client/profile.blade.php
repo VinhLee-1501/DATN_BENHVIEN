@@ -27,14 +27,23 @@
                                     @if (empty(auth()->user()->avatar))
                                         <img src="{{ auth()->user()->avatar }}" alt="Default Avatar" />
                                     @else
-                                        <img src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
-                                            alt="Avatar" />
+                                        @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
+                                            <img src="{{ auth()->user()->avatar }}" alt="Default Avatar" />
+                                        @else
+                                            <img src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
+                                                alt="Avatar" />
+                                        @endif
                                     @endif
 
                                     <!-- Icon máy ảnh -->
-                                    <div class="camera-icon" onclick="openPopup()">
-                                        <i class="fas fa-camera"></i>
-                                    </div>
+                                    @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
+                                        <!-- Nếu trường hợp đăng nhập mạng xã hội thì không cho đổi ảnh đại diện -->
+                                    @else
+                                        <div class="camera-icon" onclick="openPopup()">
+                                            <i class="fas fa-camera"></i>
+                                        </div>
+                                    @endif
+
                                 </div>
                                 <script>
                                     function openPopup() {
@@ -47,7 +56,7 @@
                                         document.getElementById("previewImg").src = "";
                                         document.getElementById("previewImg").style.display = "none";
                                     }
-                                    
+
 
                                     function previewImage(event) {
                                         const input = event.target;

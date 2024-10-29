@@ -29,12 +29,23 @@
             </div>
             @if (auth()->check())
                 <div style="width: 4%;" class="header__login" onclick="toggleMenu()">
-                    <img style="max-width: 100%; border-radius:100%" src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
-                        alt="{{ auth()->user()->firstname }}">
+                    @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
+                        <img style="width: 100px; height: 100px; border: 1px solid #048647; object-fit: cover;"
+                            src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->firstname }}">
+                    @else
+                        <img style="max-width: 100%; border: 1px solid #048647;"
+                            src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
+                            alt="{{ auth()->user()->firstname }}">
+                    @endif
+
                     <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
                         <ul>
-                            <a href="{{ route('client.profile.index') }}"><li><i class="fa-regular fa-user"></i> Thông tin tài khoản</li></a>
-                            <a href="{{ route('client.logout') }}"><li><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</li></a>
+                            <a href="{{ route('client.profile.index') }}">
+                                <li><i class="fa-regular fa-user"></i> Thông tin tài khoản</li>
+                            </a>
+                            <a href="{{ route('client.logout') }}">
+                                <li><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</li>
+                            </a>
                         </ul>
                     </div>
                 </div>
@@ -46,8 +57,12 @@
                         </div>
                         <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
                             <ul>
-                                <a href="{{ route('client.login') }}"><li><i class="fa-regular fa-user"></i> Đăng nhập người dùng</li></a>
-                                <a href="{{ route('system.auth.login') }}"><li><i class="fa-solid fa-user-doctor"></i> Đăng nhập bác sĩ</li></a>
+                                <a href="{{ route('client.login') }}">
+                                    <li><i class="fa-regular fa-user"></i> Đăng nhập người dùng</li>
+                                </a>
+                                <a href="{{ route('system.auth.login') }}">
+                                    <li><i class="fa-solid fa-user-doctor"></i> Đăng nhập bác sĩ</li>
+                                </a>
                             </ul>
                         </div>
                     </div>
