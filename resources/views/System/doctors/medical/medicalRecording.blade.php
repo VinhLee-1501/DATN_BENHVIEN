@@ -356,14 +356,7 @@
 
                                 <div class="col-md-12 mt-3 p-3">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                        <div class="d-flex flex-wrap p-2 mb-md-0">
-                                            <span class="badge bg-danger me-2 mb-1">CLS</span>
-                                            <span class="me-3 mb-1" id="total_service"></span>
-                                            <span class="badge bg-success me-2 mb-1">PK</span>
-                                            <span class="me-3 mb-1" id="cost">30.000</span>
-                                            <span class="badge bg-danger me-2 mb-1">TC</span>
-                                            <span class="me-3 mb-1" id="total_fullcost">30.000 VNĐ</span>
-                                        </div>
+                                        
                                         <div class="d-flex flex-wrap align-items-center flex-grow-1">
                                             <label for="reexam" class="mb-2 me-2">Ngày tái khám</label>
                                             <input type="text" id="reexamDateInput"

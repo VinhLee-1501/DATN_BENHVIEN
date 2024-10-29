@@ -99,7 +99,6 @@ class MedicalRecordDocotrController extends Controller
                 'medicine' => $medicine,
                 'doctor' => $doctor,
                 'content' => $content,
-
             ]
         );
     }
@@ -174,7 +173,7 @@ class MedicalRecordDocotrController extends Controller
         session()->forget('pdf_data');
     
         $pdf = Pdf::loadView('System.doctors.medical.pdfMedicine', ['data' => $data]);
-        $pdf->setPaper('A4', 'landscape');
+        $pdf->setPaper('A4', 'portrait');
     
         return $pdf->download('Donthuoc.pdf');
     }

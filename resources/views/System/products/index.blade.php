@@ -1,21 +1,19 @@
 @extends('layouts.admin.master')
-@section('Quản lý thuốc')
+@section('Quản lý sản phẩm')
 @section('content')
 
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link  active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
-                role="tab" aria-controls="nav-home" aria-selected="true">Thuốc hoạt động
+                role="tab" aria-controls="nav-home" aria-selected="true">Hoạt động
             </button>
             <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button"
-                role="tab" aria-controls="nav-profile" aria-selected="false">Thuốc hết
+                role="tab" aria-controls="nav-profile" aria-selected="false">Hết
             </button>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-
         <div class="d-flex align-items-center justify-content-between py-3">
-
             <div class="col-md-6 d-flex">
                 <form action="" class="col-md-12 row">
                     <div class="col-md-6">
@@ -24,19 +22,20 @@
                 </form>
             </div>
             <div class="">
-                <a href="javascript:void(0)" class="btn btn-success me-1" onclick='openAddModal()'>Thêm thuốc</a>
+                <a href="javascript:void(0)" class="btn btn-success me-1" onclick='openAddModal()'>Thêm sản phẩm</a>
             </div>
 
         </div>
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
-            @include('System.medicines.medicine')
+            @include('System.products.product')
+
         </div>
 
 
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
-            @include('System.medicines.medicineEnd')
+            @include('System.products.productEnd')
 
         </div>
     </div>

@@ -210,7 +210,7 @@ function addTestFromDropdown(serviceId, serviceName, servicePrice) {
     newRow.innerHTML = `
         <td>${rowIndex}</td>
         <td>${serviceName}</td>
-        <td>${new Intl.NumberFormat("vi-VN").format(servicePrice)} VNĐ</td>
+        <td>${new Intl.NumberFormat("vi-VN").format(servicePrice)} .000 VNĐ</td>
         <td><button class="btn btn-danger btn-sm" onclick="removeTest(this, ${servicePrice})">x</button></td>
     `;
 
@@ -245,14 +245,14 @@ function updateTotalAmount() {
     document.getElementById("totalAmout").innerText =
         "Tổng tiền: " +
         new Intl.NumberFormat("vi-VN").format(totalAmount) +
-        " VNĐ";
-    document.getElementById("total_service").innerText =
-        new Intl.NumberFormat("vi-VN").format(totalAmount) + " VNĐ";
-    document.getElementById("cost").innerText = "30.000 VNĐ";
+        " .000 VNĐ";
+    // document.getElementById("total_service").innerText =
+    //     new Intl.NumberFormat("vi-VN").format(totalAmount) + " .000 VNĐ";
+    // document.getElementById("cost").innerText = "30.000 VNĐ";
 
-    const total_end = totalAmount + 30;
-    document.getElementById("total_fullcost").innerText =
-        new Intl.NumberFormat("vi-VN").format(total_end) + " VNĐ";
+    // const total_end = totalAmount + 30;
+    // document.getElementById("total_fullcost").innerText =
+    //     new Intl.NumberFormat("vi-VN").format(total_end) + " .000 VNĐ";
 }
 
 function updateHiddenInputService() {

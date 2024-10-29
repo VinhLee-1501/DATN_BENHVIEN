@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,69 +11,95 @@
             font-family: 'DejaVu Sans';
             src: url('{{ storage_path('fonts/DejaVuSans.ttf') }}');
         }
+
         body {
             font-family: 'DejaVu Sans', sans-serif;
             width: 100%;
             height: 600px;
         }
+
         .header {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
         }
+
         .header img {
             width: 100px;
             height: auto;
             margin-right: 10px;
         }
+
         .header .hospital-info {
             text-align: left;
             position: absolute;
         }
-        .header h4, .header p {
+
+        .header h4,
+        .header p {
             margin: 2px 0;
         }
+
         .header h4 {
             font-size: 18px;
             text-transform: uppercase;
         }
+
         h2 {
             text-align: center;
         }
-        .patient-info p, .footer p {
+
+        .patient-info p,
+        .footer p {
             margin: 5px 0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid black;
         }
-        th, td {
+
+        th,
+        td {
             padding: 8px;
             text-align: left;
         }
+
         .note {
             display: flex;
-            justify-content: space-between; 
-            align-items: center; 
+            justify-content: space-between;
+            align-items: center;
         }
+
         .total_price {
             font-weight: bold;
             text-align: right;
-            right:0;
+            right: 0;
             position: absolute;
         }
+
         .footer {
             position: absolute;
-            bottom: 0;
             right: 0;
             text-align: right;
         }
+
+        .codeService {
+           
+            margin-top: 0;
+            position: absolute;
+            right: 0;
+        }
     </style>
 </head>
+
 <body>
     <div class="header">
         <img src="{{ base_path('public/backend/assets/images/logos/logo.png') }}" alt="Hospital Logo">
@@ -81,19 +108,24 @@
             <p><strong>Địa chỉ: </strong>315, Nguyễn Văn Linh, An Khánh, Ninh Kiều</p>
             <p><strong>SĐT: </strong> 0292.382.0071 - 0292.382.3167</p>
         </div>
+        <div class="codeService">
+           <h4>{{ $data['order']->order_id }}</h4>
+        </div>
     </div>
+
 
     <h2>PHIẾU CHỈ ĐỊNH CẬN LÂM SÀNG</h2>
     <div class="patient-info">
-        <p><strong>Họ tên người bệnh:</strong> {{$data['medical'][0]->last_name}} {{$data['medical'][0]->first_name}}</p>
+        <p><strong>Họ tên người bệnh:</strong> {{ $data['medical'][0]->last_name }}
+            {{ $data['medical'][0]->first_name }}</p>
         <p><strong>Ngày sinh:</strong> 2004</p>
-        <p><strong>Địa chỉ:</strong> {{$data['medical'][0]->address}}</p>
-        @if($data['medical'][0]->gender == 1)
-        <p><strong>Giới tính:</strong> Nam</p>
+        <p><strong>Địa chỉ:</strong> {{ $data['medical'][0]->address }}</p>
+        @if ($data['medical'][0]->gender == 1)
+            <p><strong>Giới tính:</strong> Nam</p>
         @else
-        <p><strong>Giới tính:</strong> Nữ</p>
+            <p><strong>Giới tính:</strong> Nữ</p>
         @endif
-        <p><strong>Khoa khám bệnh:</strong> {{$data['specialty'][0]->name}}</p>
+        <p><strong>Khoa khám bệnh:</strong> {{ $data['specialty'][0]->name }}</p>
     </div>
 
     <h3>Nội Dung Chỉ Định</h3>
@@ -120,11 +152,13 @@
         <p class="total_price">Tổng cộng: {{ $data['totalprice'][0]->total_price }}.000 VNĐ</p>
         <p class="notes"><strong>Ghi chú:</strong> </p>
     </div>
-   
+
     <div class="footer">
         <p><strong>Ngày:</strong> {{ \Carbon\Carbon::now()->format('d/m/Y') }}</p>
-        <p><strong>Bác sĩ điều trị:</strong> {{$data['medical'][0]->lastname}} {{$data['medical'][0]->firstname}}</p>
-        
+        <p><strong>Bác sĩ điều trị:</strong> {{ $data['medical'][0]->lastname }} {{ $data['medical'][0]->firstname }}
+        </p>
+
     </div>
 </body>
+
 </html>

@@ -52,13 +52,13 @@ class CheckupHealthController extends Controller
         $patient = Patient::where('phone', $phone)->first();
 
         $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-        ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
-        ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
-        ->where('books.book_id', $book_id)
-        ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
-        ->get();
+            ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
+            ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
+            ->where('books.book_id', $book_id)
+            ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
+            ->get();
 
-          
+
 
         if (!$patient) {
             $user = $book->first();
@@ -183,7 +183,7 @@ class CheckupHealthController extends Controller
         session()->forget('pdf_data');
 
         $pdf = Pdf::loadView('System.doctors.medical.pdfMedicine', ['data' => $data]);
-        $pdf->setPaper('A4', 'landscape');
+        $pdf->setPaper('A4', 'portrait');
 
         return $pdf->download('Donthuoc.pdf');
     }
@@ -243,114 +243,114 @@ class CheckupHealthController extends Controller
         $patient_id = $patient->patient_id;
 
         if ($request->input('action') === 'cancel') {
-
             return redirect()->route('system.checkupHealth.saveMedical', $book_id)
                 ->with('success', 'Bạn đã không chọn dịch vụ.');
-        } elseif (!$request->input('selectedService')) {
-            return redirect()->route('system.checkupHealth.create', $book_id)
-                ->with('error', 'Mời chọn cận lâm sàng');
-        }
+        } elseif ($request->input('action') === 'select') {
 
-
-        $medical_record = new MedicalRecord();
-        $medical_record->medical_id =  strtoupper(Str::random(10));
-        $medical_record->date = now();
-        $medical_record->symptom = $symptom;
-        $medical_record->book_id = $book_id;
-        $medical_record->patient_id = $patient_id;
-        $medical_record->user_id = $user_id;
-        $medical_record->status = 2;
-        $medical_record->save();
-
-        if ($medical_record) {
-            $book->status = 2;
-            $book->update();
-        }
-
-
-        if ($medical_record) {
-
-            $treatment = new TreatmentDetail();
-            $treatment->treatment_id = strtoupper(Str::random(10));
-            $treatment->medical_id = $medical_record->medical_id;
-            $treatment->save();
-        }
-
-        if ($treatment) {
-            $selectedServices = $request->input('selectedService');
-            $services = json_decode($selectedServices, true);
-
-            if (json_last_error() === JSON_ERROR_NONE && is_array($services)) {
-                foreach ($services as $serviceId) {
-                    $saveService = new TreatmentService();
-                    $saveService->service_id = $serviceId;
-                    $saveService->treatment_id = $treatment->treatment_id;
-                    $treatment_id =  $treatment->treatment_id;
-                    $saveService->save();
-                }
-            } else {
-
-                return response()->json(['error' => 'Invalid data format'], 400);
+            if(!$request->input('selectedService')){
+                return redirect()->route('system.checkupHealth.create', $book_id)
+                ->with('error', 'Vui lòng chọn cận lâm sàng');
             }
-        }
+            $medical_record = new MedicalRecord();
+            $medical_record->medical_id =  strtoupper(Str::random(10));
+            $medical_record->date = now();
+            $medical_record->symptom = $symptom;
+            $medical_record->book_id = $book_id;
+            $medical_record->patient_id = $patient_id;
+            $medical_record->user_id = $user_id;
+            $medical_record->status = 2;
+            $medical_record->save();
 
-        $phone = $book->phone;
-        $services = Service::join('treatment_services', 'treatment_services.service_id', '=', 'services.service_id')
-            ->join('treatment_details', 'treatment_details.treatment_id', '=', 'treatment_services.treatment_id')
-            ->where('treatment_services.treatment_id', $treatment_id)
-            ->get();
-        $totalprices = TreatmentService::where('treatment_id', $treatment_id)
-            ->join('services', 'treatment_services.service_id', '=', 'services.service_id')
-            ->select(
-                'treatment_services.treatment_id',
-                DB::raw('COUNT(services.service_id) AS service_count'),
-                DB::raw('SUM(services.price) AS total_price')
-            )
-            ->groupBy('treatment_services.treatment_id')
-            ->get();
+            if ($medical_record) {
+                $book->status = 2;
+                $book->update();
+            }
+
+
+            if ($medical_record) {
+
+                $treatment = new TreatmentDetail();
+                $treatment->treatment_id = strtoupper(Str::random(10));
+                $treatment->medical_id = $medical_record->medical_id;
+                $treatment->save();
+            }
+
+            if ($treatment) {
+                $selectedServices = $request->input('selectedService');
+                $services = json_decode($selectedServices, true);
+
+                if (json_last_error() === JSON_ERROR_NONE && is_array($services)) {
+                    foreach ($services as $serviceId) {
+                        $saveService = new TreatmentService();
+                        $saveService->service_id = $serviceId;
+                        $saveService->treatment_id = $treatment->treatment_id;
+                        $treatment_id =  $treatment->treatment_id;
+                        $saveService->save();
+                    }
+                } else {
+
+                    return response()->json(['error' => 'Invalid data format'], 400);
+                }
+            }
+
+            $phone = $book->phone;
+            $services = Service::join('treatment_services', 'treatment_services.service_id', '=', 'services.service_id')
+                ->join('treatment_details', 'treatment_details.treatment_id', '=', 'treatment_services.treatment_id')
+                ->where('treatment_services.treatment_id', $treatment_id)
+                ->get();
+            $totalprices = TreatmentService::where('treatment_id', $treatment_id)
+                ->join('services', 'treatment_services.service_id', '=', 'services.service_id')
+                ->select(
+                    'treatment_services.treatment_id',
+                    DB::raw('COUNT(services.service_id) AS service_count'),
+                    DB::raw('SUM(services.price) AS total_price')
+                )
+                ->groupBy('treatment_services.treatment_id')
+                ->get();
 
             $totalprice = $totalprices[0]->total_price;
-        $medical_patient = MedicalRecord::where('patient_id', $patient_id)
-            ->join('users', 'users.user_id', '=', 'medical_records.user_id')
-            ->select('medical_records.*', 'users.lastname as lastname', 'users.firstname as firstname')
-            ->orderBy('medical_records.created_at', 'desc')
-            ->limit(3)
-            ->get();
-        $service = Service::get();
-        $medicine = Medicine::select('*')->distinct()->get();
-        $medical = MedicalRecord::orderBy('row_id', 'desc')->first();
+            $medical_patient = MedicalRecord::where('patient_id', $patient_id)
+                ->join('users', 'users.user_id', '=', 'medical_records.user_id')
+                ->select('medical_records.*', 'users.lastname as lastname', 'users.firstname as firstname')
+                ->orderBy('medical_records.created_at', 'desc')
+                ->limit(3)
+                ->get();
+            $service = Service::get();
+            $medicine = Medicine::select('*')->distinct()->get();
+            $medical = MedicalRecord::orderBy('row_id', 'desc')->first();
 
-        $order = new Order();
-        $order->order_id = strtoupper(Str::random(10));
-        $order->treatment_id = $treatment->treatment_id;
-        $order->status = 0;
-        $order->role = 0;
-        $order->total_price = $totalprice;
-        $order->save();
+            $order = new Order();
+            $order->order_id = strtoupper(Str::random(10));
+            $order->treatment_id = $treatment->treatment_id;
+            $order->status = 0;
+            $order->role = 0;
+            $order->total_price = $totalprice;
+            $order->save();
 
-        $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-        ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
-        ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
-        ->where('books.book_id', $book_id)
-        ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
-        ->get();
+            $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+                ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
+                ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
+                ->where('books.book_id', $book_id)
+                ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
+                ->get();
 
-        return view(
-            'System.doctors.checkupHealth.medicalRecord',
-            [
-                'book' => $book,
-                'medical' => $medical,
-                'patient' => $patient,
-                'services' => $services,
-                'service' => $service,
-                'totalprice' => $totalprice,
-                'medicine' => $medicine,
-                'medical_patient' => $medical_patient,
-                'user' => $user,
-                'doctor' => $user,
-                'content' => $content,
-            ]
-        )->with('success', 'Lưu cận lâm sàng thành công.');
+            return view(
+                'System.doctors.checkupHealth.medicalRecord',
+                [
+                    'book' => $book,
+                    'medical' => $medical,
+                    'patient' => $patient,
+                    'services' => $services,
+                    'service' => $service,
+                    'totalprice' => $totalprice,
+                    'medicine' => $medicine,
+                    'medical_patient' => $medical_patient,
+                    'user' => $user,
+                    'doctor' => $user,
+                    'content' => $content,
+                ]
+            )->with('success', 'Lưu cận lâm sàng thành công.');
+        }
     }
 
     public function saveMedical(Request $request, $book_id)
@@ -413,7 +413,7 @@ class CheckupHealthController extends Controller
 
         $order->save();
 
-          $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+        $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
             ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
             ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
             ->where('books.book_id', $book_id)

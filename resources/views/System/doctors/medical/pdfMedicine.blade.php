@@ -73,11 +73,20 @@
         }
 
         .footer {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            text-align: right;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* margin-top: 20px; */
         }
+        .footer .right{
+            position: absolute;
+            right:0;
+            top:0;
+        }
+
+        
     </style>
 </head>
 
@@ -131,17 +140,22 @@
             @endforeach
         </tbody>
     </table>
-
-    <p class="notes"><strong>Chuẩn đoán:</strong> {{$data['medicals'][0]->diaginsis}}</p>
-    <p class="notes"><strong>Lời dặn:</strong> {{$data['medicals'][0]->advice}}</p>
-
     <div class="footer">
-        <p><strong>Ngày:</strong> {{ \Carbon\Carbon::now()->format('d/m/Y') }}</p>
-        <p><strong>Bác sĩ điều trị:</strong> {{ $data['medicals'][0]->last_name_doctor }}
-            {{ $data['medicals'][0]->first_name_doctor }}</p>
+        <div class="left">
+            <p class="notes"><strong>Ngày tái khám:</strong>
+                {{ \Carbon\Carbon::parse($data['medicals'][0]->re_examination_date)->format('d/m/Y') }}</p>
+            <p class="notes"><strong>Chuẩn đoán:</strong> {{ $data['medicals'][0]->diaginsis }}</p>
+            <p class="notes"><strong>Lời dặn:</strong> {{ $data['medicals'][0]->advice }}</p>
+            <p class="notes"><strong>Ghi chú:</strong></p>
+        </div>
+        <div class="right">
+            <p><strong>Ngày:</strong> {{ \Carbon\Carbon::now()->format('d/m/Y') }}</p>
+            <p><strong>Bác sĩ điều trị:</strong> {{ $data['medicals'][0]->last_name_doctor }}
+                {{ $data['medicals'][0]->first_name_doctor }}</p>
+        </div>
     </div>
+    
 
-     
 </body>
 
 </html>

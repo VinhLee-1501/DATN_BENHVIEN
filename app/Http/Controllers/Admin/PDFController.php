@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\MedicalRecord;
 use App\Models\Medicine;
+use App\Models\Order;
 use App\Models\Service;
 use App\Models\TreatmentDetail;
 use App\Models\TreatmentMedication;
@@ -18,7 +19,7 @@ class PDFController extends Controller
 {
     public function printService(Request $request, $treatment_id)
     {
-       
+
 
         $services = Service::join('treatment_services', 'treatment_services.service_id', '=', 'services.service_id')
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'treatment_services.treatment_id')
@@ -35,30 +36,37 @@ class PDFController extends Controller
             ->groupBy('treatment_services.treatment_id')
             ->get();
 
-        $streatment = TreatmentDetail::where('treatment_id',$treatment_id)->get();
+        $streatment = TreatmentDetail::where('treatment_id', $treatment_id)->get();
         $medical_id = $streatment[0]->medical_id;
-        
-        $medical = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
-        ->join('users', 'users.user_id', '=', 'medical_records.user_id')
-        ->where('medical_id', $medical_id)
-        ->get();
 
-        $specialty = Book::where('book_id',$medical[0]->book_id)
-        ->join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
-        ->select('specialties.name as name')
-        ->get();
- 
+        $medical = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+            ->join('users', 'users.user_id', '=', 'medical_records.user_id')
+            ->where('medical_id', $medical_id)
+            ->get();
+
+        $specialty = Book::where('book_id', $medical[0]->book_id)
+            ->join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->select('specialties.name as name')
+            ->get();
+
+        $order = Order::join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
+            ->where('orders.treatment_id', $treatment_id)
+            ->get();
+  
         $data = [
             'services' => $services,
             'totalprice' => $totalprice,
             'medical' => $medical,
             'specialty' => $specialty,
+            'order' => $order[0],
         ];
 
-        //   dd($data['medical']);
         $pdf = Pdf::loadView('System.doctors.checkupHealth.pdfService', ['data' => $data]);
         $pdf->setPaper('A4', 'landscape');
-        return $pdf->download('Dichvu.pdf');
-    }
 
+        $order_id = $order[0]->order_id; 
+        $fileName = "Dichvu_{$order_id}.pdf"; 
+
+        return $pdf->download($fileName);
+    }
 }
