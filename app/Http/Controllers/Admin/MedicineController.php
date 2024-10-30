@@ -73,7 +73,7 @@ class MedicineController extends Controller
             )
             ->where('medicines.status', 1)
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->get();
 
         $medicineEnd = Medicine::join('medicine_types', 'medicine_types.medicine_type_id', '=', 'medicines.medicine_type_id')
             ->select(
@@ -90,7 +90,7 @@ class MedicineController extends Controller
             )
             ->where('medicines.status', 0)
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->get();
 
         $medicineType = MedicineType::get();
         return view('System.medicines.index', [

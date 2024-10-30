@@ -109,7 +109,9 @@
             <p><strong>SĐT: </strong> 0292.382.0071 - 0292.382.3167</p>
         </div>
         <div class="codeService">
-           <h4>{{ $data['order']->order_id }}</h4>
+            {{-- <h5>Mã: </h5> --}}
+            {!! $barcode !!}
+            {{ $data['order_id'] }}
         </div>
     </div>
 

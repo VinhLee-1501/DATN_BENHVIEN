@@ -64,24 +64,19 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Tên thuốc</label>
-                                    <select name="name" class="form-control" id="name">
-                                        <option value="">Chọn tên thuốc</option>
-                                        @foreach ($unique_medicine_names as $medicine_name)
-                                            <option value="{{ $medicine_name }}">{{ $medicine_name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="name" id="name">
                                     <div class="invalid-feedback" id="name_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="medicineTypeIdadd" class="form-label">Nhóm</label>
+                                    <label for="categorySelect" class="form-label">Nhóm</label>
                                     <select class="form-select"
-                                        name="medicine_type_id" id="medicineTypeIdadd">
-                                        <option value="">Chọn nhóm thuốc</option>
-                                        <!-- Các tùy chọn sẽ được thêm vào bằng AJAX -->
-                                    </select>
-                                    <div class="invalid-feedback" id="medicine_type_id_error" style="display: block;"></div>
+                                    name="category_type_id" id="categorySelect">
+                                    <option value="">Chọn nhóm thuốc</option>
+                                    <!-- Các tùy chọn sẽ được thêm vào bằng AJAX -->
+                                </select>
+                                    <div class="invalid-feedback" id="category_id" style="display: block;"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -94,12 +89,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="unit_of_measurement" class="form-label">Đơn vị</label>
-                                    <select name="unit_of_measurement" class="form-control" id="unit_of_measurement">
-                                        <option value="">Chọn đơn vị</option>
-                                        @foreach ($unique_units as $units)
-                                            <option value="{{ $units }}">{{ $units }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="unit_of_measurement" id="unit_of_measurement">
                                     <div class="invalid-feedback" id="unit_of_measurement_error"></div>
                                 </div>
                             </div>
@@ -115,7 +105,7 @@
         </div>
     </div>
 
-    <!-- Modal cập nhật thuốc -->
+    {{-- <!-- Modal cập nhật thuốc -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -182,7 +172,7 @@
 
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
 
@@ -195,16 +185,16 @@
         function openAddModal() {
 
             $.ajax({
-                url: '/system/medicines/create',
+                url: '/system/product/create',
                 type: 'GET',
                 success: function(response) {
-                    var medicineTypeSelect = $('#medicineTypeIdadd');
-                    medicineTypeSelect.empty();
-                    medicineTypeSelect.append(
-                        '<option value="">Chọn nhóm thuốc</option>');
+                    var categorySelect = $('#categorySelect');
+                    categorySelect.empty();
+                    categorySelect.append(
+                        '<option value="">Chọn nhóm</option>');
 
-                    response.medicineType.forEach(function(item) {
-                        medicineTypeSelect.append('<option value="' + item.medicine_type_id + '">' +
+                    response.category.forEach(function(item) {
+                        categorySelect.append('<option value="' + item.medicine_type_id + '">' +
                             item.name + '</option>');
                     });
 
@@ -224,7 +214,7 @@
                 // console.log(formData);
 
                 $.ajax({
-                    url: '/system/medicines/store',
+                    url: '/system/product/store',
                     type: 'POST',
                     data: formData,
                     success: function(response) {

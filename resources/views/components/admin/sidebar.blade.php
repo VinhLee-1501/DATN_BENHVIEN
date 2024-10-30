@@ -146,6 +146,14 @@
                                 <span class="hide-menu">Quản lý bài viết</span>
                             </a>
                         </li>
+                        <li class="sidebar-item {{ request()->routeIs('system.product') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.product') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-building-store"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý sản phẩm</span>
+                            </a>
+                        </li>
                     </ul>
                     </li>
                 </nav>

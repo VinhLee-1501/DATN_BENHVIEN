@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\TreatmentService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 
 class PDFController extends Controller
 {
@@ -52,19 +53,26 @@ class PDFController extends Controller
         $order = Order::join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
             ->where('orders.treatment_id', $treatment_id)
             ->get();
-  
+           
+            $order_id = $order[0]->order_id;
         $data = [
             'services' => $services,
             'totalprice' => $totalprice,
             'medical' => $medical,
             'specialty' => $specialty,
-            'order' => $order[0],
+            'order_id' => $order_id,
+            
         ];
 
-        $pdf = Pdf::loadView('System.doctors.checkupHealth.pdfService', ['data' => $data]);
+       
+            
+        $generatorHTML = new BarcodeGeneratorHTML();
+        $barcode = $generatorHTML->getBarcode($order_id, $generatorHTML::TYPE_CODE_128);
+        $pdf = Pdf::loadView('System.doctors.checkupHealth.pdfService', ['data' => $data,
+    'barcode' => $barcode]);
         $pdf->setPaper('A4', 'landscape');
 
-        $order_id = $order[0]->order_id; 
+       
         $fileName = "Dichvu_{$order_id}.pdf"; 
 
         return $pdf->download($fileName);
