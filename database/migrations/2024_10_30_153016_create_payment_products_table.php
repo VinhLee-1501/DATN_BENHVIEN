@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('payment_products', function (Blueprint $table) {
+            $table->id('payment_id')->primary();
+            $table->boolean('payment_method');
+            $table->tinyInteger('payment_status');
+            $table->integer('amount');
+            $table->unsignedBigInteger('order_id')->nullable();
+ 
+            $table->foreign('order_id')
+            ->references('order_id')
+            ->on('order_products')
+            ->onDelete('set null');
+           
+            $table->softDeletes();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('payment_products');
+    }
+};

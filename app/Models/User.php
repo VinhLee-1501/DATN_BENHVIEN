@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Products\AdminComment;
+use App\Models\Products\CartProduct;
+use App\Models\Products\ReviewProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -77,5 +80,25 @@ class User extends Authenticatable
             return $user->save();
         }
         return false;
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(CartProduct::class, 'user_id', 'user_id');
+    }
+
+    public function order()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'user_id');
+    }
+
+    public function review()
+    {
+        return $this->hasMany(ReviewProduct::class, 'user_id', 'user_id');
+    }
+
+    public function reviewAd()
+    {
+        return $this->hasMany(AdminComment::class, 'user_id', 'user_id');
     }
 }
