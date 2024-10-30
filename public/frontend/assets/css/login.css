@@ -1,4 +1,4 @@
-.popup.login .popup__frame {
+.popup.login .popup__frame, .popup.reset-password .popup__frame{
     overflow: hidden;
     max-width: 500px;
     max-height: calc(100vh - 20px);
@@ -8,30 +8,30 @@
     border: 3px solid #048647;
 }
 
-.popup.login .popup__form {
+.popup.login .popup__form, .popup.reset-password .popup__form {
     position: relative;
     width: 100%;
     padding: 20px;
 }
 
-.popup.login .popup__form--frame {
+.popup.login .popup__form--frame, .popup.reset-password .popup__form--frame {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-.popup.login .popup__form .form {
+.popup.login .popup__form .form, .popup.reset-password .popup__form .form  {
     flex: 1;
     overflow-y: auto;
 }
 
-.popup.login .popup__form .form__action {
+.popup.login .popup__form .form__action, .popup.reset-password .popup__form .form__action {
     display: flex;
     justify-content: space-between;
     gap: 10px;
 }
 
-.popup.login .popup__form .form__action .button {
+.popup.login .popup__form .form__action .button, .popup.reset-password .popup__form .form__action .button  {
     margin: 0;
     padding: 10px;
 

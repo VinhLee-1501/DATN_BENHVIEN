@@ -16,13 +16,16 @@ use App\Models\Service;
 use App\Models\TreatmentService;
 use App\Repositories\User\UserInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -179,7 +182,7 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('system.profile')->with('success', 'Cập nhật thông tin thành công');
+        return redirect()->route('client.profile.index')->with('success', 'Cập nhật thông tin thành công');
     }
     public function updateAvatar(Request $request)
     {
@@ -234,5 +237,108 @@ class UserController extends Controller
         ]);
 
         return back()->with('change_password_success', 'Thay đổi mật khẩu thành công')->with('activeTab', 'change_password');
+    }
+    public function forgotPassword()
+    {
+
+        $showPopup = 'forgot-password';
+        return view('client.index', ['showPopup' => $showPopup]);
+    }
+    /**
+     * Gửi email khôi phục mật khẩu với token ngẫu nhiên.
+     */
+
+    public function sendResetPasswordEmail(Request $request)
+    {
+
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ], [
+            'required' => 'Trường email là bắt buộc.',
+            'email' => 'Trường email phải là một địa chỉ email hợp lệ.',
+            'exists' => 'Địa chỉ email không tồn tại trong hệ thống.',
+        ]);
+
+        $token = Str::random(64);
+
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $request->email],
+            [
+                'token' => Hash::make($token),
+                'created_at' => Carbon::now(),
+            ]
+        );
+
+
+        $resetLink = url("/doi-mat-khau?token={$token}&email={$request->email}");
+
+
+        Mail::send('emails.password-reset', ['resetLink' => $resetLink], function ($message) use ($request) {
+            $message->to($request->email)
+                ->subject('Khôi phục mật khẩu');
+        });
+
+
+        return back()->with('success', 'Gửi link khôi phục mật khẩu thành công! Vui lòng kiểm tra email của bạn.');
+    }
+    public function showResetForm(Request $request)
+    {
+
+        $email = $request->query('email');
+
+
+        $resetRecord = DB::table('password_reset_tokens')
+
+            ->where('email', $email)
+            ->first();
+
+        if (!$resetRecord) {
+            return redirect()->route('client.login')->with('error', 'Yêu cầu không hợp lệ.');
+        }
+
+        // Tiếp tục xử lý nếu token và email hợp lệ
+        return view('client.index', [
+
+            'email' => $email,
+            'showPopup' => 'reset-password',
+        ]);
+    }
+    public function resetPassword(Request $request)
+    {
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+            'token' => 'required',
+            'new_password' => ['required', 'confirmed', 'min:3'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $passwordReset = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->first();
+
+        if (!$passwordReset || !Hash::check($request->token, $passwordReset->token)) {
+            return back()->with(['error' => 'Token không hợp lệ hoặc đã hết hạn.']);
+        }
+
+        //token có hiệu lực trong vòng 10 phút
+        if (Carbon::parse($passwordReset->created_at)->addMinutes(10)->isPast()) {
+            return back()->with(['error' => 'Token đã hết hạn.']);
+        }
+
+
+        $updated = User::resetUserPassword($request->email, $request->new_password);
+        if ($updated) {
+
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+            // Thông báo thành công
+            return redirect()->route('client.login')->with('success', 'Đổi mật khẩu thành công. Vui lòng đăng nhập.');
+        } else {
+            return back()->with(['error' => 'Có lỗi xảy ra trong quá trình đặt lại mật khẩu.']);
+        }
     }
 }

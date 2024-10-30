@@ -28,7 +28,7 @@ class CheckupPatientRequest extends FormRequest
             'gender' => 'required', 
             'age' => 'required|date',
             'address' => 'required',
-            'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/|unique:users,phone',
+            'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/',
             // 'occupation' => 'required',
             // 'emergency_contact' => 'required',
             'national' => 'required',
@@ -49,12 +49,9 @@ class CheckupPatientRequest extends FormRequest
             'phone.size' => ':attribute phải đủ 10 số',
             'phone.required' => ':attribute không để trống',
             'phone.regex' => ':attribute phải là số hợp lệ',
-            'phone.unique' => ':attribute đã tồn tại',
-            // 'occupation.required' => ':attribute không để trống',
-            // 'emergency_contact.required' => ':attribute không để trống',
+            
             'national.required' => ':attribute không để trống',
-            // 'insurance_number.required' => ':attribute không để trống',
-            // 'insurance_number.unique' => ':attribute đã tồn tại',
+           
 
         ];
     }
@@ -69,10 +66,8 @@ class CheckupPatientRequest extends FormRequest
             'gender' => 'Giới tính',
             'age' => 'Ngày sinh',
             'address' => 'Địa chỉ',
-            // 'occupation' => 'Nghề nghiệp',
             'national' => 'Quốc tịch',
-            // 'insurance_number' => 'Số bảo hiểm',
-            // 'emergency_contact' => 'Liên hệ khẩn cấp',
+           
         ];
     }
 }

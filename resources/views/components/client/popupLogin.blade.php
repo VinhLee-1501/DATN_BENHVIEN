@@ -44,7 +44,7 @@
                                 </button>
                             </div>
                             <div class="form__link text-center p-3">
-                                <a href="#" class="openPopup" data-popup="#popupForgotPassword">Quên mật khẩu?</a>
+                                <a href="{{ route('client.forgot-password') }}" class="openPopup">Quên mật khẩu?</a>
                                 |
                                 <a href="{{ route('client.register') }}" class="openPopup">Đăng ký</a>
 
@@ -176,7 +176,7 @@
 
                             <!-- Link đến đăng nhập -->
                             <div class="form__link text-center">
-                                Đã có tài khoản? <a href="{{ route('client.login')}}">Đăng
+                                Đã có tài khoản? <a href="{{ route('client.login') }}">Đăng
                                     nhập</a>
                             </div>
                         </div>
@@ -199,34 +199,35 @@
                 </div>
                 <div class="popup__form--frame">
                     <div class="box-header">
-                        <div class="box-title text-center highlight">Quên mật khẩu
-                        </div>
+                        <div class="box-title text-center highlight">Quên mật khẩu</div>
                     </div>
-                    <div class="form forgot-password">
-                        <div id="loading" style="display:none;">
-                            <img src="https://phongkhamtuean.com.vn/frontend/home/images/loading.gif"
-                                alt="Loading..." />
-                        </div>
-                        <div class="form__notice">
-                            <div class="notice success" style="display:none;">Gửi link
-                                thành công!</div>
-                            <div class="notice error" style="display:none;">Lỗi! Vui
-                                lòng kiểm tra thông tin!</div>
-                        </div>
-                        <div class="form__frame">
-                            <div class="form__group">
-                                <input id="emailForgot" type="email" name="emailForgot" placeholder="Email" />
+
+                    <form method="POST" action="{{ route('client.send-reset-password-email') }}">
+                        @csrf <!-- Token CSRF cho bảo mật -->
+
+                        <div class="form forgot-password">
+                            <div id="loading" style="display:none;">
+                                <img src="https://phongkhamtuean.com.vn/frontend/home/images/loading.gif"
+                                    alt="Loading..." />
                             </div>
-                            <div class="form__action">
-                                <div class="button btn-submit btn-flex">
-                                    Gửi link khôi phục
+                            <div class="form__frame">
+                                <div class="form__group">
+                                    <input id="emailForgot" type="email" name="email" placeholder="Email"
+                                        required />
                                 </div>
-                                <div class="button btn-secondary btn-cancel btn-flex closePopup">
-                                    Huỷ
+
+                                <div class="form__action">
+                                    <button type="submit" class="button btn-submit btn-flex">
+                                        Gửi link khôi phục
+                                    </button>
+                                    <div class="button btn-secondary btn-cancel btn-flex closePopup">
+                                        Huỷ
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
+
                 </div>
             </div>
         </div>

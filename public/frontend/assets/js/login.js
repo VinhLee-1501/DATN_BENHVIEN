@@ -3,13 +3,13 @@ $(document).ready(function () {
     var $popupRegister = $("#popupRegister");
     var $popupForgotPassword = $("#popupForgotPassword");
     var $popupBooking = $("#popupBooking");
+    var $popupResetPassword = $("#popupResetPassword");
 
     var $btnLoginToRegister = $('.openPopup[data-popup="#popupRegister"]');
-    var $btnLoginToForgotPassword = $(
-        '.openPopup[data-popup="#popupForgotPassword"]'
-    );
+    var $btnLoginToForgotPassword = $('.openPopup[data-popup="#popupForgotPassword"]');
     var $btnRegisterToLogin = $('.openPopup[data-popup="#popupLogin"]');
     var $btnOpenBooking = $('.openPopup[data-popup="#popupBooking"]');
+    var $btnOpenResetPassword = $('.openPopup[data-popup="#popupResetPassword"]'); // Nút mở popup reset password
     var $closePopupButtons = $(".closePopup");
 
     function showPopup($popup, state) {
@@ -47,12 +47,18 @@ $(document).ready(function () {
         showPopup($popupBooking, "booking");
     });
 
+    $btnOpenResetPassword.on("click", function (e) {
+        e.stopPropagation();
+        showPopup($popupResetPassword, "reset-password");
+    });
+
     $closePopupButtons.on("click", function (e) {
         e.stopPropagation();
         hidePopup($popupLogin);
         hidePopup($popupRegister);
         hidePopup($popupForgotPassword);
         hidePopup($popupBooking);
+        hidePopup($popupResetPassword); // Đóng popup reset password
     });
 
     function removeScrollbar() {
@@ -72,11 +78,14 @@ $(document).ready(function () {
             showPopup($popupForgotPassword, "forgot-password");
         } else if (state === "booking") {
             showPopup($popupBooking, "booking");
+        } else if (state === "reset-password") {
+            showPopup($popupResetPassword, "reset-password"); // Hiển thị popup reset password
         } else {
             hidePopup($popupLogin);
             hidePopup($popupRegister);
             hidePopup($popupForgotPassword);
             hidePopup($popupBooking);
+            hidePopup($popupResetPassword); // Đóng popup reset password
         }
     });
 
@@ -89,5 +98,7 @@ $(document).ready(function () {
         showPopup($popupForgotPassword, "forgot-password");
     } else if (popupParam === "booking") {
         showPopup($popupBooking, "booking");
+    } else if (popupParam === "reset-password") {
+        showPopup($popupResetPassword, "reset-password"); // Kiểm tra trạng thái popup reset password
     }
 });
