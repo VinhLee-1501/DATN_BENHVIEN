@@ -214,6 +214,10 @@
                                 <div class="form__group">
                                     <input id="emailForgot" type="email" name="email" placeholder="Email"
                                         required />
+
+                                    @if ($errors->has('email'))
+                                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                                    @endif
                                 </div>
 
                                 <div class="form__action">

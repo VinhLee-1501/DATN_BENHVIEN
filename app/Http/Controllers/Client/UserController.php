@@ -39,10 +39,10 @@ class UserController extends Controller
     {
         $showPopup = 'register';
         $doctor = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
-        ->where('role', 2)
-        ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
-        ->limit(6)
-        ->get();
+            ->where('role', 2)
+            ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
+            ->limit(6)
+            ->get();
         return view('client.index', ['showPopup' => $showPopup, 'doctor' => $doctor]);
     }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
         $validatedData = $request->validated();
 
         $users = $this->userRepository->create([
-            'user_id' => $this->generateUserId(), // Tạo user_id random
+            'user_id' => $this->generateUserId(),
             'firstname' => $validatedData['firstname'],
             'lastname' => $validatedData['lastname'],
             'phone' => $validatedData['phone'],
@@ -69,17 +69,17 @@ class UserController extends Controller
     }
     protected function generateUserId()
     {
-        return strtoupper(Str::random(10)); // Chuỗi 10 ký tự ngẫu nhiên
+        return strtoupper(Str::random(10));
     }
     public function login()
     {
 
         $showPopup = 'login';
         $doctor = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
-        ->where('role', 2)
-        ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
-        ->limit(6)
-        ->get();
+            ->where('role', 2)
+            ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
+            ->limit(6)
+            ->get();
         return view('client.index', ['showPopup' => $showPopup, 'doctor' => $doctor]);
     }
 
@@ -108,11 +108,11 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        // Lấy user_id của người dùng đã đăng nhập
+
         $userId = Auth::user()->user_id;
         $userPhone = Auth::user()->phone;
 
-        // Lấy lịch sử y tế của người dùng
+
         $medicalHistory = Book::where('user_id', $userId)->get();
         foreach ($medicalHistory as $history) {
             $history->specialty = Specialty::where('specialty_id', $history->specialty_id)
@@ -120,37 +120,37 @@ class UserController extends Controller
                 ->first();
         }
 
-        // Lấy dữ liệu lịch sử bệnh án cùng với thông tin bệnh nhân
+
         $medicalRecordHistory = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->where('patients.phone', $userPhone) // Chỉ lấy bệnh án của người dùng này
             ->distinct()
             ->paginate(5);
 
-        // Duyệt từng bệnh án để lấy thêm các thông tin chi tiết điều trị, dịch vụ và thuốc
+
         foreach ($medicalRecordHistory as $record) {
-            // Lấy thông tin điều trị
+
             $record->treatment_details = DB::table('treatment_details')
                 ->where('medical_id', $record->medical_id)
                 ->get();
 
-            // Lấy danh sách dịch vụ
+
             $record->services = Service::join('treatment_services', 'treatment_services.service_id', '=', 'services.service_id')
                 ->where('treatment_services.treatment_id', $record->treatment_details[0]->treatment_id ?? null)
                 ->get();
 
-            // Lấy tổng giá của dịch vụ
+
             $record->total_price = TreatmentService::where('treatment_id', $record->treatment_details[0]->treatment_id ?? null)
                 ->join('services', 'treatment_services.service_id', '=', 'services.service_id')
                 ->sum('services.price');
 
-            // Lấy danh sách thuốc
+
             $record->medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
                 ->where('treatment_medications.treatment_id', $record->treatment_details[0]->treatment_id ?? null)
                 ->get();
         }
 
-        // Trả về view với các dữ liệu đã lấy
+
         return view('client.profile', [
             'userId' => $userId,
             'medicalHistory' => $medicalHistory,
@@ -166,25 +166,25 @@ class UserController extends Controller
 
         $oldPhone = $user->phone;
 
-        // Lấy specialty_id từ request
+
         $specialty_id = $request->input('specialty_id');
 
-        // Cập nhật thông tin người dùng
+
         $updatedUser = $user->update([
             'firstname' => $request->input('firstname'),
             'lastname' => $request->input('lastname'),
             'phone' => $request->input('phone'),
             'email' => $request->input('email'),
             'birthday' => $request->input('birthday'),
-            'specialty_id' => $specialty_id,  // sử dụng specialty_id từ request
+            'specialty_id' => $specialty_id,
         ]);
 
-        // Kiểm tra cập nhật thành công
+
         if (!$updatedUser) {
             return redirect()->back()->withErrors(['update' => 'Không thể cập nhật thông tin.']);
         }
 
-        // Cập nhật thông tin bệnh nhân nếu số điện thoại thay đổi
+
         if ($oldPhone !== $request->input('phone')) {
             $patient = $user->patient;
             if ($patient) {
@@ -250,9 +250,13 @@ class UserController extends Controller
     }
     public function forgotPassword()
     {
-
+        $doctor = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
+            ->where('role', 2)
+            ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
+            ->limit(6)
+            ->get();
         $showPopup = 'forgot-password';
-        return view('client.index', ['showPopup' => $showPopup]);
+        return view('client.index', ['showPopup' => $showPopup, 'doctor' => $doctor]);
     }
     /**
      * Gửi email khôi phục mật khẩu với token ngẫu nhiên.
@@ -306,11 +310,17 @@ class UserController extends Controller
             return redirect()->route('client.login')->with('error', 'Yêu cầu không hợp lệ.');
         }
 
+        $doctor = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
+            ->where('role', 2)
+            ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
+            ->limit(6)
+            ->get();
         // Tiếp tục xử lý nếu token và email hợp lệ
         return view('client.index', [
 
             'email' => $email,
             'showPopup' => 'reset-password',
+            'doctor' => $doctor,
         ]);
     }
     public function resetPassword(Request $request)
@@ -320,10 +330,19 @@ class UserController extends Controller
             'email' => 'required|email|exists:users,email',
             'token' => 'required',
             'new_password' => ['required', 'confirmed', 'min:3'],
+        ], [
+            'email.required' => 'Trường email là bắt buộc.',
+            'email.email' => 'Trường email phải là một địa chỉ email hợp lệ.',
+            'email.exists' => 'Địa chỉ email không đúng.',
+            'token.required' => 'Trường token là bắt buộc.',
+            'new_password.required' => 'Trường mật khẩu mới là bắt buộc.',
+            'new_password.confirmed' => 'Mật khẩu mới không khớp.',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 3 ký tự.',
         ]);
 
+        // Kiểm tra nếu có lỗi
         if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $passwordReset = DB::table('password_reset_tokens')
@@ -331,12 +350,12 @@ class UserController extends Controller
             ->first();
 
         if (!$passwordReset || !Hash::check($request->token, $passwordReset->token)) {
-            return back()->with(['error' => 'Token không hợp lệ hoặc đã hết hạn.']);
+            return back()->with(['error' => 'Yêu cầu không hợp lệ hoặc đã hết hạn.']);
         }
 
         //token có hiệu lực trong vòng 10 phút
         if (Carbon::parse($passwordReset->created_at)->addMinutes(10)->isPast()) {
-            return back()->with(['error' => 'Token đã hết hạn.']);
+            return back()->with(['error' => 'Yêu cầu đã hết hạn.']);
         }
 
 
