@@ -17,10 +17,14 @@ class AppointmentSchedule extends Controller
 {
     public function index()
     {
-        $book = Book::join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
-            ->select('books.*',  'specialties.name as specialtyName')
-            ->orderBy('row_id', 'DESC')
-            ->paginate(5);
+        $book =
+            $books = Book::join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->join('users', 'users.user_id', '=', 'schedules.user_id')
+            ->join('sclinics', 'sclinics.sclinic_id', '=', 'schedules.sclinic_id')
+            ->select('books.*', 'users.lastname', 'users.firstname', 'sclinics.name AS sclinicName', 'specialties.name AS specialtyName')
+            ->orderBy('books.row_id', 'DESC')
+            ->get();
         //       dd($book);
 
         return view('System.appointmentschedule.index', ['book' => $book,]);
@@ -86,7 +90,7 @@ class AppointmentSchedule extends Controller
         // dd($hourNow);
         // dd($hourDeadline);
 
-        if($hourNow > $hourDeadline){
+        if ($hourNow > $hourDeadline) {
             return response()->json(['error' => 'Giờ không hợp lệ'], 400);
         }
 
@@ -136,7 +140,7 @@ class AppointmentSchedule extends Controller
         // dd($book);
         $book->shift_id = $scheduleDate->shift_id;
         $book->day = $date;
-        
+
         $book->status = $status;
         $book->hour = $hour;
         $book->url = $request->input('url');

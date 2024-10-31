@@ -3,22 +3,21 @@
 @section('content')
     <div class="card w-100">
         <div class="card-body p-4">
-                    <div class="col-md-4">
-                        <h5 class="card-title fw-semibold mb-4">Quản lý lịch khám</h5>
-                    </div>
-                    
-                        <form action="" class="col-md-12 row">
-                            <div class="col-md-4 mb-3">
-                                <input type="text" id="inputName" class="form-control" placeholder="Họ tên"
-                                    name="name">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <input type="text" id="inputPhone" class="form-control" placeholder="SDT" name="phone">
-                            </div>
-                        </form>
+            <div class="col-md-4">
+                <h5 class="card-title fw-semibold mb-4">Quản lý lịch khám</h5>
+            </div>
+
+            <form action="" class="col-md-12 row">
+                <div class="col-md-4 mb-3">
+                    <input type="text" id="inputName" class="form-control" placeholder="Họ tên" name="name">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <input type="text" id="inputPhone" class="form-control" placeholder="SDT" name="phone">
+                </div>
+            </form>
             <div class="table-responsive">
                 <table class="table text-nowrap mb-0 align-middle">
-                <thead class="text-dark fs-4  ">
+                    <thead class="text-dark fs-4  ">
                         <tr>
                             <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">ID</h6>
@@ -103,10 +102,10 @@
                                                         <li><strong>Chuyên khoa:</strong> {{ $item->specialtyName }}
                                                         </li>
                                                         <li><strong>Số điện thoại:</strong> {{ $item->phone }}</li>
-                                                        <li><strong>Phòng khám:</strong> {{ $item->sclinicsName }}</li>
+                                                        <li><strong>Phòng khám:</strong> {{ $item->sclinicName }}</li>
                                                         <li><strong>Thời gian khám:</strong>
-                                                            {{ Carbon\Carbon::parse($item->day)->format('d/m/Y') }}
-                                                            {{ Carbon\Carbon::parse($item->day)->format('H:i:s') }}
+                                                            {{ Carbon\Carbon::parse($item->day)->format('d/m/Y') }} - 
+                                                            {{ Carbon\Carbon::parse($item->hour)->format('H:i:s') }}
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -133,12 +132,9 @@
                         @endforeach
                     </tbody>
                 </table>
-                <!-- {!! $book->links() !!} -->
             </div>
         </div>
 
-
-        
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -220,12 +216,12 @@
 
                         // Điều chỉnh thời gian để khớp múi giờ Asia/Ho_Chi_Minh
                         appointmentTime.setMinutes(appointmentTime.getMinutes() - appointmentTime
-                        .getTimezoneOffset() + 420); // 420 phút = 7 giờ
+                            .getTimezoneOffset() + 420); // 420 phút = 7 giờ
 
                         // Lấy ngày, tháng và năm để định dạng lại theo Y-m-d
                         var year = appointmentTime.getFullYear();
                         var month = (appointmentTime.getMonth() + 1).toString().padStart(2,
-                        '0'); // tháng bắt đầu từ 0 nên +1
+                            '0'); // tháng bắt đầu từ 0 nên +1
                         var day = appointmentTime.getDate().toString().padStart(2, '0');
 
                         // Định dạng ngày thành 'Y-m-d'
@@ -375,7 +371,7 @@
 
 
                 console.log(appointmentTime, hour, doctorName, email, status, url);
-                
+
                 // break;
 
                 $.ajax({
@@ -399,7 +395,9 @@
                         } else if (response.error) {
                             toastr.error(response.message);
                         }
-                        location.reload();
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3000);
 
                     },
                     error: function(err) {

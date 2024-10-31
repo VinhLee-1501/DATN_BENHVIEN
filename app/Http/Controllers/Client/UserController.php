@@ -38,7 +38,12 @@ class UserController extends Controller
     public function register()
     {
         $showPopup = 'register';
-        return view('client.index', ['showPopup' => $showPopup]);
+        $doctor = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
+        ->where('role', 2)
+        ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
+        ->limit(6)
+        ->get();
+        return view('client.index', ['showPopup' => $showPopup, 'doctor' => $doctor]);
     }
 
     public function handleRegister(RegisterRequest $request)
@@ -70,7 +75,12 @@ class UserController extends Controller
     {
 
         $showPopup = 'login';
-        return view('client.index', ['showPopup' => $showPopup]);
+        $doctor = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
+        ->where('role', 2)
+        ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
+        ->limit(6)
+        ->get();
+        return view('client.index', ['showPopup' => $showPopup, 'doctor' => $doctor]);
     }
 
     public function authenticateLogin(LoginRequest $request)

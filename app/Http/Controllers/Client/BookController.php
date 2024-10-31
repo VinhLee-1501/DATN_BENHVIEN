@@ -10,6 +10,7 @@ use App\Models\Specialty;  // Model cho bảng 'specialties'
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\BookingConfirmation;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 class BookController extends Controller
@@ -18,9 +19,15 @@ class BookController extends Controller
     public function booking()
     {
         $showPopup = 'booking';
+        $doctor = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
+        ->where('role', 2)
+        ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
+        ->limit(6)
+        ->get();
 
         return view('client.index', [
             'showPopup' => $showPopup,
+            'doctor' => $doctor
         ]);
     }
 
