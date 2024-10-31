@@ -11,7 +11,7 @@
                     </li>
 
                     <li class="item">
-                        <a class="item__link" href="{{ route('client.treatment-method') }}">Phương pháp điều trị</a>
+                        <a class="item__link" href="#">Sản phẩm</a>
                     </li>
                     <li class="item">
                         <a class="item__link" href="{{ route('client.news') }}">Tin tức</a>
@@ -155,7 +155,7 @@
             <a href="{{ route('client.introduce') }}">Giới thiệu</a>
         </li>
         <li class="">
-            <a href="{{ route('client.treatment-method') }}">Phương pháp điều trị</a>
+            <a href="#">Sản phẩm</a>
         </li>
         <li class="">
             <a href="{{ route('client.news') }}">Tin tức</a>

@@ -1,11 +1,16 @@
 @extends('layouts.client.master')
 
 @section('meta_title', 'Bệnh viện')
-
+<style>
+    .hover-text-white:hover{
+        color: #ffffff !important;
+        transition: color 0.3s ease;
+    }
+</style>
 @section('content')
     <div class="main-body">
         <div class="section box box-head">
-            <img src="{{asset('frontend/assets/image/banner-1.png')}}" alt="Background"/>
+            <img src="{{ asset('frontend/assets/image/banner-1.png') }}" alt="Background" />
 
         </div>
     </div>
@@ -15,9 +20,8 @@
                 <div class="row gap-y-40">
                     <div class="col l-5 mc-12 c-12">
                         <div class="box-commit__image">
-                            <img
-                                src="{{asset('frontend/assets/image/hanoimoi.com.vn-uploads-images-phananh-2020-05-14-_tai-mui-hong-tre-em.jpg')}}"
-                                alt="Cam kết"/>
+                            <img src="{{ asset('frontend/assets/image/hanoimoi.com.vn-uploads-images-phananh-2020-05-14-_tai-mui-hong-tre-em.jpg') }}"
+                                alt="Cam kết" />
                         </div>
                     </div>
                     <div class="col l-7 mc-12 c-12">
@@ -36,9 +40,8 @@
                                                 <div class="item">
                                                     <div class="item__frame">
                                                         <div class="item__image">
-                                                            <img
-                                                                src="{{asset('frontend/assets/image/icon_commit_1 1.png')}}"
-                                                                alt="Khách hàng đang điều trị"/>
+                                                            <img src="{{ asset('frontend/assets/image/icon_commit_1 1.png') }}"
+                                                                alt="Khách hàng đang điều trị" />
                                                         </div>
                                                         <div class="item__body">
                                                             <div class="item__number" data-count="500">
@@ -55,9 +58,8 @@
                                                 <div class="item">
                                                     <div class="item__frame">
                                                         <div class="item__image">
-                                                            <img
-                                                                src="{{asset('frontend/assets/image/icon_commit_2 1.png')}}"
-                                                                alt="Khách hàng hồi phục"/>
+                                                            <img src="{{ asset('frontend/assets/image/icon_commit_2 1.png') }}"
+                                                                alt="Khách hàng hồi phục" />
                                                         </div>
                                                         <div class="item__body">
                                                             <div class="item__number" data-count="7000">
@@ -74,9 +76,8 @@
                                                 <div class="item">
                                                     <div class="item__frame">
                                                         <div class="item__image">
-                                                            <img
-                                                                src=" {{asset('frontend/assets/image/icon_commit_3 1.png')}}"
-                                                                alt="Khách hàng hài lòng về dịch vụ"/>
+                                                            <img src=" {{ asset('frontend/assets/image/icon_commit_3 1.png') }}"
+                                                                alt="Khách hàng hài lòng về dịch vụ" />
                                                         </div>
                                                         <div class="item__body">
                                                             <div class="item__number" data-count="99">
@@ -93,7 +94,7 @@
                                     </div>
 
                                     <script>
-                                        $(document).ready(function () {
+                                        $(document).ready(function() {
                                             let a = 0;
                                             const boxNumberWrap = $(".box-count .item__number");
                                             let boxNumberWrapCount = boxNumberWrap.length;
@@ -102,45 +103,42 @@
                                             let animationFinished = false;
 
                                             function animateNumbers() {
-                                                boxNumberWrap.each(function () {
+                                                boxNumberWrap.each(function() {
                                                     const $this = $(this);
                                                     const countTo = $this.attr("data-count");
 
                                                     $({
                                                         countNum: $this.find("span").text(),
-                                                    }).animate(
-                                                        {
-                                                            countNum: countTo,
+                                                    }).animate({
+                                                        countNum: countTo,
+                                                    }, {
+                                                        duration: 2000,
+                                                        easing: "swing",
+                                                        step: function() {
+                                                            $this
+                                                                .find("span")
+                                                                .text(
+                                                                    Math.floor(
+                                                                        this.countNum
+                                                                    ).toLocaleString("vi-VN")
+                                                                );
                                                         },
-                                                        {
-                                                            duration: 2000,
-                                                            easing: "swing",
-                                                            step: function () {
-                                                                $this
-                                                                    .find("span")
-                                                                    .text(
-                                                                        Math.floor(
-                                                                            this.countNum
-                                                                        ).toLocaleString("vi-VN")
-                                                                    );
-                                                            },
-                                                            complete: function () {
-                                                                $this
-                                                                    .find("span")
-                                                                    .text(
-                                                                        this.countNum.toLocaleString("vi-VN")
-                                                                    );
+                                                        complete: function() {
+                                                            $this
+                                                                .find("span")
+                                                                .text(
+                                                                    this.countNum.toLocaleString("vi-VN")
+                                                                );
 
-                                                                if (--boxNumberWrapCount === 0) {
-                                                                    animationFinished = true;
-                                                                }
-                                                            },
-                                                        }
-                                                    );
+                                                            if (--boxNumberWrapCount === 0) {
+                                                                animationFinished = true;
+                                                            }
+                                                        },
+                                                    });
                                                 });
                                             }
 
-                                            $(window).scroll(function () {
+                                            $(window).scroll(function() {
                                                 if (animationFinished) {
                                                     return;
                                                 }
@@ -169,8 +167,7 @@
                     <div class="item">
                         <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="{{ asset('frontend/assets/image/icon-index/ear.png') }}"
-                                     alt="Bệnh về tai"/>
+                                <img src="{{ asset('frontend/assets/image/icon-index/ear.png') }}" alt="Bệnh về tai" />
                             </div>
                             <h3 class="item__title title">Bệnh về tai</h3>
                         </a>
@@ -180,8 +177,7 @@
                     <div class="item">
                         <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="{{ asset('frontend/assets/image/icon-index/body.png') }}"
-                                     alt="Bệnh xương khớp"/>
+                                <img src="{{ asset('frontend/assets/image/icon-index/body.png') }}" alt="Bệnh xương khớp" />
                             </div>
                             <h3 class="item__title title">Bệnh về xương</h3>
                         </a>
@@ -191,8 +187,7 @@
                     <div class="item">
                         <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="{{ asset('frontend/assets/image/icon-index/heartt.png') }}"
-                                     alt="Bệnh về tim"/>
+                                <img src="{{ asset('frontend/assets/image/icon-index/heartt.png') }}" alt="Bệnh về tim" />
                             </div>
                             <h3 class="item__title title">Bệnh về tim</h3>
                         </a>
@@ -202,8 +197,7 @@
                     <div class="item">
                         <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="{{ asset('frontend/assets/image/icon-index/throat.png') }}"
-                                     alt="Viêm xoan"/>
+                                <img src="{{ asset('frontend/assets/image/icon-index/throat.png') }}" alt="Viêm xoan" />
                             </div>
                             <h3 class="item__title title">Viêm xoan</h3>
                         </a>
@@ -217,8 +211,7 @@
                     <div class="item">
                         <a href="" class="item__frame">
                             <div class="item__image">
-                                <img src="{{ asset('frontend/assets/image/icon-index/eye.png') }}"
-                                     alt="Viêm mũi"/>
+                                <img src="{{ asset('frontend/assets/image/icon-index/eye.png') }}" alt="Viêm mũi" />
                             </div>
                             <h3 class="item__title title">Bệnh về mắt</h3>
                         </a>
@@ -229,7 +222,7 @@
                         <a href="" class="item__frame">
                             <div class="item__image">
                                 <img src="{{ asset('frontend/assets/image/icon-index/stethoscope.png') }}"
-                                     alt="Phẫu thuật"/>
+                                    alt="Phẫu thuật" />
                             </div>
                             <h3 class="item__title title">Phẫu thuật</h3>
                         </a>
@@ -240,7 +233,7 @@
                         <a href="" class="item__frame">
                             <div class="item__image">
                                 <img src="{{ asset('frontend/assets/image/icon-index/crutches.png') }}"
-                                     alt="Xét nghiệm"/>
+                                    alt="Xét nghiệm" />
                             </div>
                             <h3 class="item__title title">Xét nghiệm</h3>
                         </a>
@@ -254,7 +247,7 @@
 
     <div class="section box box-doctor">
         <div class="box-doctor__bg bg">
-            <img src="https://phongkhamtuean.com.vn/frontend/home/images/bg_doctor.png" alt="Background"/>
+            <img src="https://phongkhamtuean.com.vn/frontend/home/images/bg_doctor.png" alt="Background" />
         </div>
         <div class="container">
             <div class="box box-doctor__frame">
@@ -270,20 +263,24 @@
                     </div>
                     <div class="col l-12 mc-12 c-12">
                         <div class="box-doctor__slider">
-                            <div class="item">
-                                <div class="item__frame">
-                                    <div class="item__image">
-                                        <img src=" {{asset('frontend/assets/image/bs1.jpg')}}" alt="Dũng"/>
-                                    </div>
-                                    <div class="item__body">
-                                        <div class="item__name title">
-                                            <span>KTV.</span> Dũng
+                            @foreach ($doctor as $item)
+                                <div class="item">
+                                    <div class="item__frame">
+                                        <div class="item__image">
+                                            <img src=" {{ asset($item->avatar) }}" alt="Dũng" />
                                         </div>
-                                        <div class="item__position">Chuyên Khoa Tai</div>
+                                        <div class="item__body">
+                                            <div class="item__name title">
+                                                <a href="{{ route('client.ho-so', $item->user_id) }}" class="text-dark text-decoration-none hover-text-white">
+                                                    Bác sĩ {{ $item->lastname }} {{ $item->firstname }}
+                                                </a>
+                                            </div>
+                                            <div class="item__position">{{ $item->specialtyName }}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="item">
+                            @endforeach
+                            {{-- <div class="item">
                                 <div class="item__frame">
                                     <div class="item__image">
                                         <img src=" {{asset('frontend/assets/image/bs2.jpg')}}" alt="Quang"/>
@@ -347,7 +344,7 @@
                                         <div class="item__position">Chuyên xương khớp</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -362,8 +359,7 @@
             autoplay: true,
             infinite: true,
             arrows: true,
-            responsive: [
-                {
+            responsive: [{
                     breakpoint: 1023,
                     settings: {
                         slidesToShow: 2,
@@ -383,15 +379,15 @@
 
     <div class="section box box-contact ">
         <div class="box-contact__bg bg">
-            <img src="https://phongkhamtuean.com.vn/frontend/home/images/bg_contact.png" alt="Background"/>
+            <img src="https://phongkhamtuean.com.vn/frontend/home/images/bg_contact.png" alt="Background" />
         </div>
         <div class="container">
             <div class="box box-contact__frame">
                 <div class="row no-gutters gap-y-40">
                     <div class="col l-7 mc-12 c-12">
                         <div class="box-contact__image">
-                            <img src="{{asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg')}}"
-                                 alt="Hình minh hoạ"/>
+                            <img src="{{ asset('frontend/assets/image/benh-tai-mui-hong-o-tre(1).jpg') }}"
+                                alt="Hình minh hoạ" />
                         </div>
                     </div>
                     <div class="col l-5 mc-12 c-12">
@@ -406,7 +402,7 @@
                                     <div class="form contact">
                                         <div id="loading">
                                             <img src="https://phongkhamtuean.com.vn/frontend/home/images/loading.gif"
-                                                 alt="Background"/>
+                                                alt="Background" />
                                         </div>
                                         <div class="form__notice">
                                             <div class="notice success">
@@ -421,27 +417,27 @@
                                         </div>
                                         <div class="form__frame">
                                             <div class="form__group">
-                                                <input id="text" type="text" name="text" placeholder="Vấn đề"/>
+                                                <input id="text" type="text" name="text"
+                                                    placeholder="Vấn đề" />
                                             </div>
                                             <div class="form__group">
                                                 <input id="fullname" type="text" name="fullname"
-                                                       placeholder="Họ tên"/>
+                                                    placeholder="Họ tên" />
                                             </div>
                                             <div class="form__flex">
                                                 <div class="form__group">
                                                     <input id="phone" type="text" name="phone"
-                                                           placeholder="Số điện thoại"/>
+                                                        placeholder="Số điện thoại" />
                                                 </div>
                                                 <div class="form__group form__email">
                                                     <input id="email" type="text" name="email"
-                                                           placeholder="Email (nếu có)"/>
+                                                        placeholder="Email (nếu có)" />
                                                 </div>
                                             </div>
                                             <div class="form__group form__content">
-                                            <textarea id="content" name="content" rows="3"
-                                                      placeholder="Chi tiết (nếu có)"></textarea>
+                                                <textarea id="content" name="content" rows="3" placeholder="Chi tiết (nếu có)"></textarea>
                                                 <input id="webiste" type="text" name="website"
-                                                       style="display: none"/>
+                                                    style="display: none" />
                                             </div>
                                             <div class="form__action">
                                                 <div class="button btn-send btn-flex">
@@ -460,4 +456,3 @@
     </div>
 
 @endsection
-

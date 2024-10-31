@@ -102,6 +102,7 @@ html {
     --primary: #048647;
     --secondary: #03b75f;
 }
+
 *,
 *:before,
 *:after {
@@ -326,6 +327,11 @@ body.removeScrollbar {
     margin-bottom: 8px;
 }
 
+.title_product_sale {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .page.home {
     padding: 0;
 }
@@ -455,7 +461,7 @@ a.button {
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis;    
+    text-overflow: ellipsis;
     border-radius: 5px;
     box-shadow: none;
     margin: auto;
@@ -1316,7 +1322,7 @@ img {
     height: 100%;
 }
 
-.slick-slider > button {
+.slick-slider>button {
     width: 30px;
     height: 30px;
     margin: 0;
@@ -1330,7 +1336,7 @@ img {
     transition: all 0.3s ease;
 }
 
-.slick-slider > button:before {
+.slick-slider>button:before {
     font-family: "FontAwesome" !important;
     display: inline-block !important;
     font-size: 14px;
@@ -1339,16 +1345,16 @@ img {
     opacity: 1;
 }
 
-.slick-slider > button.slick-prev:before {
+.slick-slider>button.slick-prev:before {
     content: "\f053";
 }
 
-.slick-slider > button.slick-next:before {
+.slick-slider>button.slick-next:before {
     content: "\f054";
 }
 
-.slick-slider > button:hover,
-.slick-slider > button:focus {
+.slick-slider>button:hover,
+.slick-slider>button:focus {
     background: #03b75f;
 }
 
@@ -1547,7 +1553,7 @@ img {
     visibility: hidden;
 }
 
-.slide-nav > button {
+.slide-nav>button {
     top: 3px;
     width: 50px;
     height: calc(100% - 6px);
@@ -1555,7 +1561,7 @@ img {
     background-color: rgba(255, 255, 255, 0.85);
 }
 
-.slide-nav > button:before {
+.slide-nav>button:before {
     font-family: "FontAwesome";
     color: #717171;
     display: inline-block;
@@ -1563,31 +1569,31 @@ img {
     line-height: 1.1;
 }
 
-.slide-nav > button:hover,
-.slide-nav > button:focus {
+.slide-nav>button:hover,
+.slide-nav>button:focus {
     background-color: rgb(255, 255, 255);
 }
 
-.slide-nav > button:hover:before,
-.slide-nav > button:focus:before {
+.slide-nav>button:hover:before,
+.slide-nav>button:focus:before {
     color: #000;
 }
 
-.slide-nav > button.slick-next {
+.slide-nav>button.slick-next {
     right: 0;
     border-right: 3px solid #d2d2d2;
 }
 
-.slide-nav > button.slick-next:before {
+.slide-nav>button.slick-next:before {
     content: "\f054";
 }
 
-.slide-nav > button.slick-prev {
+.slide-nav>button.slick-prev {
     left: 0;
     border-left: 3px solid #d2d2d2;
 }
 
-.slide-nav > button.slick-prev:before {
+.slide-nav>button.slick-prev:before {
     content: "\f053";
 }
 
@@ -1621,9 +1627,7 @@ img {
     border-color: #f00;
 }
 
-.select2-container--default
-    .select2-selection--single
-    .select2-selection__rendered {
+.select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #2a2a2b;
     font-size: 16px;
     font-weight: 400;
@@ -1637,18 +1641,14 @@ img {
     padding-left: 0;
 }
 
-.select2-container--default
-    .select2-selection--single
-    .select2-selection__placeholder {
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
     color: #aaa;
     font-weight: 400;
     font-size: 16px;
     font-family: "Be Vietnam Pro", sans-serif;
 }
 
-.select2-container--default
-    .select2-selection--single
-    .select2-selection__arrow {
+.select2-container--default .select2-selection--single .select2-selection__arrow {
     width: 24px;
     height: 24px;
     right: 20px;
@@ -1671,7 +1671,7 @@ img {
     display: none !important;
 }
 
-.fab-checkbox:checked ~ .devvn_bg {
+.fab-checkbox:checked~.devvn_bg {
     position: fixed;
     top: 0;
     left: 0;
@@ -1718,11 +1718,11 @@ img {
     display: none;
 }
 
-.fab-checkbox:checked ~ a .fab i:first-child {
+.fab-checkbox:checked~a .fab i:first-child {
     display: none;
 }
 
-.fab-checkbox:checked ~ a .fab i:last-child {
+.fab-checkbox:checked~a .fab i:last-child {
     display: block;
 }
 
@@ -1742,7 +1742,7 @@ img {
     background-position: -649px 0;
 }
 
-.fab-checkbox:checked ~ a .fab .icon-cps-fab-menu {
+.fab-checkbox:checked~a .fab .icon-cps-fab-menu {
     width: 30px;
     height: 30px;
     margin: 0;
@@ -1762,7 +1762,7 @@ img {
     z-index: 12;
 }
 
-.fab-checkbox:checked ~ .fab-wheel {
+.fab-checkbox:checked~.fab-wheel {
     transform: scale(1);
 }
 
@@ -1791,7 +1791,7 @@ img {
     opacity: 0;
 }
 
-.fab-checkbox:checked ~ .fab-wheel .fab-title {
+.fab-checkbox:checked~.fab-wheel .fab-title {
     opacity: 1;
 }
 
@@ -1915,7 +1915,7 @@ i.icon-cps-face {
     background-position: -177px 0px;
 }
 
-.fab-checkbox:not(:checked) ~ a .fab {
+.fab-checkbox:not(:checked)~a .fab {
     animation-name: zoom;
     -webkit-animation-name: zoom;
     animation-delay: 0s;
@@ -2077,11 +2077,12 @@ i.icon-cps-face {
     margin-left: 91.66667%;
 }
 
-@media (max-width: 739px){
+@media (max-width: 739px) {
     .popup.booking .popup__image {
-       display: none !important;
+        display: none !important;
     }
 }
+
 /* >= Tablet */
 @media (min-width: 740px) {
     .row {
@@ -2376,15 +2377,18 @@ i.icon-cps-face {
 
 /* Tablet - PC low resolution */
 @media (min-width: 740px) and (max-width: 1023px) {
+
     /* .container {
         max-width: 644px;
     } */
-    .popup.booking .popup__form{
+    .popup.booking .popup__form {
         width: 100% !important;
     }
-    .popup.booking .popup__frame{
+
+    .popup.booking .popup__frame {
         width: 100% !important;
     }
+
     .form__frame {
         display: flex;
         flex-direction: column;
@@ -2654,7 +2658,7 @@ i.icon-cps-face {
     background: #fff;
 }
 
-.header__menu .item__dropdown .submenu li > a {
+.header__menu .item__dropdown .submenu li>a {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2662,17 +2666,17 @@ i.icon-cps-face {
     font-weight: 400;
 }
 
-.header__menu .item__dropdown .submenu li > a i {
+.header__menu .item__dropdown .submenu li>a i {
     font-size: 12px;
 }
 
-.header__menu .item__dropdown .submenu > li:hover > a {
+.header__menu .item__dropdown .submenu>li:hover>a {
     color: #2a2a2b;
     background: #e9f5f1;
     border-color: #e9f5f1;
 }
 
-.header__menu .item__dropdown .submenu > li > a.active {
+.header__menu .item__dropdown .submenu>li>a.active {
     border-color: #048647;
     background: #e9f5f1;
 }
@@ -2747,19 +2751,21 @@ i.icon-cps-face {
 }
 
 .header__login {
-    position: relative; /* Để menu con được định vị tương đối */
-    cursor: pointer; /* Thay đổi con trỏ khi di chuột qua */
+    position: relative;
+    /* Để menu con được định vị tương đối */
+    cursor: pointer;
+    /* Thay đổi con trỏ khi di chuột qua */
 }
 
 .dropdown-menu {
     position: absolute;
-    top: 100%; 
-    right: 0; 
+    top: 100%;
+    right: 0;
     width: 250px;
     margin-top: 10px;
-    background-color: white; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
-    z-index: 1000; 
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
     padding: 10px 0;
     border: none !important;
     border-radius: 0px !important;
@@ -2767,23 +2773,26 @@ i.icon-cps-face {
 }
 
 .dropdown-menu ul {
-    list-style-type: none; 
-    margin: 0; 
+    list-style-type: none;
+    margin: 0;
     padding: 0;
 }
 
 .dropdown-menu li {
-    padding: 8px 16px; /* Khoảng cách cho từng mục */
+    padding: 8px 16px;
+    /* Khoảng cách cho từng mục */
 }
 
 .dropdown-menu li a {
-    text-decoration: none; /* Bỏ gạch chân cho link */
-    color: black; /* Màu chữ */
+    text-decoration: none;
+    /* Bỏ gạch chân cho link */
+    color: black;
+    /* Màu chữ */
 }
 
 .dropdown-menu li:hover {
     background-color: #048647;
-    color: #fff 
+    color: #fff
 }
 
 
@@ -2974,16 +2983,16 @@ i.icon-cps-face {
     background: #f4f4f4;
 }
 
-.rd-menu ul li.active > a {
+.rd-menu ul li.active>a {
     background: #03b75f;
     color: #fff;
 }
 
-.rd-menu ul li.active > a .fa {
+.rd-menu ul li.active>a .fa {
     color: #03b75f;
 }
 
-.rd-menu ul li.active ul.level1 > a {
+.rd-menu ul li.active ul.level1>a {
     color: #2a2a2b;
 }
 
@@ -3517,12 +3526,10 @@ i.icon-cps-face {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        94deg,
-        rgba(166, 216, 199, 0) 25.86%,
-        rgba(166, 216, 199, 0.8) 41.15%,
-        #a6d8c7 54.68%
-    );
+    background: linear-gradient(94deg,
+            rgba(166, 216, 199, 0) 25.86%,
+            rgba(166, 216, 199, 0.8) 41.15%,
+            #a6d8c7 54.68%);
 }
 
 .service__head--bg .container {
@@ -3995,7 +4002,7 @@ i.icon-cps-face {
     border-radius: 4px;
 }
 
-.service__featured > .row {
+.service__featured>.row {
     justify-content: center;
 }
 
@@ -4149,11 +4156,9 @@ i.icon-cps-face {
     left: 0;
     width: 100%;
     padding: 120px 16px 16px;
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0) 19.5%,
-        #fff 66.11%
-    );
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0) 19.5%,
+            #fff 66.11%);
 }
 
 .video__list .item-video__wrap {
@@ -4219,7 +4224,7 @@ i.icon-cps-face {
     object-fit: cover;
 }
 
-.about__list > .row > .col:nth-child(even) .about__block--content {
+.about__list>.row>.col:nth-child(even) .about__block--content {
     padding: 0 0 0 20px;
 }
 
@@ -4567,11 +4572,11 @@ i.icon-cps-face {
     height: auto;
 }
 
-.box-testimonial .slick-slider > button {
+.box-testimonial .slick-slider>button {
     background: #fff;
 }
 
-.box-testimonial .slick-slider > button::before {
+.box-testimonial .slick-slider>button::before {
     color: #048647;
 }
 
@@ -4807,25 +4812,15 @@ i.icon-cps-face {
     background: #64bb9c;
 }
 
-.box-booking__main
-    .select2-container--default
-    .select2-selection--single
-    .select2-selection__placeholder {
+.box-booking__main .select2-container--default .select2-selection--single .select2-selection__placeholder {
     color: #fff;
 }
 
-.box-booking__main
-    .select2-container--default
-    .select2-selection--single
-    .select2-selection__arrow
-    b {
+.box-booking__main .select2-container--default .select2-selection--single .select2-selection__arrow b {
     border-color: #fff transparent transparent transparent;
 }
 
-.box-booking__main
-    .select2-container--default
-    .select2-selection--single
-    .select2-selection__rendered {
+.box-booking__main .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #fff;
     font-weight: 500;
 }
@@ -4929,43 +4924,60 @@ i.icon-cps-face {
 /*------------------------------------------------
 ** btn view more
 **------------------------------------------------*/
-.box-btn-view-more{
+.box-btn-view-more {
     margin: 20px;
     text-align: center;
 }
+
 .btn-view-more {
-    position: relative; /* Để định vị pseudo-element */
+    position: relative;
+    /* Để định vị pseudo-element */
     display: inline-block;
-    padding: 10px 20px; /* Kích thước nút */
-    background-color: #03B75F; /* Màu nền của nút */
-    color: #fff !important; /* Màu chữ của nút */
-    border-radius: 5px; /* Bo góc */
-    text-decoration: none; /* Bỏ gạch chân */
-    font-weight: bold; /* Chữ đậm */
-    overflow: hidden; /* Ẩn phần tràn ra ngoài */
-    transition: color 0.3s; /* Thêm hiệu ứng chuyển đổi cho màu chữ */
+    padding: 10px 20px;
+    /* Kích thước nút */
+    background-color: #03B75F;
+    /* Màu nền của nút */
+    color: #fff !important;
+    /* Màu chữ của nút */
+    border-radius: 5px;
+    /* Bo góc */
+    text-decoration: none;
+    /* Bỏ gạch chân */
+    font-weight: bold;
+    /* Chữ đậm */
+    overflow: hidden;
+    /* Ẩn phần tràn ra ngoài */
+    transition: color 0.3s;
+    /* Thêm hiệu ứng chuyển đổi cho màu chữ */
     cursor: pointer;
     border: none;
 }
 
 .btn-view-more::after {
-    content: ''; /* Nội dung trống cho pseudo-element */
-    position: absolute; /* Định vị tuyệt đối */
+    content: '';
+    /* Nội dung trống cho pseudo-element */
+    position: absolute;
+    /* Định vị tuyệt đối */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.3); /* Màu trắng mờ */
-    opacity: 0; /* Ban đầu không hiển thị */
-    transition: opacity 0.3s; /* Thêm hiệu ứng chuyển đổi */
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Màu trắng mờ */
+    opacity: 0;
+    /* Ban đầu không hiển thị */
+    transition: opacity 0.3s;
+    /* Thêm hiệu ứng chuyển đổi */
 }
 
 .btn-view-more:hover::after {
-    opacity: 1; /* Hiển thị lớp phủ khi hover */
+    opacity: 1;
+    /* Hiển thị lớp phủ khi hover */
 }
 
 .btn-view-more:hover {
-    color: #0d0d0d !important; /* Giữ nguyên màu chữ khi hover */
+    color: #0d0d0d !important;
+    /* Giữ nguyên màu chữ khi hover */
 }
 
 /*------------------------------------------------
@@ -5377,6 +5389,7 @@ i.icon-cps-face {
 
 
 @media (max-width: 1239px) {
+
     .header__frame,
     .header__wrap {
         gap: 12px;
@@ -5395,6 +5408,7 @@ i.icon-cps-face {
         font-size: 14px;
     }
 }
+
 @media (max-width: 375px) {
     .popup.booking .popup__form {
         width: 100% !important;
@@ -5405,17 +5419,17 @@ i.icon-cps-face {
     body {
         font-size: 14px;
     }
-    
+
     .page {
         padding-top: 56px;
     }
-   
-        .popup.booking .popup__image {
-            width: 45%;
-            margin: 0;
-            display: none;
-        }
-    
+
+    .popup.booking .popup__image {
+        width: 45%;
+        margin: 0;
+        display: none;
+    }
+
     .page .rd-menu,
     .page .rd-panel {
         display: flex;
@@ -5469,7 +5483,7 @@ i.icon-cps-face {
         font-size: 16px;
     }
 
-    .box-commit__frame > .row {
+    .box-commit__frame>.row {
         flex-direction: column-reverse;
     }
 
@@ -5654,7 +5668,7 @@ i.icon-cps-face {
 }
 
 @media (max-width: 739px) {
-    .about__list > .row > .col:nth-child(even) .about__block > .row {
+    .about__list>.row>.col:nth-child(even) .about__block>.row {
         flex-direction: column-reverse;
         flex-wrap: nowrap;
     }
@@ -5880,11 +5894,11 @@ i.icon-cps-face {
         border-radius: 4px;
     }
 
-    .gallery__list > .row {
+    .gallery__list>.row {
         margin: 0 -6px;
     }
 
-    .gallery__list > .row > .col {
+    .gallery__list>.row>.col {
         padding: 0 6px;
     }
 
@@ -5989,7 +6003,7 @@ i.icon-cps-face {
         padding: 20px 0;
     }
 
-    .slick-slider > button {
+    .slick-slider>button {
         width: 24px;
         height: 24px;
         opacity: 0.5;
@@ -6083,11 +6097,11 @@ i.icon-cps-face {
         padding: 12px;
     }
 
-    .service__featured > .row {
+    .service__featured>.row {
         margin: 0 -6px;
     }
 
-    .service__featured > .row .col {
+    .service__featured>.row .col {
         padding: 0 6px;
     }
 

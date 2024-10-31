@@ -17,7 +17,7 @@
                     </div>
                     <div class="item sep">/</div>
                     <div class="item">
-                        <a href="{{ route('client.news') }}">Tên bác sĩ</a>
+                        <a href="{{ route('client.news') }}">Thông tin</a>
                     </div>
                 </div>
             </div>
@@ -31,99 +31,83 @@
                             <div class="box-heading text-center">
                                 <h1>
                                     Bác sĩ
-                                    <span class="highlight">name</span>
+                                    <span class="highlight">{{ $doctorId[0]->lastName }} {{ $doctorId[0]->firstName }}</span>
                                 </h1>
-                                <p class="description">Chuyên khoa</p>
+                                <p class="description">Chuyên khoa {{ $doctorId[0]->specialtyName }}</p>
                             </div>
                         </div>
 
-                        <div class="col l-12 mc-12 c-12">
+                        <div class="col l-12 mc-12 c-12 medicines-section">
                             <div class="contact__form">
                                 <div class="row gap-y-40">
                                     <div class="col l-4 mc-12 c-12">
                                         <img
-                                            src="https://taimuihongsg.com/wp-content/uploads/2018/06/Tang-Ngoc-Diep_taimuihongsg.jpg">
-
-                                        <div class="row bg-primary">
+                                            src="{{ asset($doctorId[0]->avatar) }}">
+                                        <div class="row bg-primary" style="margin-left: 2px">
                                             <div class="">
-                                                <h2>CHỨC VỤ - BS. Tăng Ngọc Diệp</h2>
+                                                <h2>CHỨC VỤ - BS. {{ $doctorId[0]->lastName }} {{ $doctorId[0]->firstName }}</h2>
                                                 <p class="">
-                                                    Bác sĩ Chuyên Khoa Nội Phòng Khám Đa
-                                                    Khoa Quốc Tế Sài Gòn
+                                                    Bác sĩ Chuyên {{ $doctorId[0]->specialtyName }}
                                                 </p>
                                             </div>
-
-                                            <div class="">
-                                                <a
-                                                    href="https://taimuihongsg.com/doi-ngu-bac-si/bac-si-khoa-khoa-tong-quat-noi-tiet/"
-                                                    rel="tag">BÁC SĨ KHOA TỔNG QUÁT - NỘI TIẾT
+                                            {{-- <div class="">
+                                                <a href="#" rel="tag">BÁC SĨ KHOA {{ $doctorId[0]->specialtyName }}
                                                 </a>
-                                            </div>
-
+                                            </div> --}}
                                         </div>
                                     </div>
-
-                                </div>
-
-
-                                <div class="col l-8 mc-12 c-12">
-                                    {{--                                            <div class="contact__main">--}}
-                                    {{--                                                <div class=" gap-y-20">--}}
-                                    {{--                                                    <div class="col l-12 mc-12 c-12">--}}
-                                    {{--                                                        <h3 class="title">Thông tin địa chỉ cơ sở</h3>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                    <div class="col l-12 mc-12 c-12">--}}
-                                    {{--                                                        <div class="contact__map">--}}
-                                    {{--                                                            <iframe--}}
-                                    {{--                                                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.687214618684!2d106.66530938511656!3d10.835231430577752!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529a9f70252a9%3A0x645ada8a0a3ecafd!2zNDggxJAuIFPhu5EgNiwgS0RDIENpdHlsYW5kIFBhcmtoaWxsLCBHw7IgVuG6pXAsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1714879539789!5m2!1svi!2s"--}}
-                                    {{--                                                                style="border: 0" allowfullscreen="" loading="lazy"--}}
-                                    {{--                                                                referrerpolicy="no-referrer-when-downgrade"></iframe>--}}
-                                    {{--                                                        </div>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                    <div class="col l-12 mc-12 c-12">--}}
-                                    {{--                                                        <div class="contact__list">--}}
-                                    {{--                                                            <div class="item">--}}
-                                    {{--                                                                <div class="item__icon">--}}
-                                    {{--                                                                    <i class="fa-solid fa-phone"></i>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                                <div class="item__wrap">--}}
-                                    {{--                                                                    <span class="item__label">Hotline:</span>--}}
-                                    {{--                                                                    <a href="tel:0962672967"--}}
-                                    {{--                                                                       class="item__link">0962.672.967</a>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                            </div>--}}
-                                    {{--                                                            <div class="item">--}}
-                                    {{--                                                                <div class="item__icon">--}}
-                                    {{--                                                                    <i class="fa-solid fa-envelope"></i>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                                <div class="item__wrap">--}}
-                                    {{--                                                                    <span class="item__label">Email:</span>--}}
-                                    {{--                                                                    <a href=""--}}
-                                    {{--                                                                       class="item__link"><span>vietcare@gmail.com</span></a>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                            </div>--}}
-                                    {{--                                                            <div class="item">--}}
-                                    {{--                                                                <div class="item__icon">--}}
-                                    {{--                                                                    <i class="fa-solid fa-location-dot"></i>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                                <div class="item__wrap">--}}
-                                    {{--                                                                    <span class="item__label">Địa chỉ:</span>--}}
-                                    {{--                                                                    <a href="https://maps.app.goo.gl/kjpVxAW2goAAK95g7"--}}
-                                    {{--                                                                       class="item__link" target="_blank">Đường 22--}}
-                                    {{--                                                                        Phường Hưng Thạnh Cái Răng</a>--}}
-                                    {{--                                                                </div>--}}
-                                    {{--                                                            </div>--}}
-                                    {{--                                                        </div>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                            </div>--}}
+                                    <div class="col l-8 mc-12 c-12">
+                                        <div class="contact__main">
+                                            <div class=" gap-y-20">
+                                                {{-- <div class="col l-12 mc-12 c-12">
+                                                    <h4 class="title">Thông tin hành chính</h4>
+                                                </div> --}}
+                                                <div class="col l-12 mc-12 c-12">
+                                                    <div class="contact__list">
+                                                        <div class="item contact__list">
+                                                            <div class="">
+                                                                <h4 class="highlight fw-bold">Bằng cấp</h4>
+                                                            </div>
+                                                            <div class="col">
+                                                                <i class="fa fa-graduation-cap fs-4" style="color: #00a253; font-size: 20px"></i>
+                                                                <span class="medicines-section">{{ $doctorId[0]->degree }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="contact__list" style="margin-top: 20px">
+                                                        <div class="item contact__list">
+                                                            <div class="">
+                                                                <h4 class="highlight fw-bold">Công tác công việc</h4>
+                                                            </div>
+                                                            <div class="col">
+                                                                <i class="fa fa-id-card fs-4" style="color: #00a253; font-size: 20px"></i>
+                                                                <span class="medicines-section">{{ $doctorId[0]->work_experience }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="contact__list" style="margin-top: 20px">
+                                                        <div class="item contact__list">
+                                                            <div class="">
+                                                                <h4 class="highlight fw-bold">Mô tả</h4>
+                                                            </div>
+                                                            <div class="col">
+                                                                <i class="fa fa-briefcase fs-4" style="color: #00a253; font-size: 20px"></i>
+                                                                
+                                                                <span class="medicines-section"><br>{!! $doctorId[0]->description !!}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-@endsection
+    @endsection
