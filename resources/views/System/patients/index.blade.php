@@ -57,7 +57,7 @@
                                     <div class="card card-body">
                                         <div class="col-md-12 d-flex mt-1">
                                             <div class="profile-img col-md-2 d-flex align-items-center">
-                                                <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}" class="rounded-circle">
+                                                <img src="{{ asset('backend/assets/images/profile/user-1.jpg') }}">
                                             </div>
                                             <div class="col-md-10 d-flex">
                                                 <div class="col-md-6">
