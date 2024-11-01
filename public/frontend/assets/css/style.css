@@ -298,8 +298,7 @@ body {
     background: #fff;
     position: relative;
     color: #2a2a2b;
-    font-family: "Be Vietnam Pro", sans-serif;
-    font-style: normal;
+font-family: 'Roboto', sans-serif;    font-style: normal;
     font-weight: 300;
     font-size: 16px;
     line-height: 1.5;
@@ -376,8 +375,8 @@ body.removeScrollbar {
 .form__group select {
     font-size: 16px;
     font-weight: 400;
-    font-family: "Be Vietnam Pro", sans-serif;
-    color: #2a2a2b;
+font-family: 'Roboto', sans-serif;    color: #2a2a2b;
+    border-radius: 4px;
     background: #fff;
     padding: 5px 20px;
     border: 1px solid #aaa;
@@ -387,8 +386,7 @@ body.removeScrollbar {
 .form__group input::placeholder,
 .form__group textarea::placeholder {
     color: #aaa;
-    font-family: "Be Vietnam Pro", sans-serif;
-    font-size: 16px;
+font-family: 'Roboto', sans-serif;    font-size: 16px;
 }
 
 .form__group input.error,
@@ -1628,8 +1626,7 @@ img {
     color: #2a2a2b;
     font-size: 16px;
     font-weight: 400;
-    font-family: "Be Vietnam Pro", sans-serif;
-    white-space: initial;
+font-family: 'Roboto', sans-serif;    white-space: initial;
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
@@ -1642,8 +1639,7 @@ img {
     color: #aaa;
     font-weight: 400;
     font-size: 16px;
-    font-family: "Be Vietnam Pro", sans-serif;
-}
+font-family: 'Roboto', sans-serif;}
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
     width: 24px;
@@ -2588,8 +2584,11 @@ i.icon-cps-face {
     justify-content: center;
     padding: 8px 12px;
     border: 1px solid transparent;
-    font-weight: 500;
+    font-weight: 700;
     border-radius: 8px;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
     text-align: center;
 }
 
@@ -2745,6 +2744,7 @@ i.icon-cps-face {
     height: 100%;
     object-fit: contain;
 }
+
 
 .header__login {
     position: relative;

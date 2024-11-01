@@ -73,7 +73,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {!! $medicineType->links() !!}
+                <!-- {!! $medicineType->links() !!} -->
             </div>
         </div>
     </div>

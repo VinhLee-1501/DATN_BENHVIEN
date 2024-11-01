@@ -1,0 +1,18 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\shop\shopController;
+
+
+Route::prefix('cua-hang')->group(function () {
+
+    Route::get('/', [shopController::class , 'index'])->name('shop');
+    Route::get('/hoa-don', [shopController::class , 'checkout'])->name('checkout');
+    Route::get('/chi-tiet-san-pham', [shopController::class , 'detail'])->name('shop-details');
+    Route::get('/san-pham', [shopController::class , 'grid'])->name('shop-grid');
+    Route::get('/gio-hang', [shopController::class , 'cart'])->name('cart');
+    Route::get('/bai-viet', [shopController::class , 'blog'])->name('blog');
+
+
+});
+

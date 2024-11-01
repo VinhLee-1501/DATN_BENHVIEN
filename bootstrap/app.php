@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         using: function () {
 
+            $shopRoutes = [
+                'shop.php'
+            ];
+
             $clientRoutes = [
 
                 'page.php',
@@ -61,6 +65,13 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->prefix('system')
                     ->name('system.')
                     ->group(base_path("routes/system/{$route}"));
+            }
+
+            foreach ($shopRoutes as $route) {
+                Route::middleware('web')
+                    ->prefix('')
+                    ->name('shop.')
+                    ->group(base_path("routes/shop/{$route}"));
             }
 
             Route::fallback(function () {

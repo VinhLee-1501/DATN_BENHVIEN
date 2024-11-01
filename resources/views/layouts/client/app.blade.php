@@ -7,16 +7,14 @@
     <title>Phòng Khám</title>
     <link rel="shortcut icon" type="text/css" href="{{ asset('frontend/assets/image/logo.png') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/fontawesome-6/css/all.min.css') }}" />
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('frontend/library/fancybox-master/dist/jquery.fancybox.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/fancybox-master/dist/jquery.fancybox.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/jQueryUI/jquery-ui.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/hint/hint.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/slick/slick/slick.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/animate/animate.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/library/select2/select2.min.css') }}" />
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('frontend/library/simple-notify-master/dist/simple-notify.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/simple-notify-master/dist/simple-notify.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/style.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/profile.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/assets/css/login.css') }}" />
@@ -24,7 +22,8 @@
 
     <script type="text/javascript" src="{{ asset('frontend/library/jQuery/jquery-3.4.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/library/accounting/accounting.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('frontend/library/fancybox-master/dist/jquery.fancybox.js') }}"></script>
+    <script type="text/javascript"
+        src="{{ asset('frontend/library/fancybox-master/dist/jquery.fancybox.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/library/jQueryUI/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/library/slick/slick/slick.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/library/wow/wow.min.js') }}"></script>
@@ -58,7 +57,7 @@
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>
-        $(".form.booking .btn-booking").click(function() {
+        $(".form.booking .btn-booking").click(function () {
             var form = ".form.booking";
             var param = new Object();
             param.branch_name = $(form + " #select2-select-branch-container").attr(

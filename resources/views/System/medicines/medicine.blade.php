@@ -66,7 +66,7 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr>
+                        <tr id="show">
                             <td colspan="5">
                                 <div class="collapse" id="collapse{{ $data->medicine_id }}">
                                     <div class="card card-body ">

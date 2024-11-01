@@ -11,7 +11,7 @@
                     </li>
 
                     <li class="item">
-                        <a class="item__link" href="#">Sản phẩm</a>
+                        <a class="item__link" href="{{ route('shop.shop') }}">Cửa Hàng</a>
                     </li>
                     <li class="item">
                         <a class="item__link" href="{{ route('client.news') }}">Tin tức</a>

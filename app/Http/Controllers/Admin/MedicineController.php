@@ -93,6 +93,11 @@ class MedicineController extends Controller
             ->get();
 
         $medicineType = MedicineType::get();
+
+
+        $data = Medicine::get();
+
+        // dd($medicine);
         return view('System.medicines.index', [
             'medicine' => $medicine,
             'medicineEnd' => $medicineEnd,
