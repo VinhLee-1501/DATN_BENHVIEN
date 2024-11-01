@@ -2752,6 +2752,10 @@ i.icon-cps-face {
     cursor: pointer;
     /* Thay đổi con trỏ khi di chuột qua */
 }
+.header__booking .button {
+    box-shadow: 0 0 0 rgba(255, 188, 17, 0.4);
+    animation: pulse 2s infinite;
+}
 
 .dropdown-menu {
     position: absolute;
@@ -4011,7 +4015,6 @@ i.icon-cps-face {
     display: block;
     padding: 20px;
     border-radius: 16px;
-    border: 1px solid #1d478b;
     border-bottom: 4px solid #1d478b;
     background: #03b75f;
     overflow: hidden;
@@ -4312,12 +4315,10 @@ i.icon-cps-face {
 .box-commit__image {
     width: 100%;
     border: 3px solid var(--primary);
-    border-radius: 20%;
 }
 
 .box-commit__image img {
     width: 100%;
-    border-radius: 20%;
 }
 
 .box-commit__main {

@@ -2,7 +2,7 @@
     <div class="container">
         <div class="header__frame">
             <a href="{{ route('client.home') }}" class="header__logo">
-                <img src="{{ asset('frontend/assets/image/logo-header.png') }}" alt="VIETCARE HOSPITAL" />
+                <img src="{{ asset('frontend/shop/img/vietcare.png')}}" alt="VIETCARE HOSPITAL" />
             </a>
             <div class="header__wrap">
                 <ul class="header__menu mt-3">
@@ -104,7 +104,7 @@
             <div class="header__booking">
 
                 <a href="{{ route('client.booking') }}">
-                    <div class="button btn-small btn-cta openPopup">
+                    <div style="background-color: #ffbc11" class="button btn-small btn-cta openPopup">
                         <i class="fa-regular fa-calendar-check"></i> Đặt lịch
                     </div>
                 </a>
