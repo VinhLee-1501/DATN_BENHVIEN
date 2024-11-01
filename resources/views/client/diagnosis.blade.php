@@ -12,7 +12,6 @@
         .diagnosis-container {
             max-width: 600px;
             margin: auto;
-            border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
             margin-top: 10%;
@@ -47,7 +46,7 @@
             width: 100%;
             padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 6px;
+
             font-size: 16px;
             transition: border-color 0.3s;
         }
@@ -69,7 +68,7 @@
             background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 5px;
+
             font-size: 18px;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -98,7 +97,7 @@
             padding: 15px;
             background-color: #f8f9fa;
             border: 1px solid #ced4da;
-            border-radius: 6px;
+
             color: #333;
             font-size: 16px;
         }

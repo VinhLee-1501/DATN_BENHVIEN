@@ -35,7 +35,6 @@
 .action-button {
     margin: 0.5rem;
     padding: 1rem 2rem; /* Padding lớn hơn cho nút */
-    border-radius: 5px;
     color: #ffffff;
     transition: background-color 0.3s ease;
     font-size: 1rem; 
