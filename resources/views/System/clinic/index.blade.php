@@ -57,10 +57,12 @@
                             <td class="border-bottom-0">
                                 @if ($sclinic->status === 1)
                                     <a href="javascript:void(0)" class="btn btn-primary "
-                                    onclick="openModalEdit('{{ $sclinic->sclinic_id }}')"><i class="ti ti-pencil"></i></a>
+                                        onclick="openModalEdit('{{ $sclinic->sclinic_id }}')"><i
+                                            class="ti ti-pencil"></i></a>
                                 @else
                                     <a href="javascript:void(0)" class="btn btn-danger"
-                                    onclick="openModalEdit('{{ $sclinic->sclinic_id }}')"><i class="ti ti-pencil"></i></a>
+                                        onclick="openModalEdit('{{ $sclinic->sclinic_id }}')"><i
+                                            class="ti ti-pencil"></i></a>
                                 @endif
                             </td>
                         </tr>
@@ -79,39 +81,41 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="addClinicForm">
+                        @csrf
                         <div class="col-md-12 d-flex">
                             <div class="mb-3 col-md-6 pe-1">
                                 <label for="recipient-name" class="col-form-label">Tên phòng</label>
                                 <input type="text" name="sclinicName" class="form-control" id="sclinicName"
                                     value="">
                                 <input type="hidden" name="sclinicId" class="form-control" id="sclinicId" value="">
-                                <span class="text-danger" id="name-error"></span>
+                                <span class="invalid-feedback" id="sclinicName_error"></span>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="recipient-name" class="col-form-label">Chuyên khoa</label>
                                 <select name="specialtyName" id="specialtyName" class="form-select">
 
                                 </select>
-                                <span class="text-danger" id="name-specialty-error"></span>
+                                <span class="invalid-feedback" id="specialtyName_error"></span>
                             </div>
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="" class="form-label">Mô tả</label>
                             <textarea name="description" id="description" class="form-control"></textarea>
+                            <span class="invalid-feedback" id="description_error"></span>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="check" id="confirmationCheck" checked>
+                            <input class="form-check-input" type="checkbox" name="statusSclinic" id="statusSclinic"
+                                checked>
                             <label class="form-check-label" for="confirmation-check">
                                 Hoạt động
-                            </label> <br>
-                            <span class="text-danger" id="status-error"></span>
+                            </label>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer" id="btnRole">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" id="save-btn">Lưu</button>
+                    <button type="button" class="btn btn-primary" id="addClinic">Lưu</button>
                 </div>
             </div>
         </div>
@@ -132,30 +136,32 @@
                         <div class="col-md-12 d-flex">
                             <div class="mb-3 col-md-6 pe-1">
                                 <label for="recipient-name" class="col-form-label">Tên phòng</label>
-                                <input type="text" name="sclinicNameEdit" class="form-control" id="sclinicNameEdit"
+                                <input type="text" name="sclinicName" class="form-control" id="sclinicNameEdit"
                                     value="">
-                                <span class="text-danger" id="name-sclinic-error-edit"></span>
+                                <span class="invalid-feedback" id="sclinicName_error"></span>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="recipient-name" class="col-form-label">Chuyên khoa</label>
-                                <select name="specialtyNameEdit" id="specialtyNameEdit"
+                                <select name="specialtyName" id="specialtyNameEdit"
                                     class="form-select specialtyNameEdit">
 
                                 </select>
-                                <span class="text-danger" id="name-error-edit"></span>
+                                <span class="invalid-feedback" id="specialtyName_error"></span>
+
                             </div>
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="" class="form-label">Mô tả</label>
-                            <textarea name="descriptionEdit" id="descriptionEdit" class="form-control"></textarea>
+                            <textarea name="sclinicNote" id="descriptionEdit" class="form-control"></textarea>
+                            <span class="invalid-feedback" id="sclinicNote_error"></span>
+
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="checkEdit" id="confirmationCheckEdit"
+                            <input class="form-check-input" type="checkbox" name="statusSclinic" id="statusSclinicEdit"
                                 checked>
-                            <label class="form-check-label" for="confirmationCheckEdit">
+                            <label class="form-check-label" for="statusSclinicEdit">
                                 Hoạt động
-                            </label><br>
-                            <span class="text-danger" id="status-error-edit"></span>
+                            </label>
                         </div>
                     </form>
                 </div>
@@ -245,57 +251,51 @@
             });
         }
 
-        $('#save-btn').click(function() {
-            const name = $('#sclinicName').val();
-            const specialty_id = $('#specialtyName').val();
-            const note = $('#description').val();
-            const sclinicStatus = $('#confirmationCheck').is(':checked') ? 1 : 0;
-            // console.log(specialtyName);
 
-            // Kiểm tra lỗi
-            if (specialtyName === "" || specialty_id === "" || sclinicStatus === "") {
-                $('#name-specialty-error').text("Chuyên khoa không được để trống");
-                $('#name-error').text("Tên phòng không được để trống");
-                $('#status-error').text("Trạng thái không được để trống");
-                return;
-            } else {
-                $('#name-specialty-error').text("");
-                $('#name-error').text("");
-                $('#status-error').text("");
-            }
-            $.ajax({
-                url: '/system/sclinics/store',
-                type: 'POST',
-                data: {
-                    'name': name,
-                    'specialty_id': specialty_id,
-                    'status': sclinicStatus,
-                    'description': note,
-                    '_token': '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    $('#exampleModal').modal('hide');
-                    if (response.success) {
-                        toastr.success(response.message);
-                        location.reload();
-                    } else if (response.error) {
-                        toastr.error(response.message);
-                    }
-                },
-                error: function(error) {
-                    if (error.status === 422) {
-                        let errors = error.responseJSON.errors;
-                        if (errors.name) {
-                            $('#name-error').text(errors.name[0]);
-                        }
-                    } else {
-                        console.error(error);
-                    }
-                }
-            });
-        });
         $(document).ready(function() {
             loadSpecialties();
+
+            $('#addClinic').click(function(e) {
+                e.preventDefault();
+                if ($('#statusSclinic').is(':checked')) {
+                    $('#statusSclinic').val(1);
+                } else {
+                    $('#statusSclinic').val(0);
+                }
+                var formData = $('#addClinicForm').serialize();
+
+                console.log(formData);
+
+                $.ajax({
+                    url: '/system/sclinics/store',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $('#exampleModal').modal('hide');
+                        if (response.success) {
+                            toastr.success(response.message);
+                            setTimeout(() => {
+                                location.reload();
+                            }, 3000);
+                        } else if (response.error) {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(error) {
+                        if (error.responseJSON && error.responseJSON.errors) {
+                            let errors = error.responseJSON.errors;
+                            $('.invalid-feedback').text('');
+                            $('.form-control').removeClass('is-invalid');
+                            $.each(errors, function(key, value) {
+                                $('#' + key).addClass('is-invalid');
+                                $('#' + key + '_error').text(value[0]);
+                            });
+                        } else {
+                            console.error(error);
+                        }
+                    }
+                });
+            });
         });
 
         function openModalEdit(id) {
@@ -308,16 +308,16 @@
                     console.log(response)
                     if (response.sclinic && response.sclinicId) {
                         $('#sclinicNameEdit').val(response.sclinicName);
-                        $('#specialtyNameEdit').val(response.sclinicSpecialty);
+                        $('#specialtyNameEdit').val(response.specialtyName);
                         $('#descriptionEdit').val(response.sclinicNote);
-                        $('#confirmationCheckEdit').prop('checked', response.sclinicStatus == 1);
+                        $('#confirmationCheckEdit').prop('checked', response.statusSclinic == 1);
                         $('#exampleModalEdit').data('id', id);
                     } else {
                         // Handle case where data is missing or invalid
                         console.error("Error: Missing or invalid sclinic data.");
                     }
 
-                    loadSpecialties(response.sclinicSpecialty);
+                    loadSpecialties(response.specialtyName);
                 },
                 error: function(error) {
                     console.error(error);
@@ -331,42 +331,43 @@
             const sclinicNameEdit = $('#sclinicNameEdit').val();
             const specialtyIdEdit = $('#specialtyNameEdit').val();
             const noteEdit = $('#descriptionEdit').val();
-            const sclinicStatusEdit = $('#confirmationCheckEdit').is(':checked') ? 1 : 0;
+            const sclinicStatusEdit = $('#statusSclinicEdit').is(':checked') ? 1 : 0;
 
-            console.log(sclinicStatusEdit);
-            if (sclinicNameEdit === "") {
-                $('#name-sclinic-error-edit').text("Tên phòng không được để trống");
-                return;
-            } else if (specialtyIdEdit === "") {
-                $('#name-error-edit').text("Chuyên khoa không được để trống");
-                return;
-            } else if (sclinicStatusEdit === "") {
-                $('#status-error-edit').text("Trạng thái không được để trống");
-                return;
-            }
             $.ajax({
                 url: '/system/sclinics/update/' + id,
                 type: 'PATCH',
                 data: {
                     sclinicName: sclinicNameEdit,
-                    sclinicSpecialty: specialtyIdEdit,
+                    specialtyName: specialtyIdEdit,
                     sclinicNote: noteEdit,
-                    sclinicStatus: sclinicStatusEdit,
+                    statusSclinic: sclinicStatusEdit,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    
+
                     $('#exampleModalEdit').modal('hide');
                     if (response.success) {
                         toastr.success(response.message);
-                        location.reload();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
                     } else if (response.error) {
                         toastr.error(response.message);
                     }
                 },
                 error: function(err) {
-                    console.error("Error updating data:", err);
-                    alert('Có lỗi xảy ra: ' + err.responseJSON.error);
+                    if (err.responseJSON && err.responseJSON.errors) {
+                        let errors = err.responseJSON.errors;
+
+                        $('.invalid-feedback').text('');
+                        $('.form-control').removeClass('is-invalid');
+                        $.each(errors, function(key, value) {
+                            $('[name="' + key + '"]').addClass('is-invalid');
+                            $('#' + key + '_error').text(value[0]);
+                        });
+                    } else {
+                        console.error(error);
+                    }
                 }
             });
 

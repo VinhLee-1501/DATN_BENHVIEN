@@ -23,21 +23,21 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:specialties,name',
+            'specialtyName' => 'required|unique:specialties,name',
         ];
     }
 
 
     public function messages(): array{
         return [
-            'name.required' => ':attribute không được bỏ trống',
-            'name.unique' => ':attribute đã tồn tại',
+            'specialtyName.required' => ':attribute không được bỏ trống',
+            'specialtyName.unique' => ':attribute đã tồn tại',
         ];
     }
 
     public function attributes(): array{
         return [
-            'name' => 'Tên chuyên khoa',
+            'specialtyName' => 'Tên chuyên khoa',
         ];
     }
 }

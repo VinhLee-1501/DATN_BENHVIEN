@@ -43,13 +43,12 @@ class SclinicController extends Controller
 
     public function store(CreateRequest $request)
     {
-
         $sclinic = new Sclinic();
         $sclinic->sclinic_id = strtoupper(Str::random('10'));
-        $sclinic->name = $request->input('name');
-        $sclinic->specialty_id = $request->input('specialty_id');
+        $sclinic->name = $request->input('sclinicName');
+        $sclinic->specialty_id = $request->input('specialtyName');
         $sclinic->description = $request->input('description');
-        $sclinic->status = $request->input('status') ? 1 : 0;
+        $sclinic->status = $request->input('statusSclinic') ? 1 : 0;
         $sclinic->save();
 
         return response()->json(['success' => true, 'message' => 'Phòng khám đã được thêm thành công!']);
@@ -64,28 +63,20 @@ class SclinicController extends Controller
             'sclinic' => $sclinic,
             'sclinicId' => $sclinic->sclinic_id,
             'sclinicName' => $sclinic->name,
-            'sclinicSpecialty' => $sclinic->specialty_id,
-            'sclinicStatus' => $sclinic->status,
+            'specialtyName' => $sclinic->specialty_id,
+            'statusSclinic' => $sclinic->status,
             'sclinicNote' => $sclinic->description,
-            // 'specialties' => $specialties,
-            // 'specialtyName' => $specialties->name,
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         $sclinic = Sclinic::where('sclinic_id',$id)->first();
-        // dd($sclinic->name);
-        // dd(
-        //     $request->input('sclinicNameEdit'),
-        //     $request->input('specialtyNameEdit'),
-        //     $request->input('descriptionEdit'),
-        //     $request->input('checkEdit')
-        // );
+
         $sclinic->name = $request->input('sclinicName');
-        $sclinic->specialty_id = $request->input('sclinicSpecialty');
+        $sclinic->specialty_id = $request->input('specialtyName');
         $sclinic->description = $request->input('sclinicNote');
-        $sclinic->status = $request->input('sclinicStatus');
+        $sclinic->status = $request->input('statusSclinic');
 
         $sclinic->save();
 

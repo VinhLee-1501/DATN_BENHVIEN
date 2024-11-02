@@ -22,19 +22,21 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:sclinics,name',
-            'specialty_id' => 'required',
-            'status' => 'required'
+            'sclinicName' => 'required|unique:sclinics,name',
+            'specialtyName' => 'required',
+            'description' => 'required',
+            'statusSclinic' => 'required'
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Tên phòng khám không được để trống.',
-            'name.unique' => 'Tên phòng khám đã tồn tại.',
-            'specialty_id.required' => 'Chưa chọn chuyên khoa.',
-            'status.required' => 'Chưa chọn trạng thái.'
+            'sclinicName.required' => 'Tên phòng khám không được để trống.',
+            'sclinicName.unique' => 'Tên phòng khám đã tồn tại.',
+            'specialtyName.required' => 'Chưa chọn chuyên khoa.',
+            'description.required' => 'Mô tả không được để trống',
+            'statusSclinic.required' => 'Chưa chọn trạng thái.'
         ];
     }
 }
