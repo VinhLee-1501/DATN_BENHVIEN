@@ -4,7 +4,7 @@
 
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-section set-bg" data-setbg="{{ asset('frontend/shop/img/breadcrumb.jpg')}}">
+<section class="breadcrumb-section set-bg" data-setbg="{{ asset('frontend/shop/img/Group.png')}}">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">

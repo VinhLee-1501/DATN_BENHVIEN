@@ -126,6 +126,7 @@
                                 <input type="text" name="specialtyName" class="form-control" id="specialtyNameEdit"
                                     value="">
                                 <input type="text" name="specialty_id" id="specialty_id" hidden>
+
                                 <span class="invalid-feedback" id="specialtyName_error"></span>
                             </div>
                             <div class="mb-3">

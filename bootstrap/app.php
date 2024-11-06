@@ -49,7 +49,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'patient.php',
                 'sclinic.php',
                 'product.php',
-
+                'saleProduct.php',
             ];
 
 

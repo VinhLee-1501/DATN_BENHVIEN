@@ -18,10 +18,10 @@ class AppointmentSchedule extends Controller
     public function index()
     {
         $book =
-            $books = Book::join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
-            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-            ->join('users', 'users.user_id', '=', 'schedules.user_id')
-            ->join('sclinics', 'sclinics.sclinic_id', '=', 'schedules.sclinic_id')
+            $books = Book::leftJoin('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->leftJoin('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->leftJoin('users', 'users.user_id', '=', 'schedules.user_id')
+            ->leftJoin('sclinics', 'sclinics.sclinic_id', '=', 'schedules.sclinic_id')
             ->select('books.*', 'users.lastname', 'users.firstname', 'sclinics.name AS sclinicName', 'specialties.name AS specialtyName')
             ->orderBy('books.row_id', 'DESC')
             ->get();

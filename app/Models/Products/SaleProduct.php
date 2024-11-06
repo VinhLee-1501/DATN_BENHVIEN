@@ -14,9 +14,11 @@ class SaleProduct extends Model
 
     protected $fillable = [
         'sale_id',
+        'sale_code',
         'time_start',
         'time_end',
         'discount',
+        'status',
         'product_id' //Khóa ngoại
     ];
 

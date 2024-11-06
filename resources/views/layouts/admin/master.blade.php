@@ -13,11 +13,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-       
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" /> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    {{-- Select 2 --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {{-- Blogs --}}
     <link rel="stylesheet" href="{{ asset('backend/assets/libs/summernote/summernote-bs5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/libs/filepond/dist/filepond.css') }}">
@@ -109,6 +113,7 @@
     </div>
 
     <script src="{{ asset('backend/assets/js/checkup.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/sale.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/api.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -131,14 +136,13 @@
     <script src="{{ asset('backend/assets/libs/filepond/dist/filepond.js') }}"></script>
     <script
         src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js') }}">
-        </script>
-    <script
-        src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js') }}">
-        </script>
     </script>
     <script
-        src="{{ asset('backend/assets/libs/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
-        </script>
+        src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js') }}">
+    </script>
+    </script>
+    <script src="{{ asset('backend/assets/libs/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
+    </script>
     @stack('scripts')
 
     <x-message.message></x-message.message>

@@ -313,10 +313,8 @@
                         $('#confirmationCheckEdit').prop('checked', response.statusSclinic == 1);
                         $('#exampleModalEdit').data('id', id);
                     } else {
-                        // Handle case where data is missing or invalid
                         console.error("Error: Missing or invalid sclinic data.");
                     }
-
                     loadSpecialties(response.specialtyName);
                 },
                 error: function(error) {
