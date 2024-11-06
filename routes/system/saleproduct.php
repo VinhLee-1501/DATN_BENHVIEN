@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\SaleProductController;
-use App\Http\Controllers\Admin\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 

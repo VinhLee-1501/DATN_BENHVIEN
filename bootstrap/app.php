@@ -50,6 +50,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'sclinic.php',
                 'product.php',
                 'saleProduct.php',
+                'coupon.php',
             ];
 
 

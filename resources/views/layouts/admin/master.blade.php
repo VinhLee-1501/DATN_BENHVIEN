@@ -113,7 +113,6 @@
     </div>
 
     <script src="{{ asset('backend/assets/js/checkup.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/sale.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/api.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>

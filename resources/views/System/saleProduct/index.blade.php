@@ -1,5 +1,5 @@
 @extends('layouts.admin.master')
-@section('Quản lý sản phẩm')
+@section('Quản lý mã giảm giá sản phẩm')
 @section('content')
 
     <nav>
@@ -214,5 +214,6 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('backend/assets/js/sale.js') }}"></script>
 
 @endsection
