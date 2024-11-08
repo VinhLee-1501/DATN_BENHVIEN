@@ -6,13 +6,12 @@ use App\Http\Controllers\shop\shopController;
 
 Route::prefix('cua-hang')->group(function () {
 
-    Route::get('/', [shopController::class , 'index'])->name('shop');
-    Route::get('/hoa-don', [shopController::class , 'checkout'])->name('checkout');
-    Route::get('/chi-tiet-san-pham', [shopController::class , 'detail'])->name('shop-details');
-    Route::get('/san-pham', [shopController::class , 'grid'])->name('shop-grid');
-    Route::get('/gio-hang', [shopController::class , 'cart'])->name('cart');
-    Route::get('/bai-viet', [shopController::class , 'blog'])->name('blog');
-
-
+    Route::get('/', [shopController::class, 'index'])->name('shop');
+    Route::get('/hoa-don', [shopController::class, 'checkout'])->name('checkout');
+    Route::get('/chi-tiet-san-pham/{id}', [shopController::class, 'detail'])->name('shop-details');
+    Route::get('/san-pham', [shopController::class, 'grid'])->name('shop-grid');
+    Route::get('/gio-hang', [shopController::class, 'cart'])->name('cart');
+    Route::post('/gio-hang/{id}', [shopController::class, 'addProductToCart'])->name('addProductTocart');
+    Route::put('/gio-hang', [shopController::class, 'updateCart'])->name('updateCart');
+    Route::get('/bai-viet', [shopController::class, 'blog'])->name('blog');
 });
-

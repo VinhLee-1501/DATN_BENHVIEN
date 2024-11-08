@@ -67,10 +67,10 @@
                 <div class="header__cart">
                     <ul>
                         <!-- <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
-                        <li><a href="{{ route('shop.cart') }}"><i class="fa fa-shopping-bag"></i> <span>3</span></a>
+                        <li><a href="{{ route('shop.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ $cartCount ?? 0  }}</span></a>
                         </li>
                     </ul>
-                    <div class="header__cart__price">Tổng giá: <span>$150.00</span></div>
+                    <div class="header__cart__price">Tổng giá: <span>{{ Number::currency($cartCountPrice, 'VND', 'vi') ?? 0 }}</span></div>
                 </div>
             </div>
         </div>
@@ -92,17 +92,9 @@
                         <span>Danh mục Thuốc</span>
                     </div>
                     <ul>
-                        <li><a href="#">Fresh Meat</a></li>
-                        <li><a href="#">Vegetables</a></li>
-                        <li><a href="#">Fruit & Nut Gifts</a></li>
-                        <li><a href="#">Fresh Berries</a></li>
-                        <li><a href="#">Ocean Foods</a></li>
-                        <li><a href="#">Butter & Eggs</a></li>
-                        <li><a href="#">Fastfood</a></li>
-                        <li><a href="#">Fresh Onion</a></li>
-                        <li><a href="#">Papayaya & Crisps</a></li>
-                        <li><a href="#">Oatmeal</a></li>
-                        <li><a href="#">Fresh Bananas</a></li>
+                        @foreach ($parent_categories as $parent_categories_item)
+                            <li><a href="#">{{ $parent_categories_item->name }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
