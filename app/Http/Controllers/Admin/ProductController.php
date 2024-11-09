@@ -111,7 +111,7 @@ class ProductController extends Controller
    public function store(AddProductRequest $request)
    {
 
-// dd($request->all());
+      // dd($request->all());
       $name = $request->input('name');
       $code_product = $request->input('code_product');
       $unit_of_measurement = $request->input('unit_of_measurement');
@@ -250,32 +250,32 @@ class ProductController extends Controller
 
       $imagesToDelete = ImgProduct::where('product_id', $id)->forceDelete();
 
-         if ($request->input('product_images_url')) {
-            $existingImages = $request->input('product_images_url'); // Lấy URL ảnh hiện có
-            
-            foreach ($existingImages as $image) {
-               if (filter_var($image, FILTER_VALIDATE_URL)) {
-                  $imageName = basename($image);
-                  ImgProduct::create([
-                     'product_id' => $id,
-                     'img' => $imageName
-                  ]);
-               }
-            }
-         }
-         
-         if ($request->hasFile('product_images_up')) {
-            $files = $request->file('product_images_up');  
-            foreach ($files as $file) {
-               $imageName = time() . '_' . $file->getClientOriginalName();
-               $file->storeAs('uploads/products', $imageName, 'public');
-          
+      if ($request->input('product_images_url')) {
+         $existingImages = $request->input('product_images_url'); // Lấy URL ảnh hiện có
+
+         foreach ($existingImages as $image) {
+            if (filter_var($image, FILTER_VALIDATE_URL)) {
+               $imageName = basename($image);
                ImgProduct::create([
                   'product_id' => $id,
                   'img' => $imageName
                ]);
             }
          }
+      }
+
+      if ($request->hasFile('product_images_up')) {
+         $files = $request->file('product_images_up');
+         foreach ($files as $file) {
+            $imageName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('uploads/products', $imageName, 'public');
+
+            ImgProduct::create([
+               'product_id' => $id,
+               'img' => $imageName
+            ]);
+         }
+      }
 
       return response()->json([
          'success' => true,
@@ -289,10 +289,10 @@ class ProductController extends Controller
    {
 
       $img = ImgProduct::where('product_id', $product_id)->delete();
-         $product = product::findOrFail($product_id);
-         $product->delete();
-      
-     
+      $product = product::findOrFail($product_id);
+      $product->delete();
+
+
       return redirect()->route('system.product')->with('success', 'Xóa thành công.');
    }
 }

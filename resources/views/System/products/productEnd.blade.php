@@ -94,12 +94,13 @@
                                     onclick="openUpdateModal('{{ $data->product_id }}')">
                                     <i class="ti ti-pencil"></i>
                                 </a>
-                                <form action="{{ route('system.product.delete', $data->product_id) }}" id="form-delete"
+                                 <form action="{{ route('system.product.delete', $data->product_id) }}" id="form-delete{{ $data->product_id }}"
                                     method="post">
                                     @method('delete')
                                     @csrf
                                 </form>
-                                <button type="submit" class="btn btn-danger btn-delete" data-id="">
+                                <button type="submit" class="btn btn-danger btn-delete"
+                                    data-id="{{ $data->product_id }}">
                                     <i class="ti ti-trash"></i>
                                 </button>
                                 <a class="btn btn-warning ms-1" data-bs-toggle="collapse"
