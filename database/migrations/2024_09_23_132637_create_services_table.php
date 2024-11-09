@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('row_id')->primary();
             $table->string('service_id', 10)->unique();
             $table->string('name', 50);
-            $table->float('price');
+            $table->integer('price');
             $table->string('directory_id', 10)->nullable();
             $table->foreign('directory_id')
                 ->references('directory_id')

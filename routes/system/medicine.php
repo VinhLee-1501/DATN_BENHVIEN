@@ -12,5 +12,5 @@ Route::prefix('medicines')->middleware('check_login_admin')
         Route::post('/store', [MedicineController::class, 'store'])->name('medicines.store');
         Route::get('/edit/{medicine_id}', [MedicineController::class, 'edit'])->name('medicines.edit');
         Route::patch('/update/{medicine_id}', [MedicineController::class, 'update'])->name('medicines.update');
-        Route::get('/delete/{medicine_id}', [MedicineController::class, 'delete'])->name('medicines.delete');
+        Route::delete('/delete/{medicine_id}', [MedicineController::class, 'delete'])->name('medicines.delete');
     });

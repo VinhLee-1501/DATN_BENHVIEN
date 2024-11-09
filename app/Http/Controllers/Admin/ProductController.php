@@ -3,11 +3,296 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Product\AddProductRequest;
+use App\Http\Requests\Admin\Product\ProductRequest;
+use App\Models\Products\Category;
+use App\Models\Products\ImgProduct;
+use App\Models\Products\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Picqer\Barcode\BarcodeGeneratorHTML;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-   public function index(){
-    return view('System.products.index');
+   public function index()
+   {
+
+      $product = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
+         ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+         ->select(
+            'products.*',
+            'categories.name as nameCategory',
+            DB::raw('GROUP_CONCAT(img_products.img) as img_array')
+         )
+         ->where('products.status', 1)
+         ->whereNull('products.deleted_at')
+         ->groupBy(
+            'products.product_id',
+            'categories.category_id',
+            'categories.name',
+            'products.name',
+            'products.code_product',
+            'products.unit_of_measurement',
+            'products.actice_ingredient',
+            'products.used',
+            'products.description',
+            'products.price',
+            'products.manufacture',
+            'products.registration_number',
+            'products.status'
+         )
+         ->get();
+
+      $product->transform(function ($product) {
+         $product->img_array = array_filter(explode(',', $product->img_array)); // Chuyển img_array thành mảng
+         return $product;
+      });
+
+
+      $productEnd = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
+         ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+         ->select(
+            'products.*',
+            'categories.name as nameCategory',
+            DB::raw('GROUP_CONCAT(img_products.img) as img_array')
+         )
+         ->where('products.status', 0)
+         ->whereNull('products.deleted_at')
+         ->groupBy(
+            'products.product_id',
+            'categories.category_id',
+            'categories.name',
+            'products.name',
+            'products.code_product',
+            'products.unit_of_measurement',
+            'products.actice_ingredient',
+            'products.used',
+            'products.description',
+            'products.price',
+            'products.manufacture',
+            'products.registration_number',
+            'products.status'
+         )
+         ->get();
+
+
+      $productEnd->transform(function ($productEnd) {
+         $productEnd->img_array = array_filter(explode(',', $productEnd->img_array)); // Chuyển img_array thành mảng
+         return $productEnd;
+      });
+
+
+      $generatorHTML = new BarcodeGeneratorHTML();
+      $barcodes = [];
+      // Lặp qua từng sản phẩm và tạo mã barcode
+      foreach ($product as $item) {
+         $barcodes[$item->product_id] = $generatorHTML->getBarcode($item->code_product, $generatorHTML::TYPE_CODE_128);
+      }
+
+
+      $barcodeEnd = [];
+      foreach ($productEnd as $item) {
+         $barcodeEnd[$item->product_id] = $generatorHTML->getBarcode($item->code_product, $generatorHTML::TYPE_CODE_128);
+      }
+      return view('System.products.index', ['product' => $product, 'barcodes' => $barcodes,  'barcodeEnd' => $barcodeEnd, 'productEnd' => $productEnd]);
+   }
+
+
+
+
+   public function create()
+   {
+      $category = Category::where('status', 1)->get();
+      return response()->json(['category' => $category]);
+   }
+
+   public function store(AddProductRequest $request)
+   {
+
+// dd($request->all());
+      $name = $request->input('name');
+      $code_product = $request->input('code_product');
+      $unit_of_measurement = $request->input('unit_of_measurement');
+      $actice_ingredient = $request->input('actice_ingredient');
+      $used = $request->input('used');
+      $description = $request->input('description');
+      $price = $request->input('price');
+      $brand = $request->input('brand');
+      $manufacture = $request->input('manufacture');
+      $registration_number = $request->input('registration_number');
+      $category_id = $request->input('category_id');
+
+      if (!$name || !$category_id || !$actice_ingredient || !$unit_of_measurement || !$code_product || !$used || !$description || !$price || !$manufacture || !$registration_number) {
+         return response()->json(['error' => true, 'message' => 'Vui lòng điền đầy đủ thông tin.']);
+      }
+
+
+      $product = new Product();
+
+      $product->category_id = $category_id;
+      $product->name = $name;
+      $product->code_product = $code_product;
+      $product->unit_of_measurement = $unit_of_measurement;
+      $product->actice_ingredient = $actice_ingredient;
+      $product->used = $used;
+      $product->description = $description;
+      $product->price = $price;
+      $product->brand = $brand;
+      $product->manufacture = $manufacture;
+      $product->registration_number = $registration_number;
+      $product->status = 1;
+
+      $product->save();
+      $product_id = $product->product_id;
+
+
+      if ($request->hasFile('product_images')) {
+
+         foreach ($request->file('product_images') as $file) {
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            $file->storeAs('uploads/products', $fileName, 'public');
+
+            $img = new ImgProduct();
+            $img->product_id = $product_id;
+            $img->img = $fileName;
+            $img->save();
+         }
+      }
+
+
+
+      return response()->json(['success' => true, 'message' => 'Sản phẩm đã được thêm thành công']);
+   }
+
+
+   public function edit($product_id)
+   {
+      $category = Category::where('status', 1)->get();
+
+      $product = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
+         ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+         ->select(
+            'products.*',
+            'categories.name as nameCategory',
+            DB::raw('GROUP_CONCAT(img_products.img) as img_array')
+         )
+         ->where('products.product_id', $product_id)
+         ->whereNull('products.deleted_at')
+         ->groupBy(
+            'products.product_id',
+            'categories.category_id',
+            'categories.name',
+            'products.name',
+            'products.code_product',
+            'products.unit_of_measurement',
+            'products.actice_ingredient',
+            'products.used',
+            'products.description',
+            'products.price',
+            'products.manufacture',
+            'products.registration_number',
+            'products.status'
+         )
+         ->first();
+
+      if (!$product) {
+         return response()->json(['success' => false, 'message' => 'Không tìm thấy thuốc.']);
+      }
+
+      // Chia tách img_array và loại bỏ giá trị không hợp lệ
+      $product->img_array = array_filter(explode(',', $product->img_array));
+
+      // Chuyển đổi các đường dẫn ảnh thành URL đầy đủ
+      $product->img_array = array_map(function ($img) {
+         return asset('storage/uploads/products/' . $img);
+      }, $product->img_array);
+
+      return response()->json([
+         'success' => true,
+         'product' => $product,
+         'category' => $category,
+         'img_array' => $product->img_array // Đưa img_array vào kết quả trả về
+      ]);
+   }
+
+
+
+   public function update(Request $request, $id)
+   {
+
+      $product = Product::find($id);
+      if (!$product) {
+         return response()->json(['success' => false, 'message' => 'Không tìm thấy sản phẩm.'], 404);
+      }
+
+      // Cập nhật thông tin sản phẩm
+
+      $product->product_id = $id;
+      $product->name = $request->input('name_up');
+      $product->code_product = $request->input('codeProduct');
+      $product->category_id = $request->input('categoryId');
+      $product->actice_ingredient = $request->input('activeIngredient');
+      $product->unit_of_measurement = $request->input('unitOfMeasurement');
+      $product->used = $request->input('used');
+      $product->description = $request->input('description');
+      $product->price = $request->input('price');
+      $product->brand = $request->input('brand');
+      $product->status = $request->input('status');
+      $product->manufacture = $request->input('manufacture');
+      $product->registration_number = $request->input('registrationNumber');
+
+
+      $product->update();
+
+      $imagesToDelete = ImgProduct::where('product_id', $id)->forceDelete();
+
+         if ($request->input('product_images_url')) {
+            $existingImages = $request->input('product_images_url'); // Lấy URL ảnh hiện có
+            
+            foreach ($existingImages as $image) {
+               if (filter_var($image, FILTER_VALIDATE_URL)) {
+                  $imageName = basename($image);
+                  ImgProduct::create([
+                     'product_id' => $id,
+                     'img' => $imageName
+                  ]);
+               }
+            }
+         }
+         
+         if ($request->hasFile('product_images_up')) {
+            $files = $request->file('product_images_up');  
+            foreach ($files as $file) {
+               $imageName = time() . '_' . $file->getClientOriginalName();
+               $file->storeAs('uploads/products', $imageName, 'public');
+          
+               ImgProduct::create([
+                  'product_id' => $id,
+                  'img' => $imageName
+               ]);
+            }
+         }
+
+      return response()->json([
+         'success' => true,
+         'message' => 'Cập nhật sản phẩm thành công.',
+
+      ]);
+   }
+
+
+   public function delete($product_id)
+   {
+
+      $img = ImgProduct::where('product_id', $product_id)->delete();
+         $product = product::findOrFail($product_id);
+         $product->delete();
+      
+     
+      return redirect()->route('system.product')->with('success', 'Xóa thành công.');
    }
 }

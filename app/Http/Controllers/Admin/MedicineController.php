@@ -14,48 +14,48 @@ class MedicineController extends Controller
 {
     public function index()
     {
-        // Lấy nội dung HTML từ trang web
-        $content = file_get_html('http://benhvientimmachangiang.vn/Thu%E1%BB%91c-DVYT-BYT/Danh-m%E1%BB%A5c-Thu%E1%BB%91c-VTYTTH/Danh-m%E1%BB%A5c-thu%E1%BB%91c-N%E1%BB%99i-tr%C3%BA');
-        $rows = $content->find('tr');
+        // // Lấy nội dung HTML từ trang web
+        // $content = file_get_html('http://benhvientimmachangiang.vn/Thu%E1%BB%91c-DVYT-BYT/Danh-m%E1%BB%A5c-Thu%E1%BB%91c-VTYTTH/Danh-m%E1%BB%A5c-thu%E1%BB%91c-N%E1%BB%99i-tr%C3%BA');
+        // $rows = $content->find('tr');
 
-        // Mảng lưu trữ các tên thuốc và đơn vị đã xuất hiện
-        $unique_medicine_names = [];
-        $unique_units = [];
+        // // Mảng lưu trữ các tên thuốc và đơn vị đã xuất hiện
+        // $unique_medicine_names = [];
+        // $unique_units = [];
 
-        // Bỏ qua 8 hàng đầu tiên nếu không cần thiết
-        $rows = array_slice($rows, 8);
+        // // Bỏ qua 8 hàng đầu tiên nếu không cần thiết
+        // $rows = array_slice($rows, 8);
 
-        foreach ($rows as $row) {
-            // Tìm tất cả các ô trong hàng
-            $cells = $row->find('td');
+        // foreach ($rows as $row) {
+        //     // Tìm tất cả các ô trong hàng
+        //     $cells = $row->find('td');
 
-            // Kiểm tra nếu ô chứa tên thuốc (ô thứ 5)
-            if (isset($cells[4]) && trim($cells[4]->plaintext) !== '&nbsp;' && !empty(trim($cells[4]->plaintext))) {
-                // Lấy và xử lý tên thuốc
-                $medicine_name = trim($cells[4]->plaintext);
-                $medicine_name = str_replace('&nbsp;', '', $medicine_name);
+        //     // Kiểm tra nếu ô chứa tên thuốc (ô thứ 5)
+        //     if (isset($cells[4]) && trim($cells[4]->plaintext) !== '&nbsp;' && !empty(trim($cells[4]->plaintext))) {
+        //         // Lấy và xử lý tên thuốc
+        //         $medicine_name = trim($cells[4]->plaintext);
+        //         $medicine_name = str_replace('&nbsp;', '', $medicine_name);
 
-                // Kiểm tra nếu tên thuốc chưa tồn tại trong mảng
-                if (!in_array($medicine_name, $unique_medicine_names)) {
-                    // Thêm tên thuốc vào mảng
-                    $unique_medicine_names[] = $medicine_name;
+        //         // Kiểm tra nếu tên thuốc chưa tồn tại trong mảng
+        //         if (!in_array($medicine_name, $unique_medicine_names)) {
+        //             // Thêm tên thuốc vào mảng
+        //             $unique_medicine_names[] = $medicine_name;
 
-                    // Kiểm tra và lấy đơn vị từ ô thứ 11 nếu có
-                    if (isset($cells[10])) {
-                        $units = trim($cells[10]->plaintext);
+        //             // Kiểm tra và lấy đơn vị từ ô thứ 11 nếu có
+        //             if (isset($cells[10])) {
+        //                 $units = trim($cells[10]->plaintext);
 
-                        // Chuyển đơn vị thành chữ thường để tránh trùng lặp do phân biệt hoa thường
-                        $units_lowercase = strtolower($units);
+        //                 // Chuyển đơn vị thành chữ thường để tránh trùng lặp do phân biệt hoa thường
+        //                 $units_lowercase = strtolower($units);
 
-                        // Kiểm tra nếu đơn vị chưa tồn tại trong mảng
-                        if (!in_array($units_lowercase, $unique_units)) {
-                            // Thêm đơn vị vào mảng và hiển thị
-                            $unique_units[] = $units_lowercase;
-                        }
-                    }
-                }
-            }
-        }
+        //                 // Kiểm tra nếu đơn vị chưa tồn tại trong mảng
+        //                 if (!in_array($units_lowercase, $unique_units)) {
+        //                     // Thêm đơn vị vào mảng và hiển thị
+        //                     $unique_units[] = $units_lowercase;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
 
         $medicine = Medicine::join('medicine_types', 'medicine_types.medicine_type_id', '=', 'medicines.medicine_type_id')
@@ -102,8 +102,8 @@ class MedicineController extends Controller
             'medicine' => $medicine,
             'medicineEnd' => $medicineEnd,
             'medicineType' => $medicineType,
-            'unique_medicine_names' => $unique_medicine_names,
-            'unique_units' => $unique_units
+            // 'unique_medicine_names' => $unique_medicine_names,
+            // 'unique_units' => $unique_units
         ]);
     }
 

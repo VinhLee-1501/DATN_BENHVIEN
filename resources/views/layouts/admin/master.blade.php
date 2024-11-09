@@ -14,7 +14,10 @@
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" /> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -46,47 +49,6 @@
             width: 100%;
         }
 
-        .table-responsive {
-            max-height: 56vh;
-            overflow-y: auto;
-            /* Cho phép cuộn dọc */
-        }
-
-
-        .table-responsive thead {
-            position: sticky;
-            top: 0;
-            /* background-color: gray; Màu nền của phần đầu bảng */
-            z-index: 1;
-            /* Đảm bảo phần thead nằm trên tbody khi cuộn */
-        }
-
-        .table-responsive table thead,
-        .card .card-header {
-            background-color: #E8F9F1;
-        }
-
-        /* Tùy chỉnh thanh cuộn phong cách bệnh viện */
-        .table-responsive::-webkit-scrollbar {
-            width: 10px;
-            /* Tăng độ rộng để dễ cuộn */
-        }
-
-        .table-responsive::-webkit-scrollbar-thumb {
-            background-color: gray;
-            border-radius: 5px;
-            border: 2px solid #ffffff;
-            /* Để tạo viền trắng xung quanh thanh cuộn */
-        }
-
-        .table-responsive::-webkit-scrollbar-thumb:hover {
-            background-color: #378CE7;
-        }
-
-        .table-responsive::-webkit-scrollbar-track {
-            /* background: gray; Màu xanh nhạt cho cảm giác nhẹ nhàng và thoải mái */
-            border-radius: 5px;
-        }
     </style>
 
 </head>
@@ -114,8 +76,6 @@
 
     <script src="{{ asset('backend/assets/js/checkup.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/api.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="{{ asset('backend/assets/js/script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('backend/assets/libs/jquery/dist/jquery.min.js') }}"></script>

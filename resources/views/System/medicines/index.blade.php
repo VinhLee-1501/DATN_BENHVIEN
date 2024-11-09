@@ -65,20 +65,20 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Tên thuốc</label>
-                                    <select name="name" class="form-control" id="name">
+                                    {{-- <select name="name" class="form-control" id="name">
                                         <option value="">Chọn tên thuốc</option>
                                         @foreach ($unique_medicine_names as $medicine_name)
                                             <option value="{{ $medicine_name }}">{{ $medicine_name }}</option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
+                                    <input name="name" class="form-control" id="name">
                                     <div class="invalid-feedback" id="name_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="medicineTypeIdadd" class="form-label">Nhóm</label>
-                                    <select class="form-select"
-                                        name="medicine_type_id" id="medicineTypeIdadd">
+                                    <select class="form-select" name="medicine_type_id" id="medicineTypeIdadd">
                                         <option value="">Chọn nhóm thuốc</option>
                                         <!-- Các tùy chọn sẽ được thêm vào bằng AJAX -->
                                     </select>
@@ -95,12 +95,13 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="unit_of_measurement" class="form-label">Đơn vị</label>
-                                    <select name="unit_of_measurement" class="form-control" id="unit_of_measurement">
+                                    {{-- <select name="unit_of_measurement" class="form-control" id="unit_of_measurement">
                                         <option value="">Chọn đơn vị</option>
                                         @foreach ($unique_units as $units)
                                             <option value="{{ $units }}">{{ $units }}</option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
+                                    <input name="unit_of_measurement" class="form-control" id="unit_of_measurement">
                                     <div class="invalid-feedback" id="unit_of_measurement_error"></div>
                                 </div>
                             </div>
@@ -138,14 +139,14 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Tên thuốc</label>
-                                    <input type="text" name="name" class="form-control" id="nameedit" readonly>
+                                    <input type="text" name="name" class="form-control" id="nameedit">
                                     <div class="text-danger" id="name_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Nhóm</label>
-                                    <select class="form-select" name="medicine_type_id" id="medicineTypeId" required>
+                                    <select class="form-select" name="medicine_type_id" id="medicineTypeId">
                                         <option value="">Chọn nhóm thuốc</option>
                                         <!-- Các tùy chọn sẽ được thêm vào bằng AJAX -->
                                     </select>
@@ -163,14 +164,14 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="activeIngredient" class="form-label">Hoạt tính</label>
-                                    <textarea name="active_ingredient" class="form-control" id="activeIngredient" readonly></textarea>
+                                    <textarea name="active_ingredient" class="form-control" id="activeIngredient"></textarea>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="unitOfMeasurement" class="form-label">Đơn vị</label>
                                     <input type="text" name="unit_of_measurement" class="form-control"
-                                        id="unitOfMeasurement" readonly>
+                                        id="unitOfMeasurement">
                                 </div>
                             </div>
                         </div>
@@ -244,7 +245,7 @@
                         if (err.responseJSON && err.responseJSON.errors) {
                             var errors = err.responseJSON.errors;
                             console.log(errors);
-                            
+
                             // Xóa lỗi cũ
                             $('.invalid-feedback').text('');
                             $('.form-control').removeClass('is-invalid');
@@ -338,6 +339,8 @@
                 _token: '{{ csrf_token() }}'
             };
 
+
+
             $.ajax({
                 url: '/system/medicines/update/' + id,
                 type: 'PATCH',
@@ -354,9 +357,23 @@
                     }
                 },
                 error: function(err) {
+                    // Log lỗi chi tiết từ server vào console
+                    console.error("Lỗi khi cập nhật sản phẩm: ", err);
+
+                    // Kiểm tra nếu server trả về lỗi trong responseJSON và log thêm chi tiết
+                    if (err.responseJSON) {
+                        console.error("Chi tiết lỗi: ", err.responseJSON.error); // Hiển thị lỗi chính
+                        console.error("Thông tin thêm: ", err.responseJSON
+                        .message); // Nếu có message thêm
+                        console.error("Mã lỗi: ", err.status); // Mã trạng thái lỗi (ví dụ: 500, 404)
+                    } else {
+                        console.error("Lỗi không xác định từ server.");
+                    }
+
+                    // Thông báo lỗi cho người dùng
                     alert('Có lỗi xảy ra: ' + (err.responseJSON ? err.responseJSON.error :
                         'Không xác định'));
-                },
+                }
                 complete: function() {
                     isSubmitting = false; // Đặt lại cờ sau khi hoàn thành
                 }

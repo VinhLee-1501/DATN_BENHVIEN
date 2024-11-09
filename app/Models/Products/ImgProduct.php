@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ImgProduct extends Model
 {
+    protected $table = 'img_products';
     protected $primaryKey = 'img_id';
     protected $keyType = 'integer';
     use HasFactory, SoftDeletes;
@@ -23,6 +24,6 @@ class ImgProduct extends Model
 
     public function productForeignKLey()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+        return $this->hasMany(Product::class, 'product_id', 'product_id');
     }
 }
