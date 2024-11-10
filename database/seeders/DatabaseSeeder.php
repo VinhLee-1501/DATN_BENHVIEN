@@ -30,6 +30,21 @@ class DatabaseSeeder extends Seeder
             TreatmentDetailSeeder::class,
             TreatmentMedicationSeeder::class,
             TreatmentServiceSeeder::class,
+            OrderProductSeeder::class,
+            ParentCategorySeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class,
+            ImgProductSeeder::class,
+            CouponSeeder::class,
+            CartProductSeeder::class,
+            OrderProductSeeder::class,
+            PaymentProductSeeder::class,
+            ReviewProductSeeder::class,
+            AdminCommentSeeder::class,
+            SaleProductSeeder::class,
+            
+
+            
         ]);
     }
 }

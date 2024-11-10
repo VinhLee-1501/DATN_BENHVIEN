@@ -19,8 +19,12 @@ class ShopController extends Controller
 
     public function checkout()
     {
+    public function checkout()
+    {
         return view('Shop.checkout');
     }
+    public function contact()
+    {
     public function contact()
     {
         return view('Shop.contact');
@@ -142,7 +146,7 @@ class ShopController extends Controller
             $cartItem->quantity += $quanlity;
             $cartItem->total_price = $cartItem->total_price + $product->price;
             $cartItem->save();
-        } else {
+        } else { 
             CartProduct::create([
                 'user_id' => $user->user_id,
                 'product_id' => $product->product_id,

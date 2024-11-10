@@ -174,9 +174,9 @@
                 </svg>
             </div>
 
-            <h1> 404 Error.</h1>
-            <p> We can't find the page you're looking for.</p>
-            <a href="{{route('client.home')}}"><button>Back to home</button></a>
+            <h1>Lỗi 404.</h1>
+            <p>Trang bạn đang tìm hiện tại không có, vui lòng thử lại sau</p>
+            <a href="{{route('client.home')}}"><button>Trờ về trang chủ</button></a>
         </div>
     </div>
 </body>

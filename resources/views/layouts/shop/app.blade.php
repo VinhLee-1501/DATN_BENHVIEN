@@ -24,10 +24,9 @@
 
 
 
-    <title>Hello, world!</title>
-</head>
-
-<body>
+    <title>Nhà Thuốc VietCare</title>
+  </head>
+  <body>
 
     <x-shop.header></x-shop.header>
     @yield('content')

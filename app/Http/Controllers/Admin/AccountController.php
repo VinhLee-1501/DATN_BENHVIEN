@@ -14,15 +14,19 @@ class AccountController extends Controller
     public function index()
     {
         $users = User::where('role', 0)
+            ->where('status', 1)
             ->orderBy('users.row_id', 'desc')
             ->get();
 
         $admin = User::where('role', 1)
-            ->orderby('row_id' , 'desc')
+            ->where('status', 1)
+            ->orderby('row_id', 'desc')
             ->get();
 
-        $doctors = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
-            ->where('role', 2)
+
+        $doctors = User::where('users.status', 1)
+            ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
+            ->where('users.role', 2)
             ->select('users.*', 'specialties.name as specialty_name')
             ->get();
 
@@ -37,20 +41,15 @@ class AccountController extends Controller
 
         return view('System.accounts.create', compact('users', 'specialties'));
     }
-//
+    //
     public function store(AccountRequest $request)
     {
-//        // Lấy dữ liệu đã xác thực từ request
-//        $validatedData = $request->validated();
-//
-//        // Tạo một đối tượng User mới
+
         $user = new User();
-        // Kiểm tra role và gán specialty_id
         $role = $request->input('role');
         $specialtyId = $role == 2 ? $request->input('specialty_id') : null;
 
 
-        // Gán các giá trị từ validated data vào thuộc tính của model
         $user->user_id = $request->input('userid');
         $user->role = $request->input('role');
         $user->email = $request->input('email');
@@ -80,7 +79,7 @@ class AccountController extends Controller
             return redirect()->route('system.account')->with('error', 'Tài khoản không tồn tại!');
         }
         // Trả về view với thông tin account
-        return view('System.accounts.detail', compact('account' , 'specialties'));
+        return view('System.accounts.detail', compact('account', 'specialties'));
     }
 
 
@@ -103,11 +102,11 @@ class AccountController extends Controller
 
         // Cập nhật các trường khác từ request vào user
         $user->update([
-            'firstname'   => $request->input('firstname'),
-            'lastname'    => $request->input('lastname'),
-            'role'        => $role,
-            'email'       => $request->input('email'),
-            'phone'       => $request->input('phone'),
+            'firstname' => $request->input('firstname'),
+            'lastname' => $request->input('lastname'),
+            'role' => $role,
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
             'specialty_id' => $specialtyId,
         ]);
 
@@ -123,9 +122,7 @@ class AccountController extends Controller
 
     public function destroy($user_id1)
     {
-//        dd($user_id1);
         $users = User::where('user_id', $user_id1);
-//        dd($users);
 
         $users->delete();
         return redirect()->route('system.account')->with('success', 'Xóa thành công');

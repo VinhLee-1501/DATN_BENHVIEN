@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id('product_id')->primary();
             $table->string('name', 255);
-            $table->string('code_product', 5);
+            $table->string('code_product', 20);
             $table->string('unit_of_measurement', 255);
-            $table->string('actice_ingredient', 255);
+            $table->string('active_ingredient', 255);
             $table->string('used', 255);
             $table->text('description');
             $table->integer('price');
