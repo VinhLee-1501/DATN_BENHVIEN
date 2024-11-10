@@ -2120,13 +2120,12 @@ ol {
 	color: #dd2222;
 }
 
-.checkout__input input {
+.checkout__input input, select {
 	width: 100%;
 	height: 46px;
 	border: 1px solid #ebebeb;
 	padding-left: 20px;
 	font-size: 16px;
-	color: #b2b2b2;
 	border-radius: 4px;
 }
 
@@ -2250,7 +2249,7 @@ ol {
 	padding-left: 20px;
 }
 
-.checkout__order .checkout__order__total {
+.checkout__order .checkout__order__total, .checkout__order__shipping-fee {
 	font-size: 18px;
 	color: #1c1c1c;
 	font-weight: 700;
@@ -2262,6 +2261,9 @@ ol {
 .checkout__order .checkout__order__total span {
 	float: right;
 	color: #dd2222;
+}
+.checkout__order__shipping-fee span {
+	float: right;
 }
 
 .checkout__order button {
