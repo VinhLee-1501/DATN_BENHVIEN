@@ -90,7 +90,7 @@ class ShopController extends Controller
                         </div>
                         <div class="featured__item__text">
                             <h6><a href="' . route('shop.shop-details', $product->product_id) . '">' . $product->name . '</a></h6>
-                            <h5>' . Number::currency($product->price, 'VND', 'vi') . '</h5>
+                            <h5>' . SupportNumber::currency($product->price, 'VND', 'vi') . '</h5>
                         </div>
                     </div>
                 </div>';
@@ -134,12 +134,8 @@ class ShopController extends Controller
 
     public function checkout()
     {
-    public function checkout()
-    {
         return view('Shop.checkout');
     }
-    public function contact()
-    {
     public function contact()
     {
         return view('Shop.contact');
@@ -363,7 +359,7 @@ class ShopController extends Controller
             $cartItem->quantity += $quanlity;
             $cartItem->total_price = $cartItem->total_price + $product->price;
             $cartItem->save();
-        } else { 
+        } else {
             CartProduct::create([
                 'user_id' => $user->user_id,
                 'product_id' => $product->product_id,

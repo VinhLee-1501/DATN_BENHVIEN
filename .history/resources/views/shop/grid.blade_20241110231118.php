@@ -109,38 +109,70 @@
                             <div class="latest-product__text">
                                 <h4>Sản Phẩm Mới</h4>
                                 <div class="latest-product__slider owl-carousel">
-                                    @foreach ($chunkedProductsNew as $chunkNew)
-                                        <div class="latest-prdouct__slider__item">
-                                            @foreach ($chunkNew as $productNewItem)
-                                                @if ($productNewItem)
-                                                    @php
-                                                        $originalPrice = $productNewItem->price;
-                                                        $discount = $productNewItem->discount;
-                                                        if ($discount >= 1000) {
-                                                            $discountedPrice = $originalPrice - $discount;
-                                                            $discountPercent = ($discount / $originalPrice) * 100;
-                                                        } elseif ($discount < 100) {
-                                                            $discountedPrice =
-                                                                $originalPrice - ($originalPrice * $discount) / 100;
-                                                            $discountPercent = $discount;
-                                                        } else {
-                                                            $discountedPrice = $originalPrice;
-                                                        }
-                                                    @endphp <a
-                                                        href="{{ route('shop.shop-details', $productNewItem->product_id) }}"
-                                                        class="latest-product__item">
-                                                        <div class="latest-product__item__pic w-25"> <img
-                                                                src="{{ isset($productNewItem->imgName) ? asset('storage/uploads/products/' . $productNewItem->imgName) : asset('frontend/shop/img/image.jpg') }}"
-                                                                alt="{{ $productNewItem->name }}"> </div>
-                                                        <div class="latest-product__item__text">
-                                                            <span style="font-weight: normal; font-size: 15px">{{ $productNewItem->name }}</span>
-                                                            <span style="font-size: 14px">{{ Number::currency($discountedPrice, 'VND', 'vi') }} VND</span>
-                                                        </div>
-                                                    </a>
-                                                @endif
-                                            @endforeach
-                                        </div>
-                                    @endforeach
+                                    <div class="latest-prdouct__slider__item">
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="{{ asset('frontend/shop/img/latest-product/lp-1.jpg') }}"
+                                                    alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="{{ asset('frontend/shop/img/latest-product/lp-2.jpg') }}"
+                                                    alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="{{ asset('frontend/shop/img/latest-product/lp-3.jpg') }}"
+                                                    alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="latest-prdouct__slider__item">
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="{{ asset('frontend/shop/img/latest-product/lp-1.jpg') }}"
+                                                    alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="{{ asset('frontend/shop/img/latest-product/lp-2.jpg') }}"
+                                                    alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="latest-product__item">
+                                            <div class="latest-product__item__pic">
+                                                <img src="{{ asset('frontend/shop/img/latest-product/lp-3.jpg') }}"
+                                                    alt="">
+                                            </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>Crab Pool Security</h6>
+                                                <span>$30.00</span>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +203,7 @@
                                     <div class="col-lg-4">
                                         <div class="product__discount__item">
                                             <div class="product__discount__item__pic set-bg"
-                                                data-setbg="{{ asset('storage/uploads/products/' . $saleProductItem->imgNameSale) }} ">
+                                                data-setbg="{{ asset('frontend/shop/img/product/discount/pd-1.jpg') }} ">
                                                 <div class="product__discount__percent">
                                                     {{ Number::percentage($discountPercent) }}
                                                 </div>
@@ -232,29 +264,25 @@
                     <div class="row">
                         @foreach ($prodcutsActive as $prodcutsActiveItem)
                             @php
-                                $originalPriceProductActive = $prodcutsActiveItem->price;
-                                $discountProductActive = $prodcutsActiveItem->discount;
-                                if ($discountProductActive >= 1000) {
-                                    $discountedPriceProductActive =
-                                        $originalPriceProductActive - $discountProductActive;
-                                    $discountPercentProductActive =
-                                        ($discountProductActive / $originalPriceProductActive) * 100;
-                                } elseif ($discountProductActive < 100) {
-                                    $discountPercentProductActive =
-                                        $originalPriceProductActive -
-                                        ($originalPriceProductActive * $discountProductActive) / 100;
-                                    $discountPercentProductActive = $discountProductActive;
+                                $originalPrice = $prodcutsActiveItem->price;
+                                $discount = $prodcutsActiveItem->discount;
+                                if ($discount >= 1000) {
+                                    $discountedPrice = $originalPrice - $discount;
+                                    $discountPercent = ($discount / $originalPrice) * 100;
+                                } elseif ($discount < 100) {
+                                    $discountedPrice = $originalPrice - ($originalPrice * $discount) / 100;
+                                    $discountPercent = $discount;
                                 } else {
-                                    $discountPercentProductActive = $originalPriceProductActive;
+                                    $discountedPrice = $originalPrice;
                                 }
                             @endphp
                             <div class="col-lg-3 col-md-4 col-sm-6">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg"
-                                        data-setbg="{{ isset($prodcutsActiveItem->imgName) ? asset('storage/uploads/products/' . $prodcutsActiveItem->imgName) : asset('frontend/shop/img/image.jpg') }}">
+                                        data-setbg="{{ asset('frontend/shop/img/product/product-1.jpg') }}">
                                         @if ($prodcutsActiveItem->dateStartSale <= NOW() && $prodcutsActiveItem->dateEndSale >= NOW())
                                             <div class="sale_product">
-                                                {{ Number::percentage($discountPercentProductActive) }}
+                                                {{ Number::percentage($discountPercent) }}
                                             </div>
                                         @endif
                                         <ul class="product__item__pic__hover">
@@ -275,12 +303,12 @@
                                                 href="{{ route('shop.shop-details', $prodcutsActiveItem->product_id) }}">{{ $prodcutsActiveItem->name }}</a>
                                         </h6>
                                         <h5>
-                                            @if ($prodcutsActiveItem->dateStartSale <= now() && $prodcutsActiveItem->dateEndSale >= now())
-                                                {{ Number::currency($discountedPriceProductActive, 'VND', 'vi') }}
+                                            @if ($prodcutsActiveItem->dateStartSale <= NOW() && $prodcutsActiveItem->dateEndSale >= NOW())
+                                                {{ Number::currency($discountedPrice, 'VND', 'vi') }}
                                                 <span
-                                                    class="price_sale">{{ Number::currency($originalPriceProductActive, 'VND', 'vi') }}</span>
+                                                    class="price_sale">{{ Number::currency($originalPrice, 'VND', 'vi') }}</span>
                                             @else
-                                                {{ Number::currency($originalPriceProductActive, 'VND', 'vi') }}
+                                                {{ Number::currency($originalPrice, 'VND', 'vi') }}
                                             @endif
                                         </h5>
                                     </div>
@@ -289,7 +317,7 @@
                         @endforeach
 
                         <div class="product__pagination">
-                            {{ $prodcutsActive->links() }}
+                            {{ $prodcutsActive->appends(['page' => request()->get('page')])->links() }}
                         </div>
                     </div>
                 </div>

@@ -233,7 +233,7 @@
                                             @endphp <a
                                                 href="{{ route('shop.shop-details', $productSales->product_id) }}"
                                                 class="latest-product__item">
-                                                <div class="latest-product__item__pic w-25"> <img
+                                                <div class="latest-product__item__pic"> <img
                                                         src="{{ isset($productSales->imgName) ? asset('storage/uploads/products/' . $productSales->imgName) : asset('frontend/shop/img/latest-product/lp-1.jpg') }}"
                                                         alt="{{ $productSales->name }}"> </div>
                                                 <div class="latest-product__item__text">
