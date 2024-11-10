@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('discount', 10);
             $table->datetime('time_start');
             $table->datetime('time_end');
-            $table->boolean('status')->default(0);
+            $table->boolean()
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')
             ->references('product_id')

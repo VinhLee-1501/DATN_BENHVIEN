@@ -357,6 +357,7 @@ class ShopController extends Controller
 
         $quanlity = $request->input('quanlity');
         if ($cartItem) {
+            
             $cartItem->quantity += $quanlity;
             $cartItem->total_price = $cartItem->total_price + $product->price;
             $cartItem->save();

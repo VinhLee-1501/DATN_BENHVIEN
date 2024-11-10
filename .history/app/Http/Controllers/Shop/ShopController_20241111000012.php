@@ -136,7 +136,7 @@ class ShopController extends Controller
     {
         return view('Shop.checkout');
     }
-    
+
     public function contact()
     {
         return view('Shop.contact');
@@ -318,7 +318,7 @@ class ShopController extends Controller
                 'products.product_id',
                 'categories.category_id',
                 'categories.name',
-                'products.name',
+                'products.name as product_name',
                 'products.price',
                 'sale_products.discount',
                 'sale_products.time_start',
@@ -362,7 +362,6 @@ class ShopController extends Controller
             $cartItem->save();
         } else { 
             CartProduct::create([
-                'name' => $product->name,
                 'user_id' => $user->user_id,
                 'product_id' => $product->product_id,
                 'total_price' => $product->price,

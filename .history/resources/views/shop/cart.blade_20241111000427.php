@@ -42,7 +42,7 @@
                                     @foreach ($cartItems as $item)
                                         <tr>
                                             <td class="shoping__cart__item">
-                                                <img src="{{ asset('storage/uploads/products/' . $item->img_array[0]) }}" class="w-25" alt="">
+                                                <img src="{{ asset('storage/uploads/products/' . $item->img_array[0]) }}" alt="">
                                                 <h5>{{ $item->productName }}</h5>
                                             </td>
                                             <td class="shoping__cart__price">
@@ -51,7 +51,7 @@
                                             <td class="shoping__cart__quantity">
                                                 <div class="quantity">
                                                     <div class="pro-qty">
-                                                        <input type="number" name="quantity[{{ $item->cart_id }}]"
+                                                        <input type="text" name="quantity[{{ $item->cart_id }}]"
                                                             value="{{ $item->quantity }}">
                                                     </div>
                                                 </div>

@@ -362,7 +362,6 @@ class ShopController extends Controller
             $cartItem->save();
         } else { 
             CartProduct::create([
-                'name' => $product->name,
                 'user_id' => $user->user_id,
                 'product_id' => $product->product_id,
                 'total_price' => $product->price,

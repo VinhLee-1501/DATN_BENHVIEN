@@ -51,7 +51,7 @@
                                             <td class="shoping__cart__quantity">
                                                 <div class="quantity">
                                                     <div class="pro-qty">
-                                                        <input type="number" name="quantity[{{ $item->cart_id }}]"
+                                                        <input type="text" name="quantity[{{ $item->cart_id }}]"
                                                             value="{{ $item->quantity }}">
                                                     </div>
                                                 </div>
