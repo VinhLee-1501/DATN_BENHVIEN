@@ -158,7 +158,7 @@
 
                     console.log(productDiscountElement);
                     console.log(priceOriginElem);
-                    
+
                     let price = 0;
 
                     if (productDiscountElement) {
@@ -184,13 +184,31 @@
                     totalCart += totalPrice;
                 });
 
-                const totalCartElement = document.querySelector('#total_cart');
-                if (totalCartElement) {
-                    totalCartElement.textContent = new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND'
-                    }).format(totalCart);
-                }
+                document.querySelector("#total_cart").textContent = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).format(totalCart);
+
+                $.ajax({
+                    url: '/cua-hang/update-header-total',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                            'content')
+                    },
+                    data: {
+                        totalCart
+                    },
+                    success: function(res) {
+                        console.log(res);
+
+                        document.querySelector('#header_total').textContent = res.formattedTotal;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", status, error);
+                        console.log("Response:", xhr.responseText);
+                    }
+                });
             }
 
             updateCartTotal();

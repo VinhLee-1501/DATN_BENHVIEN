@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('cart_id')->primary();
             $table->string('name', 255);
             $table->integer('quantity');
-            $table->integer('total_price');
+            $table->integer('total_price')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
             $table->string('user_id',10)->nullable();
             $table->foreign('product_id')

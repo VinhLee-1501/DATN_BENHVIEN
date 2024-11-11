@@ -105,7 +105,7 @@
                         <li><a href="{{ route('shop.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ $cartCount ?? 0  }}</span></a>
                         </li>
                     </ul>
-                    <div class="header__cart__price">Tổng giá: <span>{{ Number::currency($cartCountPrice, 'VND', 'vi') ?? 0 }}</span></div>
+                    <div class="header__cart__price">Tổng giá: <span id="header_total"></span></div>
                 </div>
             </div>
         </div>
