@@ -13,22 +13,38 @@
     /*------------------
         Preloader
     --------------------*/
-    $(window).on("load", function () {
+    $(window).on('load', function () {
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
 
-        /*------------------
-            Gallery filter
-        --------------------*/
-        $(".featured__controls li").on("click", function () {
-            $(".featured__controls li").removeClass("active");
-            $(this).addClass("active");
+        /*------------------ Gallery filter --------------------*/
+        $('.featured__controls li').on('click', function () {
+            $('.featured__controls li').removeClass('active');
+            $(this).addClass('active');
+
+            const parentId = $(this).data('filter');
+
+            $.ajax({
+                url: '/cua-hang/',
+                method: 'GET',
+                data: { parent_id: parentId },
+                success: function (response) {
+                    console.log(response);
+                    $('.featured__filter').html(response.html);
+                    // Kiểm tra xem MixItUp đã được khởi tạo chưa
+                    $('.set-bg').each(function () { var bg = $(this).data('setbg'); $(this).css('background-image', 'url(' + bg + ')'); });
+                    if (!$.data($('.featured__filter')[0], 'mixitup')) {
+                        var containerEl = document.querySelector('.featured__filter');
+                        var mixer = mixitup(containerEl);
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra!");
+                }
+            })
         });
-        if ($(".featured__filter").length > 0) {
-            var containerEl = document.querySelector(".featured__filter");
-            var mixer = mixitup(containerEl);
-        }
     });
+
 
     /*------------------
         Background Set
@@ -56,8 +72,8 @@
     });
 
     /*------------------
-		Navigation
-	--------------------*/
+        Navigation
+    --------------------*/
     $(".mobile-menu").slicknav({
         prependTo: "#mobile-menu-wrap",
         allowParentLinks: true,
@@ -166,8 +182,8 @@
     });
 
     /*-----------------------
-		Price Range Slider
-	------------------------ */
+        Price Range Slider
+    ------------------------ */
     var rangeSlider = $(".price-range"),
         minamount = $("#minamount"),
         maxamount = $("#maxamount"),
@@ -192,8 +208,8 @@
     $("select").niceSelect();
 
     /*------------------
-		Single Product
-	--------------------*/
+        Single Product
+    --------------------*/
     $(".product__details__pic__slider img").on("click", function () {
         var imgurl = $(this).data("imgbigurl");
         var bigImg = $(".product__details__pic__item--large").attr("src");
@@ -205,8 +221,8 @@
     });
 
     /*-------------------
-		Quantity change
-	--------------------- */
+        Quantity change
+    --------------------- */
     var proQty = $(".pro-qty");
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');

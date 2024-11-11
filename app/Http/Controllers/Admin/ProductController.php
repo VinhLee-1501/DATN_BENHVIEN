@@ -35,7 +35,7 @@ class ProductController extends Controller
             'products.name',
             'products.code_product',
             'products.unit_of_measurement',
-            'products.actice_ingredient',
+            'products.active_ingredient',
             'products.used',
             'products.description',
             'products.price',
@@ -67,7 +67,7 @@ class ProductController extends Controller
             'products.name',
             'products.code_product',
             'products.unit_of_measurement',
-            'products.actice_ingredient',
+            'products.active_ingredient',
             'products.used',
             'products.description',
             'products.price',
@@ -115,7 +115,7 @@ class ProductController extends Controller
       $name = $request->input('name');
       $code_product = $request->input('code_product');
       $unit_of_measurement = $request->input('unit_of_measurement');
-      $actice_ingredient = $request->input('actice_ingredient');
+      $active_ingredient = $request->input('active_ingredient');
       $used = $request->input('used');
       $description = $request->input('description');
       $price = $request->input('price');
@@ -124,7 +124,7 @@ class ProductController extends Controller
       $registration_number = $request->input('registration_number');
       $category_id = $request->input('category_id');
 
-      if (!$name || !$category_id || !$actice_ingredient || !$unit_of_measurement || !$code_product || !$used || !$description || !$price || !$manufacture || !$registration_number) {
+      if (!$name || !$category_id || !$active_ingredient || !$unit_of_measurement || !$code_product || !$used || !$description || !$price || !$manufacture || !$registration_number) {
          return response()->json(['error' => true, 'message' => 'Vui lòng điền đầy đủ thông tin.']);
       }
 
@@ -135,7 +135,7 @@ class ProductController extends Controller
       $product->name = $name;
       $product->code_product = $code_product;
       $product->unit_of_measurement = $unit_of_measurement;
-      $product->actice_ingredient = $actice_ingredient;
+      $product->active_ingredient = $active_ingredient;
       $product->used = $used;
       $product->description = $description;
       $product->price = $price;
@@ -189,7 +189,7 @@ class ProductController extends Controller
             'products.name',
             'products.code_product',
             'products.unit_of_measurement',
-            'products.actice_ingredient',
+            'products.active_ingredient',
             'products.used',
             'products.description',
             'products.price',
@@ -235,7 +235,7 @@ class ProductController extends Controller
       $product->name = $request->input('name_up');
       $product->code_product = $request->input('codeProduct');
       $product->category_id = $request->input('categoryId');
-      $product->actice_ingredient = $request->input('activeIngredient');
+      $product->active_ingredient = $request->input('activeIngredient');
       $product->unit_of_measurement = $request->input('unitOfMeasurement');
       $product->used = $request->input('used');
       $product->description = $request->input('description');

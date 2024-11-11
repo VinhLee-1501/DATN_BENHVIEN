@@ -103,9 +103,9 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="actice_ingredient" class="form-label">Hoạt tính</label>
-                                    <textarea name="actice_ingredient" class="form-control" id="actice_ingredient"></textarea>
-                                    <div class="invalid-feedback" id="actice_ingredient_error"></div>
+                                    <label for="active_ingredient" class="form-label">Hoạt tính</label>
+                                    <textarea name="active_ingredient" class="form-control" id="active_ingredient"></textarea>
+                                    <div class="invalid-feedback" id="active_ingredient_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -231,7 +231,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="active_ingredient_up" class="form-label">Hoạt tính</label>
-                                    <textarea name="actice_ingredient_up" class="form-control" id="actice_ingredient_up"></textarea>
+                                    <textarea name="active_ingredient_up" class="form-control" id="active_ingredient_up"></textarea>
                                     <div class="invalid-feedback" id="active_ingredient_error"></div>
                                 </div>
                             </div>
@@ -457,7 +457,7 @@
                 var name = $('#name').val();
                 var codeProduct = $('#code_product').val();
                 var unitOfMeasurement = $('#unit_of_measurement').val();
-                var activeIngredient = $('#actice_ingredient').val();
+                var activeIngredient = $('#active_ingredient').val();
                 var used = $('#used').val();
                 var description = $('#description').val();
                 var price = $('#price').val();
@@ -470,7 +470,7 @@
                 formData.append('name', name);
                 formData.append('code_product', codeProduct);
                 formData.append('unit_of_measurement', unitOfMeasurement);
-                formData.append('actice_ingredient', activeIngredient);
+                formData.append('active_ingredient', activeIngredient);
                 formData.append('used', used);
                 formData.append('description', description);
                 formData.append('price', price);
@@ -542,7 +542,7 @@
                     $('#name_up').val(response.product.name);
                     $('#code_product_up').val(response.product.code_product);
                     $('#unit_of_measurement_up').val(response.product.unit_of_measurement);
-                    $('#actice_ingredient_up').val(response.product.actice_ingredient);
+                    $('#active_ingredient_up').val(response.product.active_ingredient);
                     $('#usage_up').val(response.product.used);
                     $('#description_up').val(response.product.description);
                     $('#price_up').val(response.product.price);
@@ -687,7 +687,7 @@
             formData.append('name_up', $('#name_up').val());
             formData.append('codeProduct', $('#code_product_up').val());
             formData.append('unitOfMeasurement', $('#unit_of_measurement_up').val());
-            formData.append('activeIngredient', $('#actice_ingredient_up').val());
+            formData.append('activeIngredient', $('#active_ingredient_up').val());
             formData.append('used', $('#usage_up').val());
             formData.append('description', $('#description_up').val());
             formData.append('price', $('#price_up').val());

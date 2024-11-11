@@ -148,7 +148,7 @@
                                                     {!! $barcodeEnd[$data->product_id] !!}</p>
                                                 <p><strong>Tên sản phẩm:</strong> {{ $data->name }}</p>
                                                 <p><strong>Đơn vị:</strong> {{ $data->unit_of_measurement }}</p>
-                                                <p><strong>Hoạt tính:</strong> {{ $data->actice_ingredient }}</p>
+                                                <p><strong>Hoạt tính:</strong> {{ $data->active_ingredient }}</p>
                                                 <p><strong>Công dụng:</strong> {{ $data->used }}</p>
                                             </div>
                                             <div class="col-md-5 p-2">

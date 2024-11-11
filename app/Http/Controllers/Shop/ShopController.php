@@ -358,14 +358,12 @@ class ShopController extends Controller
         $quanlity = $request->input('quanlity');
         if ($cartItem) {
             $cartItem->quantity += $quanlity;
-            $cartItem->total_price = $cartItem->total_price + $product->price;
             $cartItem->save();
         } else { 
             CartProduct::create([
                 'name' => $product->name,
                 'user_id' => $user->user_id,
                 'product_id' => $product->product_id,
-                'total_price' => $product->price,
                 'quantity' => $quanlity,
             ]);
         }
@@ -388,7 +386,6 @@ class ShopController extends Controller
 
                 if ($cartItem) {
                     $cartItem->quantity = $quantity;
-                    $cartItem->total_price = $cartItem->quantity * $cartItem->productForeignKLey->price;
                     $cartItem->save();
                 }
             }
