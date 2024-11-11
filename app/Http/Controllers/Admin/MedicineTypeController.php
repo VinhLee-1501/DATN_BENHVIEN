@@ -50,7 +50,7 @@ class MedicineTypeController extends Controller
             'unique_categories' => $unique_categories
         ]);
     }
-    public function create() {}
+   
     public function store(MedicineTypeRequest $request)
     {
         $validatedData = $request->validated();

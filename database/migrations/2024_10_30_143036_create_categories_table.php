@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('category_id')->primary();
             $table->string('name', 255);
             $table->boolean('status')->comment('0 hết, 1 còn');
+            $table->string('img',255)->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')
                 ->references('parent_id')

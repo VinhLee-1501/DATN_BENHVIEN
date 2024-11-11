@@ -24,7 +24,7 @@ class AddProductRequest extends FormRequest
         return [
             'name' => 'required|max:255|unique:products,name',
             'product_images' => 'nullable|array',
-            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
             'category_id' => 'required',
             'actice_ingredient' => 'required',
             'unit_of_measurement' => 'required|max:50',
@@ -52,7 +52,6 @@ class AddProductRequest extends FormRequest
             'product_images.array' => ':attribute phải là mảng',
             'product_images.*.image' => ':attribute phải là định dạng ảnh',
             'product_images.*.mimes' => ':attribute phải là jpeg, png, jpg, gif hoặc svg',
-            'product_images.*.max' => ':attribute tối đa 2MB mỗi tệp',
 
             'category_id.required' => ':attribute không được để trống',
             'description.required' => ':attribute không được để trống',
