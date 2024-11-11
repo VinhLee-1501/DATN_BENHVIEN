@@ -15,19 +15,19 @@ class PatientController extends Controller
         // Lấy tất cả bệnh nhân và các hồ sơ y tế liên quan
         $patientsWithRecords = Patient::leftJoin('medical_records', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('patients.*', 'medical_records.medical_id', 'medical_records.diaginsis')
-            ->get();
-//        dd($patientsWithRecords);
-
+            ->paginate(10);
+   
         // Trả về view với dữ liệu bệnh nhân và hồ sơ y tế
         return view('System.patients.index', ['patients' => $patientsWithRecords]);
     }
 
 
-    public function edit($patient_id) {
-//        dd($patient_id);
+    public function edit($patient_id)
+    {
+        //        dd($patient_id);
         $patient = Patient::where('patient_id', $patient_id)->first();
 
-//        dd($patient);
+        //        dd($patient);
         return view('System.patients.edit', ['patient' => $patient]);
     }
 
@@ -52,10 +52,7 @@ class PatientController extends Controller
 
 
 
-    // Thông báo thành công và chuyển hướng về trang danh sách bệnh nhân
+        // Thông báo thành công và chuyển hướng về trang danh sách bệnh nhân
         return redirect()->route('system.patient')->with('success', 'Thông tin bệnh nhân đã được cập nhật thành công.');
     }
-
-
-
 }

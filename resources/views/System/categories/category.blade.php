@@ -44,6 +44,7 @@
         <h5 class="card-title fw-semibold mb-4">Quản lý danh mục</h5>
 
         <div class="table-responsive">
+            {!! $category->links() !!}
             <table class="table text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4">
                     <tr>
@@ -121,6 +122,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {!! $category->links() !!}
         </div>
     </div>
 </div>

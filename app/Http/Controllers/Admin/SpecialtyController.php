@@ -28,7 +28,7 @@ class SpecialtyController extends Controller
             ->get();
         $specialties = Specialty::where('status', 1)
             ->orderBy('row_id', 'DESC')
-            ->get();
+            ->paginate(10);
         //        dd($specialties);
         return view('System.specialties.index', [
             'specialties' => $specialties,

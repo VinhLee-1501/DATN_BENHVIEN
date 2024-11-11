@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 class CouponController extends Controller
 {
     public function index(){
-        $couponActive = Coupon::get();
+            
+        $couponActive = Coupon::paginate(10);
         return view('System.coupon.index', [
             'couponActive' => $couponActive,
         ]);

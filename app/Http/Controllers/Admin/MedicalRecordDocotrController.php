@@ -34,9 +34,6 @@ class MedicalRecordDocotrController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        // dd($medicalRecord);
-
-
         return view('System.doctors.medical.index', ['medicalRecord' => $medicalRecord]);
     }
 

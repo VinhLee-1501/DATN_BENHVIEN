@@ -23,6 +23,7 @@
 
 
         <div class="table-responsive">
+                  {!! $patients->links() !!}
             <table class="table text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4  ">
                     <tr>
@@ -114,6 +115,7 @@
     
                 </tbody>
             </table>
+             {!! $patients->links() !!}
                     <div id="noResults" class="alert alert-warning" style="display: none;">Không tìm thấy dữ liệu.</div>
 
         </div>

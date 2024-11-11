@@ -23,7 +23,7 @@
 
             <!-- </div> -->
             <div class="table-responsive">
-
+{!! $specialties->links() !!}
                 <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4  ">
                         <tr class="text-center">
@@ -76,6 +76,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                 {!! $specialties->links() !!}
                 <div id="noResults" class="alert alert-warning" style="display: none;">Không tìm thấy dữ liệu.</div>
 
             </div>

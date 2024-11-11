@@ -44,7 +44,7 @@ class MedicineTypeController extends Controller
             }
         }
         
-        $medicineType = MedicineType::orderBy('created_at', 'desc')->paginate(5);
+        $medicineType = MedicineType::orderBy('created_at', 'desc')->paginate(10);
         return view('System.medicineTypes.index', [
             'medicineType' => $medicineType,
             'unique_categories' => $unique_categories

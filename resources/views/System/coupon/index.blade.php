@@ -32,6 +32,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
+                      {!! $couponActive->links() !!}
                     <table class="table text-nowrap mb-0 align-middle">
                         <thead class="text-dark fs-4">
                             <tr>
@@ -102,6 +103,7 @@
                         @endforeach
 
                     </table>
+                    {!! $couponActive->links() !!}
                 </div>
             </div>
         </div>

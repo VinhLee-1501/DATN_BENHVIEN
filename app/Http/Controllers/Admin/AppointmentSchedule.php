@@ -24,8 +24,8 @@ class AppointmentSchedule extends Controller
             ->leftJoin('sclinics', 'sclinics.sclinic_id', '=', 'schedules.sclinic_id')
             ->select('books.*', 'users.lastname', 'users.firstname', 'sclinics.name AS sclinicName', 'specialties.name AS specialtyName')
             ->orderBy('books.row_id', 'DESC')
-            ->get();
-        //       dd($book);
+            ->paginate(10);
+
 
         return view('System.appointmentschedule.index', ['book' => $book,]);
     }

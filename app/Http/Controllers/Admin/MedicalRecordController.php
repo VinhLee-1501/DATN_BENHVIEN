@@ -17,7 +17,7 @@ class MedicalRecordController extends Controller
         $medicalRecord = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->distinct()
-            ->paginate(5);
+            ->paginate(10);
 
         return view('System.medicalrecord.index', ['medicalRecord' => $medicalRecord]);
     }

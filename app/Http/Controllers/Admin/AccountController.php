@@ -16,19 +16,20 @@ class AccountController extends Controller
         $users = User::where('role', 0)
             ->where('status', 1)
             ->orderBy('users.row_id', 'desc')
-            ->get();
+            
+            ->paginate(10);
 
         $admin = User::where('role', 1)
             ->where('status', 1)
             ->orderby('row_id', 'desc')
-            ->get();
-
+            ->paginate(10);
 
         $doctors = User::where('users.status', 1)
             ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
             ->where('users.role', 2)
             ->select('users.*', 'specialties.name as specialty_name')
-            ->get();
+            
+            ->paginate(10);
 
 
         return view('System.accounts.index', compact('admin', 'doctors', 'users'));
@@ -127,6 +128,4 @@ class AccountController extends Controller
         $users->delete();
         return redirect()->route('system.account')->with('success', 'Xóa thành công');
     }
-
-
 }

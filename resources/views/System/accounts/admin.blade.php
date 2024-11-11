@@ -3,6 +3,7 @@
         <h5 class="card-title fw-semibold mb-4">Quản lý tài khoản quản trị</h5>
 
         <div class="table-responsive">
+            {!! $admin->links() !!}
             <table class="table text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4  ">
                     <tr>
@@ -26,7 +27,6 @@
 
                 <tbody id="myTable">
                     @foreach ($admin as $item)
-
                         <tr>
                             <td class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">{{ $item->user_id }}</h6>
@@ -49,16 +49,17 @@
                                     @method('delete')
                                     @csrf
                                 </form>
-                                <button type="submit" class="btn btn-danger btn-delete ms-1" data-id="{{ $item->user_id }}">
+                                <button type="submit" class="btn btn-danger btn-delete ms-1"
+                                    data-id="{{ $item->user_id }}">
                                     <i class="ti ti-trash"></i>
                                 </button>
                             </td>
                         </tr>
-
                     @endforeach
                 </tbody>
 
             </table>
+            {!! $admin->links() !!}
         </div>
     </div>
 </div>

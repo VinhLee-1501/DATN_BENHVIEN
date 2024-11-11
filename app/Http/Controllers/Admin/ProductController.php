@@ -43,7 +43,7 @@ class ProductController extends Controller
             'products.registration_number',
             'products.status'
          )
-         ->get();
+         ->paginate(10);
 
       $product->transform(function ($product) {
          $product->img_array = array_filter(explode(',', $product->img_array)); // Chuyển img_array thành mảng
@@ -75,7 +75,7 @@ class ProductController extends Controller
             'products.registration_number',
             'products.status'
          )
-         ->get();
+      ->paginate(10);
 
 
       $productEnd->transform(function ($productEnd) {

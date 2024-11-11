@@ -29,7 +29,7 @@ class ServiceTypeController extends Controller{
         if ($search) {
             $serviceType = ServiceDirectory::where('name', 'LIKE', "%$search%")
                 ->orderBy('created_at', 'desc')
-                ->paginate(5);
+                ->paginate(10);
         } else {
             $serviceType = ServiceDirectory::orderBy('created_at', 'desc')->paginate($itemsPerPage);
         }

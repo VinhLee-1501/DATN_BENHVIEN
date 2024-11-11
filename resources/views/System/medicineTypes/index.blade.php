@@ -18,6 +18,7 @@
                 </form>
                 
             <div class="table-responsive">
+                 {!! $medicineType->links() !!} 
                 <table class="table text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4  ">
                         <tr>
@@ -73,7 +74,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <!-- {!! $medicineType->links() !!} -->
+                 {!! $medicineType->links() !!} 
             </div>
         </div>
     </div>
