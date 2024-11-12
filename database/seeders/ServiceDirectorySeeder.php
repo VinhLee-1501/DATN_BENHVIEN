@@ -27,7 +27,7 @@ class ServiceDirectorySeeder extends Seeder
         ServiceDirectory::create([
             'directory_id' => 'DIRECTORY1',
             'name' => 'X-Quang',
-            'status' => 'Hoạt động',
+            'status' => '0',
         ]);
 
         ServiceDirectory::create([

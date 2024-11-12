@@ -26,11 +26,10 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {{-- Blogs --}}
-    <link rel="stylesheet" href="{{ asset('backend/assets/libs/summernote/summernote-bs5.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/assets/libs/filepond/dist/filepond.css') }}">
-    <link rel="stylesheet" href="{{ asset('backend/assets/libs/filepond/dist/filepond.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('backend/assets/libs/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css') }}">
+    
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/filepond.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/summernote.css')}}">
+
 
     {{-- fullCalendar --}}
     <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.4.2/main.min.css' rel='stylesheet' />
@@ -90,18 +89,8 @@
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     {{-- Blogs --}}
-    <script src="{{ asset('backend/assets/libs/summernote/summernote-bs5.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/libs/summernote/lang/summernote-vi-VN.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/libs/filepond/dist/filepond.js') }}"></script>
-    <script
-        src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js') }}">
-    </script>
-    <script
-        src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js') }}">
-    </script>
-    </script>
-    <script src="{{ asset('backend/assets/libs/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js') }}">
-    </script>
+    <script src="{{ asset('backend/assets/js/app.js') }}"></script>
+    <script src="{{ asset('backend/assets/css/lang/summernote-vi-VN.js')}}"></script>
     @stack('scripts')
 
     <x-message.message></x-message.message>

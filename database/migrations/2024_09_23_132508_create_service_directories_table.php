@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('row_id')->primary();
             $table->string('directory_id', 10)->unique();
             $table->string('name', 50);
-            $table->string('status', 50);
+            $table->tinyInteger('status');
             $table->softDeletes();
             $table->timestamps();
         });

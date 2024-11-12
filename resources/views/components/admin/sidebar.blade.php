@@ -316,6 +316,31 @@
                                     </svg>
                                 </span>
                                 <span class="hide-menu">QL mã giảm giá</span>
+                        <li class="sidebar-item {{ request()->routeIs('system.order') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.order') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-receipt-2"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý đơn hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('system.service') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.service') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-first-aid-kit"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý dịch vụ</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('system.serviceType') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.serviceType') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-report-medical"></i>
+                                </span>
+                                <span class="hide-menu">Quản lý nhóm dịch vụ</span>
                             </a>
                         </li>
                     </ul>

@@ -42,8 +42,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="describeTextarea" class="form-label">Mô tả</label>
-                                    <textarea id="describeTextarea" name="describe" class="form-control" 
-                                              placeholder="Mô tả" rows="4" style="overflow-y: scroll;">{{ $blogs->describe }}</textarea>
+                                    <textarea id="describeTextarea" name="describe" class="form-control" placeholder="Mô tả" rows="4"
+                                        style="overflow-y: scroll;">{{ $blogs->describe }}</textarea>
                                     @error('describe')
                                         <div class="text-danger">*{{ $message }}</div>
                                     @enderror
@@ -86,21 +86,28 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+                const editorHeight = $(window).height() - 200;
+
                 $('#summernote').summernote({
+                    styleTags: ['h2', 'h3', 'h4', 'h5', 'h6'],
+                    codemirror: {
+                        theme: 'monokai'
+                    },
                     lang: 'vi-VN',
                     placeholder: 'Nhập nội dung....',
-                    minHeight: 300,
-                    Height: 1000,
+                    height: editorHeight > 0 ? editorHeight : 200,
                     focus: true,
+                    fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Times New Roman'],
                     toolbar: [
                         ['style', ['bold', 'italic', 'underline', 'clear']],
                         ['font', ['strikethrough', 'superscript', 'subscript']],
                         ['fontsize', ['fontsize']],
+                        ['fontname', ['fontname']],
                         ['color', ['color']],
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['height', ['height']],
                         ['table', ['table']],
-                        ['insert', ['link', 'picture', 'video']],
+                        ['insert', ['link', 'picture']],
                         ['view', ['fullscreen', 'codeview', 'help']],
                         ['style', ['style']],
                     ],
@@ -125,32 +132,85 @@
                             ['insert', ['link', 'picture']]
                         ]
                     },
-                    codemirror: {
-                        theme: 'monokai'
-                    },
-                    styleTags: [
-                     'h2', 'h3', 'h4', 'h5', 'h6'
-                    ]
+                    callbacks: {
+                        onImageUpload: function(files) {
+                            if (files.length > 1) {
+                                alert("Chỉ có thể chọn một ảnh mỗi lần.");
+                                return;
+                            }
 
+                            // Đếm ảnh hiện tại
+                            const imageCount = countImagesInEditor();
+                            if (imageCount >= 8) {
+                                alert("Bạn chỉ có thể chèn tối đa 8 ảnh.");
+                                return;
+                            }
+
+                            const file = files[0];
+                            if (file.size > 1 * 1024 * 1024) {
+                                alert("Kích thước tệp phải nhỏ hơn 1MB.");
+                                return;
+                            }
+
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                $('#summernote').summernote('insertImage', e.target.result);
+                            };
+                            reader.readAsDataURL(file);
+                        },
+                        onMediaDelete: function($target) {
+                            console.log('Hình ảnh đã bị xóa:', $target[0].src);
+                        }
+                    }
                 });
+
+                $('.note-btn-image').click(function() {
+                    const input = $('<input type="file" accept="image/*" style="display:none;">');
+                    input.on('change', function(event) {
+                        const files = event.target.files;
+
+                        // Đếm ảnh hiện tại
+                        const imageCount = countImagesInEditor();
+                        if (imageCount >= 8) {
+                            alert("Bạn chỉ có thể chèn tối đa 8 ảnh.");
+                            $(this).remove();
+                            return;
+                        }
+
+                        const file = files[0];
+                        if (file.size > 1 * 1024 * 1024) {
+                            alert("Kích thước tệp phải nhỏ hơn 1MB.");
+                            $(this).remove();
+                            return;
+                        }
+
+                        $('#summernote').summernote('insertImage', URL.createObjectURL(file));
+                        $(this).remove();
+                    });
+
+                    $('body').append(input);
+                    input.trigger('click');
+                });
+
+                function countImagesInEditor() {
+                    const content = $('#summernote').summernote('code');
+                    return $(content).find('img').length;
+                }
             });
         </script>
         <script>
-            FilePond.registerPlugin(
-                FilePondPluginImagePreview,
-                FilePondPluginFileValidateType,
-                FilePondPluginFileValidateSize
-            );
-
-            const inputElement = document.querySelector('input[type="file"]');
-            const pond = FilePond.create(inputElement);
+            // const inputElement = document.querySelector('input[name="thumbnail"]');
+            // const pond = FilePond.create(inputElement);
 
             @if ($blogs->thumbnail)
-                const base64String = '{{ $blogs->thumbnail }}';
+                const base64String = '{{ $blogs->thumbnail }}'; // Lấy base64 từ biến Blade
 
-                // Chuyển base64 thành Blob (tệp)
-                const byteString = atob(base64String);
-                const mimeString = "image/png"; // Hoặc 'image/jpeg', 'image/gif', tùy theo loại ảnh của bạn
+                // Tạo kiểu MIME dựa trên định dạng ảnh
+                const mimeString = "image/png"; // Hoặc 'image/jpeg', 'image/gif', tùy thuộc vào định dạng của bạn
+                const fullBase64String = `data:${mimeString};base64,${base64String}`; // Thêm tiền tố dữ liệu
+
+                // Chuyển đổi base64 thành Blob (tệp)
+                const byteString = atob(fullBase64String.split(',')[1]); // Tách phần base64
                 const ab = new ArrayBuffer(byteString.length);
                 const ia = new Uint8Array(ab);
 
@@ -161,17 +221,25 @@
                 const blob = new Blob([ab], {
                     type: mimeString
                 });
-                const file = new File([blob], "thumbnail.png", {
+
+                // Tạo file từ Blob
+                const file = new File([blob], "thumbnail." + (mimeString === 'image/jpeg' ? 'jpg' : 'png'), {
                     type: mimeString
                 });
 
                 // Thêm tệp vào FilePond
+                const inputElement = document.querySelector('input[name="thumbnail"]');
+                const pond = FilePond.create(inputElement);
+
                 pond.addFile(file).then(() => {
                     console.log('File thumbnail added successfully');
                 }).catch(error => {
                     console.error('Error adding thumbnail:', error);
                 });
             @endif
+
+
+
 
             pond.setOptions({
                 server: {
@@ -183,18 +251,19 @@
                         }
                     },
                     revert: {
-                        url: './revertfile',
+                        url: '/system/blogs/revertfile',
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         }
                     }
                 },
-                labelIdle: `Tối đa 500KB <span class="filepond--label-action">Chọn tệp</span>`,
+                labelIdle: `Tối đa 1.5MB <span class="filepond--label-action">Chọn tệp</span>`,
                 acceptedFileTypes: ['image/jpeg', 'image/png'],
-                // maxFileSize: '500kB',
+                maxFileSize: 1.5 * 1024 * 1024, // 1.5MB in bytes
+                labelMaxFileSize: '1.5 MB',
                 imagePreviewHeight: 200,
-            })
+            });
         </script>
         <script>
             function toggleDateInput() {

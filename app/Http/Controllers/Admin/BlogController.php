@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+
 class BlogController extends Controller
 {
     public function create()
@@ -24,68 +25,26 @@ class BlogController extends Controller
 
     public function store(ValidationRequest $request)
     {
-        // date_default_timezone_set('Asia/Ho_Chi_Minh');
+        try {
+            $blog = new Blog();
+            $blog->title = $request->input('title');
+            $content = $request->input('content');
 
-        // $months = [
-        //     1 => 'Jan',
-        //     2 => 'Feb',
-        //     3 => 'Mar',
-        //     4 => 'Apr',
-        //     5 => 'May',
-        //     6 => 'Jun',
-        //     7 => 'Jul',
-        //     8 => 'Aug',
-        //     9 => 'Sep',
-        //     10 => 'Oct',
-        //     11 => 'Nov',
-        //     12 => 'Dec'
-        // ];
+            preg_match_all('/<img src="data:image\/(?<type>[^;]+);base64,(?<data>[^"]+)"/', $content, $matches);
 
+            if (!empty($matches['data'])) {
+                foreach ($matches['data'] as $key => $data) {
+                    $imageData = base64_decode($data);
+                    $imageName = 'image_' . time() . '_' . $key . '.' . $matches['type'][$key];
 
-        // $year = date('Y');
-        // $day = date('d');
-        // $time = date('H:i:s');
-        // $currentMonthNumber = date('n');
-        // $currentMonthAbbr = $months[$currentMonthNumber];
-        // $currentTimeWithMonth = "$currentMonthAbbr $year $day $time";
-        // $uniqueId = strtolower(str_replace([' ', ':'], '', $currentTimeWithMonth));
+                    $image = Image::make($imageData);
 
+                    $quality = 70;
+                    $image->encode($matches['type'][$key], $quality);
 
-        $blog = new Blog();
-        $blog->title = $request->input('title');
-        $content = $request->input('content');
+                    Storage::disk('public')->put('uploads/' . $imageName, (string) $image);
 
-        preg_match_all('/<img src="data:image\/(?<type>[^;]+);base64,(?<data>[^"]+)"/', $content, $matches);
-
-        if (!empty($matches['data'])) {
-            foreach ($matches['data'] as $key => $data) {
-
-                $imageData = base64_decode($data);
-                $imageName = 'image_' . time() . '_' . $key . '.' . $matches['type'][$key];
-
-                // $image = Image::make($imageData);
-
-                // // Bắt đầu với chất lượng 75%
-                // $quality = 75;
-
-                // // Nén hình ảnh cho đến khi kích thước tệp nhỏ hơn 500KB
-                // do {
-                //     // Nén hình ảnh
-                //     $image->encode($matches['type'][$key], $quality);
-
-                //     // Lưu hình ảnh tạm thời vào bộ nhớ
-                //     $tempPath = tempnam(sys_get_temp_dir(), 'img');
-                //     file_put_contents($tempPath, (string) $image);
-
-                //     // Kiểm tra kích thước tệp
-                //     $fileSize = filesize($tempPath);
-
-                //     // Giảm chất lượng nếu kích thước lớn hơn 500KB
-                //     $quality -= 5;
-                // } while ($fileSize > 500 * 1024 && $quality > 0);
-                Storage::disk('public')->put('uploads/' . $imageName, $imageData);
-
-                $content = str_replace($matches[0][$key], '<img src="' . asset('storage/uploads/' . $imageName) . '"', $content);
+                $content = str_replace($matches[0][$key], '<img src="http://127.0.0.1:8000/storage/uploads/' . $imageName . '"', $content);
             }
         }
 
@@ -96,6 +55,7 @@ class BlogController extends Controller
         $blog->slug = Str::slug($request->input('title'));
         // $blog->blog_id = $uniqueId;
         $blog->status = $request->input('status');
+
 
         if (!session()->has('uploaded_file_base64')) {
 
@@ -109,11 +69,24 @@ class BlogController extends Controller
             session()->forget('uploaded_file_base64');
         }
 
-        $blog->save();
+            $blog->save();
 
+            return redirect()->route('system.blog')->with('success', 'Thêm mới thành công.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Kiểm tra lỗi "big packet data" (ví dụ: lỗi dữ liệu quá lớn do MySQL)
+            if (strpos($e->getMessage(), 'Packet for query is too large') !== false) {
+                // Trả về lỗi 500 với thông báo chi tiết
+                abort(500, 'Lỗi: Dữ liệu ảnh quá lớn để lưu trữ.');
+            }
 
-        return redirect()->route('system.blog')->with('success', 'Thêm mới thành công.');
+            // Xử lý các lỗi khác và trả về lỗi 500
+            abort(500, 'Lỗi khi lưu bài viết. Vui lòng thử lại.');
+        } catch (\Exception $e) {
+            // Trả về lỗi 500 cho các ngoại lệ khác
+            abort(500, 'Đã xảy ra lỗi trong quá trình lưu bài viết.');
+        }
     }
+
 
 
     public function uploadfile()
@@ -121,19 +94,38 @@ class BlogController extends Controller
         if (request()->hasFile('thumbnail')) {
             $file = request()->file('thumbnail');
 
-            $fileData = file_get_contents($file->getRealPath());
+            // Kiểm tra kích thước tệp
+            if ($file->getSize() > 500 * 1024) { // Kiểm tra nếu kích thước lớn hơn 800KB
+                // Giảm dung lượng ảnh xuống 70%
+                $image = Image::make($file->getRealPath())
+                    ->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('jpg', 70); // Định dạng và chất lượng ảnh
+            } else {
+                // Nếu kích thước nhỏ hơn hoặc bằng 800KB, không thay đổi gì
+                $image = Image::make($file->getRealPath())
+                    ->encode('jpg', 100); // Giữ nguyên chất lượng
+            }
 
+            // Lấy nội dung ảnh sau khi giảm dung lượng
+            $fileData = $image->getEncoded();
+
+            // Chuyển đổi nội dung ảnh sang base64
             $fileBase64 = base64_encode($fileData);
 
-            session(['uploaded_file_base64' => $fileBase64]);
+            // Lưu base64 vào session
+            session(['upload_file' => $fileBase64]);
         }
     }
 
 
     public function revertfile()
     {
-        session()->forget('uploaded_file_base64');
+        session()->forget('upload_file');
     }
+
 
     public function updatestatus()
     {
@@ -182,12 +174,6 @@ class BlogController extends Controller
 
     public function resetsearch()
     {
-        // $oldsearch = session()->get('search', '');
-
-        // session()->forget('search');
-
-        // session()->flash('oldsearch', $oldsearch);
-
         return redirect()->route('system.blog');
     }
 
@@ -216,10 +202,15 @@ class BlogController extends Controller
                 $imageData = base64_decode($data);
                 $imageName = 'image_' . time() . '_' . $key . '.' . $matches['type'][$key];
 
-                Storage::disk('public')->put('uploads/' . $imageName, $imageData);
+                $image = Image::make($imageData);
 
-                // Cập nhật chuỗi HTML để thay thế đường dẫn Base64 bằng đường dẫn đã lưu
-                $content = str_replace($matches[0][$key], '<img src="' . asset('storage/uploads/' . $imageName) . '"', $content);
+                $quality = 70;
+
+                $image->encode($matches['type'][$key], $quality);
+
+                Storage::disk('public')->put('uploads/' . $imageName, (string) $image);
+
+                $content = str_replace($matches[0][$key], '<img src="http://127.0.0.1:8000/storage/uploads/' . $imageName . '"', $content);
             }
         }
         // Lưu nội dung đã cập nhật vào cơ sở dữ liệu
@@ -229,12 +220,18 @@ class BlogController extends Controller
         $blog->status = $request->input('status');
 
 
-        if (session()->has('uploaded_file_base64')) {
-            $base64Image = session('uploaded_file_base64');
+        if (!session()->has('upload_file')) {
+
+            $firstImageData = $matches['data'][0];
+
+            $blog->thumbnail = $firstImageData;
+        } else {
+
+            $base64Image = session('upload_file');
 
             $blog->thumbnail = $base64Image;
 
-            session()->forget('uploaded_file_base64');
+            session()->forget('upload_file');
         }
 
         $blog->update();

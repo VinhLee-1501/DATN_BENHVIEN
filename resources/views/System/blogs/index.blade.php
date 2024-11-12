@@ -13,9 +13,9 @@
             </div>
             <div class="table">
                 <form id="searchForm" action="{{ route('system.blog') }}" class="d-flex position-relative" method="get">
-                    <input type="text" name="search" id="searchInput" class="form-control w-20 ms-3"
+                    <input type="text" name="search" id="searchInput" class="form-control ms-3"
                         value="{{ request('search', $search) }}" placeholder="Nhập tiêu đề"
-                        style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                        style="border-top-right-radius: 0; border-bottom-right-radius: 0; width:214px;">
                     <!-- Nút tìm kiếm -->
                     <button type="submit" class="btn btn-success position-absolute px-0"
                         style="top: 50%; right: 75%; transform: translateY(-50%); z-index: 1; border-top-left-radius: 0; border-bottom-left-radius: 0;">
@@ -104,15 +104,10 @@
                                                 class="btn btn-primary me-1">
                                                 <i class="ti ti-pencil"></i>
                                             </a>
-                                            <form action="{{ route('system.blogs.delete', $data->id) }}" id="form-delete"
-                                                method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <input type="hidden" value="{{ $data->id }}">
-                                                <button type="submit" class="btn btn-danger btn-delete">
-                                                    <i class="ti ti-trash"></i>
-                                                </button>
-                                            </form>
+                                            <a href="{{ route('system.blogs.delete', $data->id) }}"
+                                                class="btn btn-danger me-1">
+                                                <i class="ti ti-trash"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -148,7 +143,7 @@
                     // Gửi form
                     form.submit();
                 } else {
-                    alert('Vui lòng chọn ít nhất một bài viết để xóa.');
+                    toastr.error('Vui lòng chọn ít nhất một bài viết để xóa.');
                 }
             });
         </script>

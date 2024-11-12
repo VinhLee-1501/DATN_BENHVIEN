@@ -10,6 +10,7 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $primaryKey = 'row_id';
     protected $fillable = ['order_id', 'status', 'role', 'treatment_id', 'total_price', 'created_at', 'updated_at', 'deleted_at'];
 
     public function TrearmentDetailForeignKLey()
