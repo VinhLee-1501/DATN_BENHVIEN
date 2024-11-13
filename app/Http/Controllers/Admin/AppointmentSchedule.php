@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\Admin\BookingUpdated;
 use App\Http\Controllers\Controller;
 use App\Mail\BookingConfirmationLink;
 use App\Models\Book;
@@ -147,7 +148,7 @@ class AppointmentSchedule extends Controller
         // Lưu bản ghi
         $book->save();
         // dd($book);
-        Mail::to($book->email)->send(new BookingConfirmationLink($book));
+        event(new BookingUpdated($book));
 
 
         return response()->json(['success' => true, 'message' => 'Dữ liệu đã được cập nhật thành công.']);

@@ -373,7 +373,7 @@
                     // Thông báo lỗi cho người dùng
                     alert('Có lỗi xảy ra: ' + (err.responseJSON ? err.responseJSON.error :
                         'Không xác định'));
-                }
+                },
                 complete: function() {
                     isSubmitting = false; // Đặt lại cờ sau khi hoàn thành
                 }
