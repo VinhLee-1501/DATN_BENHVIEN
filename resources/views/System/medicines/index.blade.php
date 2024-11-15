@@ -281,13 +281,11 @@
         // cập nhật
 
         function openEditModalMedicine(id) {
-
             $.ajax({
                 url: '/system/medicines/edit/' + id,
                 type: 'GET',
 
                 success: function(response) {
-                    console.log(response.medicine.name);
 
                     if (response.success) {
                         $('#medicineId').val(response.medicine.medicine_id);

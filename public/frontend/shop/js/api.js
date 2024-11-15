@@ -13,19 +13,33 @@ function loadSavedSelections() {
     const savedProvinceCode = loadSelection("province");
     const savedDistrictCode = loadSelection("district");
     const savedWardCode = loadSelection("ward");
+    const savedprovinceName = loadSelection("provinceName");
+    const saveddistrictName = loadSelection("districtName");
+    const savedwardName = loadSelection("wardName");
 
     if (savedProvinceCode) {
         document.getElementById("provinces").value = savedProvinceCode;
-        fetchDistricts(savedProvinceCode, savedDistrictCode); // Truyền thêm mã quận đã lưu
+        fetchDistricts(savedProvinceCode, savedProvinceCode); // Truyền thêm mã quận đã lưu
+    }
+    if (savedprovinceName) {
+        document.getElementById("provinceName").value = savedprovinceName;
+        fetchDistricts(savedprovinceName, savedprovinceName); // Truyền thêm mã quận đã lưu
     }
 
     if (savedDistrictCode) {
         document.getElementById("districts").value = savedDistrictCode;
-        fetchWards(savedDistrictCode, savedWardCode); // Truyền thêm mã xã/phường đã lưu
+        fetchWards(savedDistrictCode, savedDistrictCode); // Truyền thêm mã xã/phường đã lưu
+    }
+    if (saveddistrictName) {
+        document.getElementById("districtName").value = saveddistrictName;
+        fetchWards(saveddistrictName, saveddistrictName); // Truyền thêm mã xã/phường đã lưu
     }
 
     if (savedWardCode) {
         document.getElementById("wards").value = savedWardCode;
+    }
+    if (savedwardName) {
+        document.getElementById("wardName").value = savedwardName;
     }
 }
 
@@ -86,7 +100,9 @@ function fetchWards(districtsID, selectedWardCode = "") {
 function getProvinces(event) {
     const provinceCode = event.target.value; // Mã của tỉnh
     const provinceName = event.target.options[event.target.selectedIndex].text; // Tên tỉnh
+    document.getElementById('provinceName').value = provinceName;
     saveSelection("province", provinceCode);
+    saveSelection("provinceName", provinceName);
     fetchDistricts(provinceCode);
 }
 
@@ -94,7 +110,9 @@ function getProvinces(event) {
 function getDistricts(event) {
     const districtCode = event.target.value; // Mã của quận/huyện
     const districtName = event.target.options[event.target.selectedIndex].text; // Tên quận/huyện
+    document.getElementById('districtName').value = districtName;
     saveSelection("district", districtCode);
+    saveSelection("districtName", districtName);
     fetchWards(districtCode);
 }
 
@@ -102,7 +120,10 @@ function getDistricts(event) {
 function getWards(event) {
     const wardCode = event.target.value; // Mã xã/phường
     const wardName = event.target.options[event.target.selectedIndex].text; // Tên xã/phường
+    document.getElementById('wardName').value = wardName;
+
     saveSelection("ward", wardCode);
+    saveSelection("wardName", wardName);
 }
 
 // Đăng ký các sự kiện cho các lựa chọn

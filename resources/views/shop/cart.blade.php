@@ -107,7 +107,7 @@
                     </div>
                 </div>
                 <div class="text-md-right mb-4" style="font-size: 20px">Tổng tiền giỏ hàng:
-                    <span id="total_cart" class="" style="font-weight: 600"></span>
+                    <span class="total_cart" class="" style="font-weight: 600"></span>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -121,33 +121,52 @@
                 </div>
             </form>
             <div class="row">
+
                 <div class="col-lg-6">
                     <div class="shoping__continue">
                         <div class="shoping__discount">
-                            <h5>Discount Codes</h5>
+
+                            <h5>Mã giảm giá</h5>
                             <form action="#">
-                                <input type="text" placeholder="Enter your coupon code">
-                                <button type="submit" class="site-btn">APPLY COUPON</button>
+                                <input type="text" placeholder="Nhập mã">
+                                <button type="submit" class=" btn primary-btn site-btn">Sử dụng</button>
                             </form>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-6">
                     <div class="shoping__checkout">
-                        <h5>Cart Total</h5>
-                        <ul>
-                            <li>Subtotal <span>$454.98</span></li>
-                            <li>Total <span>$454.98</span></li>
-                        </ul>
-                        <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                        <h5>Tổng thanh toán</h5>
+                        <form id="formOrder" action="{{ route('shop.checkout') }}" method="POST">
+                            @csrf
+                            <ul>
+                                <input type="hidden" id="user_id" name="user_id" value="{{ $item->user_id }}">
+                                <input type="hidden" id="total" name="total">
+                                <li>Tổng tiền<span class="total_cart"></span></li>
+                                <li>Giá giảm<span style="color:black;!important" class="font-weight-light"
+                                        id="price_sale">15000</span></li>
+                                <li>Tổng <span id="total_order"></span></li>
+                            </ul>
+                            <button type="submit" id="btn-order" class="primary-btn">Mua hàng</button>
+                        </form>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
     <!-- Shoping Cart Section End -->
 
     <script>
+        document.getElementById('btn-order').addEventListener('click', function(e) {
+            // Ngăn chặn mặc định nếu có
+            e.preventDefault(); // Dòng này chỉ cần nếu bạn cần xử lý trước khi gửi form
+
+            // Gửi form nếu bạn cần thực hiện thêm thao tác trước khi gửi
+            document.getElementById('formOrder').submit();
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const cartItems = document.querySelectorAll("tbody tr");
 
@@ -158,8 +177,6 @@
                     const productDiscountElement = item.querySelector('#price_discount');
                     const priceOriginElem = item.querySelector('.price_origin');
 
-                    console.log(productDiscountElement);
-                    console.log(priceOriginElem);
 
                     let price = 0;
 
@@ -174,6 +191,8 @@
 
                     let totalPrice = price * quantity;
 
+
+
                     // Hiển thị tổng tiền cho sản phẩm
                     const totalPriceElem = item.querySelector("#total_price");
                     if (totalPriceElem) {
@@ -186,10 +205,21 @@
                     totalCart += totalPrice;
                 });
 
-                document.querySelector("#total_cart").textContent = new Intl.NumberFormat('vi-VN', {
+                document.querySelectorAll('.total_cart').forEach(element => {
+                    element.textContent = new Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND'
+                    }).format(totalCart);
+                });
+
+                const priceSale = document.getElementById('price_sale').textContent;
+                let totalOrder = totalCart - priceSale;
+                document.querySelector('#total_order').textContent = new Intl.NumberFormat('vi-VN', {
                     style: 'currency',
                     currency: 'VND'
-                }).format(totalCart);
+                }).format(totalOrder);
+                document.querySelector('#total').value = totalOrder;
+
 
                 $.ajax({
                     url: '/cua-hang/update-header-total',
@@ -202,7 +232,6 @@
                         totalCart
                     },
                     success: function(res) {
-                        console.log(res);
 
                         document.querySelector('#header_total').textContent = res.formattedTotal;
                     },

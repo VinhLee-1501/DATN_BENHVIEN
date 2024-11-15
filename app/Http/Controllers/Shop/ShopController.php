@@ -8,6 +8,7 @@ use App\Models\Products\CartProduct;
 use App\Models\Products\Category;
 use App\Models\Products\ParentCategory;
 use App\Models\Products\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -132,11 +133,6 @@ class ShopController extends Controller
         );
     }
 
-
-    public function checkout()
-    {
-        return view('Shop.checkout');
-    }
 
     public function contact()
     {
@@ -430,4 +426,36 @@ class ShopController extends Controller
     {
         return view('Shop.blog');
     }
+
+
+    public function checkout(Request $request)
+    {
+        $user_id = $request->input('user_id');
+        $total = $request->input('total');
+        $user = User::where('user_id', $user_id)->first();
+
+        $cart = CartProduct::where('user_id', $user_id)
+            ->join('products', 'products.product_id', '=', 'cart_products.product_id')
+            ->join('img_products', 'img_products.product_id', 'products.product_id')
+            ->select('cart_products.*', 'products.*', DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(img_products.img), ",", 1) as img_first')
+        )
+            ->groupBy(
+                'products.product_id',
+                'cart_products.cart_id',
+                'products.name',
+                'products.code_product',
+                'products.unit_of_measurement',
+                'products.active_ingredient',
+                'products.used',
+                'products.description',
+                'products.price',
+                'products.manufacture',
+                'products.registration_number',
+                'products.status'
+            )
+            ->get();
+        return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'cart' => $cart]);
+    }
+
+
 }
