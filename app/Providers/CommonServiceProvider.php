@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Specialty;
 use App\Models\Patient;
+use App\Models\Products\CartDetail;
 use App\Models\Products\CartProduct;
 use App\Models\Products\ParentCategory;
 use Illuminate\Support\Facades\Auth;
@@ -40,16 +41,9 @@ class CommonServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $user = Auth::user();
             // Kiểm tra nếu có người dùng đã đăng nhập, thì đếm số lượng sản phẩm trong giỏ của họ
-            $cartCount = $user ? CartProduct::where('user_id', $user->user_id)->whereNull('deleted_at')->count('cart_id') : 0;
+            $cartCount = $user ? CartDetail::join('cart_products', 'cart_products.cart_id', '=', 'cart_details.cart_id')
+                ->where('user_id', $user->user_id)->count('cart_detail_id') : 0;
             $view->with('cartCount', $cartCount);
-        });
-
-        // đếm tổng giá tiền có trong cart
-        View::composer('*', function($view){
-            $user = Auth::user();
-            // Kiểm tra nếu có người dùng đã đăng nhập, thì đếm số lượng sản phẩm trong giỏ của họ
-            $cartCountPrice = $user ? CartProduct::where('user_id', $user->user_id)->whereNull('deleted_at')->sum('total_price') : 0;
-            $view->with('cartCountPrice', $cartCountPrice);
         });
     }
 }

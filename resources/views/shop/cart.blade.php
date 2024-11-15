@@ -69,6 +69,8 @@
                                                 <img src="{{ asset('storage/uploads/products/' . $item->img_array[0]) }}"
                                                     class="w-25" alt="">
                                                 <h6>{{ $item->productName }}</h6>
+                                                <input type="hidden" value="{{ $item->cartId }}" name="cart_id">
+                                                <input type="hidden" value="{{ $item->cart_detail_id }}" name="cart_detail_id">
                                             </td>
                                             <td class="shoping__cart__price w-auto">
                                                 @if ($item->dateStartSale <= now() && $item->dateEndSale >= now())
@@ -85,7 +87,7 @@
                                                 <div class="quantity">
                                                     <div class="pro-qty">
                                                         <input type="number" id="quantity"
-                                                            name="quantity[{{ $item->cart_id }}]"
+                                                            name="quantity[{{ $item->cart_detail_id }}]"
                                                             value="{{ $item->quantity }}" min="1">
                                                     </div>
                                                 </div>
@@ -94,7 +96,7 @@
                                                 {{-- {{ Number::currency($item->total_price, 'VND', 'vi') }} --}}
                                             </td>
                                             <td class="shoping__cart__item__close">
-                                                <input type="checkbox" name="remove[{{ $item->cart_id }}]" value="1"
+                                                <input type="checkbox" name="remove[{{ $item->cart_detail_id }}]" value="1"
                                                     class="remove-item-checkbox">
                                             </td>
                                         </tr>

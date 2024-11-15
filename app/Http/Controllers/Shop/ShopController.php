@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\Products\CartDetail;
 use App\Models\Products\CartProduct;
 use App\Models\Products\Category;
 use App\Models\Products\ParentCategory;
@@ -136,7 +137,7 @@ class ShopController extends Controller
     {
         return view('Shop.checkout');
     }
-    
+
     public function contact()
     {
         return view('Shop.contact');
@@ -292,13 +293,16 @@ class ShopController extends Controller
             return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để truy cập giỏ hàng.');
         }
 
-        $cartItems = CartProduct::join('products', 'products.product_id', '=', 'cart_products.product_id')
+        $cartItems = CartDetail::join('cart_products', 'cart_products.cart_id', '=', 'cart_details.cart_id')
+            ->join('products', 'products.product_id', '=', 'cart_details.product_id')
             ->join('categories', 'categories.category_id', '=', 'products.category_id')
             ->leftJoin('sale_products', 'sale_products.product_id', '=', 'products.product_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
             ->where('cart_products.user_id', $user->user_id)
             ->select(
-                'cart_products.*',
+                'cart_products.cart_id as cartId',
+                'cart_products.user_id',
+                'cart_details.*',
                 'products.product_id',
                 'products.name as productName',
                 'products.price',
@@ -310,11 +314,11 @@ class ShopController extends Controller
             )
             ->groupBy(
                 'cart_products.cart_id',
-                'cart_products.name',
-                'cart_products.quantity',
-                'cart_products.total_price',
-                'cart_products.product_id',
                 'cart_products.user_id',
+                'cart_details.cart_detail_id',
+                'cart_details.quantity',
+                'cart_details.cart_id',
+                'cart_details.product_id',
                 'products.product_id',
                 'categories.category_id',
                 'categories.name',
@@ -339,36 +343,45 @@ class ShopController extends Controller
 
     public function addProductToCart($id, Request $request)
     {
-        // dd($id);
         $user = Auth::user();
         if (!$user) {
             return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để truy cập giỏ hàng.');
         }
 
         $product = Product::find($id);
+        // dd($product);
         if (!$product) {
             return redirect()->route('shop.cart')->with('error', 'Sản phẩm không tồn tại.');
         }
 
-        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-        $cartItem = CartProduct::where('user_id', $user->user_id)
+        $quantity = $request->input('quanlity');
+        // dd($quantity);
+
+        // Kiểm tra user đã có giỏ hàng ?
+        $cartProduct = CartProduct::where('user_id', $user->user_id)->first();
+
+        if (!$cartProduct) {
+            $cartProduct = CartProduct::create([
+                'user_id' => $user->user_id,
+            ]);
+        }
+
+        $cartDetail = CartDetail::where('cart_id', $cartProduct->cart_id)
             ->where('product_id', $product->product_id)
             ->first();
 
-        $quanlity = $request->input('quanlity');
-        if ($cartItem) {
-            $cartItem->quantity += $quanlity;
-            $cartItem->total_price = $cartItem->total_price + $product->price;
-            $cartItem->save();
-        } else { 
-            CartProduct::create([
-                'name' => $product->name,
-                'user_id' => $user->user_id,
+
+        if ($cartDetail) {
+            $cartDetail->quantity += $quantity;
+            $cartDetail->save();
+        } else {
+            CartDetail::create([
+                'cart_id' => $cartProduct->cart_id,
                 'product_id' => $product->product_id,
-                'total_price' => $product->price,
-                'quantity' => $quanlity,
+                'quantity' => $quantity,
             ]);
         }
+
         return redirect()->route('shop.cart')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng.');
     }
 
@@ -379,16 +392,17 @@ class ShopController extends Controller
             return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để truy cập giỏ hàng.');
         }
 
+        $cart = CartProduct::where('user_id', $user->user_id)->first();
+
         // Cập nhật số lượng cho sản phẩm
         if ($request->has('quantity')) {
-            foreach ($request->quantity as $productId => $quantity) {
-                $cartItem = CartProduct::where('user_id', $user->user_id)
-                    ->where('cart_id', $productId)
+            foreach ($request->quantity as $cartDetailId => $quantity) {
+                $cartItem = CartDetail::where('cart_id', $cart->cart_id)
+                    ->where('cart_detail_id', $cartDetailId)
                     ->first();
-
+                
                 if ($cartItem) {
                     $cartItem->quantity = $quantity;
-                    $cartItem->total_price = $cartItem->quantity * $cartItem->productForeignKLey->price;
                     $cartItem->save();
                 }
             }
@@ -396,13 +410,15 @@ class ShopController extends Controller
 
         // Xóa row cart
         if ($request->has('remove')) {
-            foreach ($request->remove as $cartId => $removeItem) {
-                $cartItem = CartProduct::where('user_id', $user->user_id)
-                    ->where('cart_id', $cartId)
+            foreach ($request->remove as $cartDetailIdRemove => $isRemove) {
+                if($isRemove){
+                    $cartItem = CartDetail::where('cart_id', $cart->cart_id)
+                    ->where('cart_detail_id', $cartDetailIdRemove)
                     ->first();
-
-                if ($cartItem) {
-                    $cartItem->delete();
+                    // dd($cartItem);
+                    if ($cartItem) {
+                        $cartItem->delete();
+                    }
                 }
             }
         }
