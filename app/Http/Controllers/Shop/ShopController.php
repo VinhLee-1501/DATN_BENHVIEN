@@ -9,6 +9,7 @@ use App\Models\Products\Category;
 use App\Models\Products\ParentCategory;
 use App\Models\Products\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,16 +25,18 @@ class ShopController extends Controller
         $parentId = $request->input('parent_id', '*');
 
         $query = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->leftJoin('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->leftJoin('img_products', 'img_products.product_id', '=', 'products.product_id')
             ->join('parent_categories', 'parent_categories.parent_id', '=', 'categories.parent_id')
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
                 DB::raw('GROUP_CONCAT(img_products.img) as img_array'),
-                'sale_products.discount',
-                'sale_products.time_start as dateStartSale',
-                'sale_products.time_end as dateEndSale'
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start as dateStartSale',
+                'coupons.time_end as dateEndSale'
             )->groupBy(
                 'products.product_id',
                 'categories.category_id',
@@ -48,9 +51,10 @@ class ShopController extends Controller
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
-                'sale_products.discount',
-                'sale_products.time_start',
-                'sale_products.time_end'
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start',
+                'coupons.time_end'
             )
             ->orderBy('products.product_id', 'DESC');
 
@@ -103,20 +107,22 @@ class ShopController extends Controller
 
         // Product sale limit 6
         $productSale = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->join('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
-            ->select('products.*', 'categories.name as nameCategory', 'sale_products.discount', DB::raw('MIN(img_products.img) as imgName')) // Lấy hình ảnh đầu tiên
-            ->groupBy('products.product_id', 'categories.name', 'sale_products.discount', 'products.price', 'products.name')
+            ->select('products.*', 'categories.name as nameCategory', DB::raw('MIN(img_products.img) as imgName')) // Lấy hình ảnh đầu tiên
+            ->groupBy('products.product_id', 'categories.name', 'products.price', 'products.name')
             ->limit(6)
             ->get();
         $chunkedProductsSale = $productSale->chunk(3);
 
         // Product new
         $productNew = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->leftJoin('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
-            ->select('products.*', 'categories.name as nameCategory', 'sale_products.discount', DB::raw('MIN(img_products.img) as imgName'))
-            ->groupBy('products.product_id', 'categories.name', 'sale_products.discount', 'products.price', 'products.name')
+            ->select('products.*', 'categories.name as nameCategory', DB::raw('MIN(img_products.img) as imgName'))
+            ->groupBy('products.product_id', 'categories.name', 'products.price', 'products.name')
             ->orderBy('products.created_at', 'DESC')
             ->limit(6)
             ->get();
@@ -143,16 +149,18 @@ class ShopController extends Controller
     {
 
         $productById = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->leftJoin('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->leftJoin('img_products', 'img_products.product_id', '=', 'products.product_id')
             ->where('products.product_id', $id)
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
                 DB::raw('GROUP_CONCAT(img_products.img) as img_array'),
-                'sale_products.discount',
-                'sale_products.time_start as dateStartSale',
-                'sale_products.time_end as dateEndSale'
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start as dateStartSale',
+                'coupons.time_end as dateEndSale'
             )
             ->groupBy(
                 'products.product_id',
@@ -168,9 +176,10 @@ class ShopController extends Controller
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
-                'sale_products.discount',
-                'sale_products.time_start',
-                'sale_products.time_end'
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start',
+                'coupons.time_end'
             )
             ->first();
 
@@ -178,18 +187,19 @@ class ShopController extends Controller
             $productById->img_array = array_filter(explode(',', $productById->img_array));
         }
 
-
         $productByCategory = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->leftJoin('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
             ->where('categories.category_id', $productById->category_id)
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
                 DB::raw('GROUP_CONCAT(img_products.img) as img_array'),
-                'sale_products.discount',
-                'sale_products.time_start as dateStartSale',
-                'sale_products.time_end as dateEndSale'
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start as dateStartSale',
+                'coupons.time_end as dateEndSale'
             )
             ->groupBy(
                 'products.product_id',
@@ -205,9 +215,10 @@ class ShopController extends Controller
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
-                'sale_products.discount',
-                'sale_products.time_start',
-                'sale_products.time_end'
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start',
+                'coupons.time_end'
             )
             ->limit(4)
             ->get();
@@ -231,10 +242,28 @@ class ShopController extends Controller
         // Products active
         $prodcutsActive =
             Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->leftJoin('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
-            ->select('products.*', 'categories.name as nameCategory', 'sale_products.discount', DB::raw('MIN(img_products.img) as imgName'))
-            ->groupBy('products.product_id', 'categories.name', 'sale_products.discount', 'products.price', 'products.name')
+            ->select(
+                'products.*',
+                'categories.name as nameCategory',
+                'coupons.discount_code',
+                'coupons.percent',
+                DB::raw('MIN(img_products.img) as imgName'),
+                'coupons.time_start as dateStartSale',
+                'coupons.time_end as dateEndSale',
+            )
+            ->groupBy(
+                'products.product_id',
+                'categories.name',
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start',
+                'coupons.time_end',
+                'products.price',
+                'products.name'
+            )
             ->orderBy('products.created_at', 'DESC')
             ->paginate(8);
 
@@ -242,29 +271,36 @@ class ShopController extends Controller
         $SelectProductWithsaleProduct
             =
             Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->join('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->join('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->join('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join(
                 'img_products',
                 'img_products.product_id',
                 '=',
                 'products.product_id'
             )
+            ->where(function ($query) {
+                $query->where('coupons.time_start', '<=', Carbon::now())
+                    ->where('coupons.time_end', '>=', Carbon::now());
+            })
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
-                'sale_products.discount',
+                'coupons.discount_code',
+                'coupons.percent',
                 DB::raw('MIN(img_products.img) as imgNameSale')
             )
-            ->groupBy('products.product_id', 'categories.name', 'sale_products.discount', 'products.price', 'products.name')
+            ->groupBy('products.product_id', 'categories.name', 'coupons.discount_code', 'coupons.percent', 'products.price', 'products.name')
             ->limit(6)
             ->get();
 
         // Product new
         $productNew = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->join('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->leftJoin('img_products', 'img_products.product_id', '=', 'products.product_id')
-            ->select('products.*', 'categories.name as nameCategory', 'sale_products.discount', DB::raw('MIN(img_products.img) as imgName')) // Lấy hình ảnh đầu tiên
-            ->groupBy('products.product_id', 'categories.name', 'sale_products.discount', 'products.price', 'products.name')
+            ->select('products.*', 'categories.name as nameCategory', 'coupons.discount_code', DB::raw('MIN(img_products.img) as imgName'))
+            ->groupBy('products.product_id', 'categories.name', 'coupons.discount_code', 'products.price', 'products.name')
             ->orderBy('products.created_at', 'DESC')
             ->limit(6)
             ->get();
@@ -292,7 +328,8 @@ class ShopController extends Controller
         $cartItems = CartDetail::join('cart_products', 'cart_products.cart_id', '=', 'cart_details.cart_id')
             ->join('products', 'products.product_id', '=', 'cart_details.product_id')
             ->join('categories', 'categories.category_id', '=', 'products.category_id')
-            ->leftJoin('sale_products', 'sale_products.product_id', '=', 'products.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
             ->where('cart_products.user_id', $user->user_id)
             ->select(
@@ -304,9 +341,10 @@ class ShopController extends Controller
                 'products.price',
                 'categories.name as nameCategory',
                 DB::raw('GROUP_CONCAT(img_products.img) as img_array'),
-                'sale_products.discount',
-                'sale_products.time_start as dateStartSale',
-                'sale_products.time_end as dateEndSale'
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start as dateStartSale',
+                'coupons.time_end as dateEndSale'
             )
             ->groupBy(
                 'cart_products.cart_id',
@@ -320,9 +358,10 @@ class ShopController extends Controller
                 'categories.name',
                 'products.name',
                 'products.price',
-                'sale_products.discount',
-                'sale_products.time_start',
-                'sale_products.time_end'
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start',
+                'coupons.time_end'
             )
             ->get();
 
@@ -396,7 +435,7 @@ class ShopController extends Controller
                 $cartItem = CartDetail::where('cart_id', $cart->cart_id)
                     ->where('cart_detail_id', $cartDetailId)
                     ->first();
-                
+
                 if ($cartItem) {
                     $cartItem->quantity = $quantity;
                     $cartItem->save();
@@ -407,10 +446,10 @@ class ShopController extends Controller
         // Xóa row cart
         if ($request->has('remove')) {
             foreach ($request->remove as $cartDetailIdRemove => $isRemove) {
-                if($isRemove){
+                if ($isRemove) {
                     $cartItem = CartDetail::where('cart_id', $cart->cart_id)
-                    ->where('cart_detail_id', $cartDetailIdRemove)
-                    ->first();
+                        ->where('cart_detail_id', $cartDetailIdRemove)
+                        ->first();
                     // dd($cartItem);
                     if ($cartItem) {
                         $cartItem->delete();
@@ -437,8 +476,11 @@ class ShopController extends Controller
         $cart = CartProduct::where('user_id', $user_id)
             ->join('products', 'products.product_id', '=', 'cart_products.product_id')
             ->join('img_products', 'img_products.product_id', 'products.product_id')
-            ->select('cart_products.*', 'products.*', DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(img_products.img), ",", 1) as img_first')
-        )
+            ->select(
+                'cart_products.*',
+                'products.*',
+                DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(img_products.img), ",", 1) as img_first')
+            )
             ->groupBy(
                 'products.product_id',
                 'cart_products.cart_id',
@@ -456,6 +498,4 @@ class ShopController extends Controller
             ->get();
         return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'cart' => $cart]);
     }
-
-
 }

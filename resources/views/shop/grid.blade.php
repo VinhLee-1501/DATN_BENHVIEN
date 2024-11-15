@@ -112,32 +112,27 @@
                                     @foreach ($chunkedProductsNew as $chunkNew)
                                         <div class="latest-prdouct__slider__item">
                                             @foreach ($chunkNew as $productNewItem)
-                                                @if ($productNewItem)
-                                                    @php
-                                                        $originalPrice = $productNewItem->price;
-                                                        $discount = $productNewItem->discount;
-                                                        if ($discount >= 1000) {
-                                                            $discountedPrice = $originalPrice - $discount;
-                                                            $discountPercent = ($discount / $originalPrice) * 100;
-                                                        } elseif ($discount < 100) {
-                                                            $discountedPrice =
-                                                                $originalPrice - ($originalPrice * $discount) / 100;
-                                                            $discountPercent = $discount;
-                                                        } else {
-                                                            $discountedPrice = $originalPrice;
-                                                        }
-                                                    @endphp <a
-                                                        href="{{ route('shop.shop-details', $productNewItem->product_id) }}"
-                                                        class="latest-product__item">
-                                                        <div class="latest-product__item__pic w-25"> <img
-                                                                src="{{ isset($productNewItem->imgName) ? asset('storage/uploads/products/' . $productNewItem->imgName) : asset('frontend/shop/img/image.jpg') }}"
-                                                                alt="{{ $productNewItem->name }}"> </div>
-                                                        <div class="latest-product__item__text">
-                                                            <span style="font-weight: normal; font-size: 15px">{{ $productNewItem->name }}</span>
-                                                            <span style="font-size: 14px">{{ Number::currency($discountedPrice, 'VND', 'vi') }} VND</span>
-                                                        </div>
-                                                    </a>
-                                                @endif
+                                                @php
+                                                    $price = $productNewItem->price;
+                                                    $discountedPrice = $price;
+                                                    if ($productNewItem->discount_code) {
+                                                        $percent = $productNewItem->percent;
+                                                        $discountedPrice = $price - ($price * $percent) / 100;
+                                                    }
+                                                @endphp <a
+                                                    href="{{ route('shop.shop-details', $productNewItem->product_id) }}"
+                                                    class="latest-product__item">
+                                                    <div class="latest-product__item__pic w-25"> <img
+                                                            src="{{ isset($productNewItem->imgName) ? asset('storage/uploads/products/' . $productNewItem->imgName) : asset('frontend/shop/img/image.jpg') }}"
+                                                            alt="{{ $productNewItem->name }}"> </div>
+                                                    <div class="latest-product__item__text">
+                                                        <span
+                                                            style="font-weight: normal; font-size: 15px">{{ $productNewItem->name }}</span>
+                                                        <span
+                                                            style="font-size: 14px">{{ Number::currency($discountedPrice, 'VND', 'vi') }}
+                                                            VND</span>
+                                                    </div>
+                                                </a>
                                             @endforeach
                                         </div>
                                     @endforeach
@@ -156,16 +151,11 @@
 
                                 @foreach ($SelectProductWithsaleProduct as $saleProductItem)
                                     @php
-                                        $originalPrice = $saleProductItem->price;
-                                        $discount = $saleProductItem->discount;
-                                        if ($discount >= 1000) {
-                                            $discountedPrice = $originalPrice - $discount;
-                                            $discountPercent = ($discount / $originalPrice) * 100;
-                                        } elseif ($discount < 100) {
-                                            $discountedPrice = $originalPrice - ($originalPrice * $discount) / 100;
-                                            $discountPercent = $discount;
-                                        } else {
-                                            $discountedPrice = $originalPrice;
+                                        $price = $saleProductItem->price;
+                                        $discountedPrice = $price;
+                                        if ($saleProductItem->discount_code) {
+                                            $percent = $saleProductItem->percent;
+                                            $discountedPrice = ($price * $percent) / 100;
                                         }
                                     @endphp
                                     <div class="col-lg-4">
@@ -173,7 +163,7 @@
                                             <div class="product__discount__item__pic set-bg"
                                                 data-setbg="{{ asset('storage/uploads/products/' . $saleProductItem->imgNameSale) }} ">
                                                 <div class="product__discount__percent">
-                                                    {{ Number::percentage($discountPercent) }}
+                                                    {{ $percent }}%
                                                 </div>
                                                 <ul class="product__item__pic__hover">
                                                     <form
@@ -196,7 +186,7 @@
                                                 </h5>
                                                 <div class="product__item__price">
                                                     {{ Number::currency($discountedPrice, 'VND', 'vi') }}
-                                                    <span>{{ Number::currency($originalPrice, 'VND', 'vi') }}</span>
+                                                    <span>{{ Number::currency($price, 'VND', 'vi') }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -232,20 +222,11 @@
                     <div class="row">
                         @foreach ($prodcutsActive as $prodcutsActiveItem)
                             @php
-                                $originalPriceProductActive = $prodcutsActiveItem->price;
-                                $discountProductActive = $prodcutsActiveItem->discount;
-                                if ($discountProductActive >= 1000) {
-                                    $discountedPriceProductActive =
-                                        $originalPriceProductActive - $discountProductActive;
-                                    $discountPercentProductActive =
-                                        ($discountProductActive / $originalPriceProductActive) * 100;
-                                } elseif ($discountProductActive < 100) {
-                                    $discountPercentProductActive =
-                                        $originalPriceProductActive -
-                                        ($originalPriceProductActive * $discountProductActive) / 100;
-                                    $discountPercentProductActive = $discountProductActive;
-                                } else {
-                                    $discountPercentProductActive = $originalPriceProductActive;
+                                $price = $prodcutsActiveItem->price;
+                                $discountedPriceProductActive = $price;
+                                if ($prodcutsActiveItem->discount_code) {
+                                    $percent = $prodcutsActiveItem->percent;
+                                    $discountedPriceProductActive = ($price * $percent) / 100;
                                 }
                             @endphp
                             <div class="col-lg-3 col-md-4 col-sm-6">
@@ -254,13 +235,14 @@
                                         data-setbg="{{ isset($prodcutsActiveItem->imgName) ? asset('storage/uploads/products/' . $prodcutsActiveItem->imgName) : asset('frontend/shop/img/image.jpg') }}">
                                         @if ($prodcutsActiveItem->dateStartSale <= NOW() && $prodcutsActiveItem->dateEndSale >= NOW())
                                             <div class="sale_product">
-                                                {{ Number::percentage($discountPercentProductActive) }}
+                                                {{ $percent }}%
                                             </div>
                                         @endif
                                         <ul class="product__item__pic__hover">
                                             <form
                                                 action="{{ route('shop.addProductTocart', $prodcutsActiveItem->product_id) }}"
-                                                method="POST" id="add-to-cart-form-{{ $prodcutsActiveItem->product_id }}">
+                                                method="POST"
+                                                id="add-to-cart-form-{{ $prodcutsActiveItem->product_id }}">
                                                 @csrf
                                                 <input type="text" name="quanlity" value="1" hidden>
                                                 <button type="submit" class="btn-add-to-cart">
@@ -278,9 +260,9 @@
                                             @if ($prodcutsActiveItem->dateStartSale <= now() && $prodcutsActiveItem->dateEndSale >= now())
                                                 {{ Number::currency($discountedPriceProductActive, 'VND', 'vi') }}
                                                 <span
-                                                    class="price_sale">{{ Number::currency($originalPriceProductActive, 'VND', 'vi') }}</span>
+                                                    class="price_sale">{{ Number::currency($price, 'VND', 'vi') }}</span>
                                             @else
-                                                {{ Number::currency($originalPriceProductActive, 'VND', 'vi') }}
+                                                {{ Number::currency($price, 'VND', 'vi') }}
                                             @endif
                                         </h5>
                                     </div>

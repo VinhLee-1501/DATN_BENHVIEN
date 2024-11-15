@@ -48,20 +48,11 @@
                                 <tbody>
                                     @foreach ($cartItems as $item)
                                         @php
-                                            $originalPriceProductCart = $item->price;
-                                            $discountProductCart = $item->discount;
-                                            if ($discountProductCart >= 1000) {
-                                                $discountedPriceProductCart =
-                                                    $originalPriceProductCart - $discountProductCart;
-                                                $discountPercentProductCart =
-                                                    ($discountProductCart / $originalPriceProductCart) * 100;
-                                            } elseif ($discountProductCart < 100) {
-                                                $discountedPriceProductCart =
-                                                    $originalPriceProductCart -
-                                                    ($originalPriceProductCart * $discountProductCart) / 100;
-                                                $discountPercentProductCart = $discountProductCart;
-                                            } else {
-                                                $discountedPriceProductCart = $originalPriceProductCart;
+                                            $price = $item->price;
+                                            $discounted = $price;
+                                            if ($item->discount_code) {
+                                                $percent = $item->percent;
+                                                $discounted = ($price * $percent) / 100;
                                             }
                                         @endphp
                                         <tr>
@@ -70,17 +61,18 @@
                                                     class="w-25" alt="">
                                                 <h6>{{ $item->productName }}</h6>
                                                 <input type="hidden" value="{{ $item->cartId }}" name="cart_id">
-                                                <input type="hidden" value="{{ $item->cart_detail_id }}" name="cart_detail_id">
+                                                <input type="hidden" value="{{ $item->cart_detail_id }}"
+                                                    name="cart_detail_id">
                                             </td>
                                             <td class="shoping__cart__price w-auto">
                                                 @if ($item->dateStartSale <= now() && $item->dateEndSale >= now())
                                                     <span
-                                                        id="price_discount">{{ Number::currency($discountedPriceProductCart, 'VND', 'vi') }}</span>
+                                                        id="price_discount">{{ Number::currency($discounted, 'VND', 'vi') }}</span>
                                                     <span
-                                                        class="price_sale">{{ Number::currency($originalPriceProductCart, 'VND', 'vi') }}</span>
+                                                        class="price_sale">{{ Number::currency($price, 'VND', 'vi') }}</span>
                                                 @else
                                                     <span
-                                                        class="price_origin">{{ Number::currency($originalPriceProductCart, 'VND', 'vi') }}</span>
+                                                        class="price_origin">{{ Number::currency($price, 'VND', 'vi') }}</span>
                                                 @endif
                                             </td>
                                             <td class="shoping__cart__quantity">
@@ -96,8 +88,8 @@
                                                 {{-- {{ Number::currency($item->total_price, 'VND', 'vi') }} --}}
                                             </td>
                                             <td class="shoping__cart__item__close">
-                                                <input type="checkbox" name="remove[{{ $item->cart_detail_id }}]" value="1"
-                                                    class="remove-item-checkbox">
+                                                <input type="checkbox" name="remove[{{ $item->cart_detail_id }}]"
+                                                    value="1" class="remove-item-checkbox">
                                             </td>
                                         </tr>
                                     @endforeach

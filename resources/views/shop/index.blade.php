@@ -106,32 +106,33 @@
                             @foreach ($chunkedProductsNew as $chunkNew)
                                 <div class="latest-prdouct__slider__item">
                                     @foreach ($chunkNew as $productNewItem)
-                                        @if ($productNewItem)
-                                            @php
-                                                $originalPrice = $productNewItem->price;
-                                                $discount = $productNewItem->discount;
-                                                if ($discount >= 1000) {
-                                                    $discountedPrice = $originalPrice - $discount;
-                                                    $discountPercent = ($discount / $originalPrice) * 100;
-                                                } elseif ($discount < 100) {
-                                                    $discountedPrice =
-                                                        $originalPrice - ($originalPrice * $discount) / 100;
-                                                    $discountPercent = $discount;
-                                                } else {
-                                                    $discountedPrice = $originalPrice;
-                                                }
-                                            @endphp <a
-                                                href="{{ route('shop.shop-details', $productNewItem->product_id) }}"
-                                                class="latest-product__item">
-                                                <div class="latest-product__item__pic"> <img
-                                                        src="{{ isset($productNewItem->imgName) ? asset('storage/uploads/products/' . $productNewItem->imgName) : asset('frontend/shop/img/image.jpg') }}"
-                                                        alt=""> </div>
-                                                <div class="latest-product__item__text">
-                                                    <h6>{{ $productNewItem->name }}</h6>
-                                                    <span>{{ Number::currency($discountedPrice, 'VND', 'vi') }}</span>
-                                                </div>
-                                            </a>
-                                        @endif
+                                        <a href="{{ route('shop.shop-details', $productNewItem->product_id) }}"
+                                            class="latest-product__item">
+                                            <div class="latest-product__item__pic w-50"> <img
+                                                    src="{{ isset($productNewItem->imgName) ? asset('storage/uploads/products/' . $productNewItem->imgName) : asset('frontend/shop/img/image.jpg') }}"
+                                                    alt=""> </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>{{ $productNewItem->name }}</h6>
+                                                <span>
+                                                    @php
+                                                        $price = $productNewItem->price;
+                                                        $discountedPrice = $price; // Default to the original price if no discount
+                                                        if (
+                                                            $productNewItem->discount_code &&
+                                                            !$productNewItem->discount_code->isEmpty()
+                                                        ) {
+                                                            $discount =
+                                                                $productNewItem->discount_code->discount_percentage; // Giả sử bạn lưu tỷ lệ % giảm trong discount_code
+                                                            $discountedPrice = $price - ($price * $discount) / 100;
+                                                        }
+                                                    @endphp
+                                                    @if ($discountedPrice < $price)
+                                                        <span
+                                                            class="price-sale">{{ Number::currency($price, 'VND', 'vi') }}</span>
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        </a>
                                     @endforeach
                                 </div>
                             @endforeach
@@ -216,38 +217,35 @@
                             @foreach ($chunkedProductsSale as $chunk)
                                 <div class="latest-prdouct__slider__item">
                                     @foreach ($chunk as $productSales)
-                                        @if ($productSales)
-                                            @php
-                                                $originalPrice = $productSales->price;
-                                                $discount = $productSales->discount;
-                                                if ($discount >= 1000) {
-                                                    $discountedPrice = $originalPrice - $discount;
-                                                    $discountPercent = ($discount / $originalPrice) * 100;
-                                                } elseif ($discount < 100) {
-                                                    $discountedPrice =
-                                                        $originalPrice - ($originalPrice * $discount) / 100;
-                                                    $discountPercent = $discount;
-                                                } else {
-                                                    $discountedPrice = $originalPrice;
-                                                }
-                                            @endphp <a
-                                                href="{{ route('shop.shop-details', $productSales->product_id) }}"
-                                                class="latest-product__item">
-                                                <div class="latest-product__item__pic w-25"> <img
-                                                        src="{{ isset($productSales->imgName) ? asset('storage/uploads/products/' . $productSales->imgName) : asset('frontend/shop/img/latest-product/lp-1.jpg') }}"
-                                                        alt="{{ $productSales->name }}"> </div>
-                                                <div class="latest-product__item__text">
-                                                    <h6>{{ $productSales->name }}</h6>
-                                                    <span>{{ Number::currency($discountedPrice, 'VND', 'vi') }}</span>
-                                                    <span
-                                                        style="color: #b2b2b2;
+                                        <a href="{{ route('shop.shop-details', $productSales->product_id) }}"
+                                            class="latest-product__item">
+                                            <div class="latest-product__item__pic w-50"> <img
+                                                    src="{{ isset($productSales->imgName) ? asset('storage/uploads/products/' . $productSales->imgName) : asset('frontend/shop/img/latest-product/lp-1.jpg') }}"
+                                                    alt="{{ $productSales->name }}"> </div>
+                                            <div class="latest-product__item__text">
+                                                <h6>{{ $productSales->name }}</h6>
+                                                <span>
+                                                    @php
+                                                        $price = $productSales->price;
+                                                        if (
+                                                            $productSales->discount_code &&
+                                                            !$productSales->discount_code->isEmpty()
+                                                        ) {
+                                                            $discount =
+                                                                $productSales->discount_code->discount_percentage;
+                                                            $discountedPrice = $price - ($price * $discount) / 100;
+                                                        }
+                                                    @endphp
+                                                    {{ Number::currency($discountedPrice, 'VND', 'vi') }}
+                                                </span>
+                                                <span
+                                                    style="color: #b2b2b2;
                                                         font-size: 14px;
                                                         font-weight: 400;
-                                                        text-decoration: line-through;">{{ Number::currency($originalPrice, 'VND', 'vi') }}
-                                                        </span>
-                                                </div>
-                                            </a>
-                                        @endif
+                                                        text-decoration: line-through;">{{ Number::currency($productSales->price, 'VND', 'vi') }}
+                                                </span>
+                                            </div>
+                                        </a>
                                     @endforeach
                                 </div>
                             @endforeach

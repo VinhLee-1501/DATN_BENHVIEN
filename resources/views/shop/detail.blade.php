@@ -59,7 +59,8 @@
                         <div class="product__details__pic__slider owl-carousel">
                             @for ($i = 0; $i < count($productById->img_array); $i++)
                                 <img data-imgbigurl="{{ asset('storage/uploads/products/' . $productById->img_array[$i]) }}"
-                                    src="{{ asset('storage/uploads/products/' . $productById->img_array[$i])}}" alt="">
+                                    src="{{ asset('storage/uploads/products/' . $productById->img_array[$i]) }}"
+                                    alt="">
                             @endfor
                         </div>
                     </div>
@@ -76,24 +77,19 @@
                             <span>(18 đánh giá)</span>
                         </div>
                         @php
-                            $originalPrice = $productById->price;
-                            $discount = $productById->discount;
-                            if ($discount >= 1000) {
-                                $discountedPrice = $originalPrice - $discount;
-                                $discountPercent = ($discount / $originalPrice) * 100;
-                            } elseif ($discount < 100) {
-                                $discountedPrice = $originalPrice - ($originalPrice * $discount) / 100;
-                                $discountPercent = $discount;
-                            } else {
-                                $discountedPrice = $originalPrice;
+                            $price = $productById->price;
+                            $discountedPriceProductId = $price;
+                            if ($productById->discount_code) {
+                                $percent = $productById->percent;
+                                $discountedPriceProductId = ($price * $percent) / 100;
                             }
                         @endphp
                         <div class="product__details__price">Giá:
                             @if ($productById->dateStartSale <= NOW() && $productById->dateEndSale >= NOW())
-                                {{ Number::currency($discountedPrice, 'VND', 'vi') }}
-                                <span class="price_sale_detail">{{ Number::currency($originalPrice, 'VND', 'vi') }}</span>
+                                {{ Number::currency($discountedPriceProductId, 'VND', 'vi') }}
+                                <span class="price_sale_detail">{{ Number::currency($price, 'VND', 'vi') }}</span>
                             @else
-                                {{ Number::currency($originalPrice, 'VND', 'vi') }}
+                                {{ Number::currency($price, 'VND', 'vi') }}
                             @endif
                         </div>
                         <p>{{ $productById->used }}</p>
@@ -163,16 +159,11 @@
             <div class="row">
                 @foreach ($productByCategory as $productByCategoryItem)
                     @php
-                        $originalPrice = $productByCategoryItem->price;
-                        $discount = $productByCategoryItem->discount;
-                        if ($discount >= 1000) {
-                            $discountedPrice = $originalPrice - $discount;
-                            $discountPercent = ($discount / $originalPrice) * 100;
-                        } elseif ($discount < 100) {
-                            $discountedPrice = $originalPrice - ($originalPrice * $discount) / 100;
-                            $discountPercent = $discount;
-                        } else {
-                            $discountedPrice = $originalPrice;
+                        $price = $productByCategoryItem->price;
+                        $discountedPriceCategory = $price;
+                        if ($productByCategoryItem->discount_code) {
+                            $percent = $productByCategoryItem->percent;
+                            $discountedPriceCategory = ($price * $percent) / 100;
                         }
                     @endphp
                     <div class="col-lg-3 col-md-4 col-sm-6">
@@ -181,7 +172,7 @@
                                 data-setbg="{{ asset('storage/uploads/products/' . $productByCategoryItem->img_array[0]) }}">
                                 @if ($productByCategoryItem->dateStartSale <= NOW() && $productByCategoryItem->dateEndSale >= NOW())
                                     <div class="sale_product">
-                                        {{ Number::percentage($discountPercent) }}
+                                        {{ $percent }}%
                                     </div>
                                 @endif
                                 <ul class="product__item__pic__hover">
@@ -194,10 +185,10 @@
                                 </h6>
                                 <h5>
                                     @if ($productByCategoryItem->dateStartSale <= NOW() && $productByCategoryItem->dateEndSale >= NOW())
-                                        {{ Number::currency($discountedPrice, 'VND', 'vi') }}
-                                        <span class="price_sale">{{ Number::currency($originalPrice, 'VND', 'vi') }}</span>
+                                        {{ Number::currency($discountedPriceCategory, 'VND', 'vi') }}
+                                        <span class="price_sale">{{ Number::currency($price, 'VND', 'vi') }}</span>
                                     @else
-                                        {{ Number::currency($originalPrice, 'VND', 'vi') }}
+                                        {{ Number::currency($price, 'VND', 'vi') }}
                                     @endif
                                 </h5>
                             </div>
