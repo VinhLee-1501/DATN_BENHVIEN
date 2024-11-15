@@ -1,5 +1,5 @@
 @extends('layouts.admin.master')
-
+@section('Quản lí dịch vụ')
 @section('content')
     <style>
         .select2-container--default .select2-selection--single {
@@ -38,7 +38,7 @@
                     Dừng
                 </a>
             </div>
-            <div class="table">
+            <div class="table text-nowrap mb-0 align-middle">
                 @if (isset($service))
                     <form id="searchForm" action="{{ route('system.service') }}" class="d-flex position-relative"
                         method="get">
@@ -76,7 +76,7 @@
                 </form>
 
                 <!-- Form Xóa Bài Viết -->
-                {{-- <form id="deleteForm" action="{{ route('system.services.multipledelete') }}" method="POST"> --}}
+                <form id="deleteForm" action="{{ route('system.services.multipledelete') }}" method="POST">
                     @csrf
                     @method('delete')
                     <table class="table text-nowrap mb-0 align-middle">
@@ -147,17 +147,10 @@
                                                     data-directory-id="{{ $data->directory_id }}">
                                                     <i class="ti ti-pencil"></i>
                                                 </a>
-                                                <form action="{{ route('system.services.delete', $data->row_id) }}"
-                                                    id="form-delete{{ $data->row_id }}" method="post">
-                                                    @method('delete')
-                                                    @csrf
-                                                </form>
-                                                <button type="submit" class="btn btn-danger btn-delete"
-                                                    data-id="{{ $data->row_id  }}">
+                                                <a href="{{ route('system.services.delete', $data->row_id) }}"
+                                                    class="btn btn-danger btn-delete me-1" id="form-delete">
                                                     <i class="ti ti-trash"></i>
-                                                </button>
-
-                                            
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -582,6 +575,26 @@
                     });
                 });
 
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Lắng nghe sự kiện click của tất cả các nút xóa
+                document.querySelectorAll('.btn-delete').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        // Ngừng hành động mặc định của nút
+                        e.preventDefault();
+
+                        // Xác nhận trước khi xóa
+
+
+                        if (confirmDelete) {
+                            // Tìm form tương ứng và gửi form nếu người dùng xác nhận
+                            const form = this.closest('form');
+                            form.submit();
+                        }
+                    });
+                });
             });
         </script>
     @endpush

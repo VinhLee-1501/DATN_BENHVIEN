@@ -1,5 +1,5 @@
 @extends('layouts.admin.master')
-
+@section('Quản lí bài viết')
 @section('content')
     <div class="card w-100">
         <div class="card-body p-4">
@@ -116,7 +116,7 @@
                     </table>
                 </form>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $blogs->links() }}
+                    {{ $blogs->appends(['search' => $search])->links() }}
                 </div>
             </div>
         </div>

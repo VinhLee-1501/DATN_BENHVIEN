@@ -316,9 +316,10 @@
                                     </svg>
                                 </span>
                                 <span class="hide-menu">QL mã giảm giá</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item {{ request()->routeIs('system.order') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.order') }}"
-                                aria-expanded="false">
+                            <a class="sidebar-link" href="{{ route('system.order') }}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-receipt-2"></i>
                                 </span>
@@ -326,8 +327,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('system.service') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.service') }}"
-                                aria-expanded="false">
+                            <a class="sidebar-link" href="{{ route('system.service') }}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-first-aid-kit"></i>
                                 </span>
@@ -335,8 +335,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('system.serviceType') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.serviceType') }}"
-                                aria-expanded="false">
+                            <a class="sidebar-link" href="{{ route('system.serviceType') }}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-report-medical"></i>
                                 </span>

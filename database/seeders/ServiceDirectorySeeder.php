@@ -27,31 +27,31 @@ class ServiceDirectorySeeder extends Seeder
         ServiceDirectory::create([
             'directory_id' => 'DIRECTORY1',
             'name' => 'X-Quang',
-            'status' => '0',
+            'status' => 0,
         ]);
 
         ServiceDirectory::create([
             'directory_id' => 'DIRECTORY2',
             'name' => 'Siêu âm',
-            'status' => 'Hoạt động',
+            'status' => 0,
         ]);
         
         ServiceDirectory::create([
             'directory_id' => 'DIRECTORY3',
             'name' => 'Nội soi',
-            'status' => 'Hoạt động',
+            'status' => 0,
         ]);
         
         ServiceDirectory::create([
             'directory_id' => 'DIRECTORY4',
             'name' => 'Xét nghiệm máu',
-            'status' => 'Hoạt động',
+            'status' => 0,
         ]);
         
         ServiceDirectory::create([
             'directory_id' => 'DIRECTORY5',
             'name' => 'Chụp CT',
-            'status' => 'Hoạt động',
+            'status' => 0,
         ]);
         
     }

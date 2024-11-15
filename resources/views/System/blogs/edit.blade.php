@@ -1,5 +1,5 @@
 @extends('layouts.admin.master')
-
+@section('Cập nhật bài viết')
 @section('content')
     <div class="card-body">
 

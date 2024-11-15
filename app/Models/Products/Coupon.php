@@ -9,15 +9,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Coupon extends Model
 {
+    protected $table = 'coupons';
     protected $primaryKey = 'coupon_id';
     protected $keyType = 'integer';
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'coupon_id',
-        'discount',
+        'discount_code',
+        'type',
+        'percent',
+        'use_limit',
+        'min_purchase',
+        'product_id',
+        'category_id',
         'time_end',
-        'discount',
+        'time_start',
+        'note'
        
     ];
 
@@ -26,4 +33,16 @@ class Coupon extends Model
     {
         return $this->hasMany(Order::class, 'coupon_id', 'coupon_id');
     }
+    
+    public function CategorySale()
+    {
+        return $this->belongsTo(CategorySale::class, 'category_id', 'category_id');
+    }
+    
+    public function ProductSale()
+    {
+        return $this->belongsTo(ProductSale::class, 'product_id', 'product_id');
+    }
+
+    
 }

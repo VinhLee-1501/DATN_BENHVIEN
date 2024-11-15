@@ -1,5 +1,5 @@
 @extends('layouts.admin.master')
-
+@section('Quản lí nhóm dịch vụ')
 @section('content')
     <div class="card w-100">
         <div class="card-body p-4">

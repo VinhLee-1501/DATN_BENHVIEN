@@ -136,7 +136,6 @@
       <path value="$PROJECT_DIR$/vendor/socialiteproviders/manager" />
       <path value="$PROJECT_DIR$/vendor/socialiteproviders/zalo" />
       <path value="$PROJECT_DIR$/vendor/intervention/image" />
-<<<<<<< Updated upstream
       <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-dompdf" />
       <path value="$PROJECT_DIR$/vendor/dompdf/php-svg-lib" />
       <path value="$PROJECT_DIR$/vendor/dompdf/php-font-lib" />
@@ -144,14 +143,6 @@
       <path value="$PROJECT_DIR$/vendor/dompdf/dompdf" />
       <path value="$PROJECT_DIR$/vendor/sabberworm/php-css-parser" />
       <path value="$PROJECT_DIR$/vendor/picqer/php-barcode-generator" />
-=======
-      <path value="$PROJECT_DIR$/vendor/dompdf/php-font-lib" />
-      <path value="$PROJECT_DIR$/vendor/masterminds/html5" />
-      <path value="$PROJECT_DIR$/vendor/dompdf/dompdf" />
-      <path value="$PROJECT_DIR$/vendor/dompdf/php-svg-lib" />
-      <path value="$PROJECT_DIR$/vendor/sabberworm/php-css-parser" />
-      <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-dompdf" />
->>>>>>> Stashed changes
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
@@ -160,7 +151,7 @@
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/phpunit.xml" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" use_configuration_file="true" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" />
     </phpunit_settings>
   </component>
   <component name="PsalmOptionsConfiguration">

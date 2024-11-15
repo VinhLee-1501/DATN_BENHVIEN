@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id('coupon_id')->primary();
-            $table->string('discount', 10);
-            $table->datetime('time_start');
-            $table->datetime('time_end');
+            $table->string('discount_code', 10);
+            $table->integer('type')->default(0)->comment('0 bill, 1 sản phẩm, 2 danh mục');
+            $table->integer('percent');
+            $table->integer('use_limit');
+            $table->integer('min_purchase')->nullable();
+            $table->string('note');
+            $table->date('time_start'); 
+            $table->date('time_end');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -29,3 +34,4 @@ return new class extends Migration
         Schema::dropIfExists('coupons');
     }
 };
+

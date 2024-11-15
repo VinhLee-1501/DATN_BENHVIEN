@@ -25,93 +25,90 @@ class BlogController extends Controller
 
     public function store(ValidationRequest $request)
     {
-        
-            $blog = new Blog();
-            $blog->title = $request->input('title');
-            $content = $request->input('content');
 
-            preg_match_all('/<img src="data:image\/(?<type>[^;]+);base64,(?<data>[^"]+)"/', $content, $matches);
+        $blog = new Blog();
+        $blog->title = $request->input('title');
+        $content = $request->input('content');
 
-            if (!empty($matches['data'])) {
-                foreach ($matches['data'] as $key => $data) {
-                    $imageData = base64_decode($data);
-                    $imageName = 'image_' . time() . '_' . $key . '.' . $matches['type'][$key];
+        preg_match_all('/<img src="data:image\/(?<type>[^;]+);base64,(?<data>[^"]+)"/', $content, $matches);
 
-                    $image = Image::make($imageData);
+        if (!empty($matches['data'])) {
+            foreach ($matches['data'] as $key => $data) {
 
-                    $quality = 70;
-                    $image->encode($matches['type'][$key], $quality);
+                $imageData = base64_decode($data);
+                $imageName = 'image_' . time() . '_' . $key . '.' . $matches['type'][$key];
 
-                    Storage::disk('public')->put('uploads/' . $imageName, (string) $image);
+                $image = Image::make($imageData);
+
+                $quality = 75;
+
+                $image->encode($matches['type'][$key], $quality);
+
+                Storage::disk('public')->put('uploads/' . $imageName, (string) $image);
 
                 $content = str_replace($matches[0][$key], '<img src="http://127.0.0.1:8000/storage/uploads/' . $imageName . '"', $content);
             }
         }
-
+        // Lưu nội dung đã cập nhật vào cơ sở dữ liệu
         $blog->content = $content;
         $blog->describe = $request->input('describe');
         $blog->author = $request->input('author');
         $blog->date = $request->input('date') ?? now();
         $blog->slug = Str::slug($request->input('title'));
-        // $blog->blog_id = $uniqueId;
         $blog->status = $request->input('status');
 
 
-        if (!session()->has('upload_file')) {
+        if (!session()->has('uploaded_file_path')) {
 
-            $firstImageData = $matches['data'][0]; // Dữ liệu base64 của ảnh đầu tiên
+            $firstImageData = $matches['data'][0];
 
-            // Gán chỉ dữ liệu base64 làm thumbnail
             $blog->thumbnail = $firstImageData;
         } else {
-            $base64Image = session('upload_file');
-            $blog->thumbnail = $base64Image;
-            session()->forget('upload_file');
+
+            $path = session('uploaded_file_path');
+
+            $blog->thumbnail = $path;
+
+            session()->forget('uploaded_file_path');
         }
 
-            $blog->save();
+        $blog->save();
 
-            return redirect()->route('system.blog')->with('success', 'Thêm mới thành công.');
-       
+
+        return redirect()->route('system.blog')->with('success', 'Thêm mới thành công.');
     }
 
 
-
-    public function uploadfile()
+    public function uploadfile(Request $request)
     {
-        if (request()->hasFile('thumbnail')) {
-            $file = request()->file('thumbnail');
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
 
-            // Kiểm tra kích thước tệp
-            if ($file->getSize() > 500 * 1024) { // Kiểm tra nếu kích thước lớn hơn 800KB
-                // Giảm dung lượng ảnh xuống 70%
-                $image = Image::make($file->getRealPath())
-                    ->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })
-                    ->encode('jpg', 70); // Định dạng và chất lượng ảnh
-            } else {
-                // Nếu kích thước nhỏ hơn hoặc bằng 800KB, không thay đổi gì
-                $image = Image::make($file->getRealPath())
-                    ->encode('jpg', 100); // Giữ nguyên chất lượng
+            // Tạo tên cho tệp hình ảnh
+            $imageName = time() . '_' . $file->getClientOriginalName();
+
+            $filePath = 'uploads/' . $imageName;
+
+            // Lưu tệp hình ảnh vào thư mục uploads
+            Storage::disk('public')->put($filePath, file_get_contents($file->getRealPath()));
+
+            // Lưu đường dẫn của tệp đã tải lên vào session
+            session(['uploaded_file_path' => $filePath]);
+        }
+    }
+
+
+    public function revertfile(Request $request)
+    {
+        if (Session()->has('uploaded_file_path')) {
+            $filePath = session('uploaded_file_path');
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
             }
-
-            // Lấy nội dung ảnh sau khi giảm dung lượng
-            $fileData = $image->getEncoded();
-
-            // Chuyển đổi nội dung ảnh sang base64
-            $fileBase64 = base64_encode($fileData);
-
-            // Lưu base64 vào session
-            session(['upload_file' => $fileBase64]);
         }
-    }
 
-
-    public function revertfile()
-    {
-        session()->forget('upload_file');
+        // Nếu không có tên file, xóa session (nếu cần)
+        session()->forget('uploaded_file_path');
     }
 
 
@@ -132,44 +129,42 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $this->updatestatus();
-    
-        // Lấy giá trị tìm kiếm từ request
+
         $search = $request->input('search', '');
-    
-        // Lấy các blog_id cần xóa từ request
+
         $delete = $request->input('blog_id', []);
-    
-        // Xử lý xóa các bài viết
+
         if (!empty($delete)) {
             Blog::whereIn('id', $delete)->delete();
             return redirect()->route('system.blog')->with('success', 'Đã xóa các bài viết được chọn.');
         }
-    
-        // Lấy số lượng phần tử trên mỗi trang, mặc định là 5
-        $itemsPerPage = $request->input('itemsPerPage', 5);
-    
-        // Nếu có từ khóa tìm kiếm, thực hiện tìm kiếm và phân trang
+
+        $itemsPerPage = request()->input('itemsPerPage', 5);
+
         if ($search) {
             $blogs = Blog::where('title', 'LIKE', "%$search%")
                 ->orderBy('created_at', 'desc')
-                ->paginate($itemsPerPage); // Sử dụng $itemsPerPage cho phân trang
+                ->paginate(5);
         } else {
-            // Nếu không tìm kiếm, chỉ phân trang theo $itemsPerPage
             $blogs = Blog::orderBy('created_at', 'desc')->paginate($itemsPerPage);
         }
-    
-        // Trả về view với các tham số cần thiết
+
         return view('System.blogs.index', [
             'blogs' => $blogs,
             'search' => $search
         ]);
     }
-    
 
 
 
     public function resetsearch()
     {
+        // $oldsearch = session()->get('search', '');
+
+        // session()->forget('search');
+
+        // session()->flash('oldsearch', $oldsearch);
+
         return redirect()->route('system.blog');
     }
 
@@ -200,7 +195,7 @@ class BlogController extends Controller
 
                 $image = Image::make($imageData);
 
-                $quality = 70;
+                $quality = 75;
 
                 $image->encode($matches['type'][$key], $quality);
 
@@ -216,18 +211,18 @@ class BlogController extends Controller
         $blog->status = $request->input('status');
 
 
-        if (!session()->has('upload_file')) {
+        if (!session()->has('uploaded_file_path')) {
 
             $firstImageData = $matches['data'][0];
 
             $blog->thumbnail = $firstImageData;
         } else {
 
-            $base64Image = session('upload_file');
+            $base64Image = session('uploaded_file_path');
 
             $blog->thumbnail = $base64Image;
 
-            session()->forget('upload_file');
+            session()->forget('uploaded_file_path');
         }
 
         $blog->update();

@@ -28,4 +28,10 @@ class Category extends Model
     {
         return $this->belongsTo(ParentCategory::class, 'parent_id', 'parent_id');
     }
+
+    public function CategorySale()
+    {
+        return $this->hasMany(CategorySale::class, 'category_id', 'category_id');
+    }
+
 }

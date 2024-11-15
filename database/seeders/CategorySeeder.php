@@ -17,19 +17,19 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->insert(
             [
-                ['category_id' => 1,  'name' => 'Thuốc nhỏ mắt, tra mắt', 'parent_id' => 1,         'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 2,  'name' => 'Tiêu hóa, gan mật', 'parent_id' => 1,              'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 3,  'name' => 'Giảm đau, hạ sốt', 'parent_id' => 1,               'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 4,  'name' => 'Xương khớp, gout', 'parent_id' => 1,               'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 1,  'name' => 'Thuốc nhỏ mắt - tra mắt', 'parent_id' => 1,         'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 2,  'name' => 'Tiêu hóa - gan mật', 'parent_id' => 1,              'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 3,  'name' => 'Giảm đau - hạ sốt', 'parent_id' => 1,               'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 4,  'name' => 'Xương khớp - gout', 'parent_id' => 1,               'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 5,  'name' => 'Thuốc bổ', 'parent_id' => 1,                       'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 6,  'name' => 'Tim mạch, tiểu đường', 'parent_id' => 1,           'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 7,  'name' => 'Da liễu, dị ứng', 'parent_id' => 1,                'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 6,  'name' => 'Tim mạch - tiểu đường', 'parent_id' => 1,           'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 7,  'name' => 'Da liễu - dị ứng', 'parent_id' => 1,                'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 8,  'name' => 'Chống bệnh truyền nhiễm', 'parent_id' => 1,        'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 9,  'name' => 'Thần kinh, não bộ', 'parent_id' => 1,              'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 10, 'name' => 'Tiết niệu, sinh dục', 'parent_id' => 1,            'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 9,  'name' => 'Thần kinh - não bộ', 'parent_id' => 1,              'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 10, 'name' => 'Tiết niệu - sinh dục', 'parent_id' => 1,            'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 11, 'name' => 'Chế phẩm dùng trong phẫu thuật', 'parent_id' => 1, 'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 12, 'name' => 'Nội tiết tố', 'parent_id' => 1,                    'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 13, 'name' => 'Ung thư, ung bướu', 'parent_id' => 1,              'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 13, 'name' => 'Ung thư - ung bướu', 'parent_id' => 1,              'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 14, 'name' => 'Dinh dưỡng', 'parent_id' => 2,                     'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 15, 'name' => 'Vitamin và khoáng chất', 'parent_id' => 2,         'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 16, 'name' => 'Thảo dược và dược phẩm tự nhiên', 'parent_id' => 2,'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
@@ -53,7 +53,7 @@ class CategorySeeder extends Seeder
                 ['category_id' => 34, 'name' => 'Đồ chăm sóc khác', 'parent_id' => 4,               'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 35, 'name' => 'Vệ sinh cá nhân', 'parent_id' => 4,                'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['category_id' => 36, 'name' => 'Khăn giấy', 'parent_id' => 4,                      'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['category_id' => 37, 'name' => 'Nhà cửa, đời sống', 'parent_id' => 4,              'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['category_id' => 37, 'name' => 'Nhà cửa - đời sống', 'parent_id' => 4,              'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
 
             ]
 
