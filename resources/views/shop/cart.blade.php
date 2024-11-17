@@ -52,7 +52,7 @@
                                             $discounted = $price;
                                             if ($item->discount_code) {
                                                 $percent = $item->percent;
-                                                $discounted = ($price * $percent) / 100;
+                                                $discounted = $price - ($price * $percent) / 100;
                                             }
                                         @endphp
                                         <tr>

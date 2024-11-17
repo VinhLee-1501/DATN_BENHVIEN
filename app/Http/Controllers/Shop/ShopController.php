@@ -58,60 +58,49 @@ class ShopController extends Controller
             )
             ->orderBy('products.product_id', 'DESC');
 
-        if ($parentId !== '*' && $parentId !== null) {
+        if (!empty($parentId) && $parentId !== '*') {
             $query->where('parent_categories.parent_id', $parentId);
         }
 
         $products = $query->limit(8)->get();
 
-        $products->transform(function ($products) {
-            $products->img_array = array_filter(explode(',', $products->img_array)); // Chuyển img_array thành mảng
-            return $products;
-        });
-
-        if ($request->ajax()) {
-            $html = '';
-            foreach ($products as $product) {
-                $html .= '
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"';
-                if (isset($product->img_array[0])) {
-                    $html .= ' data-setbg="' . asset('storage/uploads/products/' . $product->img_array[0]) . '"';
-                } else {
-                    $html .= ' data-setbg="' . asset('frontend/shop/img/featured/feature-1.jpg ') . '"';
-                }
-                $html .= '>
-                            <ul class="featured__item__pic__hover">
-                                <form action="' . route('shop.addProductTocart', $product->product_id) . '"
-                                    method="POST" id="add-to-cart-form-' . $product->product_id . '" class="m-0">
-                                    ' . csrf_field() . '
-                                    <input type="text" name="quanlity" value="1" hidden>
-                                    <button type="submit" class="btn-add-to-cart">
-                                        <li><a href=""><i class="fa fa-shopping-cart mt-2"></i></a>
-                                        </li>
-                                    </button>
-                                </form>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="' . route('shop.shop-details', $product->product_id) . '">' . $product->name . '</a></h6>
-                            <h5>' . Number::currency($product->price, 'VND', 'vi') . '</h5>
-                        </div>
-                    </div>
-                </div>';
-            }
-            return response()->json(['html' => $html]);
+        if ($products->isNotEmpty()) {
+            $products->transform(function ($product) {
+                $product->img_array = array_filter(explode(',', $product->img_array));
+                $product->isInSalePeriod = $product->dateStartSale <= Carbon::now() && $product->dateEndSale >= Carbon::now();
+                return $product;
+            });
         }
 
+        if ($request->ajax()) {
+            if ($products->isEmpty()) {
+                return response()->json(['html' => '<p>No products available.</p>']);
+            }
+
+            $html = view('shop._product_card', ['products' => $products])->render();
+            return response()->json(['html' => $html]);
+        }
 
         // Product sale limit 6
         $productSale = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
-            ->select('products.*', 'categories.name as nameCategory', DB::raw('MIN(img_products.img) as imgName')) // Lấy hình ảnh đầu tiên
-            ->groupBy('products.product_id', 'categories.name', 'products.price', 'products.name')
+            ->select(
+                'products.*',
+                'categories.name as nameCategory',
+                'coupons.discount_code',
+                'coupons.percent',
+                DB::raw('MIN(img_products.img) as imgName')
+            ) // Lấy hình ảnh đầu tiên
+            ->groupBy(
+                'products.product_id',
+                'categories.name',
+                'coupons.discount_code',
+                'coupons.percent',
+                'products.price',
+                'products.name'
+            )
             ->limit(6)
             ->get();
         $chunkedProductsSale = $productSale->chunk(3);
@@ -121,9 +110,26 @@ class ShopController extends Controller
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
-            ->select('products.*', 'categories.name as nameCategory', DB::raw('MIN(img_products.img) as imgName'))
-            ->groupBy('products.product_id', 'categories.name', 'products.price', 'products.name')
-            ->orderBy('products.created_at', 'DESC')
+            ->select(
+                'products.*',
+                'categories.name as nameCategory',
+                'coupons.discount_code',
+                'coupons.percent',
+                DB::raw('MIN(img_products.img) as imgName'),
+                'coupons.time_start as dateStartSale',
+                'coupons.time_end as dateEndSale'
+            )
+            ->groupBy(
+                'products.product_id',
+                'categories.name',
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start',
+                'coupons.time_end',
+                'products.price',
+                'products.name'
+            )
+            ->orderBy('products.product_id', 'DESC')
             ->limit(6)
             ->get();
         $chunkedProductsNew = $productNew->chunk(3);
@@ -389,7 +395,7 @@ class ShopController extends Controller
             return redirect()->route('shop.cart')->with('error', 'Sản phẩm không tồn tại.');
         }
 
-        $quantity = $request->input('quanlity');
+        $quantity = $request->input('quantity');
         // dd($quantity);
 
         // Kiểm tra user đã có giỏ hàng ?

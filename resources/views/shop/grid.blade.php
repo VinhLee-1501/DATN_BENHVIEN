@@ -155,7 +155,7 @@
                                         $discountedPrice = $price;
                                         if ($saleProductItem->discount_code) {
                                             $percent = $saleProductItem->percent;
-                                            $discountedPrice = ($price * $percent) / 100;
+                                            $discountedPrice = $price - ($price * $percent) / 100;
                                         }
                                     @endphp
                                     <div class="col-lg-4">
@@ -171,7 +171,7 @@
                                                         method="POST"
                                                         id="add-to-cart-form-{{ $saleProductItem->product_id }}">
                                                         @csrf
-                                                        <input type="text" name="quanlity" value="1" hidden>
+                                                        <input type="text" name="quantity" value="1" hidden>
                                                         <button type="submit" class="btn-add-to-cart">
                                                             <li><a href=""><i class="fa fa-shopping-cart"></i></a>
                                                             </li>
@@ -226,7 +226,7 @@
                                 $discountedPriceProductActive = $price;
                                 if ($prodcutsActiveItem->discount_code) {
                                     $percent = $prodcutsActiveItem->percent;
-                                    $discountedPriceProductActive = ($price * $percent) / 100;
+                                    $discountedPriceProductActive = $price - ($price * $percent) / 100;
                                 }
                             @endphp
                             <div class="col-lg-3 col-md-4 col-sm-6">
@@ -244,7 +244,7 @@
                                                 method="POST"
                                                 id="add-to-cart-form-{{ $prodcutsActiveItem->product_id }}">
                                                 @csrf
-                                                <input type="text" name="quanlity" value="1" hidden>
+                                                <input type="text" name="quantity" value="1" hidden>
                                                 <button type="submit" class="btn-add-to-cart">
                                                     <li><a href=""><i class="fa fa-shopping-cart"></i></a>
                                                     </li>

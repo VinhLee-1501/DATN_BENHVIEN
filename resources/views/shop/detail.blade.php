@@ -81,7 +81,7 @@
                             $discountedPriceProductId = $price;
                             if ($productById->discount_code) {
                                 $percent = $productById->percent;
-                                $discountedPriceProductId = ($price * $percent) / 100;
+                                $discountedPriceProductId = $price - ($price * $percent) / 100;
                             }
                         @endphp
                         <div class="product__details__price">Giá:
@@ -99,7 +99,7 @@
                             <div class="product__details__quantity">
                                 <div class="quantity">
                                     <div class="pro-qty">
-                                        <input type="text" name="quanlity" value="1">
+                                        <input type="text" name="quantity" value="1">
                                     </div>
                                 </div>
                             </div>
@@ -134,10 +134,10 @@
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__tab__desc">
                                     <h6>Thông tin sản phẩm</h6>
-                                    <p>{{ $productById->description }}</p>
+                                    <p id="description" class="description">{{ $productById->description }}</p>
                                 </div>
+                                <button id="toggle-description" class="btn btn-link col-sm-12">Xem thêm</button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
                         $discountedPriceCategory = $price;
                         if ($productByCategoryItem->discount_code) {
                             $percent = $productByCategoryItem->percent;
-                            $discountedPriceCategory = ($price * $percent) / 100;
+                            $discountedPriceCategory = $price - ($price * $percent) / 100;
                         }
                     @endphp
                     <div class="col-lg-3 col-md-4 col-sm-6">
@@ -199,4 +199,32 @@
         </div>
     </section>
     <!-- Related Product Section End -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const description = document.getElementById('description');
+            const toggleButton = document.getElementById('toggle-description');
+
+            if (!description || !toggleButton) {
+                console.error('Phần tử không tồn tại!');
+                return;
+            }
+
+            const fullHeight = description.scrollHeight;
+
+            toggleButton.addEventListener('click', function () {
+                if (description.classList.contains('expanded')) {
+                    // Thu gọn
+                    description.style.maxHeight = '100px';
+                    description.classList.remove('expanded');
+                    toggleButton.textContent = 'Xem thêm';
+                } else {
+                    // Mở rộng
+                    description.style.maxHeight = fullHeight + 'px';
+                    description.classList.add('expanded');
+                    toggleButton.textContent = 'Thu gọn';
+                }
+            });
+        });
+    </script>
 @endsection

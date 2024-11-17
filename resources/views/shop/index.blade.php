@@ -110,25 +110,32 @@
                                             class="latest-product__item">
                                             <div class="latest-product__item__pic w-50"> <img
                                                     src="{{ isset($productNewItem->imgName) ? asset('storage/uploads/products/' . $productNewItem->imgName) : asset('frontend/shop/img/image.jpg') }}"
-                                                    alt=""> </div>
+                                                    alt="">
+                                                
+                                            </div>
                                             <div class="latest-product__item__text">
                                                 <h6>{{ $productNewItem->name }}</h6>
                                                 <span>
                                                     @php
-                                                        $price = $productNewItem->price;
-                                                        $discountedPrice = $price; // Default to the original price if no discount
-                                                        if (
-                                                            $productNewItem->discount_code &&
-                                                            !$productNewItem->discount_code->isEmpty()
-                                                        ) {
-                                                            $discount =
-                                                                $productNewItem->discount_code->discount_percentage; // Giả sử bạn lưu tỷ lệ % giảm trong discount_code
-                                                            $discountedPrice = $price - ($price * $discount) / 100;
+                                                        $priceNewProduct = $productNewItem->price;
+                                                        $discountedPriceNewProduct = $priceNewProduct; // Default to the original price if no discount
+                                                        if ($productNewItem->discount_code) {
+                                                            $percentNewProduct = $productNewItem->percent; // Giả sử bạn lưu tỷ lệ % giảm trong discount_code
+                                                            $discountedPriceNewProduct = $priceNewProduct -
+                                                                ($priceNewProduct * $percentNewProduct) / 100;
                                                         }
                                                     @endphp
-                                                    @if ($discountedPrice < $price)
+
+                                                    @if ($discountedPriceNewProduct < $priceNewProduct)
+                                                        {{ Number::currency($discountedPriceNewProduct, 'VND', 'vi') }}
                                                         <span
-                                                            class="price-sale">{{ Number::currency($price, 'VND', 'vi') }}</span>
+                                                            style="color: #b2b2b2;
+                                                        font-size: 14px;
+                                                        font-weight: 400;
+                                                        text-decoration: line-through;">{{ Number::currency($priceNewProduct, 'VND', 'vi') }}
+                                                        </span>
+                                                    @else
+                                                        {{ Number::currency($discountedPriceNewProduct, 'VND', 'vi') }}
                                                     @endif
                                                 </span>
                                             </div>
@@ -227,13 +234,9 @@
                                                 <span>
                                                     @php
                                                         $price = $productSales->price;
-                                                        if (
-                                                            $productSales->discount_code &&
-                                                            !$productSales->discount_code->isEmpty()
-                                                        ) {
-                                                            $discount =
-                                                                $productSales->discount_code->discount_percentage;
-                                                            $discountedPrice = $price - ($price * $discount) / 100;
+                                                        if ($productSales->discount_code) {
+                                                            $percent = $productSales->percent;
+                                                            $discountedPrice = $price - ($price * $percent) / 100;
                                                         }
                                                     @endphp
                                                     {{ Number::currency($discountedPrice, 'VND', 'vi') }}
