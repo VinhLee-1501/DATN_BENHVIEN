@@ -30,6 +30,32 @@
 /* Template default CSS
 /*----------------------------------------*/
 
+.sale_product {
+	background-color: #d22;
+	width: 25%;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 50%;
+	color: white;
+	text-align: center;
+}
+
+.price_sale {
+	color: #b2b2b2;
+	font-size: 14px;
+	font-weight: 400;
+	text-decoration: line-through;
+}
+
+.btn-add-to-cart {
+	background: none;
+	border: none;
+	padding: 0;
+	outline: none;
+	cursor: pointer;
+
+}
+
 html,
 body {
 	height: 100%;
@@ -1571,7 +1597,6 @@ ol {
 .product__item__pic__hover li:hover a i {
 	color: #ffffff;
 	transform: rotate(360deg);
-	top: 10px;
 }
 
 .product__item__pic__hover li a {
@@ -1594,7 +1619,6 @@ ol {
 
 .product__item__pic__hover li a i {
 	position: relative;
-	top: 10px;
 	transform: rotate(0);
 	-webkit-transition: all, 0.3s;
 	-moz-transition: all, 0.3s;
@@ -2696,7 +2720,9 @@ ol {
     justify-content: center;
     align-items: center;
 }
-
+footer .contact__list .item__icon{
+	background: none;
+}
 .contact__list .item__icon i {
     font-size: 14px;
 }

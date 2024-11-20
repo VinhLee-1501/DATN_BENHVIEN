@@ -1,32 +1,5 @@
 @extends('layouts.shop.app')
 
-<style>
-    .sale_product {
-        background-color: #d22;
-        width: 25%;
-        padding: 10px;
-        margin: 10px;
-        border-radius: 50%;
-        color: white;
-        text-align: center;
-    }
-
-    .price_sale {
-        color: #b2b2b2;
-        font-size: 14px;
-        font-weight: 400;
-        text-decoration: line-through;
-    }
-
-    .btn-add-to-cart {
-        background: none;
-        border: none;
-        padding: 0;
-        outline: none;
-        cursor: pointer;
-
-    }
-</style>
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="{{ asset('frontend/shop/img/Group.png') }}">
@@ -61,50 +34,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="sidebar__item">
-                            <h4>Giá Tiền</h4>
-                            <div class="price-range-wrap">
-                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                    data-min="10" data-max="540">
-                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                </div>
-                                <div class="range-slider">
-                                    <div class="price-input">
-                                        <input type="text" id="minamount">
-                                        <input type="text" id="maxamount">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="sidebar__item">
-                            <h4>Đơn Vị</h4>
-                            <div class="sidebar__item__size">
-                                <label for="large">
-                                    Large
-                                    <input type="radio" id="large">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="medium">
-                                    Medium
-                                    <input type="radio" id="medium">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="small">
-                                    Small
-                                    <input type="radio" id="small">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="tiny">
-                                    Tiny
-                                    <input type="radio" id="tiny">
-                                </label>
-                            </div>
-                        </div>
+                       
                         <div class="sidebar__item">
                             <div class="latest-product__text">
                                 <h4>Sản Phẩm Mới</h4>
@@ -270,9 +200,9 @@
                             </div>
                         @endforeach
 
-                        <div class="product__pagination">
+                        <!-- <div class="product__pagination"> -->
                             {{ $prodcutsActive->links() }}
-                        </div>
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>

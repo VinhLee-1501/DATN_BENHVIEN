@@ -13,9 +13,9 @@
             </div>
             <div class="table">
                 <form id="searchForm" action="{{ route('system.blog') }}" class="d-flex position-relative" method="get">
-                    <input type="text" name="search" id="searchInput" class="form-control ms-3"
+                    <input type="text" name="search" id="searchInput" class="form-control w-20 ms-3"
                         value="{{ request('search', $search) }}" placeholder="Nhập tiêu đề"
-                        style="border-top-right-radius: 0; border-bottom-right-radius: 0; width:214px;">
+                        style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
                     <!-- Nút tìm kiếm -->
                     <button type="submit" class="btn btn-success position-absolute px-0"
                         style="top: 50%; right: 75%; transform: translateY(-50%); z-index: 1; border-top-left-radius: 0; border-bottom-left-radius: 0;">
@@ -37,10 +37,10 @@
                                 </option>
                             </select>
 
-                        </div>
                     </div>
+                </div>
 
-                </form>
+            </form>
 
                 <!-- Form Xóa Bài Viết -->
                 <form id="deleteForm" action="{{ route('system.blog.multipledelete') }}" method="POST">
@@ -104,10 +104,15 @@
                                                 class="btn btn-primary me-1">
                                                 <i class="ti ti-pencil"></i>
                                             </a>
-                                            <a href="{{ route('system.blogs.delete', $data->id) }}"
-                                                class="btn btn-danger me-1">
-                                                <i class="ti ti-trash"></i>
-                                            </a>
+                                            <form action="{{ route('system.blogs.delete', $data->id) }}" id="form-delete"
+                                                method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <input type="hidden" value="{{ $data->id }}">
+                                                <button type="submit" class="btn btn-danger btn-delete">
+                                                    <i class="ti ti-trash"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -116,34 +121,34 @@
                     </table>
                 </form>
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $blogs->appends(['search' => $search])->links() }}
+                    {{ $blogs->links() }}
                 </div>
             </div>
         </div>
     </div>
 
-    @push('scripts')
-        <script>
-            document.getElementById('deleteButton').addEventListener('click', function() {
-                var selectedCheckboxes = document.querySelectorAll('input[name="blog_id[]"]:checked');
-                var selectedIds = [];
+@push('scripts')
+    <script>
+        document.getElementById('deleteButton').addEventListener('click', function () {
+            var selectedCheckboxes = document.querySelectorAll('input[name="blog_id[]"]:checked');
+            var selectedIds = [];
 
-                // Lấy tất cả blog_id đã chọn
-                selectedCheckboxes.forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
-                });
+            // Lấy tất cả blog_id đã chọn
+            selectedCheckboxes.forEach(function (checkbox) {
+                selectedIds.push(checkbox.value);
+            });
 
-                // Kiểm tra nếu có ít nhất một checkbox được chọn
-                if (selectedIds.length > 0) {
-                    // Thêm các blog_id đã chọn vào form
-                    var form = document.getElementById('deleteForm');
-                    form.innerHTML += selectedIds.map(id => `<input type="hidden" name="blog_id[]" value="${id}">`)
-                        .join('');
+            // Kiểm tra nếu có ít nhất một checkbox được chọn
+            if (selectedIds.length > 0) {
+                // Thêm các blog_id đã chọn vào form
+                var form = document.getElementById('deleteForm');
+                form.innerHTML += selectedIds.map(id => `<input type="hidden" name="blog_id[]" value="${id}">`)
+                    .join('');
 
                     // Gửi form
                     form.submit();
                 } else {
-                    toastr.error('Vui lòng chọn ít nhất một bài viết để xóa.');
+                    alert('Vui lòng chọn ít nhất một bài viết để xóa.');
                 }
             });
         </script>
@@ -154,16 +159,16 @@
                     // Lấy giá trị của select
                     var itemsPerPage = $(this).val();
 
-                    // Lấy URL hiện tại
-                    var url = new URL(window.location.href);
+                // Lấy URL hiện tại
+                var url = new URL(window.location.href);
 
-                    // Thêm hoặc cập nhật tham số itemsPerPage trong URL
-                    url.searchParams.set('itemsPerPage', itemsPerPage);
+                // Thêm hoặc cập nhật tham số itemsPerPage trong URL
+                url.searchParams.set('itemsPerPage', itemsPerPage);
 
-                    // Thực hiện điều hướng (reload trang với tham số itemsPerPage mới)
-                    window.location.href = url.toString();
-                });
+                // Thực hiện điều hướng (reload trang với tham số itemsPerPage mới)
+                window.location.href = url.toString();
             });
-        </script>
-    @endpush
+        });
+    </script>
+@endpush
 @endsection

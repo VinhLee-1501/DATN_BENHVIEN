@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Products\AdminComment;
 use App\Models\Products\CartProduct;
 use App\Models\Products\ReviewProduct;
+use App\Models\ProfileDoctor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -101,4 +102,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(AdminComment::class, 'user_id', 'user_id');
     }
+
+    public function profileDoctor()
+{
+    return $this->hasOne(ProfileDoctor::class, 'user_id', 'user_id');
+}
 }

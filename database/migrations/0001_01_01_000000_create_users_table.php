@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('google_id')->nullable();
             $table->string('zalo_id')->nullable();
             $table->string('facebook_id')->nullable();
-            $table->tinyInteger('role')->default(0)->comment('1 là admin');
+            $table->tinyInteger('role')->default(0)->comment('1 là admin, 2 là bác sĩ, 0 là user');
             $table->tinyInteger('status')->default(1)->comment('1 là hoạt động');
             $table->timestamp('email_verified_at')->nullable();
 

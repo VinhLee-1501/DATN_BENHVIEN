@@ -1,99 +1,67 @@
 @extends('layouts.shop.app')
 
-<style>
-    .btn-add-to-cart {
-        background: none;
-        border: none;
-        padding: 0;
-        outline: none;
-        cursor: pointer;
-    }
-</style>
 @section('content')
-    <!-- Categories Section Begin -->
-    <section class="categories">
-        <div class="container">
-            <div class="row">
-                <div class="categories__slider owl-carousel">
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg=" {{ asset('frontend/shop/img/categories/cat-1.jpg ') }}">
-                            <h5><a href="#">Fresh Fruit</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg="{{ asset('frontend/s    hop/img/categories/cat-2.jpg ') }}">
-                            <h5><a href="#">Dried Fruit</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg="{{ asset('frontend/shop/img/categories/cat-3.jpg ') }}">
-                            <h5><a href="#">Vegetables</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg="{{ asset('frontend/shop/img/categories/cat-4.jpg ') }}">
-                            <h5><a href="#">drink fruits</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg="{{ asset('frontend/shop/img/categories/cat-5.jpg ') }}">
-                            <h5><a href="#">drink fruits</a></h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Categories Section End -->
 
-    <!-- Featured Section Begin -->
-    <section class="featured spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Sản Phẩm Nổi Bật</h2>
-                    </div>
-                    <div class="featured__controls">
-                        <ul>
-                            <li class="active" data-filter="*">All</li>
-                            @foreach ($parentCategoryProductFillter as $itemNameParent)
-                                <li data-filter="{{ $itemNameParent->parent_id }}">{{ $itemNameParent->name }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row featured__filter">
-                {{-- Filter product by parent_id to table parent_categories --}}
-            </div>
-        </div>
-    </section>
-    <!-- Featured Section End -->
+<!-- Categories Section Begin -->
+<section class="categories">
+	<div class="container">
+		<div class="row">
+			<div class="categories__slider owl-carousel">
+				<div class="col-lg-3">
+					<div class="categories__item set-bg" data-setbg=" {{ asset('frontend/shop/img/categories/cat-1.jpg ') }}">
+						<h5><a href="#">Fresh Fruit</a></h5>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="categories__item set-bg" data-setbg="{{ asset('frontend/s    hop/img/categories/cat-2.jpg ') }}">
+						<h5><a href="#">Dried Fruit</a></h5>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="categories__item set-bg" data-setbg="{{ asset('frontend/shop/img/categories/cat-3.jpg ') }}">
+						<h5><a href="#">Vegetables</a></h5>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="categories__item set-bg" data-setbg="{{ asset('frontend/shop/img/categories/cat-4.jpg ') }}">
+						<h5><a href="#">drink fruits</a></h5>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="categories__item set-bg" data-setbg="{{ asset('frontend/shop/img/categories/cat-5.jpg ') }}">
+						<h5><a href="#">drink fruits</a></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Categories Section End -->
 
-    <!-- Banner Begin -->
-    <div class="banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="banner__pic">
-                        <img src="{{ asset('frontend/shop/img/banner/banner-1.jpg ') }}" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="banner__pic">
-                        <img src="{{ asset('frontend/shop/img/banner/banner-2.jpg ') }}" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Banner End -->
+<!-- Featured Section Begin -->
+<section class="featured spad">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="section-title">
+					<h2>Sản Phẩm Nổi Bật</h2>
+				</div>
+				<div class="featured__controls">
+					<ul>
+						<li class="active" data-filter="*">All</li>
+						@foreach ($parentCategoryProductFillter as $itemNameParent)
+							<li data-filter="{{ $itemNameParent->parent_id }}">{{ $itemNameParent->name }}</li>
+						@endforeach
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row featured__filter">
+			{{-- Filter product by parent_id to table parent_categories --}}
+		</div>
+	</div>
+</section>
+<!-- Featured Section End -->
 
     <!-- Latest Product Section Begin -->
     <section class="latest-product spad">
@@ -234,6 +202,7 @@
                                                 <span>
                                                     @php
                                                         $price = $productSales->price;
+														$discountedPrice = $price;
                                                         if ($productSales->discount_code) {
                                                             $percent = $productSales->percent;
                                                             $discountedPrice = $price - ($price * $percent) / 100;

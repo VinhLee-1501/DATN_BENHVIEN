@@ -17,19 +17,16 @@
                         <li class="sidebar-item {{ request()->routeIs('system.dashboard') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.dashboard') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-                                        <path
-                                            d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+                                        <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+                                        <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
                                         <path
                                             d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-                                        <path
-                                            d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+                                        <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
                                     </svg>
                                 </span>
                                 <span class="hide-menu">Thống kê (System)</span>
@@ -38,9 +35,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.patient') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.patient') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
@@ -55,9 +52,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.medicalRecord') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.medicalRecord') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-text">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
@@ -71,13 +68,12 @@
                                 <span class="hide-menu">Quản lý bệnh án</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="#" aria-expanded="false">
+                        <li class="sidebar-item {{ request()->routeIs('system.doctor') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.doctor') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-user">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
                                         <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
@@ -89,13 +85,12 @@
                         <li class="sidebar-item {{ request()->routeIs('system.specialty') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.specialty') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-stethoscope">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M6 4h-1a2 2 0 0 0 -2 2v3.5h0a5.5 5.5 0 0 0 11 0v-3.5a2 2 0 0 0 -2 -2h-1" />
+                                        <path d="M6 4h-1a2 2 0 0 0 -2 2v3.5h0a5.5 5.5 0 0 0 11 0v-3.5a2 2 0 0 0 -2 -2h-1" />
                                         <path d="M8 15a6 6 0 1 0 12 0v-3" />
                                         <path d="M11 3v2" />
                                         <path d="M6 3v2" />
@@ -108,9 +103,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.specialty') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.sclinic') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-hospital-circle">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M10 16v-8" />
@@ -125,9 +120,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.medicine') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.medicine') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-vaccine-bottle">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
@@ -145,9 +140,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.medicineType') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.medicineType') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-heart">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
@@ -162,13 +157,12 @@
                             </a>
                         </li>
                         <li class="dropdown sidebar-item {{ request()->routeIs('system.account') ? 'active' : '' }}">
-                            <a class="sidebar-link" href=" {{ route('system.account') }}" id="navbarDropdown"
-                                role="button" data-bs-toggle="" aria-expanded="false">
+                            <a class="sidebar-link" href=" {{ route('system.account') }}" id="navbarDropdown" role="button"
+                                data-bs-toggle="" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
                                         <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
@@ -183,9 +177,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.schedule') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.schedule') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
@@ -205,14 +199,12 @@
                                 <span class="hide-menu">Quản lý lịch làm BS</span>
                             </a>
                         </li>
-                        <li
-                            class="sidebar-item {{ request()->routeIs('system.appointmentSchedule') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.appointmentSchedule') }}"
-                                aria-expanded="false">
+                        <li class="sidebar-item {{ request()->routeIs('system.appointmentSchedule') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.appointmentSchedule') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
@@ -229,10 +221,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.blog') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.blog') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-news">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-news">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
                                             d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" />
@@ -247,9 +238,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.product') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.product') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-building-store">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M3 21l18 0" />
@@ -266,10 +257,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.category') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.category') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="icon icon-tabler icons-tabler-outline icon-tabler-list">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M9 6l11 0" />
                                         <path d="M9 12l11 0" />
@@ -285,9 +275,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.sale_product') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.sale_product') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-badge-vo">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
@@ -303,9 +293,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.coupon') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.coupon') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-cash-banknote">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
@@ -353,8 +343,7 @@
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
                     <a href="#" class="text-nowrap logo-img ms-5">
-                        <img src="{{ asset('backend/assets/images/logos/logo.png') }}" width="120"
-                            alt="" />
+                        <img src="{{ asset('backend/assets/images/logos/logo.png') }}" width="120" alt="" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -366,19 +355,16 @@
                         <li class="sidebar-item {{ request()->routeIs('system.dashboard') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.dashboard') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-                                        <path
-                                            d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+                                        <path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+                                        <path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
                                         <path
                                             d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-                                        <path
-                                            d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+                                        <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
                                     </svg>
                                 </span>
                                 <span class="hide-menu">Thống kê (Bác sĩ)</span>
@@ -387,9 +373,9 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="#" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
@@ -404,9 +390,9 @@
                         <li class="sidebar-item {{ request()->routeIs('system.recordDoctor') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('system.recordDoctor') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-text">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
@@ -421,12 +407,11 @@
                             </a>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('system.checkupHealth') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.checkupHealth') }}"
-                                aria-expanded="false">
+                            <a class="sidebar-link" href="{{ route('system.checkupHealth') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
@@ -441,12 +426,11 @@
                             </a>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('system.scheduleDoctor') ? 'active' : '' }}">
-                            <a class="sidebar-link" href="{{ route('system.scheduleDoctor') }}"
-                                aria-expanded="false">
+                            <a class="sidebar-link" href="{{ route('system.scheduleDoctor') }}" aria-expanded="false">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
                                         class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
