@@ -98,7 +98,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-md-right mb-4" style="font-size: 20px">Tổng tiền giỏ hàng:
+                <div class="text-lg-end mb-4" style="font-size: 20px">Tổng tiền giỏ hàng:
                     <span class="total_cart" class="" style="font-weight: 600"></span>
                 </div>
                 <div class="row">
@@ -119,9 +119,13 @@
                         <div class="shoping__discount">
 
                             <h5>Mã giảm giá</h5>
-                            <form action="#">
-                                <input type="text" placeholder="Nhập mã">
-                                <button type="submit" class=" btn primary-btn site-btn">Sử dụng</button>
+                            <form id="formVoucher" action="{{ route('shop.checkVoucher') }}" method="POST" >
+                                @csrf
+                                    <input type="hidden" id="total_cart" name="total">
+                                    <input type="text" name="code" id="code" placeholder="Nhập mã"
+                                        value="{{ old('code') }}">
+                                <button type="submit" id="voucherBtn" class="border-0 btn-sale text-bg-dark-light">Sử dụng</button>
+                                <div class="invalid-feedback" id="code_error"></div>
                             </form>
                         </div>
                     </div>
@@ -130,18 +134,23 @@
                 <div class="col-lg-6">
                     <div class="shoping__checkout">
                         <h5>Tổng thanh toán</h5>
-                        {{-- <form id="formOrder" action="{{ route('shop.checkout') }}" method="POST">
+                        <form id="formOrder" action="{{ route('shop.checkout') }}" method="POST">
                             @csrf
                             <ul>
-                                <input type="hidden" id="user_id" name="user_id" value="{{ $item->user_id }}">
+                                <input type="hidden" id="user_id" name="user_id" value="{{ $item->user_id ?? '' }}">
+                                <input type="hidden" id="cart_id" name="cart_id" value="{{ $item->cart_id ?? '' }}">
                                 <input type="hidden" id="total" name="total">
+                                <input type="hidden" id="coupon" name="coupon">
+                                <input type="hidden" id="sale_price_check" name="sale_price_check">
                                 <li>Tổng tiền<span class="total_cart"></span></li>
-                                <li>Giá giảm<span style="color:black;!important" class="font-weight-light"
-                                        id="price_sale">15000</span></li>
+                                <li class="d-flex">
+                                        <p id="cost_sale"></p>
+                                    <p style="color:black;!important" class="font-weight-light ms-auto" id="sale_price"></p>
+                                </li>
                                 <li>Tổng <span id="total_order"></span></li>
                             </ul>
                             <button type="submit" id="btn-order" class="primary-btn">Mua hàng</button>
-                        </form> --}}
+                        </form>
                     </div>
                 </div>
 
@@ -162,7 +171,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const cartItems = document.querySelectorAll("tbody tr");
 
-            function updateCartTotal() {
+            function updateCartTotal(price_sale) {
                 let totalCart = 0;
 
                 cartItems.forEach(item => {
@@ -197,14 +206,16 @@
                     totalCart += totalPrice;
                 });
 
+
                 document.querySelectorAll('.total_cart').forEach(element => {
                     element.textContent = new Intl.NumberFormat('vi-VN', {
                         style: 'currency',
                         currency: 'VND'
                     }).format(totalCart);
                 });
+                document.querySelector('#total_cart').value = totalCart;
+                const priceSale = price_sale || 0;
 
-                const priceSale = document.getElementById('price_sale').textContent;
                 let totalOrder = totalCart - priceSale;
                 document.querySelector('#total_order').textContent = new Intl.NumberFormat('vi-VN', {
                     style: 'currency',
@@ -238,6 +249,62 @@
 
             document.querySelectorAll("#quantity").forEach(input => {
                 input.addEventListener("input", updateCartTotal);
+            });
+        });
+
+
+        $(document).ready(function() {
+            $('#formVoucher').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '/cua-hang/voucher',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+
+                        $('.invalid-feedback').text('');
+                        $('.form-control').removeClass('is-invalid');
+
+                        if (response.error) {
+                            // toastr.error(response.message || 'Có lỗi xảy ra');
+
+                            if (response.error) {
+                                $('#code').addClass('is-invalid');
+                                $('#code_error').text(response.message);
+                            }
+                        } else if (response.success) {
+                            $('#cost_sale').text('Giảm giá: ' + response.percent + '%');
+
+                            const price_sale = response.total * response.percent / 100;
+
+                            document.querySelector('#sale_price').textContent = new Intl
+                                .NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                }).format(price_sale);
+                            document.querySelector('#sale_price_check').value = price_sale;
+
+                            document.querySelector('#coupon').value = response.coupon;
+
+
+                            const finalPrice = response.total - price_sale;
+
+                            document.querySelector('#total_order').textContent = new Intl
+                                .NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                }).format(finalPrice);
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        // console.log(response);
+                        console.log("Error:", xhr.responseText);
+
+                    }
+                });
             });
         });
     </script>

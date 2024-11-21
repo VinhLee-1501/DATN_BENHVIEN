@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class CheckoutController extends Controller
@@ -11,6 +12,8 @@ class CheckoutController extends Controller
 
     public function calculateShippingFee(Request $request)
     {
+
+    
         // Default pickup address
         $defaultPickProvince = 'Cần Thơ';
         $defaultPickDistrict = 'Thường Thạnh';
@@ -19,15 +22,13 @@ class CheckoutController extends Controller
 
         // Validate form inputs
         $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
             'province' => 'required',
             'district' => 'required',
             'ward' => 'required',
-            'address' => 'required|string',
-            'phone' => 'required|string',
-            'email' => 'required|email',
+       
         ]);
+
+      
 
         // Retrieve form inputs (province, district, ward codes)
         $provinceCode = $validatedData['province'];
@@ -64,15 +65,14 @@ class CheckoutController extends Controller
                     $shippingText = $result['fee']['options'][0]['shipMoneyText'] ?? 'No shipping options available';
                     
                     session()->flash('formData', request()->all());
-                    // Return the view with calculated shipping fee, text, and form data
-                    return view('shop.checkout', [
+                  
+                    return response()->json([  
                         'shippingFee' => $shippingFee,
                         'shippingText' => $shippingText,
-                        'provinceCode' => $provinceCode,
-                        'districtCode' => $districtCode,
-                        'wardCode' => $wardCode,
-                        'oldInput' => request()->all()
-                    ]); 
+                        'oldInput' => request()->all(),
+                        
+                    ]);
+
                 } else {
                     return back()->withErrors(['error' => 'Không thể lấy thông tin phí vận chuyển.'])->withInput();
                 }

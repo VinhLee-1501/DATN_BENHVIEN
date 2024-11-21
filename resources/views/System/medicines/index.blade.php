@@ -362,7 +362,7 @@
                     if (err.responseJSON) {
                         console.error("Chi tiết lỗi: ", err.responseJSON.error); // Hiển thị lỗi chính
                         console.error("Thông tin thêm: ", err.responseJSON
-                        .message); // Nếu có message thêm
+                            .message); // Nếu có message thêm
                         console.error("Mã lỗi: ", err.status); // Mã trạng thái lỗi (ví dụ: 500, 404)
                     } else {
                         console.error("Lỗi không xác định từ server.");

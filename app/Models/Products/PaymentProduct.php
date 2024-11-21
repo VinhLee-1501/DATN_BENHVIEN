@@ -17,7 +17,7 @@ class PaymentProduct extends Model
         'payment_id',
         'payment_method',
         'payment_status',
-        'amount' ,
+        'txn_ref',
         'order_id',
     ];
 

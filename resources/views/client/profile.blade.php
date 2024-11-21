@@ -111,7 +111,7 @@
                                         nhật thông tin</button>
                                     <button class="button btn-small btn-cta" onclick="openTab(event, 'change_password')">Đổi
                                         mật khẩu</button>
-                                    <a href="{{ route('client.logout') }}" class="button btn-small btn-cta">Khác</a>
+                                    <a href="{{ route('shop.bill') }}" class="button btn-small btn-cta">Đơn hàng</a>
                                 </div>
                             </div>
 

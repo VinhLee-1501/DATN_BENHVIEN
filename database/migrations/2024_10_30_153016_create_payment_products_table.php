@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('payment_id')->primary();
             $table->boolean('payment_method');
             $table->tinyInteger('payment_status');
-            $table->integer('amount');
+            $table->string('txn_ref',255)->nullable();
             $table->unsignedBigInteger('order_id')->nullable();
  
             $table->foreign('order_id')

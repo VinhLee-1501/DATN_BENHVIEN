@@ -13,9 +13,9 @@ function loadSavedSelections() {
     const savedProvinceCode = loadSelection("province");
     const savedDistrictCode = loadSelection("district");
     const savedWardCode = loadSelection("ward");
-    const savedprovinceName = loadSelection("provinceName");
-    const saveddistrictName = loadSelection("districtName");
-    const savedwardName = loadSelection("wardName");
+    // const savedprovinceName = loadSelection("provinceName");
+    // const saveddistrictName = loadSelection("districtName");
+    // const savedwardName = loadSelection("wardName");
 
     if (savedProvinceCode) {
         document.getElementById("provinces").value = savedProvinceCode;
@@ -126,7 +126,88 @@ function getWards(event) {
     saveSelection("wardName", wardName);
 }
 
+// Hàm kiểm tra nếu đã đủ thông tin (tỉnh, quận/huyện, xã/phường)
+function checkAndCalculateShipping() {
+    const provinceCode = document.getElementById("provinces").value;
+    const districtCode = document.getElementById("districts").value;
+    const wardCode = document.getElementById("wards").value;
+
+    // Kiểm tra nếu đã chọn đủ thông tin
+    if (provinceCode && districtCode && wardCode) {
+        // Gọi route tính phí vận chuyển
+        calculateShippingFee(provinceCode, districtCode, wardCode);
+    } else {
+        console.log("Chưa đủ thông tin tỉnh, quận, xã để tính phí vận chuyển.");
+    }
+}
+
+// Hàm gọi route để tính phí vận chuyển (ví dụ gửi request tới server)
+function calculateShippingFee(provinceCode, districtCode, wardCode) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('http://127.0.0.1:8000/cua-hang/ship', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+
+
+        body: JSON.stringify({
+            province: provinceCode,
+            district: districtCode,
+            ward: wardCode
+        })
+
+    })
+        .then(response => response.json())
+        .then(data => {
+            const formattedShippingFee = data.shippingFee.toLocaleString('vi-VN') + ' ₫';
+            document.getElementById('shipping-fee').textContent = formattedShippingFee;
+            const shippingFee = parseFloat(data.shippingFee);
+            updateTotalSale(shippingFee);
+        })
+        .catch(error => {
+            console.error("Lỗi khi tính phí vận chuyển:", error);
+        });
+}
+
+function updateTotalSale(shippingFee) {
+   
+    const total = parseFloat(document.getElementById('total').textContent.replace(/[^\d.-]/g, '')) || 0;
+    const sale = parseFloat(document.getElementById('sale').textContent.replace(/[^\d.-]/g, '')) || 0;
+
+  
+    let totalSale;
+    if (shippingFee !== undefined && shippingFee !== null) {
+        totalSale = total - sale + shippingFee;
+    }else if(sale = 0 ) {
+        totalSale = total - sale;
+    }else{
+        totalSale = total;
+    }
+
+   
+    const formattedTotalSale = totalSale.toLocaleString('vi-VN') + ' ₫';
+
+ 
+    document.getElementById('total_sale').textContent = formattedTotalSale;
+    document.getElementById('total_final').value = totalSale;
+}
+
 // Đăng ký các sự kiện cho các lựa chọn
-document.getElementById("provinces").addEventListener("change", getProvinces);
-document.getElementById("districts").addEventListener("change", getDistricts);
-document.getElementById("wards").addEventListener("change", getWards);
+document.getElementById("provinces").addEventListener("change", function (event) {
+    getProvinces(event);
+    checkAndCalculateShipping(); // Kiểm tra và gọi tính phí
+});
+document.getElementById("districts").addEventListener("change", function (event) {
+    getDistricts(event);
+    checkAndCalculateShipping(); // Kiểm tra và gọi tính phí
+});
+document.getElementById("wards").addEventListener("change", function (event) {
+    getWards(event);
+    checkAndCalculateShipping(); // Kiểm tra và gọi tính phí
+});
+
+
+

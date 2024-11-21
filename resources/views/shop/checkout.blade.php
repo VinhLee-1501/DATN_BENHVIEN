@@ -22,18 +22,14 @@
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h6><span class="icon_tag_alt"></span> Bạn có mã giảm giá? <a href="#">Nhấn vào đây</a> để nhập mã
-                    </h6>
-                </div>
-            </div>
+
             <div class="checkout__form">
                 <h4>Chi tiết thanh toán</h4>
-                <form action="{{ route('shop.order') }}" method="POST">
+                <form id="formShip" action="{{ route('shop.order') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-lg-7 col-md-6">
+
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
@@ -54,8 +50,8 @@
                                 <div class="col-lg-4 col-12">
                                     <div class="checkout__input">
                                         <p>Tỉnh<span>*</span></p>
-                                        <select id="provinces" name="province" onchange="getProvinces(event)" class="w-100"
-                                            >
+                                        <select id="provinces" name="province" onchange="getProvinces(event)"
+                                            class="w-100">
                                             <option value="">-- Chọn Tỉnh/thành phố --</option>
                                             <!-- Các tỉnh sẽ được thêm vào đây bằng JavaScript -->
                                         </select>
@@ -69,8 +65,8 @@
                                 <div class="col-lg-4 col-12">
                                     <div class="checkout__input">
                                         <p>Quận/huyện<span>*</span></p>
-                                        <select id="districts" name="district" onchange="getDistricts(event)" class="w-100"
-                                            >
+                                        <select id="districts" name="district" onchange="getDistricts(event)"
+                                            class="w-100">
                                             <option value="">-- Chọn quận/huyện --</option>
                                             <!-- Các quận sẽ được thêm vào đây bằng JavaScript -->
                                         </select>
@@ -82,12 +78,12 @@
                                 <div class="col-lg-4 col-12">
                                     <div class="checkout__input">
                                         <p>Phường/xã<span>*</span></p>
-                                        <select id="wards" name="ward" class="w-100" >
+                                        <select id="wards" name="ward" class="w-100">
                                             <option value="">-- Chọn phường/xã --</option>
                                             <!-- Các phường sẽ được thêm vào đây bằng JavaScript -->
                                         </select>
                                         <!-- Thêm thẻ span để hiển thị giá trị đã chọn -->
-                                        <input type="hidden" id="wardName" name="ward_name"  />
+                                        <input type="hidden" id="wardName" name="ward_name" />
                                         <span id="wardDisplay" class="selected-value"></span>
                                     </div>
                                 </div>
@@ -126,13 +122,12 @@
                                 <h6>Bạn chưa có tài khoản? <a href="{{ route('client.login') }}">Nhấn vào đây</a> để tạo tài
                                     khoản</h6>
                             </div>
+
                         </div>
-
-
                         <div class="col-lg-5 col-md-6">
                             <div class="checkout__order">
                                 <h4>Hóa đơn của bạn</h4>
-                                
+
                                 <div class="checkout__order__products">Sản phẩm <span>Tổng</span></div>
                                 @php
                                     use Illuminate\Support\Str;
@@ -140,15 +135,14 @@
                                     $total_sale = 0;
                                     $totalcart = count($cart);
                                 @endphp
-                                <input type="hidden" id="quantity" name="quantity" value="{{$totalcart}}">
-                               
+                                <input type="hidden" id="quantity" name="quantity" value="{{ $totalcart }}">
+
                                 @foreach ($cart as $item)
                                     @php
-                                        $subtotal = $item->price * $item->quantity;
+                                        $price = $item->price - ($item->price * $item->percent) / 100;
+                                        $subtotal = $price * $item->quantity;
                                         $total += $subtotal;
-                                        $sale = 20000;
-                                        $ship = 15000;
-                                        $total_sale = $total - $sale + $ship;
+
                                     @endphp
                                     <ul>
                                         <li>
@@ -156,27 +150,31 @@
                                                 style="width: 50px; height: 50px; margin-right: 10px;">
                                             {{ Str::limit($item->name, 20) }}
                                             (x{{ $item->quantity }})
-                                            <span>{{ number_format($item->price * $item->quantity) }} đ</span>
+                                            <span>{{ number_format($price * $item->quantity) }} đ</span>
                                         </li>
                                     </ul>
                                 @endforeach
 
-                                <div class="checkout__order__subtotal">Tổng tiền <span>{{ number_format($total) }} đ</span>
-                                </div>
-                                <!-- Thêm phần hiển thị phí giao hàng -->
-                                <div class="checkout__order__shipping-fee d-flex">
-                                    <p>Phí giao hàng</p>
-                                    <p class="ml-lg-auto">{{ number_format($ship) ?? 'Chưa tính' }} đ</p>
+                                <div class="checkout__order__subtotal">Tổng tiền <span
+                                        id="total">{{ number_format($total) }} đ</span>
+                                    <input type="hidden" name="total" id="total" value="{{ $total }}">
                                 </div>
 
                                 <div class="checkout__order__shipping-fee d-flex">
+                                    <p>Phí giao hàng</p>
+                                    <p id="shipping-fee" class="ms-auto"></p>
+                                </div>
+
+
+                                <div class="checkout__order__shipping-fee d-flex">
                                     <p>Giảm giá</p>
-                                    <p class="ml-lg-auto"> {{ number_format($sale) ?? '0' }} đ</p>
+                                    <p class="ms-auto" id="sale"> {{ number_format($sale) ?? '0' }} đ</p>
                                 </div>
-                                <div class="checkout__order__total">Tổng <span>{{ number_format($total_sale) }} đ</span>
-                                    <input type="hidden" name="total_sale" id="total_sale"
-                                        value="{{ $total_sale }}">
+                                <div class="checkout__order__total">Tổng <span id="total_sale"></span>
+                                    <input type="hidden" name="total_final" id="total_final">
+                                    <input type="hidden" name="cart_id" id="cart_id" value="{{$cart[0]->cart_id}}">
                                 </div>
+                                    <input type="hidden" name="coupon_id" id="coupon_id" value="{{$discount}}">
 
                                 <div class="checkout__input__checkbox">
                                     <label for="payment_cash">
@@ -206,11 +204,12 @@
                                 <button type="submit" name="redirect" class="site-btn">Thanh toán</button>
                                 </p>
                             </div>
+
                         </div>
+                    </div>
                 </form>
             </div>
         </div>
 
     </section>
-    <script></script>
 @endsection

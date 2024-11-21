@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Products\CartDetail;
 use App\Models\Products\CartProduct;
 use App\Models\Products\Category;
+use App\Models\Products\Coupon;
+use App\Models\Products\OrderProduct;
 use App\Models\Products\ParentCategory;
 use App\Models\Products\Product;
 use App\Models\User;
@@ -13,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Number;
 
 class ShopController extends Controller
@@ -89,15 +92,15 @@ class ShopController extends Controller
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
-                'coupons.discount_code',
                 'coupons.percent',
+                'coupons.discount_code',
                 DB::raw('MIN(img_products.img) as imgName')
             ) // Lấy hình ảnh đầu tiên
             ->groupBy(
                 'products.product_id',
                 'categories.name',
-                'coupons.discount_code',
                 'coupons.percent',
+                'coupons.discount_code',
                 'products.price',
                 'products.name'
             )
@@ -472,24 +475,88 @@ class ShopController extends Controller
         return view('Shop.blog');
     }
 
+    public function checkVoucher(Request $request)
+    {
+        // Xác thực dữ liệu đầu vào
+        $validator = Validator::make($request->all(), [
+            'total' => 'required',
+            'code' => 'required',
+        ], [
+            'total.required' => 'Tổng số tiền là bắt buộc.',
+            'code.required' => 'Mã giảm giá là bắt buộc.',
+
+        ]);
+
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $coupon = Coupon::where('discount_code', $request->input('code'))->first();
+        $currentDateTime = Carbon::now();
+
+        if ($coupon) {
+
+            if ($currentDateTime < $coupon->time_start || $currentDateTime > $coupon->time_end) {
+                return response()->json(['error' => true, 'message' => 'Mã giảm giá không hợp lệ hoặc đã hết hạn.']);
+            }
+
+            if ($coupon->type != 0) {
+                return response()->json(['error' => true, 'message' => 'Mã giảm giá không áp dụng cho hóa đơn này.']);
+            }
+
+
+            if ($request->total < $coupon->min_purchase) {
+                return response()->json(['error' => true, 'message' => 'Mã giảm giá chỉ áp dụng cho hóa đơn từ ' . $coupon->min_purchase . ' trở lên.']);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Mã giảm giá hợp lệ.',
+                'percent' => $coupon->percent,
+                'total' => $request->total,
+                'coupon' => $coupon->discount_code,
+            ]);
+        } else {
+            return response()->json([
+                'error' => true,
+                'message' => 'Mã Giảm giá không hợp lệ'
+            ]);
+        }
+    }
+
 
     public function checkout(Request $request)
     {
-        $user_id = $request->input('user_id');
-        $total = $request->input('total');
-        $user = User::where('user_id', $user_id)->first();
 
-        $cart = CartProduct::where('user_id', $user_id)
-            ->join('products', 'products.product_id', '=', 'cart_products.product_id')
-            ->join('img_products', 'img_products.product_id', 'products.product_id')
+        if (!$request->input('cart_id')) {
+            return redirect()->route('shop.cart')->with('message', 'Chưa có sản phẩm trong giỏ hàng');
+        }
+        $user_id = $request->input('user_id');
+        $cart_id = $request->input('cart_id');
+        $discount = $request->input('coupon');
+        $total = $request->input('total');
+        $sale = $request->input('sale_price_check');
+        $user = User::where('user_id', $user_id)->first();
+        $cart = CartProduct::where('cart_products.cart_id', $cart_id)
+            ->join('cart_details', 'cart_details.cart_id', '=', 'cart_products.cart_id')
+            ->join('products', 'products.product_id', '=', 'cart_details.product_id')
+            ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
+            ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
+            ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
             ->select(
                 'cart_products.*',
+                'cart_details.*',
                 'products.*',
-                DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(img_products.img), ",", 1) as img_first')
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start as dateStartSale',
+                'coupons.time_end as dateEndSale',
+                DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(img_products.img ORDER BY img_products.img SEPARATOR ","), ",", 1) as img_first')
             )
             ->groupBy(
-                'products.product_id',
                 'cart_products.cart_id',
+                'products.product_id',
                 'products.name',
                 'products.code_product',
                 'products.unit_of_measurement',
@@ -499,9 +566,15 @@ class ShopController extends Controller
                 'products.price',
                 'products.manufacture',
                 'products.registration_number',
-                'products.status'
+                'products.status',
+                'cart_details.cart_detail_id',
+                'coupons.discount_code',
+                'coupons.percent',
+                'coupons.time_start',
+                'coupons.time_end'
             )
             ->get();
-        return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'cart' => $cart]);
+
+        return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'discount' => $discount, 'sale' => $sale, 'cart' => $cart]);
     }
 }
