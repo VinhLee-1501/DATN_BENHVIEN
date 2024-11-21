@@ -75,6 +75,14 @@
                                             <div class="text-danger">*{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="col-12 mb-2 ">
+                                        <label for="age">CCCD/CMND</label>
+                                        <input type="text" class="form-control" id="cccd" name="cccd"
+                                            value="{{ old('cccd') }}">
+                                        @error('cccd')
+                                            <div class="text-danger">*{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                     <div class="col-12 mb-2">
                                         <label for="address">Địa chỉ</label>
                                         <input type="text" class="form-control @error('address') is-invalid @enderror"
@@ -151,9 +159,14 @@
                                     <b>{{ Carbon\Carbon::parse($user['patient']->birthday)->format('d/m/Y') }}</b>
                                 </div>
                                 <div class="d-flex m-1">
+                                    <label for="patient_id">CCCD/CMND:  </label>
+                                    <b> {{ $user['patient']->cccd }}</b>
+                                </div>
+                                <div class="d-flex m-1">
                                     <label for="patient_name">Địa chỉ: </label>
                                     <b>{{ $user['patient']->address }}</b>
                                 </div>
+                              
                                 <div class="d-flex m-1">
                                     <label for="patient_name">Số điện thoại: </label>
                                     <b> {{ $user['patient']->phone }}</b>

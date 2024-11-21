@@ -61,6 +61,10 @@
                                 <b>{{ $patient->address }}</b>
                             </div>
                             <div class="d-flex m-1">
+                                <label for="patient_id">CCCD/CMND: </label>
+                                <b> {{ $patient->cccd }}</b>
+                            </div>
+                            <div class="d-flex m-1">
                                 <label for="patient_name">Số điện thoại: </label>
                                 <b> {{ $patient->phone }}</b>
                             </div>
@@ -132,7 +136,7 @@
                                     @if ($totalprice == 20)
                                         <span></span>
                                     @else
-                                        <span id="totalAmout">Tổng cộng: {{ $totalprice}}.000 VNĐ</span>
+                                        <span id="totalAmout">Tổng cộng: {{ $totalprice }}.000 VNĐ</span>
                                         <div class="float-xxl-end">
                                             <a href="{{ route('system.pdfService', $data->treatment_id) }}"
                                                 class="btn btn-success btn-sm" type="btn">In Phiếu</a>

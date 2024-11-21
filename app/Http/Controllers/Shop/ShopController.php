@@ -544,6 +544,7 @@ class ShopController extends Controller
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+            ->whereNull('cart_details.deleted_at')
             ->select(
                 'cart_products.*',
                 'cart_details.*',
@@ -574,6 +575,8 @@ class ShopController extends Controller
                 'coupons.time_end'
             )
             ->get();
+
+            // dd($cart);
 
         return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'discount' => $discount, 'sale' => $sale, 'cart' => $cart]);
     }

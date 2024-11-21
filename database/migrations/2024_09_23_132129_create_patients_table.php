@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('gender');
             $table->date('birthday');
             $table->string('address', 255);
+            $table->string('cccd', 12)->nullable();
             $table->bigInteger('insurance_number')->nullable(); 
             $table->bigInteger('emergency_contact')->nullable();
             $table->string('occupation', 30)->nullable();

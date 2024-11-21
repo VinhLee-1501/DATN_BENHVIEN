@@ -17,6 +17,7 @@ class Patient extends Model
         'gender',
         'birthday',
         'address',
+        'cccd',
         'Insurance_number',
         'emergency_contact',
         'occupation',

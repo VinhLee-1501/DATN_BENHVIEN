@@ -28,6 +28,7 @@ class CheckupPatientRequest extends FormRequest
             'gender' => 'required', 
             'age' => 'required|date',
             'address' => 'required',
+            'cccd' => 'required|size:12',
             'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/',
             // 'occupation' => 'required',
             // 'emergency_contact' => 'required',
@@ -46,6 +47,8 @@ class CheckupPatientRequest extends FormRequest
             'gender.required' => ':attribute không để trống',
             'age.required' => ':attribute không để trống',
             'address.required' => ':attribute không để trống',
+            'cccd.size' => ':attribute phải đủ 12 số',
+            'cccd.required' => ':attribute không để trống',
             'phone.size' => ':attribute phải đủ 10 số',
             'phone.required' => ':attribute không để trống',
             'phone.regex' => ':attribute phải là số hợp lệ',
@@ -66,6 +69,7 @@ class CheckupPatientRequest extends FormRequest
             'gender' => 'Giới tính',
             'age' => 'Ngày sinh',
             'address' => 'Địa chỉ',
+            'cccd' => 'CCCD/CMND',
             'national' => 'Quốc tịch',
            
         ];

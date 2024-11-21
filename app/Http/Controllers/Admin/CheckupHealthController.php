@@ -214,6 +214,7 @@ class CheckupHealthController extends Controller
             $patient->last_name = $request->input('last_name');
             $patient->phone = $phone; // Sử dụng phone từ book
             $patient->gender = $request->input('gender');
+            $patient->cccd = $request->input('cccd');
             $patient->birthday = $request->input('age');
             $patient->address = $request->input('address');
             $patient->occupation = $request->input('occupation');
@@ -337,6 +338,7 @@ class CheckupHealthController extends Controller
                 ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
                 ->get();
 
+                // dd($patient);
             return view(
                 'System.doctors.checkupHealth.medicalRecord',
                 [
