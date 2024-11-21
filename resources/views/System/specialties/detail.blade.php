@@ -11,31 +11,31 @@
                     </div>
                     <div class="col-md-7 d-flex justify-content-end mb-4">
                         <div class="w-100">
-                            <input type="text" id="inputName" class="form-control"
-                                   placeholder="Tìm kiếm bác sĩ" name="nameSpecialty">
+                            <input type="text" id="inputName" class="form-control" placeholder="Tìm kiếm bác sĩ"
+                                name="nameSpecialty">
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="accordion" id="accordionExample">
-                @foreach($doctorsSpecialty as $doctor)
+                @foreach ($doctorsSpecialty as $doctor)
                     <div class="accordion-item" id="myList">
                         <section>
                             <h2 class="accordion-header" id="heading{{ $doctor->user_id }}">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapse{{ $doctor->user_id }}" aria-expanded="true" aria-controls="collapse{{ $doctor->user_id }}">
+                                    data-bs-target="#collapse{{ $doctor->user_id }}" aria-expanded="true"
+                                    aria-controls="collapse{{ $doctor->user_id }}">
                                     <strong>{{ $doctor->firstname }} {{ $doctor->lastname }}</strong>
                                 </button>
                             </h2>
-                            <div id="collapse{{ $doctor->user_id }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ $doctor->user_id }}"
-                                 data-bs-parent="#accordionExample">
+                            <div id="collapse{{ $doctor->user_id }}" class="accordion-collapse collapse show"
+                                aria-labelledby="heading{{ $doctor->user_id }}" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row justify-content-center align-items-center">
                                         <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
-                                            <img
-                                                src="{{ $doctor->avatar ? $doctor->avatar : asset('backend/assets/images/profile/user-1.jpg') }}"
-                                                class="img-thumbnail" style="min-width: 150; "/>
+                                            <img src="{{ $doctor->avatar ? $doctor->avatar : asset('backend/assets/images/profile/user-1.jpg') }}"
+                                                class="img-thumbnail" style="min-width: 150; " />
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <div class="mb-3">
@@ -62,8 +62,10 @@
                             </div>
                         </section>
                     </div>
-                @endforeach
+                    @endforeach
+                    <div id="noResults" class="alert alert-warning" style="display: none;">Không tìm thấy dữ liệu.</div>
             </div>
+
         </div>
     </div>
 

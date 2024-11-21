@@ -71,6 +71,8 @@
                 </tbody>
             </table>
             {!! $clinics->links() !!}
+                <div id="noResults" class="alert alert-warning" style="display: none;">Không tìm thấy dữ liệu.</div>
+
         </div>
     </div>
 

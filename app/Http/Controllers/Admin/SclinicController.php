@@ -43,6 +43,14 @@ class SclinicController extends Controller
 
     public function store(CreateRequest $request)
     {
+        $specialtyId = $request->input('specialtyName');
+        $clicnicCount = Sclinic::where('specialty_id', $specialtyId)->count();
+
+
+        if($clicnicCount >= 3){
+            return response()->json(['error' => true, 'message' => 'Một chuyên khao được tối đa 3 phòng khám!']);
+        }
+
         $sclinic = new Sclinic();
         $sclinic->sclinic_id = strtoupper(Str::random('10'));
         $sclinic->name = $request->input('sclinicName');
@@ -71,8 +79,16 @@ class SclinicController extends Controller
 
     public function update(UpdateRequest $request, $id)
     {
+        $specialtyId = $request->get('specialtyName');
         $sclinic = Sclinic::where('sclinic_id',$id)->first();
 
+        if($sclinic->specialty_id !== $specialtyId){
+            $clicnicCount = Sclinic::where('specialty_id', $specialtyId)->count();
+
+            if($clicnicCount >= 3){
+                return response()->json(['error' => true,'message' => 'Một chuyên khao được tối đa 3 phòng khám!']);
+            }
+        }
         $sclinic->name = $request->input('sclinicName');
         $sclinic->specialty_id = $request->input('specialtyName');
         $sclinic->description = $request->input('sclinicNote');

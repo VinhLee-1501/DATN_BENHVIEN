@@ -36,6 +36,7 @@ class CategoryRequest extends FormRequest
             'name.required' => ':attribute không để trống',
             'name.unique' => ':attribute đã tồn tại',
             'parent_id.required' => ':attribute không để trống',
+            'img.image' => 'Chọn 1 :attribute',
             'img.*.image' => ':attribute phải là định dạng ảnh',
             'img.*.mimes' => ':attribute phải là jpeg, png, jpg, gif, webp hoặc svg',
 
@@ -48,6 +49,7 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'Tên danh mục',
             'parent_id' => 'Danh mục cha',
+            'img' => 'ảnh',
 
         ];
     }

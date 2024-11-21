@@ -130,7 +130,7 @@
                 <div class="col-lg-6">
                     <div class="shoping__checkout">
                         <h5>Tổng thanh toán</h5>
-                        <form id="formOrder" action="{{ route('shop.checkout') }}" method="POST">
+                        {{-- <form id="formOrder" action="{{ route('shop.checkout') }}" method="POST">
                             @csrf
                             <ul>
                                 <input type="hidden" id="user_id" name="user_id" value="{{ $item->user_id }}">
@@ -141,7 +141,7 @@
                                 <li>Tổng <span id="total_order"></span></li>
                             </ul>
                             <button type="submit" id="btn-order" class="primary-btn">Mua hàng</button>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
 

@@ -74,7 +74,7 @@ class ShopController extends Controller
 
         if ($request->ajax()) {
             if ($products->isEmpty()) {
-                return response()->json(['html' => '<p>No products available.</p>']);
+                return response()->json(['html' => '<p>Không có dữ liệu.</p>']);
             }
 
             $html = view('shop._product_card', ['products' => $products])->render();

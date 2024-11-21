@@ -23,7 +23,7 @@
 
             <!-- </div> -->
             <div class="table-responsive">
-{!! $specialties->links() !!}
+                {!! $specialties->links() !!}
                 <table class="table text-nowrap mb-0 align-middle">
                     <thead class="text-dark fs-4  ">
                         <tr class="text-center">
@@ -53,14 +53,14 @@
                                 {{-- {{$specialty->doctors_count }} --}}
                                 {{-- </td> --}}
                                 <td class="border-bottom-0">
-                                    <a href="{{ route('system.detail', $specialty->specialty_id) }}"
+                                    <a href="{{ route('system.detail_specialty', $specialty->specialty_id) }}"
                                         class="btn btn-primary">
                                         <i class="ti ti-notes"></i>
                                     </a>
                                     <a href="javascript:void(0)" class="btn btn-primary "
                                         onclick="openModalEdit('{{ $specialty->specialty_id }}')"><i
                                             class="ti ti-pencil"></i></a>
-                                    <form action="{{ route('system.delete', $specialty->specialty_id) }}"
+                                    <form action="{{ route('system.delete_specialty', $specialty->specialty_id) }}"
                                         id="form-delete{{ $specialty->specialty_id }}" method="POST"
                                         style="display: inline;">
                                         @csrf
@@ -76,7 +76,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                 {!! $specialties->links() !!}
+                {!! $specialties->links() !!}
                 <div id="noResults" class="alert alert-warning" style="display: none;">Không tìm thấy dữ liệu.</div>
 
             </div>
@@ -168,7 +168,9 @@
                             $('#exampleModal').modal('hide');
                             if (response.success) {
                                 toastr.success(response.message);
-                                location.reload();
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 2000)
                             } else if (response.error) {
                                 toastr.error(response.message);
                             }
@@ -248,7 +250,7 @@
                             $('.form-control').removeClass('is-invalid');
                             $.each(errors, function(key, value) {
                                 $('[name="' + key + '"]').addClass('is-invalid');
-                                $('#'+ key + '_error').text(value[0]);
+                                $('#' + key + '_error').text(value[0]);
                             });
                         } else {
                             console.error(error);

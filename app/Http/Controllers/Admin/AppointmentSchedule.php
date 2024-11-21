@@ -76,10 +76,15 @@ class AppointmentSchedule extends Controller
     {
         $book = Book::where('book_id', $id)->first();
 
+        
         if (!$book) {
-            return response()->json(['error' => 'Không tìm thấy bản ghi'], 400);
+            return response()->json(['error' => true, 'message' => 'Không tìm thấy bản ghi']);
         }
-
+        
+        $shiftId = $request->input('doctor_name');
+        if(!$shiftId){
+            return response()->json(['error' => true, 'message' => 'Không tìm bác sĩ khám bệnh']);
+        }
         $status = $request->input('status');
         $hour = $request->input('hour');
         // dd($hour, $status);
@@ -92,7 +97,7 @@ class AppointmentSchedule extends Controller
         // dd($hourDeadline);
 
         if ($hourNow > $hourDeadline) {
-            return response()->json(['error' => 'Giờ không hợp lệ'], 400);
+            return response()->json(['error' =>  true, 'message' => 'Giờ không hợp lệ']);
         }
 
         if ($status == 2) {
@@ -108,7 +113,7 @@ class AppointmentSchedule extends Controller
         $currentDate = Carbon::now()->toDateString();
 
         if ($date < $currentDate) {
-            return response()->json(['error' => 'Ngày đặt lịch không hợp lệ'], 400);
+            return response()->json(['error' => true, 'message' => 'Ngày đặt lịch không hợp lệ']);
         }
 
         $doctorUserId = $request->input('doctor_name');
@@ -121,7 +126,7 @@ class AppointmentSchedule extends Controller
         // $bookDay = Book::where('day', $date)->get();
 
         if (!$schedule) {
-            return response()->json(['error' => 'Bác sĩ này không có lịch khám vào ngày này'], 400);
+            return response()->json(['error' => true, 'message' => 'Bác sĩ này không có lịch khám vào ngày này']);
         }
 
         $scheduleDate = Schedule::whereDate('day', $date)
@@ -134,7 +139,7 @@ class AppointmentSchedule extends Controller
             ->count();
 
         if ($bookCount > 30) {
-            return response()->json(['error' => 'Bác sĩ đã đầy lịch'], 400);
+            return response()->json(['error' => true, 'message' => 'Bác sĩ đã đầy lịch']);
         }
 
 

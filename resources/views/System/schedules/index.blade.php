@@ -461,9 +461,12 @@
                         var confirmationCheck = $('#cancelstatusCheck').is(
                             ':checked');
 
-                        // var eventsOnSameDay = calendar.getEvents().filter(function(event) {
-                        //     return formatDate(event.start) === daySelect;
-                        // });
+                        var specialty = $('#specialty-filter').val();
+
+                        if(!specialty){
+                            alert('Vui lòng chọn chuyên khoa.');
+                            return;
+                        }
 
                         // if (eventsOnSameDay.length > 0) {
                         //     alert(

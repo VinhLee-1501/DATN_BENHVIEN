@@ -8,6 +8,7 @@ use App\Models\Schedule;
 use App\Models\Sclinic;
 use App\Models\Specialty;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -119,6 +120,11 @@ class ScheduleController extends Controller
         $day = $request->input('day');
         $note = $request->input('note');
 
+        // Kiểm tra ngày
+        $now = Carbon::now();
+        if($day < $now) {
+            return response()->json(['error' => true, 'message' => 'Bạn không thể thêm sự kiện vào ngày trước ngày hiện tại.']);
+        }
         // Kiểm tra số lượng lịch đã có cho chuyên khoa này trong ngày
         $existingSchedules = Schedule::where('user_id', $userId)
             ->where('day', $day)
@@ -169,7 +175,7 @@ class ScheduleController extends Controller
 
         // dd($schedule);
 
-        return response()->json(['success' => true, 'message' => 'Thêm mới thành công.']);
+        return response()->json(['success' => true, 'message' => 'Thêm lịch khám thành công.']);
     }
 
 
@@ -238,7 +244,7 @@ class ScheduleController extends Controller
         // Lưu lại
         $schedule->update();
 
-        return response()->json(['success' => true, 'message' => 'Cập nhật thành công.']);
+        return response()->json(['success' => true, 'message' => 'Cập nhật lịch khám thành công.']);
     }
     public function Sclinic($sclinic_id)
     {
@@ -259,6 +265,6 @@ class ScheduleController extends Controller
         // $this->Sclinic($schedule->sclinic_id);
 
         $schedule->delete();
-        return response()->json(['success' => true, 'message' => 'Xóa thành công.']);
+        return response()->json(['success' => true, 'message' => 'Xóa lịch khám thành công.']);
     }
 }
