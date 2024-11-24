@@ -19,7 +19,7 @@ Route::prefix('cua-hang')->group(function () {
     Route::post('/mua-hang', [shopController::class, 'checkout'])->name('checkout');
  
     Route::post('/voucher', [shopController::class, 'checkVoucher'])->name('checkVoucher');
-    Route::post('/thanh-toan', [PayController::class, 'order'])->name('order');
+    Route::post('/thanh-toan-online', [PayController::class, 'order'])->name('order');
     Route::get('/chi-tiet-san-pham/{id}', [shopController::class, 'detail'])->name('shop-details');
     Route::get('/san-pham', [shopController::class, 'grid'])->name('shop-grid');
     Route::get('/gio-hang', [shopController::class, 'cart'])->name('cart');

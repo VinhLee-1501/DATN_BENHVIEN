@@ -133,14 +133,14 @@
                                     <label for="medicineId" class="form-label">Mã thuốc</label>
                                     <input type="text" name="medicine_id" class="form-control" id="medicineId"
                                         readonly>
-                                    <div class="text-danger" id="medicine_id_error"></div>
+                                    <div class="text-danger" id="medicine_idedit_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Tên thuốc</label>
                                     <input type="text" name="name" class="form-control" id="nameedit">
-                                    <div class="text-danger" id="name_error"></div>
+                                    <div class="text-danger" id="nameedit_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -150,6 +150,7 @@
                                         <option value="">Chọn nhóm thuốc</option>
                                         <!-- Các tùy chọn sẽ được thêm vào bằng AJAX -->
                                     </select>
+                                    <div class="text-danger" id="medicine_type_id_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -165,6 +166,7 @@
                                 <div class="mb-3">
                                     <label for="activeIngredient" class="form-label">Hoạt tính</label>
                                     <textarea name="active_ingredient" class="form-control" id="activeIngredient"></textarea>
+                                    <div class="text-danger" id="active_ingredientedit_error"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -172,6 +174,7 @@
                                     <label for="unitOfMeasurement" class="form-label">Đơn vị</label>
                                     <input type="text" name="unit_of_measurement" class="form-control"
                                         id="unitOfMeasurement">
+                                    <div class="text-danger" id="unit_of_measurementedit_error"></div>
                                 </div>
                             </div>
                         </div>
@@ -185,11 +188,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 
 
     <script>
@@ -246,7 +244,6 @@
                             var errors = err.responseJSON.errors;
                             console.log(errors);
 
-                            // Xóa lỗi cũ
                             $('.invalid-feedback').text('');
                             $('.form-control').removeClass('is-invalid');
 
@@ -263,11 +260,11 @@
                 });
             });
         });
-    </script>
 
 
-    {{-- Cập nhật --}}
-    <script>
+
+        // Cập nhật 
+
         $(document).ready(function() {
             $("#inputName").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
@@ -276,7 +273,6 @@
                 });
             });
         });
-
 
         // cập nhật
 
@@ -314,16 +310,16 @@
                 }
             });
         }
-        $('#updateMedicineBtn').on('click', function() {
-            $('#editMedicineForm').submit();
-        });
+        // $('#updateMedicineBtn').on('click', function() {
+        //     $('#editMedicineForm').submit();
+        // });
 
         let isSubmitting = false;
 
         $('#editMedicineForm').on('submit', function(e) {
-            e.preventDefault(); // Ngăn chặn hành vi mặc định của form
+            e.preventDefault();
 
-            if (isSubmitting) return; // Nếu đã gửi rồi thì không gửi thêm
+            if (isSubmitting) return;
             isSubmitting = true;
 
             var id = $('#medicineId').val();
@@ -337,43 +333,45 @@
                 _token: '{{ csrf_token() }}'
             };
 
-
-
             $.ajax({
                 url: '/system/medicines/update/' + id,
                 type: 'PATCH',
-                data: JSON.stringify(formData), // Dữ liệu gửi đi
+                data: JSON.stringify(formData),
                 contentType: 'application/json',
                 processData: false,
                 success: function(response) {
                     if (response.success) {
                         toastr.success(response.message);
                         $('#exampleModal').modal('hide');
-                        window.location.href = '/system/medicines'; // Chuyển hướng về trang table
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
                     } else if (response.error) {
                         toastr.error(response.message);
                     }
                 },
                 error: function(err) {
-                    // Log lỗi chi tiết từ server vào console
-                    console.error("Lỗi khi cập nhật sản phẩm: ", err);
+                    console.error("Lỗi khi thêm thuốc:", err);
 
-                    // Kiểm tra nếu server trả về lỗi trong responseJSON và log thêm chi tiết
-                    if (err.responseJSON) {
-                        console.error("Chi tiết lỗi: ", err.responseJSON.error); // Hiển thị lỗi chính
-                        console.error("Thông tin thêm: ", err.responseJSON
-                            .message); // Nếu có message thêm
-                        console.error("Mã lỗi: ", err.status); // Mã trạng thái lỗi (ví dụ: 500, 404)
+                    if (err.responseJSON && err.responseJSON.errors) {
+                        var errors = err.responseJSON.errors;
+
+                        $('.text-danger').text('');
+                        $('.form-control').removeClass('is-invalid');
+
+                        $.each(errors, function(key, value) {
+                     
+                            $('#' + key).addClass('is-invalid');
+                            $('#' + key + 'edit_error').text(value);
+
+                        });
+
                     } else {
-                        console.error("Lỗi không xác định từ server.");
+                        alert('Có lỗi xảy ra, vui lòng kiểm tra console.');
                     }
-
-                    // Thông báo lỗi cho người dùng
-                    alert('Có lỗi xảy ra: ' + (err.responseJSON ? err.responseJSON.error :
-                        'Không xác định'));
                 },
                 complete: function() {
-                    isSubmitting = false; // Đặt lại cờ sau khi hoàn thành
+                    isSubmitting = false;
                 }
             });
         });

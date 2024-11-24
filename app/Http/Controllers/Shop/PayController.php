@@ -206,8 +206,8 @@ class PayController extends Controller
         if ($request->input('payment_option') == 'vnpay') {
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
             $vnp_Returnurl = "http://127.0.0.1:8000/cua-hang/hoa-don";
-            $vnp_TmnCode = "ZAZD6H5N"; //Mã website tại VNPAY 
-            $vnp_HashSecret = "VG6VICU7L6V62EHHPKMPR7UG45FBK918"; //Chuỗi bí mật
+            $vnp_TmnCode = "Q5IOJLTV";
+            $vnp_HashSecret = "2CYUTCCYDWXYLWRCPK61Z2QZYE79DJ8K"; //Chuỗi bí mật
 
             $vnp_TxnRef = $code; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
             $vnp_OrderInfo = 'Thanh toán hóa đơn';
@@ -315,8 +315,8 @@ class PayController extends Controller
 
             $result = $this->execPostRequest($endpoint, json_encode($data));
             $jsonResult = json_decode($result, true);
-
             return redirect()->to($jsonResult['payUrl']);
+            
         } elseif ($request->input('payment_option') === 'cash') {
             $order_id = OrderProduct::latest()->pluck('order_id')->first();
             $payment = new PaymentProduct();

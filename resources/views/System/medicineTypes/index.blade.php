@@ -6,21 +6,21 @@
             <h5 class="card-title fw-semibold mb-4">Quản lý nhóm thuốc</h5>
 
             <form action="" class="col-md-12 row">
-                   
-                    <div class="col-md-4 mb-3">
-                        <input type="text" id="inputName" class="form-control" placeholder="Nhập tên thuốc">
-                    </div>
 
-                    <div class="col-md-4 mb-3">
-                        <a href="javascript:void(0)" class="btn btn-success me-1" onclick='openAddModal()'>Thêm</a>
-                    </div>
+                <div class="col-md-4 mb-3">
+                    <input type="text" id="inputName" class="form-control" placeholder="Nhập tên thuốc">
+                </div>
 
-                </form>
-                
+                <div class="col-md-4 mb-3">
+                    <a href="javascript:void(0)" class="btn btn-success me-1" onclick='openAddModal()'>Thêm</a>
+                </div>
+
+            </form>
+
             <div class="table-responsive">
-                 {!! $medicineType->links() !!} 
+                {!! $medicineType->links() !!}
                 <table class="table text-nowrap mb-0 align-middle">
-                <thead class="text-dark fs-4  ">
+                    <thead class="text-dark fs-4  ">
                         <tr>
                             <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">Mã nhóm</h6>
@@ -37,7 +37,7 @@
                             <th class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">Thao tác</h6>
                             </th>
-                            
+
                         </tr>
                     </thead>
 
@@ -74,7 +74,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                 {!! $medicineType->links() !!} 
+                {!! $medicineType->links() !!}
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="medicine" class="form-label">Tên thuốc</label>
-                                    <input type="text" name="name" class="form-control " id="name" >
+                                    <input type="text" name="name" class="form-control " id="name">
                                     {{-- <select name="name" class="form-control" id="name">
                                         <option value="">Chọn tên thuốc</option>
                                         @foreach ($unique_categories as $category)
@@ -147,6 +147,7 @@
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Tên nhóm thuốc</label>
                                     <input type="text" name="name" class="form-control" id="nametype">
+                                    <div class="text-danger" id="nameedit_error"></div>
                                 </div>
                                 <div class="col-md-12 d-flex">
                                     <div class="mb-3">
@@ -273,26 +274,43 @@
                 },
 
                 success: function(response) {
-                    console.log(response.success);
+                    // console.log(response);
 
                     if (response.success) {
                         toastr.success(response.message);
                         $('#updateMedicineTypeModal').modal('hide');
-                        location.reload();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
                     } else if (response.error) {
                         toastr.error(response.message);
                     }
                 },
                 error: function(err) {
-                    console.error("Lỗi khi cập nhật thuốc:", err);
-                    alert('Có lỗi xảy ra: ' + err.responseJSON.error);
+
+                    if (err.responseJSON && err.responseJSON.errors) {
+                        var errors = err.responseJSON.errors;
+
+                        $('.text-danger').text('');
+                        $('.form-control').removeClass('is-invalid');
+
+                        $.each(errors, function(key, value) {
+
+                            $('#' + key).addClass('is-invalid');
+                            $('#' + key + 'edit_error').text(value);
+
+                        });
+
+                    } else {
+                        alert('Có lỗi xảy ra, vui lòng kiểm tra console.');
+                    }
                 }
             });
         });
 
 
-        $('#updateMedicineTypeBtn').on('click', function() {
-            $('#updateMedicineTypeForm').submit();
-        });
+        // $('#updateMedicineTypeBtn').on('click', function() {
+        //     $('#updateMedicineTypeForm').submit();
+        // });
     </script>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Medicine\MedicineTypeRequest;
+use App\Http\Requests\Admin\Medicine\UpdateMedicineTypeRequest;
 use App\Models\MedicineType;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -77,12 +78,13 @@ class MedicineTypeController extends Controller
     }
 
 
-    public function update(Request $request, $row_id)
+    public function update(UpdateMedicineTypeRequest $request, $row_id)
     {
         $type = MedicineType::where('medicine_type_id', $row_id)->first();
         $type->name = $request->input('name');
         $type->status = $request->input('status');
         $type->update();
+        // dd($type);
         return response()->json(['success' => true, 'message' => 'Cập nhật thành công']);
     }
 }

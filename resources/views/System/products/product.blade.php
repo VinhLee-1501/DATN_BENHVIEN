@@ -26,12 +26,26 @@
         min-width: 50px;
         max-width: 150px;
     }
+
+    .text-wrap {
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: normal;
+    }
+
+    .text-truncate {
+        display: inline-block;
+        max-width: 30ch;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
 <div class="card w-100">
     <div class="card-body p-4">
         <h5 class="card-title fw-semibold mb-4">Quản lý sản phẩm</h5>
         <div class="table-responsive">
-             {!! $product->links() !!}
+            {{ $product->links() }}
             <table class="table text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4">
                     <tr>
@@ -76,7 +90,7 @@
                                 </div>
                             </td>
                             <td class="border-bottom-0">
-                                <p class="mb-0 fw-semibold">{{ $data->name }}</p>
+                                <p class="mb-0 fw-semibold text-truncate">{{ $data->name }}</p>
                             </td>
                             <td class="border-bottom-0">
                                 <p class="mb-0 fw-semibold">
@@ -95,12 +109,12 @@
                                     onclick="openUpdateModal('{{ $data->product_id }}')">
                                     <i class="ti ti-pencil"></i>
                                 </a>
-                                <form action="{{ route('system.product.delete', $data->product_id) }}" id="form-delete{{ $data->product_id }}"
-                                    method="post">
+                                <form action="{{ route('system.product.delete', $data->product_id) }}"
+                                    id="form-delete{{ $data->product_id }}" method="post">
                                     @method('delete')
                                     @csrf
                                 </form>
-                                 <button type="submit" class="btn btn-danger btn-delete"
+                                <button type="submit" class="btn btn-danger btn-delete"
                                     data-id="{{ $data->product_id }}">
                                     <i class="ti ti-trash"></i>
                                 </button>
@@ -115,13 +129,12 @@
                                 <div class="collapse p-4" id="collapse{{ $data->product_id }}">
                                     <h6 class="fw-semibold mb-2 fs-5">Thông tin chi tiết:</h6>
                                     <div class="row mt-1">
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div id="productImageCarousel{{ $data->product_id }}"
                                                 class="carousel slide img-container-detail mt-3"
                                                 data-bs-ride="carousel">
                                                 <div class="carousel-inner">
                                                     @foreach ($data->img_array as $index => $img)
-                                                        <!-- Đổi $data thành $img -->
                                                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                                             <img src="{{ asset('storage/uploads/products/' . $img) }}"
                                                                 class="d-block w-100 img-fluid"
@@ -143,41 +156,52 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="col-md-7 d-flex">
-                                            <div class="col-md-7 p-2">
-                                                <p><strong>Mã sản phẩm:</strong> {{ $data->code_product }}
-                                                    {!! $barcodes[$data->product_id] !!}</p>
-                                                <p><strong>Tên sản phẩm:</strong> {{ $data->name }}</p>
-                                                <p><strong>Đơn vị:</strong> {{ $data->unit_of_measurement }}</p>
-                                                <p><strong>Hoạt tính:</strong> {{ $data->active_ingredient }}</p>
-                                                <p><strong>Công dụng:</strong> {{ $data->used }}</p>
-                                            </div>
-                                            <div class="col-md-5 p-2">
-                                                <div class="d-flex">
-                                                    <p><strong>Giá gốc:</strong> {{ $data->price }}</p>
-                                                    <p class="ms-2"><strong>Giá giảm:</strong> {{ $data->price }}
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-7 p-2">
+                                                    <p class="text-wrap"><strong>Mã sản phẩm:</strong>
+                                                        {{ $data->code_product }} {!! $barcodes[$data->product_id] !!}</p>
+                                                    <p class="text-wrap"><strong>Tên sản phẩm:</strong>
+                                                        {{ $data->name }}</p>
+                                                    <p class="text-wrap"><strong>Đơn vị:</strong>
+                                                        {{ $data->unit_of_measurement }}</p>
+                                                    <p class="text-wrap"><strong>Hoạt tính:</strong>
+                                                        {{ $data->active_ingredient }}</p>
+                                                    <p class="text-wrap"><strong>Công dụng:</strong>
+                                                        {{ $data->used }}</p>
+                                                </div>
+                                                <div class="col-md-5 p-2">
+                                                    <div class="d-flex text-wrap">
+                                                        <p><strong>Giá gốc:</strong> {{ $data->price }}</p>
+                                                        <p class="ms-2"><strong>Giá giảm:</strong>
+                                                            {{ $data->price }}</p>
+                                                    </div>
+                                                    <p class="text-wrap"><strong>Thương hiệu:</strong>
+                                                        {{ $data->brand }}</p>
+                                                    <p class="text-wrap"><strong>Hạn sử dụng:</strong>
+                                                        {{ $data->manufacture }}</p>
+                                                    <p class="text-wrap"><strong>Số:</strong>
+                                                        {{ $data->registration_number }}</p>
+                                                    <p class="text-wrap"><strong>Nhóm sản phẩm:</strong>
+                                                        {{ $data->nameCategory }}</p>
+                                                    <p class="text-wrap"><strong>Ngày thêm sản phẩm:</strong>
+                                                        {{ Carbon\Carbon::parse($data->created_at)->format('H:i d/m/Y ') }}
+                                                    </p>
+                                                    <p class="text-wrap"><strong>Ngày cập nhật:</strong>
+                                                        {{ Carbon\Carbon::parse($data->updated_at)->format('H:i d/m/Y ') }}
                                                     </p>
                                                 </div>
-                                                <p><strong>Thương hiệu:</strong> {{ $data->brand }}</p>
-                                                <p><strong>Hạn sự dụng:</strong> {{ $data->manufacture }}</p>
-                                                <p><strong>Số:</strong> {{ $data->registration_number }}</p>
-                                                <p><strong>Nhóm sản phẩm:</strong> {{ $data->nameCategory }}</p>
-                                                <p><strong>Ngày thêm sản phẩm:</strong>
-                                                    {{ Carbon\Carbon::parse($data->created_at)->format('H:i d/m/Y ') }}
-                                                </p>
-                                                <p><strong>Ngày cập nhật:</strong>
-                                                    {{ Carbon\Carbon::parse($data->updated_at)->format(' H:i d/m/Y ') }}
-                                                </p>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-             {!! $product->links() !!}
+            {!! $product->links() !!}
         </div>
     </div>
 </div>

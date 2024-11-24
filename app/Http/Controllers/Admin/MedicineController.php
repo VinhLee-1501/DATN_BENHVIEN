@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\Medicine\CreateRequest;
+use App\Http\Requests\Admin\Medicine\UpdateMedicineRequest;
 use App\Models\MedicineType;
 
 require_once resource_path('views/data/simple-html-dom.php');
@@ -163,8 +164,6 @@ class MedicineController extends Controller
             return response()->json(['success' => false, 'message' => 'Không tìm thấy thuốc.']);
         }
 
-        // dd($medicine);
-
         return response()->json([
             'success' => true,
             'medicine' => $medicine,
@@ -172,7 +171,7 @@ class MedicineController extends Controller
         ]);
     }
 
-    public function update(Request $request, $medicine_id)
+    public function update(UpdateMedicineRequest $request, $medicine_id)
     {
         $medicine = Medicine::find($medicine_id);
 

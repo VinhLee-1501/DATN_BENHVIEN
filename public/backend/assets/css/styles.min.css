@@ -7804,7 +7804,7 @@ fieldset:disabled .btn {
 
 .modal {
     --bs-modal-zindex: 1055;
-    --bs-modal-width: 500px;
+    --bs-modal-width: calc(100vh - 20px);
     --bs-modal-padding: 1rem;
     --bs-modal-margin: 0.5rem;
     --bs-modal-color: ;
@@ -8008,22 +8008,22 @@ fieldset:disabled .btn {
     }
 
     .modal-sm {
-        --bs-modal-width: 300px;
+        width: var(--bs-modal-width);
     }
 }
 
-@media (min-width: 992px) {
+@media (max-width: 992px) {
 
     .modal-lg,
     .modal-xl {
-        --bs-modal-width: 800px;
+        width: var(--bs-modal-width);
     }
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 1200px) {
     .modal-xl {
-        --bs-modal-width: 1140px;
-    }
+        width: var(--bs-modal-width);
+     }
 }
 
 .modal-fullscreen {

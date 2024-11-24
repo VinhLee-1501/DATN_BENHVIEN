@@ -2,12 +2,19 @@
 @section('Quản lý sản phẩm')
 @section('content')
     <style>
+        .note-editor .note-toolbar,
+        .note-popover .popover-content {
+            display: none;
+        }
+
         #addProductForm {
             display: flex;
             flex-direction: column;
             align-items: center;
             /* Căn giữa theo chiều ngang */
         }
+
+     
 
         .modal-footer {
             display: flex;
@@ -735,5 +742,13 @@
         // ------ Cập nhật sản phẩm và hiển thị ảnh đã có end ------
     </script>
 
-
+    <script>
+        $(document).ready(function() {
+            // Áp dụng Summernote cho tất cả các textarea
+            $('textarea').summernote({
+                minHeight: 100,
+                focus: true,
+            });
+        });
+    </script>
 @endsection
