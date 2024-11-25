@@ -105,15 +105,15 @@
                         <div class="col l-12 mc-12 c-12">
                             <div class="news__main">
                                 <div class="row gap-y-20">
-                                    <div class="col l-12 mc-12 c-12">
+                                    <div class="col-12 l-12 mc-12 c-12">
                                         <div class="box-title">Tổng hợp</div>
                                     </div>
                                     <div class="col l-12 mc-12 c-12">
                                         <div class="news__main--result">
                                             <div class="row gap-y-20">
                                                 @foreach ($blogs as $blog)
-                                                    <div class="col l-4 mc-6 c-12">
-                                                        <div class="item">
+                                                    <div class="col-4 l-4 mc-6 c-12">
+                                                        <div class="item" style="padding: 0px 8px 0px 8px">
                                                             <div class="item__frame">
                                                                 <div class="item__thumb">
                                                                     <a href="{{ route('client.detailnews', ['slug' => $blog->slug]) }}" class="item__thumb--link">

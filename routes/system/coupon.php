@@ -12,8 +12,9 @@ Route::prefix('coupons')->middleware('check_login_admin')
         Route::get('/edit/{id}', [CouponController::class, 'edit'])->name('coupons.edit');
         Route::patch('/update/{id}', [CouponController::class, 'update'])->name('coupons.update');
         Route::get('/delete/{id}', [CouponController::class, 'delete'])->name('coupons.delete');
+        Route::get('/search', [CouponController::class, 'index'])->name('coupons.search');
         Route::get('/listproduct',[CouponController::class, 'listproduct']);
         Route::get('/listcategory',[CouponController::class, 'listcategory']);
         Route::get('/resetsearch', [CouponController::class, 'resetSearch'])->name('coupon.resetsearch');
-        Route::delete('/multipledelete', [CouponController::class, 'index'])->name('coupon.multipledelete');
+        Route::post('/multipledelete', [CouponController::class, 'index'])->name('coupon.multipledelete');
     });

@@ -11,108 +11,198 @@
                     <a href="{{ route('system.coupons.create') }}" class="btn btn-success">Thêm mới</a>
                 </div>
             </div>
-            <div class="table text-nowrap mb-0 align-middle">
-                <form id="searchForm" action="{{ route('system.coupon') }}" class="d-flex position-relative" method="get">
-                    <input type="text" name="search" id="searchInput" class="form-control ms-3"
-                        value="{{ request('search', $search) }}" placeholder="Nhập tiêu đề"
-                        style="border-top-right-radius: 0; border-bottom-right-radius: 0; width:214px;">
-                    <!-- Nút tìm kiếm -->
-                    <button type="submit" class="btn btn-success position-absolute px-0"
-                        style="top: 50%; right: 75%; transform: translateY(-50%); z-index: 1; border-top-left-radius: 0; border-bottom-left-radius: 0;">
-                        <i class="ti ti-search"></i>
-                    </button>
-                    <button type="button" id="deleteButton" class="btn btn-danger position-absolute px-0"
-                        style="left: 27%; top: 50%; transform: translateY(-50%);"><i class="ti ti-trash"></i></button>
-                    <div class="position-absolute" style="right: 0%; top: 50%; transform: translateY(-50%);">
-                        <div class="d-flex ">
-                            <span class="me-2 mt-2">Hiển thị:</span>
-                            <select class="form-select" id="itemsPerPage" aria-label="Items per page" style="width: auto;">
-                                <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>5
-                                </option>
-                                <option value="10" {{ request()->input('itemsPerPage', 5) == 10 ? 'selected' : '' }}>10
-                                </option>
-                                <option value="15" {{ request()->input('itemsPerPage', 5) == 15 ? 'selected' : '' }}>15
-                                </option>
-                                <option value="20" {{ request()->input('itemsPerPage', 5) == 20 ? 'selected' : '' }}>20
-                                </option>
-                            </select>
-
+            <nav class="mb-4">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                        type="button" role="tab" aria-controls="nav-home" aria-selected="true">Còn hạn</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Hết hạn</button>
+                </div>
+            </nav>
+            <div class="row align-items-center me-0">
+                <!-- Tìm kiếm và nút xóa -->
+                <div class="col-12 col-md-6 d-flex align-items-center mb-3 mb-md-0">
+                    <form id="searchForm" action="{{ route('system.coupons.search') }}" method="GET"
+                        class="d-flex align-items-center">
+                        <div class="w-40">
+                            <input type="text" name="search" id="searchInput" class="form-control"
+                                value="{{ request('search', $search) }}" placeholder="Nhập mã">
                         </div>
-                    </div>
+                        <input type="hidden" name="tab" class="tab" id="tabInput" value="0">
+                        <button type="submit" class="btn btn-success" id="searchButton">
+                            <i class="ti ti-search"></i>
+                        </button>
+                    </form>
+                    <button type="button" id="deleteButton" class="btn btn-danger ms-2 multiple-delete">
+                        <i class="ti ti-trash"></i>
+                    </button>
+                </div>
 
-                </form>
-
-                <!-- Form Xóa Bài Viết -->
-                <form id="deleteForm" action="{{ route('system.coupon.multipledelete') }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <table class="table text-nowrap mb-0 align-middle">
-                        <thead class="text-dark fs-4">
-                            <tr>
-                                <th></th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Mã giảm giá</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Mô tả</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Ngày bắt đầu</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Ngày kết thúc</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Hành động</h6>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="myTable">
-                            @if ($coupons->isEmpty())
+                <!-- Chọn số lượng hiển thị nằm trên cùng một hàng -->
+                <div class="col-auto ms-auto d-flex align-items-center">
+                    <span class="me-2">Hiển thị:</span>
+                    <select class="form-select w-50" id="itemsPerPage" aria-label="Items per page">
+                        <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
+                            5
+                        </option>
+                        <option value="10" {{ request()->input('itemsPerPage', 5) == 10 ? 'selected' : '' }}>10
+                        </option>
+                        <option value="15" {{ request()->input('itemsPerPage', 5) == 15 ? 'selected' : '' }}>15
+                        </option>
+                        <option value="20" {{ request()->input('itemsPerPage', 5) == 20 ? 'selected' : '' }}>20
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="tab-content" id="nav-tabContent">
+                <!-- Tab Dịch vụ hoạt động -->
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="table-responsive ">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
                                 <tr>
-                                    <td colspan="6" class="text-center">
-                                        <h5 class="text-muted">Không tìm thấy kết quả nào
-                                        </h5>
-                                    </td>
+                                    <th></th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Mã giảm giá</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Mô tả</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Ngày bắt đầu</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Ngày kết thúc</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Thao tác</h6>
+                                    </th>
                                 </tr>
-                            @else
-                            
-                                @foreach ($coupons as $data)
+                            </thead>
+                            <tbody id="activeTable">
+                                @if ($couponsActive->isEmpty())
                                     <tr>
-                                        <td>
-                                            <input type="checkbox" name="coupon_id[]" value="{{ $data->coupon_id }}"
-                                                class="blogCheckbox">
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="fw-semibold mb-0">{{ $data->discount_code }}</p>
-                                        </td>
-                                        <td class="border-bottom-0 " style="overflow: hidden;">
-                                            <p class="mb-0 fw-semibold">{{ $data->note }}</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-semibold">{{ $data->time_start }}</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-semibold">{{ $data->time_end }}</p>
-                                        </td>
-                                        <td class="border-bottom-0 d-flex">
-                                            <a href="{{ route('system.coupons.edit', $data->discount_code) }}"
-                                                class="btn btn-primary me-1">
-                                                <i class="ti ti-pencil"></i>
-                                            </a>
-                                            <a href="{{ route('system.coupons.delete', $data->coupon_id) }}"
-                                                class="btn btn-danger me-1">
-                                                <i class="ti ti-trash"></i>
-                                            </a>
+                                        <td colspan="6" class="text-center">
+                                            <h5 class="text-muted">Không tìm thấy kết quả nào
+                                            </h5>
                                         </td>
                                     </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </form>
-                <div class="mt-3 d-flex justify-content-center">
-                    {{ $coupons->links() }}
+                                @else
+                                    @foreach ($couponsActive as $data)
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="coupon_id[]" value="{{ $data->coupon_id }}"
+                                                    class="blogCheckbox">
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="fw-semibold mb-0">{{ $data->discount_code }}</p>
+                                            </td>
+                                            <td class="border-bottom-0 ">
+                                                <p class="mb-0 fw-semibold"
+                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                                    white-space: normal; max-width: 200px; word-break: normal;">
+                                                    {{ $data->note }}
+                                                </p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">{{ Carbon\Carbon::parse($data->time_start)->format('d/m/Y') }}</p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">{{ Carbon\Carbon::parse($data->time_end)->format('d/m/Y') }}</p>
+                                            </td>
+                                            <td class="border-bottom-0 d-flex">
+                                                <a href="{{ route('system.coupons.edit', $data->discount_code) }}"
+                                                    class="btn btn-primary me-1">
+                                                    <i class="ti ti-pencil"></i>
+                                                </a>
+                                                <a data-id="{{ $data->coupon_id }}" class="btn btn-danger me-1">
+                                                    <i class="ti ti-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+
+                        <div class="mt-3 d-flex justify-content-center">
+                            {{ $couponsActive->links() }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Dịch vụ không hoạt động -->
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="table-responsive ">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th></th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Mã giảm giá</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Mô tả</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Ngày bắt đầu</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Ngày kết thúc</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Thao tác</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeTable">
+                                @if ($couponsExpired->isNotEmpty())
+                                    @foreach ($couponsExpired as $data)
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="coupon_id[]" value="{{ $data->coupon_id }}"
+                                                    class="blogCheckbox">
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="fw-semibold mb-0">{{ $data->discount_code }}</p>
+                                            </td>
+                                            <td class="border-bottom-0 ">
+                                                <p class="mb-0 fw-semibold"
+                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                                    white-space: normal; max-width: 200px; word-break: normal;">
+                                                    {{ $data->note }}
+                                                </p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">{{ Carbon\Carbon::parse($data->time_start)->format('d/m/Y') }}</p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">{{ Carbon\Carbon::parse($data->time_end)->format('d/m/Y') }}t</p>
+                                            </td>
+                                            <td class="border-bottom-0 d-flex">
+                                                <a href="{{ route('system.coupons.edit', $data->discount_code) }}"
+                                                    class="btn btn-primary me-1">
+                                                    <i class="ti ti-pencil"></i>
+                                                </a>
+                                                <a data-id="{{ $data->coupon_id }}" class="btn btn-danger me-1">
+                                                    <i class="ti ti-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <h5 class="text-muted">Không tìm thấy kết quả nào</h5>
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                        <div class="mt-3 d-flex justify-content-center">
+                            {{ $couponsExpired->links() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,27 +210,41 @@
 
     @push('scripts')
         <script>
-            document.getElementById('deleteButton').addEventListener('click', function() {
-                var selectedCheckboxes = document.querySelectorAll('input[name="coupon_id[]"]:checked');
-                var selectedIds = [];
+            $(document).ready(function() {
+                // Tạo khóa lưu trữ duy nhất dựa trên đường dẫn URL hiện tại để tránh xung đột
+                const uniqueKey = 'activeTabId_' + window.location.pathname;
 
-                // Lấy tất cả coupon_id đã chọn
-                selectedCheckboxes.forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
+                // Khi người dùng click vào tab, lưu trạng thái của tab vào sessionStorage với tên khóa duy nhất
+                $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    const activeTabId = $(e.target).attr('id'); // Lấy ID của tab đang hoạt động
+                    sessionStorage.setItem(uniqueKey,
+                        activeTabId); // Lưu ID của tab vào sessionStorage với khóa duy nhất
                 });
 
-                // Kiểm tra nếu có ít nhất một checkbox được chọn
-                if (selectedIds.length > 0) {
-                    // Thêm các coupon_id đã chọn vào form
-                    var form = document.getElementById('deleteForm');
-                    form.innerHTML += selectedIds.map(id => `<input type="hidden" name="coupon_id[]" value="${id}">`)
-                        .join('');
-
-                    // Gửi form
-                    form.submit();
-                } else {
-                    toastr.error('Vui lòng chọn ít nhất một bài viết để xóa.');
+                // Khi trang được tải lại, kiểm tra sessionStorage và kích hoạt tab đã lưu trong đó
+                const activeTabId = sessionStorage.getItem(uniqueKey);
+                if (activeTabId) {
+                    $('#' + activeTabId).tab('show'); // Kích hoạt tab được lưu trong sessionStorage
                 }
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                // Khi người dùng chuyển tab, cập nhật giá trị của input ẩn "tabInput"
+                $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    const activeTab = $(e.target).attr('id');
+                    if (activeTab === 'nav-home-tab') {
+                        $('#tabInput').val(0); // Tab "Hoạt động"
+                    } else if (activeTab === 'nav-profile-tab') {
+                        $('#tabInput').val(1); // Tab "Không hoạt động"
+                    }
+                });
+
+                // Sự kiện khi nhấn nút tìm kiếm
+                $('#searchButton').on('click', function() {
+                    // Trước khi gửi form, đảm bảo giá trị của "tabInput" đã được cập nhật đúng
+                    $('#searchForm').submit();
+                });
             });
         </script>
         <script>
@@ -159,6 +263,81 @@
                     // Thực hiện điều hướng (reload trang với tham số itemsPerPage mới)
                     window.location.href = url.toString();
                 });
+            });
+        </script>
+        <script>
+            document.addEventListener('click', function(e) {
+                const deleteButton = e.target.closest('.btn-danger');
+
+                // Bỏ qua nếu nút là nút "Xóa nhiều"
+                if (deleteButton && !deleteButton.classList.contains('multiple-delete')) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn xóa?',
+                        text: "Hành động này không thể hoàn tác!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Xóa',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const couponId = deleteButton.getAttribute('data-id');
+                            const deleteUrl = '/system/coupons/delete/' + couponId;
+                            window.location.href = deleteUrl;
+                        }
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.getElementById('deleteButton').addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Lấy danh sách các checkbox đã chọn
+                var selectedCheckboxes = document.querySelectorAll('input[name="coupon_id[]"]:checked');
+                var selectedIds = [];
+
+                selectedCheckboxes.forEach(function(checkbox) {
+                    selectedIds.push(checkbox.value);
+                });
+
+                if (selectedIds.length > 0) {
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn xóa?',
+                        text: "Hành động này không thể hoàn tác!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Xóa',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: './coupons/multipledelete', // Đường dẫn tới route xóa
+                                type: 'POST', // Sử dụng POST
+                                data: {
+                                    _token: '{{ csrf_token() }}', // Token CSRF
+                                    coupon_id: selectedIds
+                                },
+                                success: function(response) {
+                                    toastr.success('Các dịch vụ đã được xóa thành công.');
+
+                                    location.reload();
+
+                                },
+                                error: function(xhr, status, error) {
+                                    toastr.error('Đã xảy ra lỗi khi xóa dịch vụ.');
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    toastr.error('Vui lòng chọn ít nhất một dịch vụ để xóa');
+                }
             });
         </script>
     @endpush

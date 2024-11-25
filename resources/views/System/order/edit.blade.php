@@ -18,7 +18,7 @@
                 <div class="text-center flex-grow-1">
                     <div class="card-title">
                         <h3 class="mb-0">Chi tiết hóa đơn</h3>
-                        <p class="mb-0 fs-3">{{ \Carbon\Carbon::parse($orders->created_at)->format('s:i:h d/m/Y') }}</p>
+                        <p class="mb-0 fs-3">{{ \Carbon\Carbon::parse($orders->created_at)->format('d/m/Y | h:m:s ') }}</p>
                     </div>
                 </div>
                 <div class="text-start">
@@ -62,7 +62,7 @@
                         @php
                             $service_names = explode('|', $orders->service_names);
                             $service_prices = array_map(
-                                fn($price) => $price * 100,
+                                fn($price) => $price * 1000,
                                 explode('|', $orders->service_prices),
                             );
                             $count = 1;
@@ -73,7 +73,7 @@
                             <tr>
                                 <td class="border-bottom-0"><h6 class="fw-light mb-0">{{ $count++ }}</h6></td>
                                 <td class="border-bottom-0"><h6 class="fw-light mb-0">{{ $service_name }}</h6></td>
-                                <td class="border-bottom-0"><h6 class="fw-light mb-0">{{ number_format($service_prices[$index], 0, ',', '.') }} VND</h6></td>
+                                <td class="border-bottom-0"><h6 class="fw-light mb-0">{{ number_format($service_prices[$index] , 0, ',', '.') }} VND</h6></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -84,7 +84,7 @@
             <div class="row mt-4 d-flex justify-content-between">
                 <div class="col d-flex align-items-center">
                     <h5 class="fw-semibold mb-0">Hình thức thanh toán:</h5>
-                    @if($orders->role == 0)
+                    @if($orders->payment == 0)
                         <p class="fs-3 fw-light mb-0 ms-2">Tiền mặt</p>
                     @else
                         <p class="fs-3 fw-light mb-0 ms-2">Chuyển khoản</p>
@@ -103,7 +103,7 @@
             <div class="row mt-3">
                 <div class="col text-start text-end">
                     <h5 class="fw-semibold mb-0">Người thu ngân</h5>
-                    <p class="fs-3 fw-light mb-0 ms-2">{{ $orders->cashier_name ?? 'Chưa có thông tin' }}</p>
+                    <p class="fs-3 fw-light mb-0 ms-2">{{ $orders->cashier ?? 'Chưa có thông tin' }}</p>
                 </div>
             </div>
         </div>

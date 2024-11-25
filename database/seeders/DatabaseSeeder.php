@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             ReviewProductSeeder::class,
             AdminCommentSeeder::class,
             SaleProductSeeder::class,
-            
+            OrdersSeeder::class
 
             
         ]);

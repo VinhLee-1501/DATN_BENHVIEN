@@ -28,91 +28,81 @@
                     <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addNewModal">Thêm mới</a>
                 </div>
             </div>
-            <div class="nav nav-tabs mb-2" id="nav-tab" role="tablist">
-                <a class="nav-link {{ request()->routeIs('system.service') ? 'active' : '' }}" id="nav-home-tab"
-                    href="{{ route('system.service') }}">
-                    Hoạt động
-                </a>
-                <a class="nav-link {{ request()->routeIs('system.services.inactive') ? 'active' : '' }}"
-                    id="nav-profile-tab" href="{{ route('system.services.inactive') }}">
-                    Dừng
-                </a>
-            </div>
-            <div class="table text-nowrap mb-0 align-middle">
-                @if (isset($service))
-                    <form id="searchForm" action="{{ route('system.service') }}" class="d-flex position-relative"
-                        method="get">
-                    @else
-                        <form id="searchForm" action="{{ route('system.services.inactive') }}"
-                            class="d-flex position-relative" method="get">
-                @endif
-                <input type="text" name="search" id="searchInput" class="form-control"
-                    value="{{ request('search', $search) }}" placeholder="Nhập mã"
-                    style="border-top-right-radius: 0; border-bottom-right-radius: 0; width:214px;">
-                <!-- Nút tìm kiếm -->
-                <button type="submit" class="btn btn-success position-absolute px-0"
-                    style="top: 50%; right: 75%; transform: translateY(-50%); z-index: 1; border-top-left-radius: 0; border-bottom-left-radius: 0;">
-                    <i class="ti ti-search"></i>
-                </button>
-                <button type="button" id="deleteButton" class="btn btn-danger position-absolute px-0"
-                    style="left: 27%; top: 50%; transform: translateY(-50%);"><i class="ti ti-trash"></i></button>
-                <div class="position-absolute" style="right: 0%; top: 50%; transform: translateY(-50%);">
-                    <div class="d-flex ">
-                        <span class="me-2 mt-2">Hiển thị:</span>
-                        <select class="form-select" id="itemsPerPage" aria-label="Items per page" style="width: auto;">
-                            <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>5
-                            </option>
-                            <option value="10" {{ request()->input('itemsPerPage', 5) == 10 ? 'selected' : '' }}>10
-                            </option>
-                            <option value="15" {{ request()->input('itemsPerPage', 5) == 15 ? 'selected' : '' }}>15
-                            </option>
-                            <option value="20" {{ request()->input('itemsPerPage', 5) == 20 ? 'selected' : '' }}>20
-                            </option>
-                        </select>
-
-                    </div>
+            <nav class="mb-4">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                        type="button" role="tab" aria-controls="nav-home" aria-selected="true">Hoạt động</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Không hoạt
+                        động</button>
+                </div>
+            </nav>
+            <div class="row align-items-center me-0">
+                <!-- Tìm kiếm và nút xóa -->
+                <div class="col-12 col-md-6 d-flex align-items-center mb-3 mb-md-0">
+                    <form id="searchForm" action="{{ route('system.services.search') }}" method="GET"
+                        class="d-flex align-items-center">
+                        <div class="w-40">
+                            <input type="text" name="search" id="searchInput" class="form-control"
+                                value="{{ request('search', $search) }}" placeholder="Nhập tên dịch vụ">
+                        </div>
+                        <input type="hidden" name="tab" class="tab" id="tabInput" value="0">
+                        <button type="submit" class="btn btn-success" id="searchButton">
+                            <i class="ti ti-search"></i>
+                        </button>
+                    </form>
+                    <button type="button" id="deleteButton" class="btn btn-danger ms-2 multiple-delete">
+                        <i class="ti ti-trash"></i>
+                    </button>
                 </div>
 
-                </form>
-
-                <!-- Form Xóa Bài Viết -->
-                <form id="deleteForm" action="{{ route('system.services.multipledelete') }}" method="POST">
-                    @csrf
-                    @method('delete')
-                    <table class="table text-nowrap mb-0 align-middle">
-                        <thead class="text-dark fs-4">
-                            <tr>
-                                <th></th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Mã dịch vụ</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Tên dịch vụ</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Giá tiền</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Nhóm dịch vụ</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Trạng thái</h6>
-                                </th>
-                                <th class="border-bottom-0">
-                                    <h6 class="fw-semibold mb-0">Hành động</h6>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="myTable">
-                            @if (isset($service))
-                                @if ($service->isEmpty())
-                                    <tr>
-                                        <td colspan="6" class="text-center">
-                                            <h5 class="text-muted">Không tìm thấy kết quả nào
-                                            </h5>
-                                        </td>
-                                    </tr>
-                                @else
+                <!-- Chọn số lượng hiển thị nằm trên cùng một hàng -->
+                <div class="col-auto ms-auto d-flex align-items-center">
+                    <span class="me-2">Hiển thị:</span>
+                    <select class="form-select w-50" id="itemsPerPage" aria-label="Items per page">
+                        <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
+                            5
+                        </option>
+                        <option value="10" {{ request()->input('itemsPerPage', 5) == 10 ? 'selected' : '' }}>10
+                        </option>
+                        <option value="15" {{ request()->input('itemsPerPage', 5) == 15 ? 'selected' : '' }}>15
+                        </option>
+                        <option value="20" {{ request()->input('itemsPerPage', 5) == 20 ? 'selected' : '' }}>20
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <!-- Nội dung của 2 tab -->
+            <div class="tab-content" id="nav-tabContent">
+                <!-- Tab Dịch vụ hoạt động -->
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="table-responsive ">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th></th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Mã dịch vụ</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Tên dịch vụ</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Giá tiền</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Nhóm dịch vụ</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Trạng thái</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Thao tác</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeTable">
+                                @if ($service->isNotEmpty())
                                     @foreach ($service as $data)
                                         <tr>
                                             <td>
@@ -123,15 +113,20 @@
                                                 <p class="fw-semibold mb-0">{{ $data->service_id }}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <p class="mb-0 fw-semibold text-break w-100">{{ $data->name }}</p>
+                                                <p class="mb-0 fw-semibold"
+                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                                    white-space: normal; max-width: 150px; word-break: normal;">
+                                                    {{ $data->name }}
+                                                </p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">
-                                                    {{ number_format($data->price * 1000, 0, ',', '.') }} VND</p>
+                                                    {{ number_format($data->price * 1000, 0, ',', '.') }} VND
+                                                </p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <p class="fw-semibold mb-0">{{ $data->serviceDirectoryForeignKey->name }}
-                                                </p>
+                                                <p class="fw-semibold mb-0">
+                                                    {{ $data->serviceDirectoryForeignKey->name }}</p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 @if ($data->status == 0)
@@ -147,23 +142,57 @@
                                                     data-directory-id="{{ $data->directory_id }}">
                                                     <i class="ti ti-pencil"></i>
                                                 </a>
-                                                <a href="{{ route('system.services.delete', $data->row_id) }}"
-                                                    class="btn btn-danger btn-delete me-1" id="form-delete">
+                                                <a data-id="{{ $data->row_id }}" class="btn btn-danger me-1">
                                                     <i class="ti ti-trash"></i>
                                                 </a>
                                             </td>
                                         </tr>
                                     @endforeach
-                                @endif
-                            @else
-                                @if ($service_inactive->isEmpty())
+                                @else
                                     <tr>
-                                        <td colspan="6" class="text-center">
-                                            <h5 class="text-muted">Không tìm thấy kết quả nào
-                                            </h5>
+                                        <td colspan="7" class="text-center">
+                                            <h5 class="text-muted">Không tìm thấy kết quả nào</h5>
                                         </td>
                                     </tr>
-                                @else
+                                @endif
+                            </tbody>
+                        </table>
+
+                        <div class="mt-3 d-flex justify-content-center">
+                            {{ $service->links() }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Dịch vụ không hoạt động -->
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="table-responsive ">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
+                                    <th></th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Mã dịch vụ</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Tên dịch vụ</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Giá tiền</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Nhóm dịch vụ</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Trạng thái</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Thao tác</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeTable">
+                                @if ($service_inactive->isNotEmpty())
                                     @foreach ($service_inactive as $data)
                                         <tr>
                                             <td>
@@ -174,15 +203,20 @@
                                                 <p class="fw-semibold mb-0">{{ $data->service_id }}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <p class="mb-0 fw-semibold text-break w-100">{{ $data->name }}</p>
+                                                <p class="mb-0 fw-semibold"
+                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                                    white-space: normal; max-width: 150px; word-break: normal;">
+                                                    {{ $data->name }}
+                                                </p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">
-                                                    {{ number_format($data->price * 1000, 0, ',', '.') }} VND</p>
+                                                    {{ number_format($data->price * 1000, 0, ',', '.') }} VND
+                                                </p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <p class="fw-semibold mb-0">{{ $data->serviceDirectoryForeignKey->name }}
-                                                </p>
+                                                <p class="fw-semibold mb-0">
+                                                    {{ $data->serviceDirectoryForeignKey->name }}</p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 @if ($data->status == 0)
@@ -198,24 +232,26 @@
                                                     data-directory-id="{{ $data->directory_id }}">
                                                     <i class="ti ti-pencil"></i>
                                                 </a>
-                                                <a href="{{ route('system.services.delete', $data->row_id) }}"
-                                                    class="btn btn-danger me-1">
+                                                <a data-id="{{ $data->row_id }}" class="btn btn-danger me-1">
                                                     <i class="ti ti-trash"></i>
                                                 </a>
                                             </td>
                                         </tr>
                                     @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <h5 class="text-muted">Không tìm thấy kết quả nào</h5>
+                                        </td>
+                                    </tr>
                                 @endif
-                            @endif
-                        </tbody>
-                    </table>
-                </form>
-                <div class="mt-3 d-flex justify-content-center">
-                    @if (isset($service))
-                        {{ $service->links() }}
-                    @else
-                        {{ $service_inactive->links() }}
-                    @endif
+                            </tbody>
+                        </table>
+
+                        <div class="mt-3 d-flex justify-content-center">
+                            {{ $service_inactive->links() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -255,7 +291,8 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Trạng thái</label>
                                     <select class="form-select" id="statusSelect" name="status">
-                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Dừng</option>
+                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Ngừng hoạt động
+                                        </option>
                                         <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Hoạt động
                                         </option>
                                     </select>
@@ -314,7 +351,8 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Trạng thái</label>
                                     <select class="form-select" id="statusSelectUpdate" name="status">
-                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Dừng</option>
+                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Ngừng hoạt động
+                                        </option>
                                         <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Hoạt động
                                         </option>
                                     </select>
@@ -335,30 +373,6 @@
 
 
     @push('scripts')
-        <script>
-            document.getElementById('deleteButton').addEventListener('click', function() {
-                var selectedCheckboxes = document.querySelectorAll('input[name="row_id[]"]:checked');
-                var selectedIds = [];
-
-                // Lấy tất cả row_id đã chọn
-                selectedCheckboxes.forEach(function(checkbox) {
-                    selectedIds.push(checkbox.value);
-                });
-
-                // Kiểm tra nếu có ít nhất một checkbox được chọn
-                if (selectedIds.length > 0) {
-                    // Thêm các row_id đã chọn vào form
-                    var form = document.getElementById('deleteForm');
-                    form.innerHTML += selectedIds.map(id => `<input type="hidden" name="row_id[]" value="${id}">`)
-                        .join('');
-
-                    // Gửi form
-                    form.submit();
-                } else {
-                    toastr.error('Vui lòng chọn ít nhất một dịch vụ để xóa.');
-                }
-            });
-        </script>
         <script>
             $(document).ready(function() {
                 // Gắn sự kiện onchange cho select
@@ -493,17 +507,22 @@
                         method: 'POST',
                         data: $(this).serialize(),
                         success: function(response) {
-                            $('#addNewModal').modal('hide');
+                            $('#addNewModal').modal('hide'); // Đóng modal sau khi cập nhật
+
                             if (response.success) {
                                 toastr.success(response.message);
-                                setTimeout(() => {
-                                    location.reload();
-                                }, 3000);
+                                updateServiceRow(response
+                                    .service); // Gọi hàm cập nhật dòng trong bảng
                             } else {
                                 toastr.error(response.message);
                             }
                         },
                         error: function(xhr) {
+                            $('#nameError').text('');
+                            $('#priceError').text('');
+                            $('#directoryError').text('');
+                            $('#statusError').text('');
+
                             let errors = xhr.responseJSON.errors;
                             if (errors.name) {
                                 $('#nameError').text(errors.name[0]);
@@ -519,6 +538,8 @@
                             }
                         }
                     });
+
+
                 });
 
 
@@ -535,10 +556,6 @@
 
                     $(this).attr('action', '/system/services/update/' + serviceId);
 
-                    $('#nameErrorUpdate').text('');
-                    $('#priceErrorUpdate').text('');
-                    $('#directoryErrorUpdate').text('');
-                    $('#statusErrorUpdate').text('');
 
 
                     $.ajax({
@@ -549,14 +566,20 @@
                             $('#editModal').modal('hide');
                             if (response.success) {
                                 toastr.success(response.message);
-                                setTimeout(() => {
-                                    location.reload();
-                                }, 3000);
+
+                                location.reload();
+
                             } else {
                                 toastr.error(response.message);
                             }
                         },
                         error: function(xhr) {
+
+                            $('#nameErrorUpdate').text('');
+                            $('#priceErrorUpdate').text('');
+                            $('#directoryErrorUpdate').text('');
+                            $('#statusErrorUpdate').text('');
+
                             let errors = xhr.responseJSON.errors;
 
                             if (errors.name) {
@@ -578,23 +601,116 @@
             });
         </script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Lắng nghe sự kiện click của tất cả các nút xóa
-                document.querySelectorAll('.btn-delete').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        // Ngừng hành động mặc định của nút
-                        e.preventDefault();
+            document.addEventListener('click', function(e) {
+                const deleteButton = e.target.closest('.btn-danger');
 
-                        // Xác nhận trước khi xóa
+                // Bỏ qua nếu nút là nút "Xóa nhiều"
+                if (deleteButton && !deleteButton.classList.contains('multiple-delete')) {
+                    e.preventDefault();
 
-
-                        if (confirmDelete) {
-                            // Tìm form tương ứng và gửi form nếu người dùng xác nhận
-                            const form = this.closest('form');
-                            form.submit();
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn xóa?',
+                        text: "Hành động này không thể hoàn tác!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Xóa',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const rowId = deleteButton.getAttribute('data-id');
+                            const deleteUrl = '/system/services/delete/' + rowId;
+                            window.location.href = deleteUrl;
                         }
                     });
+                }
+            });
+        </script>
+        <script>
+            document.getElementById('deleteButton').addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Lấy danh sách các checkbox đã chọn
+                var selectedCheckboxes = document.querySelectorAll('input[name="row_id[]"]:checked');
+                var selectedIds = [];
+
+                selectedCheckboxes.forEach(function(checkbox) {
+                    selectedIds.push(checkbox.value);
                 });
+
+                if (selectedIds.length > 0) {
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn muốn xóa?',
+                        text: "Hành động này không thể hoàn tác!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Xóa',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: './services/multipledelete', // Đường dẫn tới route xóa
+                                type: 'POST', // Sử dụng POST
+                                data: {
+                                    _token: '{{ csrf_token() }}', // Token CSRF
+                                    row_id: selectedIds
+                                },
+                                success: function(response) {
+                                    toastr.success('Các dịch vụ đã được xóa thành công.');
+
+                                    location.reload();
+
+                                },
+                                error: function(xhr, status, error) {
+                                    toastr.error('Đã xảy ra lỗi khi xóa dịch vụ.');
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    toastr.error('Vui lòng chọn ít nhất một dịch vụ để xóa');
+                }
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                // Khi người dùng chuyển tab, cập nhật giá trị của input ẩn "tabInput"
+                $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    const activeTab = $(e.target).attr('id');
+                    if (activeTab === 'nav-home-tab') {
+                        $('#tabInput').val(0); // Tab "Hoạt động"
+                    } else if (activeTab === 'nav-profile-tab') {
+                        $('#tabInput').val(1); // Tab "Không hoạt động"
+                    }
+                });
+
+                // Sự kiện khi nhấn nút tìm kiếm
+                $('#searchButton').on('click', function() {
+                    // Trước khi gửi form, đảm bảo giá trị của "tabInput" đã được cập nhật đúng
+                    $('#searchForm').submit();
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                // Tạo khóa lưu trữ duy nhất dựa trên đường dẫn URL hiện tại để tránh xung đột
+                const uniqueKey = 'activeTabId_' + window.location.pathname;
+
+                // Khi người dùng click vào tab, lưu trạng thái của tab vào sessionStorage với tên khóa duy nhất
+                $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    const activeTabId = $(e.target).attr('id'); // Lấy ID của tab đang hoạt động
+                    sessionStorage.setItem(uniqueKey,
+                        activeTabId); // Lưu ID của tab vào sessionStorage với khóa duy nhất
+                });
+
+                // Khi trang được tải lại, kiểm tra sessionStorage và kích hoạt tab đã lưu trong đó
+                const activeTabId = sessionStorage.getItem(uniqueKey);
+                if (activeTabId) {
+                    $('#' + activeTabId).tab('show'); // Kích hoạt tab được lưu trong sessionStorage
+                }
             });
         </script>
     @endpush

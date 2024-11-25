@@ -1,6 +1,7 @@
 @extends('layouts.admin.master')
 @section('Thêm mã giảm giá')
 @section('content')
+
     <div class="card w-100">
         <div class="card-body p-3">
             <h3 class="card-title fw-semibold m-0">Thêm mã giảm giá</h3>
@@ -15,7 +16,7 @@
                     <div class="d-flex">
                         <input type="text" id="codeInput" name="discount_code" class="form-control"
                             placeholder="Mã giảm giá" value="{{ $coupon->discount_code }}">
-                        <input type="hidden" name="" value="{{$old_dicount_code}}">
+                        <input type="hidden" name="" value="{{ $old_dicount_code }}">
                         <a class="btn btn-primary" onclick="generateRandomCode()">
                             <i class="ti ti-dice-6"></i>
                         </a>
@@ -169,27 +170,6 @@
         </script>
         <script>
             $(document).ready(function() {
-                $('#product-select').on('change', function() {
-                    var optionCount = $(this).find('option:selected').length;
-                    var newHeight = 25 * optionCount + 20;
-
-                    $(this).next('.select2').find('.select2-selection').css('height', newHeight + 'px');
-                });
-
-
-                $('#category-select').on('change', function() {
-                    var optionCount = $(this).find('option:selected').length;
-                    var newHeight = 25 * optionCount + 20;
-
-                    $(this).next('.select2').find('.select2-selection').css('height', newHeight + 'px');
-                });
-
-
-            });
-        </script>
-        <script>
-            $(document).ready(function() {
-
                 const couponId = window.location.pathname.split('/').pop();
 
                 $.ajax({
@@ -200,58 +180,82 @@
                         if (response && response.status === 'success' && response.data) {
                             const data = response.data;
 
-                            // Hàm gán giá trị cho select2
-                            function populateSelect2(selectElementId, idsString, namesString) {
-                                const ids = idsString ? idsString.split(',') : [];
-                                const names = namesString ? namesString.split(',') : [];
-
-                                // Nếu có dữ liệu, thì duyệt và thêm vào select2
-                                if (ids.length && names.length) {
-                                    ids.forEach((id, index) => {
-                                        const name = names[index] || id;
-                                        // Gán option vào select2
+                            // Hàm gán giá trị cho select2 từ mảng đối tượng
+                            function populateSelect2FromArray(selectElementId, itemsArray) {
+                                itemsArray.forEach(item => {
+                                    const {
+                                        id,
+                                        name
+                                    } = item;
+                                    if (id && name) {
                                         $(`#${selectElementId}`).append(new Option(name, id, true,
                                             true));
-                                    });
+                                    }
+                                });
+                                // Cập nhật lại select2 sau khi append các options
+                                $(`#${selectElementId}`).trigger('change');
+                            }
+
+                            // Hàm xử lý dữ liệu thành mảng đối tượng
+                            function parseInfoToArray(infoString) {
+                                const items = infoString.split(';');
+                                const result = [];
+
+                                items.forEach(item => {
+                                    const [id, name] = item.split(':');
+                                    if (id && name) {
+                                        result.push({
+                                            id: id.trim(),
+                                            name: name.trim()
+                                        });
+                                    }
+                                });
+
+                                return result;
+                            }
+
+                            // Kiểm tra và xử lý dữ liệu `category_info`
+                            if (data.category_info && data.category_info !== null) {
+                                const categoryArray = parseInfoToArray(data.category_info);
+                                populateSelect2FromArray('category-select', categoryArray);
+                                $('#category-select').val(categoryArray.map(item => item.id)).trigger(
+                                    'change');
+                                setTimeout(() => {
+                                    updateSelect2Height('category-select');
+                                }, 100);
+                            }
+
+                            // Kiểm tra và xử lý dữ liệu `product_info`
+                            if (data.product_info && data.product_info !== null) {
+                                const productArray = parseInfoToArray(data.product_info);
+                                populateSelect2FromArray('product-select', productArray);
+                                $('#product-select').val(productArray.map(item => item.id)).trigger(
+                                    'change');
+                                // Sử dụng setTimeout để chờ một chút trước khi cập nhật chiều cao
+                                setTimeout(() => {
+                                    updateSelect2Height('product-select');
+                                }, 100);
+                            }
+
+                            $('#TypeSelect').on('change', function() {
+                                const selectedType = $(this).val();
+
+                                if (selectedType === "0") {
+                                    // Nếu Type là 0, xóa dữ liệu trong cả product-select và category-select
+                                    $('#product-select').val(null).trigger('change');
+                                    $('#category-select').val(null).trigger('change');
+                                } else if (selectedType === "1") {
+                                    // Nếu Type là 1, xóa dữ liệu trong category-select
+                                    $('#category-select').val(null).trigger('change');
+                                } else if (selectedType === "2") {
+                                    // Nếu Type là 2, xóa dữ liệu trong product-select
+                                    $('#product-select').val(null).trigger('change');
                                 }
-                            }
+                            });
 
-                            // Gọi hàm populateSelect2 cho product và category trước khi khởi tạo select2
-                            if (data.category_info) {
-                                // Tách category_info thành mảng id và name
-                                const categoryPairs = data.category_info.split(', ');
-                                const categoryIds = [];
-                                const categoryNames = [];
-
-                                categoryPairs.forEach(pair => {
-                                    const [id, name] = pair.split(':'); // Tách theo dấu ":"
-                                    categoryIds.push(id);
-                                    categoryNames.push(name);
-                                });
-
-                                // Gọi populateSelect2 cho category
-                                populateSelect2('category-select', categoryIds.join(','), categoryNames
-                                    .join(','));
-                            }
-
-                            // Nếu có product_info, xử lý tương tự
-                            if (data.product_info) {
-                                const productPairs = data.product_info.split(', ');
-                                const productIds = [];
-                                const productNames = [];
-
-                                productPairs.forEach(pair => {
-                                    const [id, name] = pair.split(':');
-                                    productIds.push(id);
-                                    productNames.push(name);
-                                });
-
-                                populateSelect2('product-select', productIds.join(','), productNames.join(
-                                    ','));
-                            }
                         }
 
-                        // Khởi tạo select2 cho category-select với ajax search và giữ lại dữ liệu đã gán
+                        // Khởi tạo select2 cho category-select và product-select với ajax search
                         $('#category-select').select2({
                             ajax: {
                                 url: '/system/coupons/listcategory',
@@ -285,6 +289,7 @@
                             width: '100%',
                             allowClear: true
                         });
+
                         $('#product-select').select2({
                             ajax: {
                                 url: '/system/coupons/listproduct',
@@ -303,7 +308,7 @@
                                         results: data.data.map(function(item) {
                                             return {
                                                 id: item.product_id, // id từ dữ liệu
-                                                text: item.name // Hiển thị tên danh mục
+                                                text: item.name // Hiển thị tên sản phẩm
                                             };
                                         }),
                                         pagination: {
@@ -317,6 +322,36 @@
                             minimumInputLength: 0,
                             width: '100%',
                             allowClear: true
+                        });
+
+                        function updateSelect2Height() {
+                            const itemHeight = 25; // Chiều cao mỗi item
+                            const minHeight = 30; // Chiều cao tối thiểu
+                            const maxHeight = 200; // Chiều cao tối đa
+
+                            // Lấy số lượng item đã chọn
+                            const selectedCount = $('#product-select').val() ? $('#product-select').val()
+                                .length : 0;
+
+                            // Tính chiều cao mới
+                            let newHeight = selectedCount * itemHeight + 20; // Thêm một chút padding
+
+                            // Đảm bảo chiều cao nằm trong khoảng minHeight và maxHeight
+                            newHeight = Math.max(minHeight, Math.min(newHeight, maxHeight));
+
+                            // Cập nhật chiều cao cho .select2-selection
+                            $('#product-select').next('.select2').find('.select2-selection').css('height',
+                                newHeight + 'px');
+                        }
+
+                        // Gọi hàm updateSelect2Height sau khi khởi tạo Select2
+                        $('#product-select').on('select2:open select2:close change', function() {
+                            updateSelect2Height();
+                        });
+
+                        // Gọi lại hàm khi dữ liệu được tải xong qua AJAX
+                        $('#product-select').on('select2:select', function() {
+                            updateSelect2Height();
                         });
                     },
                     error: function(xhr, status, error) {
@@ -345,12 +380,35 @@
                 // Lắng nghe sự thay đổi của ngày bắt đầu để thiết lập ngày kết thúc
                 document.getElementById('startDate').addEventListener('change', function() {
                     const startDate = new Date(this.value);
-                    startDate.setDate(startDate.getDate() +
-                        1); // Cộng thêm 1 ngày vào ngày bắt đầu để làm ngày kết thúc
+
+                    // Đảm bảo ngày kết thúc phải lớn hơn ngày bắt đầu
+                    if (document.getElementById('endDate').value) {
+                        const endDate = new Date(document.getElementById('endDate').value);
+                        if (startDate >= endDate) {
+                            document.getElementById('endDate').value =
+                                ''; // Xóa giá trị ngày kết thúc nếu không hợp lệ
+                        }
+                    }
+
+                    // Cộng thêm 1 ngày vào ngày bắt đầu để làm ngày kết thúc hợp lệ nhất
+                    startDate.setDate(startDate.getDate() + 1);
 
                     // Chuyển ngày kết thúc sang định dạng 'YYYY-MM-DD'
                     const newEndDate = startDate.toISOString().split('T')[0];
+                    document.getElementById('endDate').setAttribute('min',
+                        newEndDate); // Cập nhật giá trị min cho endDate
+                });
 
+                // Lắng nghe sự thay đổi của ngày kết thúc để đảm bảo nó phải lớn hơn ngày bắt đầu
+                document.getElementById('endDate').addEventListener('change', function() {
+                    const endDate = new Date(this.value);
+                    const startDate = new Date(document.getElementById('startDate').value);
+
+                    // Nếu ngày kết thúc nhỏ hơn hoặc bằng ngày bắt đầu, thì không cho phép
+                    if (endDate <= startDate) {
+                        alert("Ngày kết thúc phải lớn hơn ngày bắt đầu!");
+                        this.value = ''; // Xóa giá trị ngày kết thúc nếu không hợp lệ
+                    }
                 });
             });
         </script>
@@ -358,17 +416,7 @@
             $('#couponForm').on('submit', function(event) {
                 event.preventDefault(); // Ngừng hành động mặc định của form (tránh reload trang)
 
-                // Làm sạch thông báo lỗi trước khi gửi yêu cầu mới
-                $('#codeError').text('');
-                $('#TypeError').text('');
-                $('#discountRateError').text('');
-                $('#startDateError').text('');
-                $('#endDateError').text('');
-                $('#maxuseError').text('');
-                $('#minpurchaseError').text('');
-                $('#productError').text('');
-                $('#categoryError').text('');
-                $('#noteError').text('');
+
 
                 // Biến để kiểm tra xem có lỗi ở tab profile hay không
                 let showProfileTab = false;
@@ -384,14 +432,27 @@
                     success: function(response) {
                         if (response.success) {
                             toastr.success(response.message);
-                            setTimeout(() => {
-                                window.location.href = '{{ route('system.coupon') }}';
-                            }, 2000);
+
+                            window.location.href = '{{ route('system.coupon') }}';
+
                         } else {
                             toastr.error('Cập nhật thất bại');
                         }
                     },
                     error: function(xhr) {
+
+                        // Làm sạch thông báo lỗi trước khi gửi yêu cầu mới
+                        $('#codeError').text('');
+                        $('#TypeError').text('');
+                        $('#discountRateError').text('');
+                        $('#startDateError').text('');
+                        $('#endDateError').text('');
+                        $('#maxuseError').text('');
+                        $('#minpurchaseError').text('');
+                        $('#productError').text('');
+                        $('#categoryError').text('');
+                        $('#noteError').text('');
+
                         // Kiểm tra và hiển thị lỗi cho từng trường
                         if (xhr.responseJSON && xhr.responseJSON.errors) {
                             const errors = xhr.responseJSON.errors;

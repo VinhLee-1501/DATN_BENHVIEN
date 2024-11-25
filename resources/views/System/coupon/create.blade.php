@@ -286,12 +286,35 @@
                 // Lắng nghe sự thay đổi của ngày bắt đầu để thiết lập ngày kết thúc
                 document.getElementById('startDate').addEventListener('change', function() {
                     const startDate = new Date(this.value);
-                    startDate.setDate(startDate.getDate() +
-                        1); // Cộng thêm 1 ngày vào ngày bắt đầu để làm ngày kết thúc
+
+                    // Đảm bảo ngày kết thúc phải lớn hơn ngày bắt đầu
+                    if (document.getElementById('endDate').value) {
+                        const endDate = new Date(document.getElementById('endDate').value);
+                        if (startDate >= endDate) {
+                            document.getElementById('endDate').value =
+                                ''; // Xóa giá trị ngày kết thúc nếu không hợp lệ
+                        }
+                    }
+
+                    // Cộng thêm 1 ngày vào ngày bắt đầu để làm ngày kết thúc hợp lệ nhất
+                    startDate.setDate(startDate.getDate() + 1);
 
                     // Chuyển ngày kết thúc sang định dạng 'YYYY-MM-DD'
                     const newEndDate = startDate.toISOString().split('T')[0];
+                    document.getElementById('endDate').setAttribute('min',
+                        newEndDate); // Cập nhật giá trị min cho endDate
+                });
 
+                // Lắng nghe sự thay đổi của ngày kết thúc để đảm bảo nó phải lớn hơn ngày bắt đầu
+                document.getElementById('endDate').addEventListener('change', function() {
+                    const endDate = new Date(this.value);
+                    const startDate = new Date(document.getElementById('startDate').value);
+
+                    // Nếu ngày kết thúc nhỏ hơn hoặc bằng ngày bắt đầu, thì không cho phép
+                    if (endDate <= startDate) {
+                        alert("Ngày kết thúc phải lớn hơn ngày bắt đầu!");
+                        this.value = ''; // Xóa giá trị ngày kết thúc nếu không hợp lệ
+                    }
                 });
             });
         </script>
@@ -299,17 +322,6 @@
             $('#couponForm').on('submit', function(event) {
                 event.preventDefault(); // Ngừng hành động mặc định của form (tránh reload trang)
 
-                // Làm sạch thông báo lỗi trước khi gửi yêu cầu mới
-                $('#codeError').text('');
-                $('#TypeError').text('');
-                $('#discountRateError').text('');
-                $('#startDateError').text('');
-                $('#endDateError').text('');
-                $('#maxuseError').text('');
-                $('#minpurchaseError').text('');
-                $('#productError').text('');
-                $('#categoryError').text('');
-                $('#noteError').text('');
 
                 // Biến để kiểm tra xem có lỗi ở tab profile hay không
                 let showProfileTab = false;
@@ -325,14 +337,27 @@
                     success: function(response) {
                         if (response.success) {
                             toastr.success(response.message);
-                            setTimeout(() => {
-                                window.location.href = '{{ route('system.coupon') }}';
-                            }, 2000);
+
+                            window.location.href = '{{ route('system.coupon') }}';
+
                         } else {
                             toastr.error('Cập nhật thất bại');
                         }
                     },
                     error: function(xhr) {
+                        // Làm sạch thông báo lỗi trước khi gửi yêu cầu mới
+                        $('#codeError').text('');
+                        $('#TypeError').text('');
+                        $('#discountRateError').text('');
+                        $('#startDateError').text('');
+                        $('#endDateError').text('');
+                        $('#maxuseError').text('');
+                        $('#minpurchaseError').text('');
+                        $('#productError').text('');
+                        $('#categoryError').text('');
+                        $('#noteError').text('');
+
+
                         // Kiểm tra và hiển thị lỗi cho từng trường
                         if (xhr.responseJSON && xhr.responseJSON.errors) {
                             const errors = xhr.responseJSON.errors;

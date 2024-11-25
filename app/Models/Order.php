@@ -11,7 +11,21 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $primaryKey = 'row_id';
-    protected $fillable = ['order_id', 'status', 'role', 'treatment_id', 'total_price', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = [
+        'order_id',
+        'status',
+        'payment',
+        'cashier',
+        'cash_received',
+        'change_amount',
+        'total_amount',
+        'treatment_id',
+        'treatment_id',
+        'total_price',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
 
     public function TrearmentDetailForeignKLey()
     {

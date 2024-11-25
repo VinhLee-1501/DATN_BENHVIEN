@@ -51,8 +51,7 @@
                                     <label for="" class="form-label">Trạng thái</label>
                                     <select class="form-select" id="statusSelect" name="status"
                                         onchange="toggleDateInput()">
-                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Chờ xuất bản
-                                        </option>
+                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Chờ xuất bản</option>
                                         <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Xuất bản</option>
                                     </select>
                                 </div>

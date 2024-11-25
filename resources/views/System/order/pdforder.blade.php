@@ -235,7 +235,7 @@
                 <tbody>
                     @php
                         $service_names = explode('|', $orders->service_names);
-                        $service_prices = array_map(fn($price) => $price * 100, explode('|', $orders->service_prices));
+                        $service_prices = array_map(fn($price) => $price * 1000, explode('|', $orders->service_prices));
                         $count = 1;
                         $total_price = array_sum($service_prices); // Tính tổng tiền
                     @endphp
@@ -253,13 +253,17 @@
 
         <div class="footer">
             <div class="payment-method">
-                <p><strong>Hình thức thanh toán:</strong> {{ $orders->role == 0 ? 'Tiền mặt' : 'Chuyển khoản' }}</p>
+                <p><strong>Hình thức thanh toán:</strong> {{ $orders->payment == 0 ? 'Tiền mặt' : 'Chuyển khoản' }}</p>
             </div>
 
             <div class="total-section">
-                <p><span>Tổng tiền:</span> {{ number_format($total_price + 20000, 0, ',', '.') }} VND</p>
                 <p><span>Phí dịch vụ:</span> 20,000 VND</p>
-                <p><span>Người thu ngân:</span></p>
+                <p><span>Tổng tiền:</span> {{ number_format($total_price + 20000, 0, ',', '.') }} VND</p>
+                @if($orders->payment == 0)
+                <p><span>Khách đưa</span> {{number_format($orders->cash_received * 1000, 0, ',', '.')}} VND</p>
+                <p><span>Tiền thừa</span>{{number_format($orders->change_amount * 1000, 0, ',', '.')}} VND</p>
+                @endif
+                <p><span>Người thu ngân:</span> {{$orders->cashier}}</p>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
-use App\Http\Requests\Admin\Blog\ValidationRequest;
+use App\Http\Requests\Admin\Blog\BlogRequest;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
@@ -23,28 +23,28 @@ class BlogController extends Controller
 
 
 
-    public function store(ValidationRequest $request)
+    public function store(BlogRequest $request)
     {
-        
-            $blog = new Blog();
-            $blog->title = $request->input('title');
-            $content = $request->input('content');
 
-            preg_match_all('/<img src="data:image\/(?<type>[^;]+);base64,(?<data>[^"]+)"/', $content, $matches);
+        $blog = new Blog();
+        $blog->title = $request->input('title');
+        $content = $request->input('content');
 
-            if (!empty($matches['data'])) {
-                foreach ($matches['data'] as $key => $data) {
-                    $imageData = base64_decode($data);
-                    $imageName = 'image_' . time() . '_' . $key . '.' . $matches['type'][$key];
+        preg_match_all('/<img src="data:image\/(?<type>[^;]+);base64,(?<data>[^"]+)"/', $content, $matches);
 
-                    $image = Image::make($imageData);
+        if (!empty($matches['data'])) {
+            foreach ($matches['data'] as $key => $data) {
+                $imageData = base64_decode($data);
+                $imageName = 'image_' . time() . '_' . $key . '.' . $matches['type'][$key];
 
-                    $quality = 70;
-                    $image->encode($matches['type'][$key], $quality);
+                $image = Image::make($imageData);
 
-                    Storage::disk('public')->put('uploads/' . $imageName, (string) $image);
+                $quality = 70;
+                $image->encode($matches['type'][$key], $quality);
 
-                $content = str_replace($matches[0][$key], '<img src="http://127.0.0.1:8000/storage/uploads/' . $imageName . '"', $content);
+                Storage::disk('public')->put('uploads/blogs' . $imageName, (string) $image);
+
+                $content = str_replace($matches[0][$key], '<img src="http://127.0.0.1:8000/storage/uploads/blogs' . $imageName . '"', $content);
             }
         }
 
@@ -68,11 +68,10 @@ class BlogController extends Controller
             $blog->thumbnail = $base64Image;
             session()->forget('upload_file');
         }
+     
+        $blog->save();
 
-            $blog->save();
-
-            return redirect()->route('system.blog')->with('success', 'Thêm mới thành công.');
-       
+        return redirect()->route('system.blog')->with('success', 'Thêm mới thành công.');
     }
 
 
@@ -132,40 +131,53 @@ class BlogController extends Controller
     public function index(Request $request)
     {
         $this->updatestatus();
-    
-        // Lấy giá trị tìm kiếm từ request
+
         $search = $request->input('search', '');
-    
-        // Lấy các blog_id cần xóa từ request
+
+        $tab = $request->input('tab');
+
         $delete = $request->input('blog_id', []);
-    
+
+        $itemsPerPage = $request->input('itemsPerPage', 5);
+
         // Xử lý xóa các bài viết
         if (!empty($delete)) {
             Blog::whereIn('id', $delete)->delete();
             return redirect()->route('system.blog')->with('success', 'Đã xóa các bài viết được chọn.');
         }
-    
-        // Lấy số lượng phần tử trên mỗi trang, mặc định là 5
-        $itemsPerPage = $request->input('itemsPerPage', 5);
-    
-        // Nếu có từ khóa tìm kiếm, thực hiện tìm kiếm và phân trang
-        if ($search) {
-            $blogs = Blog::where('title', 'LIKE', "%$search%")
-                ->orderBy('created_at', 'desc')
-                ->paginate($itemsPerPage); // Sử dụng $itemsPerPage cho phân trang
-        } else {
-            // Nếu không tìm kiếm, chỉ phân trang theo $itemsPerPage
-            $blogs = Blog::orderBy('created_at', 'desc')->paginate($itemsPerPage);
+
+        $blogQuery = Blog::where('status', 0)
+            ->orderBy('created_at', 'desc');
+
+        if ($search && $tab == 0) {
+            $blogQuery->where('title', 'LIKE', "%$search%");
         }
-    
+
+        $blogs = $blogQuery->paginate($itemsPerPage)->appends([
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage
+        ]);
+
+        $blogInactiveQuery = Blog::where('status', 1)
+        ->orderBy('created_at', 'desc');
+
+        if ($search && $tab == 1) {
+            $blogInactiveQuery->where('title', 'LIKE', "%$search%");
+        }
+
+        $blogInactive = $blogInactiveQuery->paginate($itemsPerPage)->appends([
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage
+        ]);
         // Trả về view với các tham số cần thiết
         return view('System.blogs.index', [
             'blogs' => $blogs,
+            'blogInactive' => $blogInactive,
+            'itemsPerPage' => $itemsPerPage,
             'search' => $search
         ]);
-    }
-    
 
+    }
 
 
     public function resetsearch()
@@ -182,7 +194,7 @@ class BlogController extends Controller
         return view('System.blogs.edit', ['blogs' => $blog]);
     }
 
-    public function update(ValidationRequest $request, $id)
+    public function update(BlogRequest $request, $id)
     {
         // $blog = Blog::where('blog_id', $blog_id)->firstOrFail();
         $blog = Blog::findOrFail($id);
@@ -204,9 +216,9 @@ class BlogController extends Controller
 
                 $image->encode($matches['type'][$key], $quality);
 
-                Storage::disk('public')->put('uploads/' . $imageName, (string) $image);
+                Storage::disk('public')->put('uploads/blogs' . $imageName, (string) $image);
 
-                $content = str_replace($matches[0][$key], '<img src="http://127.0.0.1:8000/storage/uploads/' . $imageName . '"', $content);
+                $content = str_replace($matches[0][$key], '<img src="http://127.0.0.1:8000/storage/uploads/blogs' . $imageName . '"', $content);
             }
         }
         // Lưu nội dung đã cập nhật vào cơ sở dữ liệu
@@ -258,6 +270,7 @@ class BlogController extends Controller
         $blogs = Blog::where('status', 0)->orderBy('created_at', 'desc')->paginate($numberblog);
         $firstBlog = $blogs->first();
 
+        // dd($totalBlogs);
         return view('client.news', [
             'blogs' => $blogs,
             'newblogs' => $newblogs,

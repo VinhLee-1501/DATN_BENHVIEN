@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ServiceDirectory;
-use App\Http\Requests\Admin\ServiceType\ValidationRequest;
+use App\Http\Requests\Admin\ServiceType\ServiceTypeRequest;
 use App\Models\Service;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
@@ -16,14 +16,14 @@ class ServiceTypeController extends Controller
 
     public function index(Request $request)
     {
-        // Lấy giá trị tìm kiếm, nếu không có thì mặc định là rỗng
+        $tab = $request->input('tab');
         $search = $request->input('search', '');
-
-        // Lấy giá trị row_id để xóa, nếu có
         $delete = $request->input('row_id', []);
         $directory_id = $request->input('directory_id', []);
+        $itemsPerPage = $request->input('itemsPerPage', 5);
 
-        // Kiểm tra và xử lý việc xóa
+
+
         if (!empty($delete)) {
             $serviceExists = Service::where('directory_id', $directory_id)
                 ->whereNull('deleted_at')
@@ -35,74 +35,38 @@ class ServiceTypeController extends Controller
             }
             return redirect()->route('system.serviceType')->with('error', 'Không thể xóa nhóm dịch vụ này vì đã có dịch vụ thuộc nó.');
         }
+    
 
-        // Số mục trên mỗi trang, mặc định là 5 nếu không có tham số trong request
-        $itemsPerPage = $request->input('itemsPerPage', 5);
-
-        // Xây dựng truy vấn tìm kiếm và phân trang
         $serviceTypeQuery = ServiceDirectory::where('status', 0)
             ->orderBy('created_at', 'desc');
 
-        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện
-        if ($search) {
-            $serviceTypeQuery->where('directory_id', 'LIKE', "%$search%");
+        if ($search && $tab == 0) {
+            $serviceTypeQuery->where('name', 'LIKE', "%$search%");
         }
 
-        // Lấy kết quả phân trang và giữ lại tham số tìm kiếm trong URL
         $serviceType = $serviceTypeQuery->paginate($itemsPerPage)->appends([
-            'search' => $search, // Giữ lại tham số tìm kiếm trong URL phân trang
-            'itemsPerPage' => $itemsPerPage // Giữ lại số mục trên mỗi trang trong URL phân trang
+            'search' => $search, 
+            'itemsPerPage' => $itemsPerPage 
         ]);
+
+        $serviceTypeInactiveQuery = ServiceDirectory::where('status', 1)
+        ->orderBy('created_at', 'desc');
+
+        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện cho dịch vụ không hoạt động
+        if ($search && $tab == 1) {
+            $serviceTypeInactiveQuery->where('name', 'LIKE', "%$search%");
+        }
+
+        $serviceTypeInactive = $serviceTypeInactiveQuery->paginate($itemsPerPage)->appends([
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage
+        ]);
+
 
         return view('System.serviceTypes.index', [
             'serviceType' => $serviceType,
-            'search' => $search
-        ]);
-    }
-
-
-    public function indexinactive(Request $request)
-    {
-        // Lấy giá trị tìm kiếm, nếu không có thì mặc định là rỗng
-        $search = $request->input('search', '');
-
-        // Lấy giá trị row_id để xóa, nếu có
-        $delete = $request->input('row_id', []);
-        $directory_id = $request->input('directory_id', []);
-
-        // Kiểm tra và xử lý việc xóa
-        if (!empty($delete)) {
-            $serviceExists = Service::where('directory_id', $directory_id)
-                ->whereNull('deleted_at')
-                ->exists();
-
-            if (!$serviceExists) {
-                ServiceDirectory::whereIn('row_id', $delete)->delete();
-                return redirect()->route('system.serviceType')->with('success', 'Xóa thành công.');
-            }
-            return redirect()->route('system.serviceType')->with('error', 'Không thể xóa nhóm dịch vụ này vì đã có dịch vụ thuộc nó.');
-        }
-
-        // Số mục trên mỗi trang, mặc định là 5 nếu không có tham số trong request
-        $itemsPerPage = $request->input('itemsPerPage', 5);
-
-        // Xây dựng truy vấn tìm kiếm và phân trang
-        $serviceTypeQuery = ServiceDirectory::where('status', 1)
-            ->orderBy('created_at', 'desc');
-
-        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện
-        if ($search) {
-            $serviceTypeQuery->where('directory_id', 'LIKE', "%$search%");
-        }
-
-        // Lấy kết quả phân trang và giữ lại tham số tìm kiếm trong URL
-        $serviceType = $serviceTypeQuery->paginate($itemsPerPage)->appends([
-            'search' => $search, // Giữ lại tham số tìm kiếm trong URL phân trang
-            'itemsPerPage' => $itemsPerPage // Giữ lại số mục trên mỗi trang trong URL phân trang
-        ]);
-
-        return view('System.serviceTypes.index', [
-            'serviceType_inactive' => $serviceType,
+            'serviceTypeInactive' => $serviceTypeInactive,
+            'itemsPerPage' => $itemsPerPage,
             'search' => $search
         ]);
     }
@@ -120,7 +84,7 @@ class ServiceTypeController extends Controller
     }
 
 
-    public function store(ValidationRequest $request)
+    public function store(ServiceTypeRequest $request)
     {
         $servicetype = new ServiceDirectory();
         $servicetype->directory_id = $request->input('code');
@@ -148,7 +112,7 @@ class ServiceTypeController extends Controller
     }
 
 
-    public function update(ValidationRequest $request, $row_id)
+    public function update(ServiceTypeRequest $request, $row_id)
     {
         // Kiểm tra nếu dữ liệu ServiceDirectory với row_id đó có tồn tại không
         $servicetype = ServiceDirectory::where('row_id', $row_id)->first();
@@ -184,7 +148,7 @@ class ServiceTypeController extends Controller
         if (!$serviceExists) {
             $servicetype = ServiceDirectory::where('row_id', $row_id)->first();
             $servicetype->delete();
-            return redirect()->route('system.serviceType')->with('success', 'Xóa thành công.');
+            return redirect()->route('system.serviceType')->with('success', 'Xóa danh mục dich vụ thành công.');
         }
         return redirect()->back()->with('error', 'Không thể xóa nhóm dịch vụ này vì đã có dịch vụ thuộc nó.');
     }

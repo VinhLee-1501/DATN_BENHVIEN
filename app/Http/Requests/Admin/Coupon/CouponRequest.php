@@ -7,7 +7,7 @@ use Illuminate\Validation\Validator;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
-class CreateRequest extends FormRequest
+class CouponRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
             'category_id' => 'nullable',
             'time_start' => 'required|date',
             'time_end' => 'required|date',
-            'note' => 'required',
+            'note' => 'required|max:225',
         ];
 
         // Kiểm tra và thêm điều kiện cho 'name' nếu có

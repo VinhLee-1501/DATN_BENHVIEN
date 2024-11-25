@@ -3,49 +3,78 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Coupon\CreateRequest;
-use App\Http\Requests\Admin\Coupon\UpdateRequest;
+use App\Http\Requests\Admin\Coupon\CouponRequest;
 use App\Models\Products\Category;
 use App\Models\Products\CategorySale;
 use App\Models\Products\Coupon;
 use App\Models\Products\Product;
 use App\Models\Products\ProductSale;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 
 class CouponController extends Controller
 {
+
     public function index(Request $request)
     {
-
         $search = $request->input('search', '');
+        $tab = $request->input('tab', 'active'); // Mặc định là tab "Còn hiệu lực"
 
-        // Lấy các blog_id cần xóa từ request
+        // Lấy các coupon_id cần xóa từ request
         $delete = $request->input('coupon_id', []);
-
-        // Xử lý xóa các bài viết
+        
+        // Xử lý xóa các coupon
         if (!empty($delete)) {
             Coupon::whereIn('coupon_id', $delete)->delete();
-            return redirect()->route('system.coupon')->with('success', 'Đã xóa các bài viết được chọn.');
+            return redirect()->route('system.coupon')->with('success', 'Đã xóa các coupon được chọn.');
         }
 
         // Lấy số lượng phần tử trên mỗi trang, mặc định là 5
         $itemsPerPage = $request->input('itemsPerPage', 5);
 
-        // Nếu có từ khóa tìm kiếm, thực hiện tìm kiếm và phân trang
-        if ($search) {
-            $coupons = Coupon::where('discount_code', 'LIKE', "%$search%")
-                ->orderBy('created_at', 'desc')
-                ->paginate($itemsPerPage); // Sử dụng $itemsPerPage cho phân trang
-        } else {
-            // Nếu không tìm kiếm, chỉ phân trang theo $itemsPerPage
-            $coupons = Coupon::orderBy('created_at', 'desc')->paginate($itemsPerPage);
+        // Lấy giờ hiện tại theo múi giờ "Asia/Ho_Chi_Minh"
+        $currentDate = Carbon::now('Asia/Ho_Chi_Minh');
+
+        // Truy vấn danh sách coupon còn hiệu lực
+        $couponsActiveQuery = Coupon::where('time_end', '>=', $currentDate)
+            ->orderBy('created_at', 'desc');
+
+        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách còn hiệu lực
+        if ($search && $tab === '0') {
+            $couponsActiveQuery->where('discount_code', 'LIKE', "%$search%");
         }
+
+        // Lấy kết quả phân trang cho coupon còn hiệu lực
+        $couponsActive = $couponsActiveQuery->paginate($itemsPerPage)->appends([
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage,
+            'tab' => $tab
+        ]);
+
+        // Truy vấn danh sách coupon hết hạn
+        $couponsExpiredQuery = Coupon::where('time_end', '<', $currentDate)
+            ->orderBy('created_at', 'desc');
+
+        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách hết hạn
+        if ($search && $tab === '1') {
+            $couponsExpiredQuery->where('discount_code', 'LIKE', "%$search%");
+        }
+
+        // Lấy kết quả phân trang cho coupon hết hạn
+        $couponsExpired = $couponsExpiredQuery->paginate($itemsPerPage)->appends([
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage,
+            'tab' => $tab
+        ]);
 
         // Trả về view với các tham số cần thiết
         return view('System.coupon.index', [
-            'coupons' => $coupons,
-            'search' => $search
+            'couponsActive' => $couponsActive,
+            'couponsExpired' => $couponsExpired,
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage,
+            'tab' => $tab
         ]);
     }
 
@@ -60,7 +89,7 @@ class CouponController extends Controller
         return view('System.coupon.create');
     }
 
-    public function store(CreateRequest $request)
+    public function store(CouponRequest $request)
     {
         $coupon = new Coupon();
 
@@ -107,9 +136,10 @@ class CouponController extends Controller
 
     public function edit($id)
     {
+       
         $coupon = Coupon::selectRaw('coupons.*, 
-        GROUP_CONCAT(CONCAT(product_sale.product_id, ":", products.name) SEPARATOR ", ") AS product_info,
-        GROUP_CONCAT(CONCAT(category_sale.category_id, ":", categories.name) SEPARATOR ", ") AS category_info')
+        GROUP_CONCAT(CONCAT(product_sale.product_id, ":", products.name) SEPARATOR "; ") AS product_info,
+        GROUP_CONCAT(CONCAT(category_sale.category_id, ":", categories.name) SEPARATOR "; ") AS category_info')
             ->leftJoin('product_sale', 'product_sale.coupon_id', '=', 'coupons.coupon_id')
             ->leftJoin('products', 'products.product_id', '=', 'product_sale.product_id')
             ->leftJoin('category_sale', 'category_sale.coupon_id', '=', 'coupons.coupon_id')
@@ -120,7 +150,6 @@ class CouponController extends Controller
             ->groupBy('coupons.coupon_id')
             ->first();
 
-           
         // Kiểm tra nếu request là AJAX
         if (request()->ajax()) {
             return response()->json([
@@ -130,13 +159,13 @@ class CouponController extends Controller
                     'category_info' => $coupon->category_info,
                 ]
             ]);
-        }   
-      
+        }
+        
         return view('System.coupon.edit', ['coupon' => $coupon, 'old_dicount_code' => $coupon->discount_code]);
     }
 
 
-    public function update(CreateRequest $request, $id)
+    public function update(CouponRequest $request, $id)
     {
 
         $coupon = Coupon::where('discount_code', $id)->first();
@@ -193,7 +222,7 @@ class CouponController extends Controller
     {
         $coupon = Coupon::where('coupon_id', $id)->first();
         $coupon->delete();
-        return redirect()->route('system.coupon')->with('success', 'Xóa thành công.');
+        return redirect()->route('system.coupon')->with('success', 'Xóa mã giảm giá thành công.');
     }
 
     public function listproduct(Request $request)

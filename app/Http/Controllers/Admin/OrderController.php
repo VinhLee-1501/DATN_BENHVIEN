@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Requests\Admin\Order\OrderRequest;
 
 class OrderController extends Controller
 {
@@ -17,15 +18,25 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search', '');
+        $tab = $request->input('tab');
+
+        $delete = $request->input('order_id', []);
+
+        if (!empty($delete)) {
+            Order::whereIn('order_id', $delete)->delete();
+            return redirect()->route('system.order')->with('success', 'Đã xóa các đơn hàng được chọn.');
+        }
+
         $itemsPerPage = $request->input('itemsPerPage', 5);
 
-        $query = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
+        // Truy vấn danh sách đơn hàng chưa thanh toán (`status = 0`)
+        $ordersUnpaidQuery = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
             ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
             ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
             ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select(
-                'orders.role',
+                'orders.payment',
                 'orders.row_id',
                 'orders.status',
                 'orders.total_price',
@@ -43,16 +54,16 @@ class OrderController extends Controller
             )
             ->where('orders.status', '=', '0');
 
-        // Thêm điều kiện tìm kiếm vào truy vấn nếu có
-        if ($search) {
-            $query->where('orders.order_id', 'LIKE', "%$search%");
+        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng chưa thanh toán
+        if ($search && $tab === '0') {
+            $ordersUnpaidQuery->where('orders.order_id', 'LIKE', "%$search%");
         }
 
-        // Thực hiện truy vấn với groupBy và orderBy, sau đó phân trang với append
-        $orders = $query->groupBy(
-            'orders.role',
-            'orders.row_id',
+        // Lấy kết quả phân trang cho danh sách đơn hàng chưa thanh toán
+        $ordersUnpaid = $ordersUnpaidQuery->groupBy(
+            'orders.payment',
             'orders.status',
+            'orders.row_id',
             'orders.total_price',
             'orders.order_id',
             'orders.created_at',
@@ -63,29 +74,20 @@ class OrderController extends Controller
             'patients.gender',
             'patients.birthday',
             'patients.patient_id'
-        )->orderBy('orders.created_at', 'desc')
-            ->paginate($itemsPerPage)
-            ->appends(['search' => $search]); // Đảm bảo giữ lại tham số search trong phân trang
-
-        // Trả về view với biến `orders`
-        return view('System.order.index', [
-            'orders' => $orders,
-            'search' => $search
+        )->orderBy('orders.created_at', 'desc')->paginate($itemsPerPage)->appends([
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage,
+            'tab' => $tab
         ]);
-    }
 
-    public function indexUn(Request $request)
-    {
-        $search = $request->input('search', '');
-        $itemsPerPage = $request->input('itemsPerPage', 5);
-
-        $query = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
+        // Truy vấn danh sách đơn hàng đã thanh toán (`status = 1`)
+        $ordersPaidQuery = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
             ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
             ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
             ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select(
-                'orders.role',
+                'orders.payment',
                 'orders.row_id',
                 'orders.status',
                 'orders.total_price',
@@ -103,16 +105,16 @@ class OrderController extends Controller
             )
             ->where('orders.status', '=', '1');
 
-        // Thêm điều kiện tìm kiếm vào truy vấn nếu có
-        if ($search) {
-            $query->where('orders.order_id', 'LIKE', "%$search%");
+        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng đã thanh toán
+        if ($search && $tab === '1') {
+            $ordersPaidQuery->where('orders.order_id', 'LIKE', "%$search%");
         }
 
-        // Thực hiện truy vấn với groupBy và orderBy, sau đó phân trang với append
-        $orders = $query->groupBy(
-            'orders.role',
-            'orders.row_id',
+        // Lấy kết quả phân trang cho danh sách đơn hàng đã thanh toán
+        $ordersPaid = $ordersPaidQuery->groupBy(
+            'orders.payment',
             'orders.status',
+            'orders.row_id',
             'orders.total_price',
             'orders.order_id',
             'orders.created_at',
@@ -123,18 +125,28 @@ class OrderController extends Controller
             'patients.gender',
             'patients.birthday',
             'patients.patient_id'
-        )->orderBy('orders.created_at', 'desc')
-            ->paginate($itemsPerPage)
-            ->appends(['search' => $search]); // Đảm bảo giữ lại tham số search trong phân trang
+        )->orderBy('orders.created_at', 'desc')->paginate($itemsPerPage)->appends([
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage,
+            'tab' => $tab
+        ]);
 
-        // Trả về view với biến `orders`
+        // Trả về view với các biến khác nhau
         return view('System.order.index', [
-            'ordersun' => $orders,
-            'search' => $search
+            'ordersUnpaid' => $ordersUnpaid,
+            'ordersPaid' => $ordersPaid,
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage,
+            'tab' => $tab
         ]);
     }
 
-
+    public function delete($id)
+    {
+        $order = Order::where('order_id', $id)->first();
+        $order->delete();
+        return redirect()->route('system.order')->with('success', 'Xóa hóa đơn thành công.');
+    }
 
     public function resetsearch()
     {
@@ -144,6 +156,8 @@ class OrderController extends Controller
 
     public function edit($id)
     {
+        $user = Auth::user();
+
         $orders = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
             ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
@@ -151,12 +165,13 @@ class OrderController extends Controller
             ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->where('orders.order_id', $id)
             ->select(
-                'orders.role',
+                'orders.payment',
                 'orders.status',
                 'orders.total_price',
                 'orders.order_id',
+                'orders.cashier',
                 'orders.created_at',
-                DB::raw('GROUP_CONCAT(services.name SEPARATOR "|") as service_names'), // Dùng dấu "|" để phân tách
+                DB::raw('GROUP_CONCAT(services.name SEPARATOR "|") as service_names'),
                 DB::raw('GROUP_CONCAT(services.price SEPARATOR "|") as service_prices'),
                 'medical_records.medical_id',
                 'treatment_details.treatment_id',
@@ -167,8 +182,9 @@ class OrderController extends Controller
                 'patients.patient_id'
             )
             ->groupBy(
-                'orders.role',
+                'orders.payment',
                 'orders.status',
+                'orders.cashier',
                 'orders.total_price',
                 'orders.order_id',
                 'orders.created_at',
@@ -183,35 +199,28 @@ class OrderController extends Controller
             ->orderBy('orders.created_at', 'desc')
             ->first();
 
-        if (!$orders) {
-            return redirect()->back()->with('error', 'Không tìm thấy đơn hàng.');
+        // Kiểm tra nếu là yêu cầu AJAX, trả về JSON
+        if (request()->ajax()) {
+            if ($orders) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $orders,
+                    'user' => [
+                        'first_name' => $user->firstname,
+                        'last_name' => $user->lastname,
+                    ],
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Không tìm thấy đơn hàng.'
+                ]);
+            }
         }
-
+        
+        // Nếu không phải AJAX, trả về view
         return view('System.order.edit', ['orders' => $orders]);
     }
-
-
-    public function update(Request $request, $id)
-    {
-        // Lấy đơn hàng dựa vào row_id
-        $order = Order::where('row_id', $id)->firstOrFail();
-
-        // Lấy hình thức thanh toán
-        $role = $request->input('payment');
-
-        // Cập nhật trạng thái và hình thức thanh toán
-        $order->update([
-            'status' => 1,
-            'role' => $role,
-        ]);
-        // Trả về phản hồi JSON
-        //  $this->print_order($id);
-
-        // Trả về phản hồi JSON
-        return redirect()->route('system.order')->with('success', 'Đơn hàng đã được xác nhận.');
-    }
-
-
 
     public function print_order($id)
     {
@@ -223,7 +232,11 @@ class OrderController extends Controller
             ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->where('orders.row_id', $id)
             ->select(
-                'orders.role',
+                'orders.payment',
+                'orders.payment',
+                'orders.cashier',
+                'orders.change_amount',
+                'orders.cash_received',
                 'orders.status',
                 'orders.total_price',
                 'orders.order_id',
@@ -237,9 +250,13 @@ class OrderController extends Controller
                 'patients.gender',
                 'patients.birthday',
                 'patients.patient_id'
+                
             )
             ->groupBy(
-                'orders.role',
+                'orders.payment',
+                'orders.cashier',
+                'orders.change_amount',
+                'orders.cash_received',
                 'orders.status',
                 'orders.total_price',
                 'orders.order_id',
@@ -260,110 +277,158 @@ class OrderController extends Controller
         return $pdf->stream('order_invoice_' . $orders->order_id . '.pdf');
     }
 
-    public function checkout_online()
+    function execPostRequest($url, $data)
     {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
-    
-        $vnp_TmnCode = env('VNPAY_TMN_CODE');
-        $vnp_HashSecret = env('VNPAY_HASH_SECRET');
-        $vnp_Url = env('VNPAY_URL');
-        $vnp_Returnurl = env('VNPAY_RETURN_URL');
-        
-        $vnp_TxnRef = rand(00,9999); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-        $vnp_OrderInfo = 'Nội dung thanh toán';
-        $vnp_OrderType = 'billpayment';
-        $vnp_Amount = 10000 * 100;
-        $vnp_Locale = 'vn';
-        $vnp_BankCode = 'NCB';
-        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-        //Add Params of 2.0.1 Version
-        // $vnp_ExpireDate = $_POST['txtexpire'];
-        // //Billing
-        // $vnp_Bill_Mobile = $_POST['txt_billing_mobile'];
-        // $vnp_Bill_Email = $_POST['txt_billing_email'];
-        // $fullName = trim($_POST['txt_billing_fullname']);
-        // if (isset($fullName) && trim($fullName) != '') {
-        //     $name = explode(' ', $fullName);
-        //     $vnp_Bill_FirstName = array_shift($name);
-        //     $vnp_Bill_LastName = array_pop($name);
-        // }
-        // $vnp_Bill_Address=$_POST['txt_inv_addr1'];
-        // $vnp_Bill_City=$_POST['txt_bill_city'];
-        // $vnp_Bill_Country=$_POST['txt_bill_country'];
-        // $vnp_Bill_State=$_POST['txt_bill_state'];
-        // // Invoice
-        // $vnp_Inv_Phone=$_POST['txt_inv_mobile'];
-        // $vnp_Inv_Email=$_POST['txt_inv_email'];
-        // $vnp_Inv_Customer=$_POST['txt_inv_customer'];
-        // $vnp_Inv_Address=$_POST['txt_inv_addr1'];
-        // $vnp_Inv_Company=$_POST['txt_inv_company'];
-        // $vnp_Inv_Taxcode=$_POST['txt_inv_taxcode'];
-        // $vnp_Inv_Type=$_POST['cbo_inv_type'];
-        $inputData = array(
-            "vnp_Version" => "2.1.0",
-            "vnp_TmnCode" => $vnp_TmnCode,
-            "vnp_Amount" => $vnp_Amount,
-            "vnp_Command" => "pay",
-            "vnp_CreateDate" => date('YmdHis'),
-            "vnp_CurrCode" => "VND",
-            "vnp_IpAddr" => $vnp_IpAddr,
-            "vnp_Locale" => $vnp_Locale,
-            "vnp_OrderInfo" => $vnp_OrderInfo,
-            "vnp_OrderType" => $vnp_OrderType,
-            "vnp_ReturnUrl" => $vnp_Returnurl,
-            "vnp_TxnRef" => $vnp_TxnRef,
-            // "vnp_ExpireDate"=>$vnp_ExpireDate,
-            // "vnp_Bill_Mobile"=>$vnp_Bill_Mobile,
-            // "vnp_Bill_Email"=>$vnp_Bill_Email,
-            // "vnp_Bill_FirstName"=>$vnp_Bill_FirstName,
-            // "vnp_Bill_LastName"=>$vnp_Bill_LastName,
-            // "vnp_Bill_Address"=>$vnp_Bill_Address,
-            // "vnp_Bill_City"=>$vnp_Bill_City,
-            // "vnp_Bill_Country"=>$vnp_Bill_Country,
-            // "vnp_Inv_Phone"=>$vnp_Inv_Phone,
-            // "vnp_Inv_Email"=>$vnp_Inv_Email,
-            // "vnp_Inv_Customer"=>$vnp_Inv_Customer,
-            // "vnp_Inv_Address"=>$vnp_Inv_Address,
-            // "vnp_Inv_Company"=>$vnp_Inv_Company,
-            // "vnp_Inv_Taxcode"=>$vnp_Inv_Taxcode,
-            // "vnp_Inv_Type"=>$vnp_Inv_Type
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($data)
+            )
         );
-        
-        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
-            $inputData['vnp_BankCode'] = $vnp_BankCode;
-        }
-        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
-        }
-        
-        //var_dump($inputData);
-        ksort($inputData);
-        $query = "";
-        $i = 0;
-        $hashdata = "";
-        foreach ($inputData as $key => $value) {
-            if ($i == 1) {
-                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Chỉ sử dụng khi kiểm thử để bỏ qua chứng chỉ SSL
+
+        $result = curl_exec($ch);
+
+        // if ($result === false) {
+        //     // Ghi lại lỗi từ cURL và trả về false
+        //     $error = curl_error($ch);
+        //     Log::error("cURL Error: " . $error);
+        //     curl_close($ch);
+        //     return false;
+        // }
+
+        curl_close($ch);
+        return $result;
+    }
+
+
+    public function handlepay(OrderRequest $request)
+    {
+        $payment = $request->input('payment_method');
+        $id = $request->input('order_id');
+        $cash_received = $request->input('cash_received');
+        $change_amount = $request->input('change_amount');
+        $cashier_name = $request->input('cashier_name');
+        $total_amount = $request->input('total_amount');
+
+        if ($payment == 0) {
+            $order = Order::where('row_id', $id)->firstOrFail();
+
+            $order->update([
+                'cashier' => $cashier_name,
+                'change_amount' => $change_amount,
+                'cash_received' => $cash_received,
+                'status' => 1,
+                'payment' => $payment,
+            ]);
+
+            // Tạo URL PDF cho hóa đơn
+            $pdfUrl = route('system.order.print', ['id' => $id]);
+
+            return response()->json([
+                'success' => true,
+                'pdf_url' => $pdfUrl,
+            ]);
+        } elseif ($payment == 1) { // Thanh toán qua MoMo
+            $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+            $partnerCode = 'MOMOBKUN20180529';
+            $accessKey = 'klm05TvNBzhg7h7j';
+            $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+            $orderInfo = "Thanh toán qua MoMo";
+            $amount = $total_amount * 1000; // Chuyển đổi số tiền
+            $ID = $id;
+            $orderId = time() . ""; // Unique Order ID
+            $redirectUrl = route('system.momo.callback');
+            $ipnUrl = 'http://127.0.0.1:8000/system/order';
+
+            $extraData = json_encode([
+                'cashier_name' => $cashier_name,
+                'ID' => $ID,
+            ]);
+
+            $requestId = time() . "";
+            $requestType = "payWithATM";
+
+            // Tạo chữ ký
+            $rawHash = "accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType";
+            $signature = hash_hmac("sha256", $rawHash, $secretKey);
+
+            $data = [
+                'partnerCode' => $partnerCode,
+                'partnerName' => "Test",
+                'storeId' => "MomoTestStore",
+                'requestType' => $requestType,
+                'requestId' => $requestId,
+                'orderId' => $orderId,
+                'orderInfo' => $orderInfo,
+                'amount' => $amount,
+                'redirectUrl' => $redirectUrl,
+                'ipnUrl' => $ipnUrl,
+                'lang' => 'vi',
+                'extraData' => $extraData,
+                'signature' => $signature,
+
+            ];
+
+            $result = $this->execPostRequest($endpoint, json_encode($data));
+            $jsonResult = json_decode($result, true);
+
+            if ($jsonResult['resultCode'] === 0 && isset($jsonResult['payUrl'])) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thanh toán hóa đơn thành công',
+                    'payUrl' => $jsonResult['payUrl'],
+                ]);
             } else {
-                $hashdata .= urlencode($key) . "=" . urlencode($value);
-                $i = 1;
+                return response()->json([
+                    'success' => false,
+                    'message' => $jsonResult['message'] ?? 'Không thể tạo liên kết thanh toán.',
+                ]);
             }
-            $query .= urlencode($key) . "=" . urlencode($value) . '&';
         }
-        
-        $vnp_Url = $vnp_Url . "?" . $query;
-        if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);//  
-            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+    }
+    public function handleCallback(Request $request)
+    {
+        // Lấy dữ liệu từ query string
+
+        $amount = $request->input('amount');
+
+        $total_amount = $amount / 1000;
+
+        $extraData = $request->input('extraData');
+
+        // Giải mã extraData
+        $extraDataDecoded = json_decode($extraData, true); // Chuyển JSON thành mảng PHP
+
+        // Lấy các giá trị từ extraData
+        $cashierName = $extraDataDecoded['cashier_name'] ?? null;
+        $orderID = $extraDataDecoded['ID'] ?? null;
+
+        // Kiểm tra và cập nhật trạng thái đơn hàng
+        $order = Order::where('order_id', $orderID)->first();
+
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đơn hàng không tồn tại.',
+            ], 404);
         }
-        $returnData = array('code' => '00'
-            , 'message' => 'success'
-            , 'data' => $vnp_Url);
-            if (isset($_POST['redirect'])) {
-                header('Location: ' . $vnp_Url);
-                die();
-            } else {
-                echo json_encode($returnData);
-            }
+
+        $order->update([
+            'cashier' => $cashierName,
+            'status' => 1,
+            'payment' => 1,
+            'total_amount' => $total_amount,
+
+        ]);
+        return redirect()->route('system.order')->with('susses', 'Thanh toán hóa đơn thành công');
     }
 }

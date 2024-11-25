@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin\Blog;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValidationRequest extends FormRequest
+class BlogRequest extends FormRequest
 {
     public function authorize(): bool
     {
