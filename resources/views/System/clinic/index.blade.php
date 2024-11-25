@@ -3,82 +3,82 @@
 @section('content')
     <div class="card w-100">
         <div class="card-body p-4">
-            <div class="col-md-12 d-flex justify-content-around align-items-center">
-                <div class="col-md-12 d-flex justify-content-around align-items-center">
-                    <div class="col-md-3">
-                        <h5 class="card-title fw-semibold mb-4">Quản lý phòng khám</h5>
-                    </div>
-                    <div class="col-md-1">
-                        <button class="btn btn-success mb-4" onclick="openModalCreate()">Thêm</button>
-                    </div>
-                    <div class="col-md-5 d-flex justify-content-end mb-4">
-                        <div class="w-75 me-1">
-                            <input type="text" id="inputName" class="form-control" placeholder="Tìm kiếm phòng khám"
-                                name="nameClinic">
-                        </div>
-                        <div class="w-100 d-flex">
-                            <select class="form-select me-1" name="seclectSpecialty" id="seclectSpecialty">
-                                <option value="">Chọn chuyên khoa</option>
-                                @foreach ($specialties as $specialty)
-                                    <option value="{{ $specialty->specialty_id }}">{{ $specialty->name }}</option>
-                                @endforeach
-                            </select>
-                            <button type="button" class="btn btn-primary" onclick="filterSpecialty()">Lọc</button>
-                        </div>
+            <div class="col-md-4">
+                <h5 class="card-title fw-semibold mb-4">Quản lý phòng khám</h5>
+            </div>
+            <div class="col-md-12 row">
+                <div class="col-md-4 mb-3">
+                    <button class="btn btn-success mb-4" onclick="openModalCreate()">Thêm</button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <input type="text" id="inputName" class="form-control" placeholder="Tìm kiếm phòng khám"
+                        name="nameClinic">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="w-100 d-flex">
+                        <select class="form-select me-1" name="seclectSpecialty" id="seclectSpecialty">
+                            <option value="">Chọn chuyên khoa</option>
+                            @foreach ($specialties as $specialty)
+                                <option value="{{ $specialty->specialty_id }}">{{ $specialty->name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="btn btn-primary" onclick="filterSpecialty()">Lọc</button>
                     </div>
                 </div>
             </div>
-              {!! $clinics->links() !!}
-            <table class="table text-nowrap mb-0 align-middle">
-                <thead class="text-dark fs-4">
-                    <tr class="text-center">
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">ID</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Số phòng</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Chuyên khoa</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Thao tác</h6>
-                        </th>
-                    </tr>
-                </thead>
-                @php
-                    $count = 1;
-                @endphp
-                <tbody id="myTable">
-                    @foreach ($clinics as $sclinic)
-                        <tr class="text-center">
-                            <td class="border-bottom-0">{{ $count++ }}</td>
-                            <td class="border-bottom-0">{{ $sclinic->name }}</td>
-                            <td class="border-bottom-0">{{ $sclinic->specialtyForgikey->name }}</td>
-                            <td class="border-bottom-0">
-                                @if ($sclinic->status === 1)
-                                    <a href="javascript:void(0)" class="btn btn-primary "
-                                        onclick="openModalEdit('{{ $sclinic->sclinic_id }}')"><i
-                                            class="ti ti-pencil"></i></a>
-                                @else
-                                    <a href="javascript:void(0)" class="btn btn-danger"
-                                        onclick="openModalEdit('{{ $sclinic->sclinic_id }}')"><i
-                                            class="ti ti-pencil"></i></a>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            {!! $clinics->links() !!}
-                <div id="noResults" class="alert alert-warning" style="display: none;">Không tìm thấy dữ liệu.</div>
-
         </div>
+    </div>
+    {!! $clinics->links() !!}
+    <div class="table-responsive">
+        <table class="table text-nowrap mb-0 align-middle">
+            <thead class="text-dark fs-4">
+                <tr class="text-center">
+                    <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">ID</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Số phòng</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Chuyên khoa</h6>
+                    </th>
+                    <th class="border-bottom-0">
+                        <h6 class="fw-semibold mb-0">Thao tác</h6>
+                    </th>
+                </tr>
+            </thead>
+            @php
+                $count = 1;
+            @endphp
+            <tbody id="myTable">
+                @foreach ($clinics as $sclinic)
+                    <tr class="text-center">
+                        <td class="border-bottom-0">{{ $count++ }}</td>
+                        <td class="border-bottom-0">{{ $sclinic->name }}</td>
+                        <td class="border-bottom-0">{{ $sclinic->specialtyForgikey->name }}</td>
+                        <td class="border-bottom-0">
+                            @if ($sclinic->status === 1)
+                                <a href="javascript:void(0)" class="btn btn-primary "
+                                    onclick="openModalEdit('{{ $sclinic->sclinic_id }}')"><i class="ti ti-pencil"></i></a>
+                            @else
+                                <a href="javascript:void(0)" class="btn btn-danger"
+                                    onclick="openModalEdit('{{ $sclinic->sclinic_id }}')"><i class="ti ti-pencil"></i></a>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    {!! $clinics->links() !!}
+    <div id="noResults" class="alert alert-warning" style="display: none;">Không tìm thấy dữ liệu.</div>
+
+    </div>
     </div>
 
     {{-- Start modal create --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Cập nhật phòng khám</h5>
@@ -129,7 +129,7 @@
     {{-- Start modal edit --}}
     <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Cập nhật phòng khám</h5>

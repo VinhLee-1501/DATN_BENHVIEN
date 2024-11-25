@@ -4,20 +4,18 @@
 
     <div class="card w-100">
         <div class="card-body p-4">
-
             <h5 class="card-title fw-semibold mb-4">Quản lý chuyên khoa</h5>
-
-            <div class="row">
-                <div class="col-md-3 mb-3">
+            <div class="col-md-12 row">
+                <div class="col-md-6">
+                    <button class="btn btn-success mb-3" onclick="openModalCreate()">Thêm</button>
+                </div>
+                <div class="col-md-6 mb-3">
                     <div class="w-100">
                         <input type="text" id="inputName" class="form-control" placeholder="Tìm kiếm chuyên khoa"
                             name="nameSpecialty">
                     </div>
                 </div>
-                <div class="col-md-4">
 
-                    <button class="btn btn-success mb-3" onclick="openModalCreate()">Thêm</button>
-                </div>
 
             </div>
 
@@ -83,7 +81,7 @@
         </div>
 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Thêm chuyên khoa</h5>
@@ -114,7 +112,7 @@
         </div>
 
         <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Thêm chuyên khoa</h5>

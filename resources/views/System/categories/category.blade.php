@@ -129,7 +129,7 @@
 
 {{-- ---- Modal thêm danh mục start -----  --}}
 <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addMedicineModalLabel">Thêm danh mục</h5>
@@ -173,7 +173,7 @@
 
 {{-- ---- Modal cập nhật danh mục start -----  --}}
 <div class="modal fade" id="updateProduct" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true">
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="updateCategoryModal">Cập nhật danh mục</h5>
