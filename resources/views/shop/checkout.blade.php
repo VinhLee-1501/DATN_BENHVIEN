@@ -200,6 +200,13 @@
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
+                                <div class="checkout__input__checkbox">
+                                    <label for="payment_zalopay">
+                                        Thanh toán Zalo Pay
+                                        <input type="radio" id="payment_zalopay" name="payment_option" value="zalopay">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
 
                                 <button type="submit" name="redirect" class="site-btn">Thanh toán</button>
                                 </p>

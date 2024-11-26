@@ -127,20 +127,44 @@ class PayController extends Controller
         if ($resultCode == 0) {
 
             $payment = new PaymentProduct();
-            $payment->payment_method = 2; // MoMo
-            $payment->payment_status = 1; // Thành công
-            $payment->order_id = $orderId; // Thành công
+            $payment->payment_method = 2; 
+            $payment->payment_status = 1;
+            $payment->order_id = $orderId; 
             $payment->save();
 
-            return redirect()->route('shop.bill')->with('message', 'Thanh toán thành công!');
+            return redirect()->route('shop.bill')->with('success', 'Thanh toán thành công!');
         } else {
             $payment = new PaymentProduct();
-            $payment->payment_method = 2; // MoMo
-            $payment->payment_status = 2; // Thất bại
-            $payment->order_id = $orderId; // Thành công
+            $payment->payment_method = 2; 
+            $payment->payment_status = 2; 
+            $payment->order_id = $orderId; 
             $payment->save();
 
-            return redirect()->route('shop.bill')->with('message', 'Thanh toán không thành công!');
+            return redirect()->route('shop.bill')->with('error', 'Thanh toán không thành công!');
+        }
+    }
+    public function handleZaloPaymentResponse(Request $request)
+    {
+        $status = $request->query('status'); 
+        $orderId = OrderProduct::latest()->pluck('order_id')->first();
+    
+        if ($status == 1) {
+            
+            $payment = new PaymentProduct();
+            $payment->payment_method = 4;
+            $payment->payment_status = 1; 
+            $payment->order_id = $orderId; 
+            $payment->save();
+    
+            return redirect()->route('shop.bill')->with('success', 'Thanh toán thành công!');
+        } else {
+            $payment = new PaymentProduct();
+            $payment->payment_method = 4;
+            $payment->payment_status = 2; 
+            $payment->order_id = $orderId;
+            $payment->save();
+            // Thanh toán thất bại
+            return redirect()->route('shop.bill')->with('error', 'Thanh toán không thành công.');
         }
     }
 
@@ -164,7 +188,7 @@ class PayController extends Controller
             $payment->payment_method = 1;
             $payment->payment_status = 1;
             $payment->save();
-            return redirect()->route('shop.bill')->with('message', 'Thanh toán thành công!');
+            return redirect()->route('shop.bill')->with('success', 'Thanh toán thành công!');
         } else {
             $payment = new PaymentProduct();
             $payment->txn_ref = $vnp_TxnRef;
@@ -173,7 +197,7 @@ class PayController extends Controller
             $payment->payment_status = 2;
             $payment->save();
 
-            return redirect()->route('shop.bill')->with('message', 'Thanh toán không thành công!');
+            return redirect()->route('shop.bill')->with('error', 'Thanh toán không thành công!');
         }
     }
 
@@ -316,7 +340,60 @@ class PayController extends Controller
             $result = $this->execPostRequest($endpoint, json_encode($data));
             $jsonResult = json_decode($result, true);
             return redirect()->to($jsonResult['payUrl']);
+
+        } elseif ($request->input('payment_option') === 'zalopay') {
+            $config = [
+                "app_id" => 2554,
+                "key1" => "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn",
+                "key2" => "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf",
+                "endpoint" => "https://sb-openapi.zalopay.vn/v2/create"
+            ];
             
+            // Đảm bảo URL của bạn được cấu hình đúng để nhận phản hồi từ ZaloPay
+            $redirectUrl = 'http://127.0.0.1:8000/cua-hang/payment/zalopay/return'; // Thay bằng tên miền của bạn
+            
+            $embeddata = json_encode([
+                "redirecturl" => $redirectUrl // Cấu hình đúng URL sau khi thanh toán
+            ]);
+            $price = (int) $price;
+            $items = '[]';
+            $transID = rand(0, 1000000);
+            
+            $order = [
+                "app_id" => $config["app_id"],
+                "app_time" => round(microtime(true) * 1000), 
+                "app_trans_id" => date("ymd") . "_" . $transID, 
+                "app_user" => $user->user_id,
+                "item" => $items,
+                "embed_data" => $embeddata,
+                "amount" => $price, 
+                "description" => "Payment for order #$transID", 
+                "bank_code" => "", 
+            ];
+            
+           
+            $data = implode("|", [
+                $order["app_id"],
+                $order["app_trans_id"],
+                $order["app_user"],
+                $order["amount"],
+                $order["app_time"],
+                $order["embed_data"],
+                $order["item"]
+            ]);
+            
+            $order["mac"] = hash_hmac("sha256", $data, $config["key1"]);
+            
+            // Gửi yêu cầu tới ZaloPay endpoint
+            $result = $this->execPostRequest($config["endpoint"], json_encode($order));
+            $jsonResult = json_decode($result, true);
+            
+            // Kiểm tra kết quả và chuyển hướng
+            if (isset($jsonResult['order_url'])) {
+                return redirect()->to($jsonResult['order_url']);
+            } else {
+                return back()->withErrors(['error' => 'Không thể tạo thanh toán ZaloPay: ' . json_encode($jsonResult)]);
+            }
         } elseif ($request->input('payment_option') === 'cash') {
             $order_id = OrderProduct::latest()->pluck('order_id')->first();
             $payment = new PaymentProduct();

@@ -119,6 +119,8 @@
                         $methodText = 'Thanh toán bằng VNPAY';
                     } elseif ($order->payment_method === 2) {
                         $methodText = 'Thanh toán bằng MOMOPAY';
+                    } elseif ($order->payment_method === 4) {
+                        $methodText = 'Thanh toán bằng ZaloPay';
                     }
                 @endphp
 
@@ -162,8 +164,10 @@
                                 $statusText = 'Thanh toán khi nhận hàng';
                             } elseif ($item->payment_method == 1) {
                                 $statusText = 'Thanh toán bằng VNPAY';
-                            } else {
+                            } elseif ($item->payment_method == 3){
                                 $statusText = 'Thanh toán bằng MOMOPAY';
+                            }else{
+                                $statusText = 'Thanh toán bằng ZaloPay';
                             }
                         @endphp
                         <p class="order-status status-success">Phương thức thanh toán: {{ $statusText }}</p>
