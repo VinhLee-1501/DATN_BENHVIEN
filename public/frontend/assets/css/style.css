@@ -5120,6 +5120,7 @@ i.icon-cps-face {
 
 .popup.booking .popup__form .form__action .button.btn-booking {
     width: 100%;
+    border-color: #048647;
 }
 
 .popup.booking .popup__form .form__action .button.btn-cancel {

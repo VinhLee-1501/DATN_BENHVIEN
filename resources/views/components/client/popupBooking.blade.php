@@ -146,7 +146,9 @@
                                     </div>
                                     <div class="form__group">
                                         <select style="width: 100%" id="role" name="role">
-                                            <option value="" disabled {{ old('specialty_id') == '' ? 'selected' : '' }}>--Chọn hình thức khám--</option>
+                                            <option value="" disabled
+                                                {{ old('specialty_id') == '' ? 'selected' : '' }}>--Chọn hình thức
+                                                khám--</option>
                                             <option value="0">Trực tiếp</option>
                                             <option value="1">Trực tuyến</option>
                                         </select>
@@ -163,6 +165,17 @@
                                         <span class="text-danger">{{ $errors->first('symptoms') }}</span>
                                     @endif
                                 </div>
+
+                                <!-- Hiển thị reCAPTCHA -->
+                                <div class="recaptcha-container">
+                                    <div class="g-recaptcha" data-sitekey="{{ config('recaptcha.site_key') }}"></div>
+                                    <!-- Hiển thị lỗi -->
+                                </div>
+
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+                                @endif
+
 
                                 <div class="form__action">
                                     <button type="submit" class="button btn-booking btn-flex">

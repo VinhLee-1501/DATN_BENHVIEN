@@ -166,6 +166,15 @@
                                 @enderror
                             </div>
 
+                            <div class="recaptcha-container">
+                                <div class="g-recaptcha" data-sitekey="{{ config('recaptcha.site_key') }}"></div>
+                            </div>
+
+                            <!-- Hiển thị lỗi -->
+                            @if ($errors->has('g-recaptcha-response'))
+                                <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+                            @endif
+
                             <!-- Nút hành động -->
                             <div class="form__action">
                                 <button style="border: none" type="submit" class="button btn-register btn-flex">Đăng
@@ -219,7 +228,15 @@
                                         <span class="text-danger">{{ $errors->first('email') }}</span>
                                     @endif
                                 </div>
+                                <div class="recaptcha-container">
+                                    <div class="g-recaptcha" data-sitekey="{{ config('recaptcha.site_key') }}"></div>
+                                </div>
 
+                                <!-- Hiển thị lỗi -->
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+                                @endif
+                                
                                 <div class="form__action">
                                     <button type="submit" class="button btn-submit btn-flex">
                                         Gửi link khôi phục

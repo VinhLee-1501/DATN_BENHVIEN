@@ -346,5 +346,13 @@
 }
 
 .login-container:hover .login-options {
-    display: block; /* Hiện khi rê chuột vào login-container */
+    display: block;
+}
+.recaptcha-container {
+    text-align: center; 
+    margin-bottom: 15px;
+}
+
+.g-recaptcha {
+    display: inline-block;  
 }

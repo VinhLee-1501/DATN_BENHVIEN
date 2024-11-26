@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -48,6 +49,21 @@ class UserController extends Controller
 
     public function handleRegister(RegisterRequest $request)
     {
+        // Validate reCAPTCHA
+
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => config('recaptcha.secret_key'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+
+        $responseBody = $response->json();
+
+        if (!$responseBody['success']) {
+            return redirect()->route('client.register')
+                ->withErrors(['g-recaptcha-response' => 'Vui lòng xác minh reCAPTCHA.'])
+                ->withInput();
+        }
         $validatedData = $request->validated();
 
         $users = $this->userRepository->create([
@@ -272,6 +288,21 @@ class UserController extends Controller
             'email' => 'Trường email phải là một địa chỉ email hợp lệ.',
             'exists' => 'Địa chỉ email không tồn tại trong hệ thống.',
         ]);
+        // Validate reCAPTCHA
+
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => config('recaptcha.secret_key'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+
+        $responseBody = $response->json();
+
+        if (!$responseBody['success']) {
+            return redirect()->route('client.forgot-password')
+                ->withErrors(['g-recaptcha-response' => 'Vui lòng xác minh reCAPTCHA.'])
+                ->withInput();
+        }
 
         $token = Str::random(64);
 

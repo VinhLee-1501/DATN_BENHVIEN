@@ -43,6 +43,7 @@
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="{{ asset('frontend/assets/js/app.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </head>
 

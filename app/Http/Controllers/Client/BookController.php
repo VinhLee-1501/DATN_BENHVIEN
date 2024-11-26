@@ -20,6 +20,7 @@ use Infobip\Model\SmsTextualMessage;
 use Infobip\Model\SmsAdvancedTextualRequest;
 use Illuminate\Support\Facades\Log;
 use Infobip\ApiException;
+use Illuminate\Support\Facades\Http;
 
 class BookController extends Controller
 {
@@ -55,6 +56,23 @@ class BookController extends Controller
         $book->shift_id = $request->shift_id ?? null;
         $book->specialty_id = $request->specialty_id;
         $book->role = $request->role;
+        // Validate reCAPTCHA
+
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => config('recaptcha.secret_key'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+
+        $responseBody = $response->json();
+
+        if (!$responseBody['success']) {
+            return redirect()->route('client.booking')
+                ->withErrors(['g-recaptcha-response' => 'Vui lòng xác minh reCAPTCHA.'])
+                ->withInput();
+        }
+        $validatedData = $request->validated();
+
 
         
         $specialty = Specialty::where('specialty_id', $request->specialty_id)
