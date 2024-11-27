@@ -127,17 +127,17 @@ class PayController extends Controller
         if ($resultCode == 0) {
 
             $payment = new PaymentProduct();
-            $payment->payment_method = 2; 
+            $payment->payment_method = 2;
             $payment->payment_status = 1;
-            $payment->order_id = $orderId; 
+            $payment->order_id = $orderId;
             $payment->save();
 
             return redirect()->route('shop.bill')->with('success', 'Thanh toán thành công!');
         } else {
             $payment = new PaymentProduct();
-            $payment->payment_method = 2; 
-            $payment->payment_status = 2; 
-            $payment->order_id = $orderId; 
+            $payment->payment_method = 2;
+            $payment->payment_status = 2;
+            $payment->order_id = $orderId;
             $payment->save();
 
             return redirect()->route('shop.bill')->with('error', 'Thanh toán không thành công!');
@@ -145,22 +145,22 @@ class PayController extends Controller
     }
     public function handleZaloPaymentResponse(Request $request)
     {
-        $status = $request->query('status'); 
+        $status = $request->query('status');
         $orderId = OrderProduct::latest()->pluck('order_id')->first();
-    
+
         if ($status == 1) {
-            
+
             $payment = new PaymentProduct();
             $payment->payment_method = 4;
-            $payment->payment_status = 1; 
-            $payment->order_id = $orderId; 
+            $payment->payment_status = 1;
+            $payment->order_id = $orderId;
             $payment->save();
-    
+
             return redirect()->route('shop.bill')->with('success', 'Thanh toán thành công!');
         } else {
             $payment = new PaymentProduct();
             $payment->payment_method = 4;
-            $payment->payment_status = 2; 
+            $payment->payment_status = 2;
             $payment->order_id = $orderId;
             $payment->save();
             // Thanh toán thất bại
@@ -170,36 +170,42 @@ class PayController extends Controller
 
 
 
-    public function handlePaymentReturn(Request $request)
+    public function handleVNPaymentResponse(Request $request)
     {
-
-        // dd(query('vnp_ResponseCode'));
-        $vnp_ResponseCode = $request->query('vnp_ResponseCode');
+        
         $vnp_TransactionStatus = $request->query('vnp_TransactionStatus');
-        $vnp_TxnRef = $request->query('vnp_TxnRef');
+        $vnp_TxnRef = $request->query('vnp_TxnRef'); // Mã giao dịch
 
+      
+        $paymentExists = PaymentProduct::where('order_id', $vnp_TxnRef)->exists();
+        if ($paymentExists) {
+            return redirect()->route('shop.bill')->with(['error' => 'Giao dịch này đã được xử lý trước đó.']);
+        }
+
+      
         $order_id = OrderProduct::latest()->pluck('order_id')->first();
-        // dd($vnp_ResponseCode, $vnp_TransactionStatus);
 
-        if ($vnp_ResponseCode == '00') {
+        // Kiểm tra trạng thái giao dịch
+        if ($vnp_TransactionStatus == '00') { // Thành công
             $payment = new PaymentProduct();
-            $payment->txn_ref = $vnp_TxnRef;
             $payment->order_id = $order_id;
-            $payment->payment_method = 1;
-            $payment->payment_status = 1;
-            $payment->save();
-            return redirect()->route('shop.bill')->with('success', 'Thanh toán thành công!');
-        } else {
-            $payment = new PaymentProduct();
-            $payment->txn_ref = $vnp_TxnRef;
-            $payment->order_id = $order_id;
-            $payment->payment_method = 1;
-            $payment->payment_status = 2;
+            $payment->payment_method = 1; // Ví dụ: 1 = VNPAY
+            $payment->payment_status = 1; // Thành công
             $payment->save();
 
-            return redirect()->route('shop.bill')->with('error', 'Thanh toán không thành công!');
+            return redirect()->route('shop.bill')->with(['success' => 'Thanh toán thành công!',]);
+        } else { // Không thành công
+            $payment = new PaymentProduct();
+            $payment->order_id = $order_id;
+            $payment->payment_method = 1; // Ví dụ: 1 = VNPAY
+            $payment->payment_status = 2; // Không thành công
+            $payment->save();
+
+            return redirect()->route('shop.bill')->with(['error' => 'Thanh toán không thành công!', ]);
         }
     }
+
+
 
 
     public function order(Request $request)
@@ -229,18 +235,19 @@ class PayController extends Controller
         $code = rand(00, 99999);
         if ($request->input('payment_option') == 'vnpay') {
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-            $vnp_Returnurl = "http://127.0.0.1:8000/cua-hang/hoa-don";
-            $vnp_TmnCode = "S4F3KLI6"; //Mã website tại VNPAY 
-            $vnp_HashSecret = "J69FPLR8DN4OSV52CZ06K3TQZMM5OYHY"; //Chuỗi bí mật
+            $vnp_Returnurl = "http://127.0.0.1:8000/cua-hang/payment/vnpay/return";
+            $vnp_TmnCode = "ZAZD6H5N"; //Mã website tại VNPAY 
+            $vnp_HashSecret = "VG6VICU7L6V62EHHPKMPR7UG45FBK918"; //Chuỗi bí mật
 
-            $vnp_TxnRef = $code; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+            $vnp_TxnRef = $code;
             $vnp_OrderInfo = 'Thanh toán hóa đơn';
             $vnp_OrderType = 'billpayment';
             $vnp_Amount = $price * 100;
             $vnp_Locale = 'vn';
             $vnp_BankCode = 'NCB';
             $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-            $payment_status = 0;
+
+            // dd($vnp_TxnRef);
 
             $inputData = array(
                 "vnp_Version" => "2.1.0",
@@ -254,8 +261,7 @@ class PayController extends Controller
                 "vnp_OrderInfo" => $vnp_OrderInfo,
                 "vnp_OrderType" => $vnp_OrderType,
                 "vnp_ReturnUrl" => $vnp_Returnurl,
-                "vnp_TxnRef" => $vnp_TxnRef,
-                "payment_status" => $payment_status,
+                "vnp_TxnRef" => $vnp_TxnRef
 
             );
 
@@ -266,6 +272,7 @@ class PayController extends Controller
                 $inputData['vnp_Bill_State'] = $vnp_Bill_State;
             }
 
+            //var_dump($inputData);
             ksort($inputData);
             $query = "";
             $i = 0;
@@ -282,20 +289,22 @@ class PayController extends Controller
 
             $vnp_Url = $vnp_Url . "?" . $query;
             if (isset($vnp_HashSecret)) {
-                $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+                $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);
                 $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
             }
+
             $returnData = array(
                 'code' => '00',
                 'message' => 'success',
                 'data' => $vnp_Url
             );
+
             if (isset($_POST['redirect'])) {
                 if ($order) {
-                    $this->handlePaymentReturn($request);
                 } else {
                     dd('Lưu đơn hàng không thành công');
                 }
+                // Redirect tới VNPAY
                 header('Location: ' . $vnp_Url);
                 die();
             } else {
@@ -340,7 +349,6 @@ class PayController extends Controller
             $result = $this->execPostRequest($endpoint, json_encode($data));
             $jsonResult = json_decode($result, true);
             return redirect()->to($jsonResult['payUrl']);
-
         } elseif ($request->input('payment_option') === 'zalopay') {
             $config = [
                 "app_id" => 2554,
@@ -348,30 +356,30 @@ class PayController extends Controller
                 "key2" => "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf",
                 "endpoint" => "https://sb-openapi.zalopay.vn/v2/create"
             ];
-            
+
             // Đảm bảo URL của bạn được cấu hình đúng để nhận phản hồi từ ZaloPay
             $redirectUrl = 'http://127.0.0.1:8000/cua-hang/payment/zalopay/return'; // Thay bằng tên miền của bạn
-            
+
             $embeddata = json_encode([
                 "redirecturl" => $redirectUrl // Cấu hình đúng URL sau khi thanh toán
             ]);
             $price = (int) $price;
             $items = '[]';
             $transID = rand(0, 1000000);
-            
+
             $order = [
                 "app_id" => $config["app_id"],
-                "app_time" => round(microtime(true) * 1000), 
-                "app_trans_id" => date("ymd") . "_" . $transID, 
-                "app_user" => $user->user_id,
+                "app_time" => round(microtime(true) * 1000),
+                "app_trans_id" => date("ymd") . "_" . $transID,
+                "app_user" => $user->$user_id,
                 "item" => $items,
                 "embed_data" => $embeddata,
-                "amount" => $price, 
-                "description" => "Payment for order #$transID", 
-                "bank_code" => "", 
+                "amount" => $price,
+                "description" => "Payment for order #$transID",
+                "bank_code" => "",
             ];
-            
-           
+
+
             $data = implode("|", [
                 $order["app_id"],
                 $order["app_trans_id"],
@@ -381,13 +389,13 @@ class PayController extends Controller
                 $order["embed_data"],
                 $order["item"]
             ]);
-            
+
             $order["mac"] = hash_hmac("sha256", $data, $config["key1"]);
-            
+
             // Gửi yêu cầu tới ZaloPay endpoint
             $result = $this->execPostRequest($config["endpoint"], json_encode($order));
             $jsonResult = json_decode($result, true);
-            
+
             // Kiểm tra kết quả và chuyển hướng
             if (isset($jsonResult['order_url'])) {
                 return redirect()->to($jsonResult['order_url']);

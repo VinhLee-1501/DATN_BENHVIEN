@@ -28,7 +28,9 @@ Route::prefix('cua-hang')->group(function () {
     Route::get('/bai-viet', [shopController::class, 'blog'])->name('blog');
     Route::get('/hoa-don', [PayController::class, 'bill'])->name('bill');
 
+
     Route::get('/payment/momo/return', [PayController::class, 'handleMomoPaymentResponse'])->name('momo.return');
+    Route::get('/payment/vnpay/return', [PayController::class, 'handleVNPaymentResponse'])->name('vnpay.return');
     Route::get('/payment/zalopay/return', [PayController::class, 'handleZaloPaymentResponse'])->name('zalopay.return');
 
 

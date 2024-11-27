@@ -127,8 +127,14 @@
                 <!-- Thông tin đơn hàng vừa đặt -->
                 <div class="order-info">
                     <h5>Thông tin đơn hàng vừa đặt</h5>
+                    @if (request('vnp_TransactionStatus'))
+                            <div>
+                                <p>Trạng thái giao dịch: {{ request('vnp_TransactionStatus') }}</p>
+                            </div>
+                        @endif
                     <h5>Mã đơn hàng: {{ $order->order_id }}</h5>
-                    <p>Ngày đặt hàng: {{ \Carbon\Carbon::parse($order->created_at)->format('H:i d/m/Y') }} {{$order->created_at}}</p>
+                    <p>Ngày đặt hàng: {{ \Carbon\Carbon::parse($order->created_at)->format('H:i d/m/Y') }}
+                        {{ $order->created_at }}</p>
                     <p class="status-failure">Tổng giá trị đơn hàng:
                         {{ number_format($order->price_sale ?? $order->price_old) }} VND</p>
                     <p class="order-status ">{{ $methodText }}</p>
@@ -164,9 +170,9 @@
                                 $statusText = 'Thanh toán khi nhận hàng';
                             } elseif ($item->payment_method == 1) {
                                 $statusText = 'Thanh toán bằng VNPAY';
-                            } elseif ($item->payment_method == 3){
+                            } elseif ($item->payment_method == 2) {
                                 $statusText = 'Thanh toán bằng MOMOPAY';
-                            }else{
+                            } else {
                                 $statusText = 'Thanh toán bằng ZaloPay';
                             }
                         @endphp
@@ -190,7 +196,7 @@
 
             </div>
         </section>
-        @endif
+    @endif
 
-        <!-- Shopping Cart Section End -->
-    @endsection
+    <!-- Shopping Cart Section End -->
+@endsection
