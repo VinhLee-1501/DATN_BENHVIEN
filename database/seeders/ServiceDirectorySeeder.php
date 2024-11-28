@@ -12,17 +12,6 @@ class ServiceDirectorySeeder extends Seeder
      */
     public function run(): void
     {
-//        ServiceDirectory::create([
-//            'directory_id' => strtoupper(Str::random(10)),
-//            'name' => 'Siêu âm',
-//            'status' => 'Hoạt động',
-//        ]);
-//
-//        ServiceDirectory::create([
-//            'directory_id' => strtoupper(Str::random(10)),
-//            'name' => 'Kiểm tra tổng quát',
-//            'status' => 'Hoạt động',
-//        ]);
 
         ServiceDirectory::create([
             'directory_id' => 'DIRECTORY1',

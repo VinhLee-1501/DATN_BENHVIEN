@@ -17,12 +17,23 @@
             <div class="card-body p-4" style="width: 70%">
                 <img src="{{ $message->embed(public_path('backend/assets/images/backgrounds/email_bg.png')) }}"
                     alt="" style="width: 100%">
-                <h1 class="text-center text-primary mb-4" style="color: #048647; text-align: center">Thông báo hình thức</h1>
+                <h1 class="text-center text-primary mb-4" style="color: #048647; text-align: center">Thông báo hình thức
+                </h1>
                 <p>Xin chào <strong>{{ $book->name }}</strong>,</p>
-                <p>Bạn đã đặt lịch khám thành công vào ngày <strong>{{ $book->day }}</strong> lúc
-                    <strong>{{ $book->hour }}</strong>. Hãy <a href="{{ $book->url }}">Nhấp vào đây</a> để tham
-                    gia cuộc hẹn vào lúc {{ $book->hour }}.
-                </p>
+                @if ($book->role == 1)
+                    <p>Bạn đã đặt lịch khám thành công vào ngày <strong>{{ $book->day }}</strong> lúc
+                        <strong>{{ $book->hour }}</strong>. Mời bạn thanh toán trước <strong>140.000</strong> (30%)
+                        phí dịch vụ.
+                    </p>
+                    <picture style="display: flex; justify-content: center; align-items: center;">
+                        <img src="{{ $message->embed(public_path('backend/assets/images/QR_bank.jpg')) }}"
+                            class="img-fluid img-thumbnail" style="max-width: 200px; height: auto;" alt="QR Code">
+                    </picture>
+                @else
+                    <p>Bạn đã đặt lịch khám thành công vào ngày <strong>{{ $book->day }}</strong> lúc
+                        <strong>{{ $book->hour }}</strong> tại {{ $clicnic->name }}.
+                    </p>
+                @endif
                 <p>Xin cảm ơn Quý khách đã tin tưởng và lựa chọn Vietcare.</p>
                 <p>Chúng tôi đã nhận được yêu cầu của Quý khách và đã xác nhận lịch hẹn. Xin lưu ý rằng
                     lịch khám <strong>ĐÃ ĐƯỢC XÁC NHẬN</strong>. Nếu có bất kỳ thay đổi gì xin hãy liên hệ đường dây

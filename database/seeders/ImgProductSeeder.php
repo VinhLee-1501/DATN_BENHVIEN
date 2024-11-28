@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class ImgProductSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class ImgProductSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('img_products')->insert([
+        FacadesDB::table('img_products')->insert([
             ['img' => '1.webp', 'product_id' => 1, 'created_at' => now(), 'updated_at' => now()],
 
             ['img' => '2.webp', 'product_id' => 2, 'created_at' => now(), 'updated_at' => now()],

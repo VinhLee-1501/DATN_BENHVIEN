@@ -13,14 +13,16 @@ class BookingConfirmationLink extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $book;
+    public $book, $clicnic;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($book)
+    public function __construct($book, $clicnic)
     {
+        // dd($book, $clicnic);
         $this->book = $book;
+        $this->clicnic = $clicnic;
     }
 
     /**
@@ -28,10 +30,11 @@ class BookingConfirmationLink extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.booking-comfirmation-link')
+        $email =  $this->view('emails.booking-comfirmation-link')
             ->subject('Xác nhận thời gian gặp mặt')
             ->with([
-                'book' => $this->book
+                'book' => $this->book,
+                'clicnic' => $this->clicnic
             ])
             ->attach(public_path('backend/assets/images/backgrounds/email_bg.png'), [
                 'as' => 'email_bg.png',
@@ -41,6 +44,14 @@ class BookingConfirmationLink extends Mailable
                 'as' => 'email_footer.png',
                 'mime' => 'image/png',
             ]);
+        if ($this->book->role == 1) {
+            $email->attach(public_path('backend/assets/images/QR_bank.jpg'), [
+                'as' => 'QR_bank.jpg',
+                'mime' => 'image/jpg',
+            ]);
+        }
+
+        return $email;
     }
 
     /**

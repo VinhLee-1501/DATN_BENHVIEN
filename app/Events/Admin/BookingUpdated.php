@@ -3,6 +3,7 @@
 namespace App\Events\Admin;
 
 use App\Models\Book;
+use App\Models\Sclinic;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,14 +16,15 @@ class BookingUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $book;
+    public $book, $clicnic;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(Book $book)
+    public function __construct(Book $book, Sclinic $clicnic)
     {
         $this->book = $book;
+        $this->clicnic = $clicnic;
     }
 
     /**

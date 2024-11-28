@@ -2,16 +2,12 @@
 
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="{{ asset('frontend/shop/img/Group.png') }}">
+    <section class="breadcrumb-section set-bg" data-setbg="">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Organi Shop</h2>
-                        <div class="breadcrumb__option">
-                            <a href="./index.html">Trang chủ</a>
-                            <span>Sản phẩm</span>
-                        </div>
+                        <img src="{{ asset('frontend/shop/img/banner/banner.png') }}" alt="">
                     </div>
                 </div>
             </div>

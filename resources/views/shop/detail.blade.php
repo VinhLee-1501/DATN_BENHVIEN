@@ -57,12 +57,12 @@
                                 $percent = $productById->percent;
                                 $discountedPriceProductId = $price - ($price * $percent) / 100;
                             }
-@endphp
+                        @endphp
                         <div class="product__details__price">Giá:
                             @if ($productById->dateStartSale <= NOW() && $productById->dateEndSale >= NOW())
                                 {{ Number::currency($discountedPriceProductId, 'VND', 'vi') }}
-                                <span class="price_sale_detail" 
-                                style="color: #b2b2b2;
+                                <span class="price_sale_detail"
+                                    style="color: #b2b2b2;
                                                         font-size: 24px;
                                                         font-weight: 400;
                                                         text-decoration: line-through;">{{ Number::currency($price, 'VND', 'vi') }}</span>
@@ -108,7 +108,7 @@
                                     aria-selected="false">Đánh
                                     giá <span>(1)</span></a>
                             </li>
-</ul>
+                        </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__tab__desc">
@@ -148,7 +148,7 @@
                                                     <strong class="text-primary">Trần Thị B</strong>
                                                     <span class="text-muted">10/11/2024</span>
                                                 </div>
-<div class="rating mb-2">
+                                                <div class="rating mb-2">
                                                     <i class="fa fa-star text-warning"></i>
                                                     <i class="fa fa-star text-warning"></i>
                                                     <i class="fa fa-star text-warning"></i>
@@ -189,7 +189,7 @@
                                                 <form>
                                                     <div class="mb-3">
                                                         <label for="rating" class="form-label">Đánh giá</label>
-<div class="rating">
+                                                        <div class="rating">
                                                             <i class="fa fa-star text-warning"></i>
                                                             <i class="fa fa-star text-warning"></i>
                                                             <i class="fa fa-star text-warning"></i>
@@ -211,9 +211,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
 
                         </div>
                     </div>
@@ -246,7 +243,7 @@
                         <div class="product__item">
                             <div class="product__item__pic set-bg"
                                 data-setbg="{{ asset('storage/uploads/products/' . $productByCategoryItem->img_array[0]) }}">
-@if ($productByCategoryItem->dateStartSale <= NOW() && $productByCategoryItem->dateEndSale >= NOW())
+                                @if ($productByCategoryItem->dateStartSale <= NOW() && $productByCategoryItem->dateEndSale >= NOW())
                                     <div class="sale_product">
                                         {{ Number::percentage($discountedPriceProductId) }}
                                     </div>

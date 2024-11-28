@@ -89,39 +89,10 @@ class BookController extends Controller
        
         Mail::to($book->email)->send(new BookingConfirmation($book, $specialty));
 
-        $this->sendSmsConfirmation($book);
 
         return redirect()->back()->with('success', 'Đặt lịch thành công');
     }
 
-    private function sendSmsConfirmation($booking): void
-    {
-       
-        $config = new Configuration(getenv('INFOBIP_API_BASE_URL'), getenv('INFOBIP_API_KEY'));
-        $smsApi = new SmsApi(config: $config); 
-
-       
-        $message = new SmsTextualMessage(
-            from: 'Code', 
-            destinations: [
-                new SmsDestination(to: '84' . ltrim($booking->phone, '0'))  // Đảm bảo đúng định dạng
-            ],
-            text: "Xác nhận đặt lịch khám thành công. Thông tin: {$booking->day} vào lúc {$booking->hour}\nBạn có thể xem chi tiết tại: https://khuonghapc06329.id.vn/."
-        );
-
-        $request = new SmsAdvancedTextualRequest(messages: [$message]);
-
-        try {
-           
-            $smsApi->sendSmsMessage($request);
-        } catch (ApiException $apiException) {
-            
-            Log::error("Không thể gửi SMS: " . $apiException->getMessage());
-        } catch (Exception $e) {
-           
-            Log::error("Lỗi không xác định khi gửi SMS: " . $e->getMessage());
-        }
-    }
 
     protected function generateUserId()
     {

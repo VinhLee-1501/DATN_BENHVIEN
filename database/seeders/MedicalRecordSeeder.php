@@ -14,9 +14,9 @@ class MedicalRecordSeeder extends Seeder
     {
         MedicalRecord::create([
             'medical_id' => 'MEDICALID1',
-            'date' => '2024-10-05 09:00:00',
+            'date' => now(),
             'diaginsis' => 'Viêm họng cấp tính',
-            're_examination_date' => '2024-10-05',
+            're_examination_date' => now(),
             'symptom' => 'ho, đau họng',
             'status' => 1,
             'advice' => 'Không uống nước đá, uống nhiều nước ấm',
@@ -31,9 +31,9 @@ class MedicalRecordSeeder extends Seeder
 
         MedicalRecord::create([
             'medical_id' => 'MEDICALID2',
-            'date' => '2024-10-06 10:00:00',
+            'date' => now(),
             'diaginsis' => 'Cảm cúm',
-            're_examination_date' => '2024-10-12',
+            're_examination_date' => now(),
             'symptom' => 'sốt, đau đầu',
             'status' => 1,
             'advice' => 'Nghỉ ngơi, uống nhiều nước, bổ sung vitamin C',
@@ -48,9 +48,9 @@ class MedicalRecordSeeder extends Seeder
 
         MedicalRecord::create([
             'medical_id' => 'MEDICALID3',
-            'date' => '2024-10-07 14:00:00',
+            'date' => now(),
             'diaginsis' => 'Dị ứng thời tiết',
-            're_examination_date' => '2024-10-14',
+            're_examination_date' => now(),
             'symptom' => 'phát ban, ngứa da',
             'status' => 1,
             'advice' => 'Tránh tiếp xúc với tác nhân gây dị ứng, dùng thuốc dị ứng',
@@ -65,9 +65,9 @@ class MedicalRecordSeeder extends Seeder
 
         MedicalRecord::create([
             'medical_id' => 'MEDICALID4',
-            'date' => '2024-10-08 11:30:00',
+            'date' => now(),
             'diaginsis' => 'Đau dạ dày',
-            're_examination_date' => '2024-10-15',
+            're_examination_date' => now(),
             'symptom' => 'đau bụng, buồn nôn',
             'status' => 1,
             'advice' => 'Tránh thức ăn cay nóng, chia nhỏ bữa ăn',
@@ -82,9 +82,9 @@ class MedicalRecordSeeder extends Seeder
 
         MedicalRecord::create([
             'medical_id' => 'MEDICALID5',
-            'date' => '2024-10-09 09:45:00',
+            'date' => now(),
             'diaginsis' => 'Viêm xoang',
-            're_examination_date' => '2024-10-16',
+            're_examination_date' => now(),
             'symptom' => 'nghẹt mũi, đau đầu',
             'status' => 1,
             'advice' => 'Xông mũi bằng nước muối sinh lý, giữ ấm vùng mũi',

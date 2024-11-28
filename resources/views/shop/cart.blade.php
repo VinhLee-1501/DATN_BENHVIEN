@@ -9,16 +9,12 @@
 </style>
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="{{ asset('frontend/shop/img/breadcrumb.jpg') }}  ">
+    <section class="breadcrumb-section set-bg" data-setbg=" ">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>Giỏ hàng</h2>
-                        <div class="breadcrumb__option">
-                            <a href="  {{ route('shop.shop') }} ">Trang chủ</a>
-                            <span>Giỏ hàng</span>
-                        </div>
+                    <div class="">
+                        <img src="{{ asset('frontend/shop/img/banner/pharmacy.png') }} " alt="">
                     </div>
                 </div>
             </div>

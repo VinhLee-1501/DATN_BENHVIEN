@@ -16,6 +16,10 @@ class EventServiceProvider extends ServiceProvider
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             'SocialiteProviders\Zalo\ZaloExtendSocialite@handle',
         ],
+        \App\Events\Admin\BookingUpdated::class => [
+            \App\Listeners\SendBookingConfirmation::class,
+        ],
+
     ];
 
     /**

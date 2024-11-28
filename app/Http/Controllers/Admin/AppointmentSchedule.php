@@ -6,12 +6,16 @@ use App\Events\Admin\BookingUpdated;
 use App\Http\Controllers\Controller;
 use App\Mail\BookingConfirmationLink;
 use App\Models\Book;
+use App\Models\Order;
 use App\Models\Schedule;
+use App\Models\Sclinic;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 
 class AppointmentSchedule extends Controller
@@ -75,6 +79,7 @@ class AppointmentSchedule extends Controller
     public function update($id, Request $request)
     {
         $book = Book::where('book_id', $id)->first();
+        $user = Auth::user();
 
         
         if (!$book) {
@@ -152,8 +157,22 @@ class AppointmentSchedule extends Controller
         $book->url = $request->input('url');
         // Lưu bản ghi
         $book->save();
-        // dd($book);
-        event(new BookingUpdated($book));
+        
+
+        Order::create([
+            'order_id' => strtoupper(Str::random(10)),
+            'role' => 1,
+            'status' => 0,
+            'total_price' => 200000
+        ]);
+        $clicnic = Sclinic::join('schedules', 'schedules.sclinic_id', '=', 'sclinics.sclinic_id')
+        ->join('books', 'books.shift_id', '=', 'schedules.shift_id')
+        ->where('books.book_id', $book->book_id)
+        ->select('sclinics.*')
+        ->first();
+        // dd($clicnic);
+        event(new BookingUpdated($book, $clicnic));
+        // Mail::to($book->email)->send(new BookingConfirmationLink($book, $clicnic));
 
 
         return response()->json(['success' => true, 'message' => 'Dữ liệu đã được cập nhật thành công.']);
