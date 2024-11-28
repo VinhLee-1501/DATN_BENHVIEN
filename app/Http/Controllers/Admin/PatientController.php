@@ -10,24 +10,46 @@ use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Lấy tất cả bệnh nhân và các hồ sơ y tế liên quan
-        $patientsWithRecords = Patient::leftJoin('medical_records', 'patients.patient_id', '=', 'medical_records.patient_id')
-            ->select('patients.*', 'medical_records.medical_id', 'medical_records.diaginsis')
-            ->paginate(10);
-   
-        // Trả về view với dữ liệu bệnh nhân và hồ sơ y tế
+        $query = Patient::leftJoin('medical_records', 'patients.patient_id', '=', 'medical_records.patient_id')
+            ->leftJoin('users', 'patients.phone', '=', 'users.phone') // Kết nối với bảng users
+            ->select(
+                'patients.*',
+                'medical_records.medical_id',
+                'medical_records.diaginsis',
+                'users.avatar'
+
+            )
+            ->orderby('row_id', 'desc');
+
+        // Tìm kiếm động    
+       
+        if ($request->filled('firstname')) {
+            $query->where('patients.first_name', 'like', '%' . $request->firstname . '%');
+        }
+        if ($request->filled('lastname')) {
+            $query->where('patients.last_name', 'like', '%' . $request->lastname . '%');
+        }
+        if ($request->filled('phone')) {
+            $query->where('patients.phone', $request->phone);
+        }
+        if ($request->filled('insurance_number')) {
+            $query->where('patients.insurance_number', $request->insurance_number);
+        }
+
+        $patientsWithRecords = $query->orderBy('patients.patient_id', 'desc')
+            ->paginate(10)
+            ->appends($request->all());
         return view('System.patients.index', ['patients' => $patientsWithRecords]);
     }
 
 
+
     public function edit($patient_id)
     {
-        //        dd($patient_id);
         $patient = Patient::where('patient_id', $patient_id)->first();
 
-        //        dd($patient);
         return view('System.patients.edit', ['patient' => $patient]);
     }
 
@@ -38,15 +60,15 @@ class PatientController extends Controller
 
         // Cập nhật thông tin bệnh nhân từ request
         $patient->update([
-            'first_name'        => $request->input('first_name'),
-            'last_name'         => $request->input('last_name'),
-            'gender'            => $request->input('gender'),  // 0: Nam, 1: Nữ
-            'birthday'          => $request->input('birthday'),
-            'address'           => $request->input('address'),
-            'occupation'        => $request->input('occupation'),
-            'national'          => $request->input('national'),
-            'phone'             => $request->input('phone'),
-            'Insurance_number'  => $request->input('insurance_number'),
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'gender' => $request->input('gender'),  // 0: Nam, 1: Nữ
+            'birthday' => $request->input('birthday'),
+            'address' => $request->input('address'),
+            'occupation' => $request->input('occupation'),
+            'national' => $request->input('national'),
+            'phone' => $request->input('phone'),
+            'Insurance_number' => $request->input('insurance_number'),
             'emergency_contact' => $request->input('emergency_contact'),
         ]);
 

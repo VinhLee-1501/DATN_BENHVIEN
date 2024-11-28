@@ -11,29 +11,45 @@ use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('role', 0)
-            ->where('status', 1)
-            ->orderBy('users.row_id', 'desc')
-            
-            ->paginate(10);
+        // Truy vấn người dùng với status = 1
+        $usersQuery = User::where('status', 1);
 
-        $admin = User::where('role', 1)
-            ->where('status', 1)
-            ->orderby('row_id', 'desc')
-            ->paginate(10);
+        // Tìm kiếm theo họ
+        if ($request->filled('firstname')) {
+            $usersQuery->where('firstname', 'like', '%' . $request->firstname . '%');
+        }
 
-        $doctors = User::where('users.status', 1)
-            ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
-            ->where('users.role', 2)
-            ->select('users.*', 'specialties.name as specialty_name')
-            
-            ->paginate(10);
+        // Tìm kiếm theo tên
+        if ($request->filled('lastname')) {
+            $usersQuery->where('lastname', 'like', '%' . $request->lastname . '%');
+        }
 
+        // Tìm kiếm theo số điện thoại
+        if ($request->filled('phone')) {
+            $usersQuery->where('phone', 'like', '%' . $request->phone . '%');
+        }
 
-        return view('System.accounts.index', compact('admin', 'doctors', 'users'));
+        // Lấy giá trị tab từ query string nếu có
+        $activeTab = $request->query('tab', 'nav-home'); // Tab mặc định là 'nav-home'
+
+        // Truy vấn người dùng có role = 0 (Người dùng)
+        $users = clone $usersQuery; // Tạo bản sao của truy vấn
+        $users = $users->where('role', 0)->orderBy('row_id', 'desc')->paginate(10)->appends($request->query());
+
+        // Truy vấn admin có role = 1 (Quản trị)
+        $admin = clone $usersQuery; // Tạo bản sao của truy vấn
+        $admin = $admin->where('role', 1)->orderBy('row_id', 'desc')->paginate(10)->appends($request->query());
+
+        return view('System.accounts.index', compact('users', 'admin', 'activeTab'));
     }
+
+
+
+
+
+
 
     public function create()
     {

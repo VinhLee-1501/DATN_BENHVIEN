@@ -1,15 +1,14 @@
 @extends('layouts.admin.master')
 @section('Quản lí nhóm dịch vụ')
 @section('content')
-    <div class="card w-100">
-        <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center m-1 mb-2">
-                <a href="{{ route('system.serviceTypes.resetsearch') }}" class="card-title">
-                    <h3>Quản lý nhóm dịch vụ</h3>
-                </a>
-                <div>
-                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addNewModal">Thêm mới</a>
-                </div>
+<div class="card w-100">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center m-1 mb-2">
+            <a href="{{ route('system.serviceTypes.resetsearch') }}" class="card-title">
+                <h3>Quản lý nhóm dịch vụ</h3>
+            </a>
+            <div>
+                <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addNewModal">Thêm mới</a>
             </div>
             <nav class="mb-4">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">

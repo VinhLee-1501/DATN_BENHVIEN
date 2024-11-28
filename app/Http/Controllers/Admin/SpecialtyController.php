@@ -14,8 +14,27 @@ use Illuminate\Support\Str;
 
 class SpecialtyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = Specialty::query();
+
+        if ($nameSpecialty = request('nameSpecialty')) {
+            $query->where('name', 'like', '%' . $nameSpecialty . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+      
+
+        // dd($query);
+
+        $specialties = $query->orderByRaw('status = 0 DESC')
+            ->orderBy('row_id', 'DESC')
+            ->paginate(10)
+            ->appends(request()->query());
+
         $specialtiesDoctorCount = Specialty::select(
             'specialties.specialty_id',
             'specialties.name',
@@ -26,15 +45,14 @@ class SpecialtyController extends Controller
             ->groupBy('specialties.specialty_id', 'specialties.name')
             ->orderBy('user_count', 'DESC')
             ->get();
-        $specialties = Specialty::where('status', 1)
-            ->orderBy('row_id', 'DESC')
-            ->paginate(10);
-        //        dd($specialties);
+
         return view('System.specialties.index', [
             'specialties' => $specialties,
             'specialtiesDoctorCount' => $specialtiesDoctorCount
         ]);
     }
+
+
 
     public function store(CreateRequest $request)
     {
@@ -54,7 +72,6 @@ class SpecialtyController extends Controller
     {
         $specialty = Specialty::where('specialty_id', $id)->first();
 
-        //        Log::info('Specialty Created', $specialty->toArray());
         return response()->json([
             'specialty_id' => $specialty->specialty_id,
             'specialtyName' => $specialty->name,
@@ -80,9 +97,9 @@ class SpecialtyController extends Controller
         return response()->json(['success' => true, 'message' => 'Cập nhật dữ liệu thành công']);
     }
 
-    public function detail($id)
+    public function detail(Request $request, $id)
     {
-        $doctorsSpecialty = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
+        $query = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
             ->where('users.role', 2)
             ->where('users.specialty_id', $id)
             ->select(
@@ -92,16 +109,42 @@ class SpecialtyController extends Controller
                 'users.email',
                 'users.phone',
                 'specialties.name',
-                'users.avatar'
-            )
-            ->get();
-        if ($doctorsSpecialty->isEmpty()) {
-            return redirect()->route('system.specialty')->with('error', 'Không tìm thấy bác sĩ thuộc chuyên ngành này');
+                'users.avatar',
+                'users.specialty_id'
+            );
+        $name = Specialty::where('specialty_id', $id)
+            ->get(['name', 'specialty_id']);
+
+
+        // Kiểm tra xem có bác sĩ nào thuộc chuyên khoa này không
+        $doctorsSpecialtyCount = $query->count(); // Đếm số bác sĩ trong chuyên khoa
+        if ($doctorsSpecialtyCount == 0) {
+
+            return redirect()->route('system.specialty')->with('error', 'Khoa này chưa có bác sĩ');
+        } else {
+            if ($request->filled('firstname')) {
+                $query->where('users.firstname', 'like', '%' . $request->firstname . '%');
+            }
+            if ($request->filled('lastname')) {
+                $query->where('users.lastname', 'like', '%' . $request->lastname . '%');
+            }
+            if ($request->filled('phone')) {
+                $query->where('users.phone', 'like', '%' . $request->phone . '%');
+            }
+
+            // Lấy dữ liệu bác sĩ thuộc chuyên khoa và phân trang
+            $doctorsSpecialty = $query->paginate(10)->appends($request->all());
+
+            return view('System.specialties.detail', [
+                'doctorsSpecialty' => $doctorsSpecialty,
+                'name' => $name
+            ]);
         }
-        return view('System.specialties.detail', [
-            'doctorsSpecialty' => $doctorsSpecialty
-        ]);
     }
+
+
+
+
 
     public function destroy($id)
     {

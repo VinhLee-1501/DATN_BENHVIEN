@@ -15,15 +15,23 @@ class SclinicController extends Controller
 {
     public function index(Request $request)
     {
-        $selectSpecialty = $request->input('specialty_id');
+        $selectSpecialty = $request->input('seclectSpecialty'); // Lấy giá trị từ select chuyên khoa
+        $nameClinic = $request->input('nameClinic'); // Lấy giá trị từ tìm kiếm phòng khám
+
         $query = Sclinic::join('specialties', 'specialties.specialty_id', '=', 'sclinics.specialty_id')
-            ->select('sclinics.*', 'specialties.name as specialtyName')->orderBy('row_id', 'DESC');
+            ->select('sclinics.*', 'specialties.name as specialtyName')
+            ->orderByRaw('sclinics.status = 0 DESC')
+            ->orderBy('row_id', 'DESC');
 
         if ($selectSpecialty) {
             $query->where('sclinics.specialty_id', $selectSpecialty);
         }
 
-        $clinics = $query->paginate(10);
+        if ($nameClinic) {
+            $query->where('sclinics.name', 'like', '%' . $nameClinic . '%');
+        }
+
+        $clinics = $query->paginate(10)->appends($request->all());
 
         if ($request->ajax()) {
             return response()->json(['clinics' => $clinics->items()]);
@@ -31,8 +39,12 @@ class SclinicController extends Controller
 
         $specialties = Specialty::all();
 
-        return view('System.clinic.index', ['clinics' => $clinics, 'specialties' => $specialties]);
+        return view('System.clinic.index', [
+            'clinics' => $clinics,
+            'specialties' => $specialties
+        ]);
     }
+
 
     public function create()
     {
@@ -47,7 +59,7 @@ class SclinicController extends Controller
         $clicnicCount = Sclinic::where('specialty_id', $specialtyId)->count();
 
 
-        if($clicnicCount >= 3){
+        if ($clicnicCount >= 3) {
             return response()->json(['error' => true, 'message' => 'Một chuyên khao được tối đa 3 phòng khám!']);
         }
 
@@ -80,13 +92,13 @@ class SclinicController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $specialtyId = $request->get('specialtyName');
-        $sclinic = Sclinic::where('sclinic_id',$id)->first();
+        $sclinic = Sclinic::where('sclinic_id', $id)->first();
 
-        if($sclinic->specialty_id !== $specialtyId){
+        if ($sclinic->specialty_id !== $specialtyId) {
             $clicnicCount = Sclinic::where('specialty_id', $specialtyId)->count();
 
-            if($clicnicCount >= 3){
-                return response()->json(['error' => true,'message' => 'Một chuyên khao được tối đa 3 phòng khám!']);
+            if ($clicnicCount >= 3) {
+                return response()->json(['error' => true, 'message' => 'Một chuyên khao được tối đa 3 phòng khám!']);
             }
         }
         $sclinic->name = $request->input('sclinicName');

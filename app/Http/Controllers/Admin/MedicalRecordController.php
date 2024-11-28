@@ -8,19 +8,38 @@ use App\Models\Medicine;
 use App\Models\Service;
 use App\Models\TreatmentDetail;
 use App\Models\TreatmentService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MedicalRecordController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $medicalRecord = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+        $query = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->distinct()
-            ->paginate(10);
+            ->orderby('row_id', 'desc');
+
+        // Tìm kiếm động    
+        if ($request->filled('medical_id')) {
+            $query->where('medical_records.medical_id', 'like', '%' . $request->medical_id . '%');
+        }
+        if ($request->filled('firstname')) {
+            $query->where('patients.first_name', 'like', '%' . $request->firstname . '%');
+        }
+        if ($request->filled('lastname')) {
+            $query->where('patients.last_name', 'like', '%' . $request->lastname . '%');
+        }
+        if ($request->filled('diaginsis')) {
+            $query->where('medical_records.diaginsis', 'like', '%' . $request->diaginsis . '%');
+        }
+
+        $medicalRecord = $query->paginate(10)->appends($request->all());
 
         return view('System.medicalrecord.index', ['medicalRecord' => $medicalRecord]);
     }
+
+
 
     public function detail($id)
     {
@@ -30,7 +49,7 @@ class MedicalRecordController extends Controller
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->where('medical_records.medical_id', $id)
             ->get();
-            // dd($medical);
+        // dd($medical);
 // 
         $treatment_id = $medical[0]->treatment_id;
 

@@ -16,17 +16,18 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-   public function index()
+   public function index(Request $request)
    {
+      // Lấy giá trị của query string 'tab', mặc định là 'nav-home'
+      $activeTab = $request->query('tab', 'nav-home');
 
-      $product = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
+      $query = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
          ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
          ->select(
             'products.*',
             'categories.name as nameCategory',
             DB::raw('GROUP_CONCAT(img_products.img) as img_array')
          )
-         ->where('products.status', 1)
          ->whereNull('products.deleted_at')
          ->groupBy(
             'products.product_id',
@@ -43,63 +44,64 @@ class ProductController extends Controller
             'products.registration_number',
             'products.status'
          )
-         ->paginate(10);
+         ->orderBy('products.status', 'desc');
 
-      $product->transform(function ($product) {
-         $product->img_array = array_filter(explode(',', $product->img_array)); // Chuyển img_array thành mảng
-         return $product;
-      });
+      // Tìm kiếm theo tên sản phẩm
+      if ($request->filled('name')) {
+         $query->where('products.name', 'like', '%' . $request->name . '%');
+      }
 
+      // Tìm kiếm theo mã sản phẩm
+      if ($request->filled('code_product')) {
+         $query->where('products.code_product', 'like', '%' . $request->code_product . '%');
+      }
 
-      $productEnd = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
-         ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
-         ->select(
-            'products.*',
-            'categories.name as nameCategory',
-            DB::raw('GROUP_CONCAT(img_products.img) as img_array')
-         )
-         ->where('products.status', 0)
-         ->whereNull('products.deleted_at')
-         ->groupBy(
-            'products.product_id',
-            'categories.category_id',
-            'categories.name',
-            'products.name',
-            'products.code_product',
-            'products.unit_of_measurement',
-            'products.active_ingredient',
-            'products.used',
-            'products.description',
-            'products.price',
-            'products.manufacture',
-            'products.registration_number',
-            'products.status'
-         )
-      ->paginate(10);
+      // Tìm kiếm theo giá
+      if ($request->filled('price_from')) {
+         $query->where('products.price', '>=', $request->price_from);
+      }
+      if ($request->filled('price_to')) {
+         $query->where('products.price', '<=', $request->price_to);
+      }
+
+      // Tìm kiếm theo ngày
+      if ($request->filled('date_from') && $request->filled('date_to')) {
+         $query->whereBetween('products.created_at', [$request->date_from, $request->date_to]);
+      } elseif ($request->filled('date_from')) {
+         $query->whereDate('products.created_at', '>=', $request->date_from);
+      } elseif ($request->filled('date_to')) {
+         $query->whereDate('products.created_at', '<=', $request->date_to);
+      }
 
 
-      $productEnd->transform(function ($productEnd) {
-         $productEnd->img_array = array_filter(explode(',', $productEnd->img_array)); // Chuyển img_array thành mảng
-         return $productEnd;
-      });
 
+      // Phân trang cho sản phẩm còn hàng (status = 1)
+      $product = $query->clone()->where('products.status', 1)->paginate(10)->appends($request->query());
 
+      // Phân trang cho sản phẩm hết hàng (status = 0)
+      $productEnd = $query->clone()->where('products.status', 0)->paginate(10)->appends($request->query());
+
+      // Lấy danh sách các barcode
       $generatorHTML = new BarcodeGeneratorHTML();
       $barcodes = [];
-      // Lặp qua từng sản phẩm và tạo mã barcode
       foreach ($product as $item) {
          $barcodes[$item->product_id] = $generatorHTML->getBarcode($item->code_product, $generatorHTML::TYPE_CODE_128);
       }
-
 
       $barcodeEnd = [];
       foreach ($productEnd as $item) {
          $barcodeEnd[$item->product_id] = $generatorHTML->getBarcode($item->code_product, $generatorHTML::TYPE_CODE_128);
       }
 
-      
-      return view('System.products.index', ['product' => $product, 'barcodes' => $barcodes,  'barcodeEnd' => $barcodeEnd, 'productEnd' => $productEnd]);
+      return view('System.products.index', [
+         'product' => $product,
+         'barcodes' => $barcodes,
+         'barcodeEnd' => $barcodeEnd,
+         'productEnd' => $productEnd,
+         'activeTab' => $activeTab, 
+      ]);
    }
+
 
 
 

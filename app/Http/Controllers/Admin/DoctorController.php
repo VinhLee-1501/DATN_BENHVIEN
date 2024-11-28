@@ -50,7 +50,7 @@ class DoctorController extends Controller
             $query->where('users.specialty_id', $request->specialty_id);
         }
 
-        $doctors = $query->paginate(5)->appends($request->all());
+        $doctors = $query->paginate(10)->appends($request->all());
 
         return view('System.doctors.index', compact('doctors', 'specialties'));
     }

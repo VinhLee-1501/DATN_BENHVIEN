@@ -20,20 +20,45 @@ use Illuminate\Support\Str;
 
 class AppointmentSchedule extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $book =
-            $books = Book::leftJoin('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+        $query = Book::leftJoin('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
             ->leftJoin('schedules', 'schedules.shift_id', '=', 'books.shift_id')
             ->leftJoin('users', 'users.user_id', '=', 'schedules.user_id')
             ->leftJoin('sclinics', 'sclinics.sclinic_id', '=', 'schedules.sclinic_id')
             ->select('books.*', 'users.lastname', 'users.firstname', 'sclinics.name AS sclinicName', 'specialties.name AS specialtyName')
-            ->orderBy('books.row_id', 'DESC')
-            ->paginate(10);
+            ->orderByRaw('CASE WHEN books.status = 0 THEN 0 ELSE 1 END')
+            ->orderBy('books.row_id', 'DESC');
 
+        // Tìm kiếm theo tên
+        if ($request->filled('name')) {
+            $query->where('books.name', 'like', '%' . $request->name . '%');
+        }
 
-        return view('System.appointmentschedule.index', ['book' => $book,]);
+        // Tìm kiếm theo số điện thoại
+        if ($request->filled('phone')) {
+            $query->where('books.phone', 'like', '%' . $request->phone . '%');
+        }
+
+        // Tìm kiếm theo trạng thái
+        if ($request->filled('status')) {
+            $query->where('books.status', $request->status);
+        }
+        // Tìm kiếm theo ngày
+        if ($request->filled('date_from') && $request->filled('date_to')) {
+            $query->whereBetween('books.created_at', [$request->date_from, $request->date_to]);
+        } elseif ($request->filled('date_from')) {
+            $query->whereDate('books.created_at', '>=', $request->date_from);
+        } elseif ($request->filled('date_to')) {
+            $query->whereDate('books.created_at', '<=', $request->date_to);
+        }
+
+        $books = $query->paginate(10)->appends($request->all());
+
+        return view('System.appointmentschedule.index', ['book' => $books]);
     }
+
+
 
     public function edit($id)
     {
@@ -81,13 +106,13 @@ class AppointmentSchedule extends Controller
         $book = Book::where('book_id', $id)->first();
         $user = Auth::user();
 
-        
+
         if (!$book) {
             return response()->json(['error' => true, 'message' => 'Không tìm thấy bản ghi']);
         }
-        
+
         $shiftId = $request->input('doctor_name');
-        if(!$shiftId){
+        if (!$shiftId) {
             return response()->json(['error' => true, 'message' => 'Không tìm bác sĩ khám bệnh']);
         }
         $status = $request->input('status');
@@ -102,7 +127,7 @@ class AppointmentSchedule extends Controller
         // dd($hourDeadline);
 
         if ($hourNow > $hourDeadline) {
-            return response()->json(['error' =>  true, 'message' => 'Giờ không hợp lệ']);
+            return response()->json(['error' => true, 'message' => 'Giờ không hợp lệ']);
         }
 
         if ($status == 2) {

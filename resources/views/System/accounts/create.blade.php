@@ -25,7 +25,6 @@
                                     <option value="">Chọn vai trò</option>
                                     <option value="0" {{ old('role') == 0 ? 'selected' : '' }}>Người dùng</option>
                                     <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Quản trị</option>
-                                    <option value="2" {{ old('role') == 2 ? 'selected' : '' }}>Bác sĩ</option>
                                 </select>
                                 @error('role')
                                 <div class="text-danger">*{{ $message }}</div>
