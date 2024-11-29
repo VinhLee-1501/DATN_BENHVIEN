@@ -30,12 +30,12 @@
 
 
         <div class="table-responsive">
-            <table class="table text-nowrap mb-0 align-middle">
+            <table class="table table-bordered text-nowrap mb-0 align-middle">
                 <div class="mt-3">
                     {!! $medicineType->links() !!}
                 </div>
                 <thead class="text-dark fs-4">
-                    <tr>
+                    <tr class="text-center">
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">STT</h6>
                         </th>
@@ -58,7 +58,7 @@
                         $count = 1;
                     @endphp
                     @foreach ($medicineType as $data)
-                        <tr>
+                        <tr class="text-center">
                             <!-- Cột STT -->
                             <td class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0">{{ $count++ }}</h6>
@@ -86,7 +86,7 @@
                             </td>
 
                             <!-- Cột Thao tác -->
-                            <td class="border-bottom-0 d-flex">
+                            <td class="border-bottom-0 d-flex justify-content-center align-items-center">
                                 <a href="javascript:void(0)" class="btn btn-primary me-1"
                                     onclick="openEditModal('{{ $data->medicine_type_id }}')">
                                     <i class="ti ti-pencil"></i>

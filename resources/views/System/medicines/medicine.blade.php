@@ -5,9 +5,9 @@
             <div class="mb-3">
                 {!! $medicine->links() !!}
             </div>
-            <table class="table text-nowrap mb-0 align-middle mb-3">
+            <table class="table table-bordered text-nowrap mb-0 align-middle mb-3">
                 <thead class="text-dark fs-4">
-                    <tr>
+                    <tr class="text-center">
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">STT</h6>
                         </th>
@@ -38,7 +38,7 @@
                                             $count = 1;
                                         @endphp
                                         @foreach ($medicine as $data)
-                                            <tr>
+                                            <tr class="text-center">
                                                 <td class="border-bottom-0">
                                                     <h6 class="fw-semibold mb-0">{{ $count++ }}</h6>
                                                 </td>
@@ -61,7 +61,7 @@
                                                         <span class="badge bg-danger">Hết</span>
                                                     @endif
                                                 </td>
-                                                <td class="border-bottom-0">
+                                                <td class="border-bottom-0 d-flex justify-content-center align-items-center">
                                                     <div class="d-flex gap-2">
                                                         <a href="javascript:void(0)" class="btn btn-primary"
                                                             onclick="openEditModalMedicine('{{ $data->medicine_id }}')">

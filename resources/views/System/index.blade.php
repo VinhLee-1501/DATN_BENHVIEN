@@ -125,8 +125,7 @@
                                 <span class="timeline-badge-border d-block flex-shrink-0"></span>
                             </div>
                             <div class="timeline-desc fs-3 text-dark mt-n1">
-                                {{ $item->name }}
-                                {{ $item->price }},000
+                                {{ $item->name }} {{ number_format($item->price, 0, ',', '.') }}.000
                             </div>
                         </li>
                     @endforeach
@@ -139,9 +138,9 @@
             <div class="card-body p-4">
                 <h5 class="card-title fw-semibold mb-4">Dịch vụ được dùng nhiều nhất</h5>
                 <div class="table-responsive">
-                    <table class="table text-nowrap mb-0 align-middle text-center">
+                    <table class="table table-bordered text-nowrap mb-0 align-middle text-center">
                         <thead class="text-dark fs-4">
-                            <tr>
+                            <tr class="text-center">
                                 <th class="border-bottom-0">
                                     <h6 class="fw-semibold mb-0">#</h6>
                                 </th>
@@ -161,7 +160,7 @@
                         @endphp
                         @foreach($serviceTop as $item)
                             <tbody>
-                                <tr>
+                                <tr class="text-center">
                                     <td class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">{{ $count++ }}</h6>
                                     </td>
@@ -172,7 +171,7 @@
                                         <p class="mb-0 fw-normal">{{ $item->usage_count }}</p>
                                     </td>
                                     <td class="border-bottom-0">
-                                        <div class="d-flex align-items-center gap-2">
+                                        <div class="d-flex align-items-center gap-2 justify-content-center align-items-center">
                                             <span class="badge
                                                     @if($item->percentage > 0.1)
                                                          bg-success

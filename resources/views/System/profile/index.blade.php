@@ -142,19 +142,17 @@
                     <form action="{{ route('system.change-avatar') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
-                        <div class="mb-3 text-center">
+                        <div class="mb-3 h-100 d-flex justify-content-center align-items-center">
                             <!-- Ảnh xem trước sau khi tải lên -->
                             @if (empty(auth()->user()->avatar))
                                 <img id="previewImage"
-                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                    class="img-thumbnail w-50 h-50" alt="Preview">
+                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                     class="img-thumbnail" style="width: 150px; height: 150px;" alt="Preview">
                             @else
                                 <img id="previewImage"
-                                    src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
-                                    class="img-thumbnail w-50 h-50" alt="Preview">
+                                     src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}"
+                                     class="img-thumbnail" style="width: 150px; height: 150px;" alt="Preview">
                             @endif
-
-
                         </div>
                         <div class="mb-3">
                             <label for="avatarInput" class="form-label">Chọn hình đại diện mới</label>

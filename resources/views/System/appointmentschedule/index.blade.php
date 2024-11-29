@@ -59,9 +59,9 @@
                 {!! $book->links() !!}
 
             </div>
-            <table class="table text-nowrap mb-0 align-middle">
+            <table class="table table-bordered text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4  ">
-                    <tr>
+                    <tr class="text-center">
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">ID</h6>
                         </th>
@@ -87,7 +87,7 @@
                                             $count = 1;
                                         @endphp
                                         @foreach ($book as $item)
-                                            <tr>
+                                            <tr class="text-center">
                                                 <td class="border-bottom-0">
                                                     <h6 class="fw-semibold mb-0">{{ $count++ }}</h6>
                                                 </td>
@@ -110,7 +110,7 @@
                                                         @endif
                                                     </span>
                                                 </td>
-                                                <td class="border-bottom-0 d-flex">
+                                                <td class="border-bottom-0 d-flex justify-content-center align-items-center">
 
                                                     <a href="javascript:void(0)" class="btn btn-primary me-1"
                                                         onclick="openModal('{{ $item->book_id }}')"><i class="ti ti-pencil"></i></a>

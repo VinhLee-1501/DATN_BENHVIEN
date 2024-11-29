@@ -45,9 +45,9 @@
 
         <div class="table-responsive">
             {!! $category->links() !!}
-            <table class="table text-nowrap mb-0 align-middle">
+            <table class="table table-bordered text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4">
-                    <tr>
+                    <tr class="text-center">
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">#</h6>
                         </th>
@@ -73,7 +73,7 @@
                         $count = 1;
                     @endphp
                     @foreach ($category as $data)
-                        <tr class="align-baseline">
+                        <tr class="align-baseline text-center">
                             <td class="border-bottom-0">
                                 <h6 class="fw-semibold mb-0"> {{ $count++ }}</h6>
                             </td>
@@ -102,7 +102,7 @@
                                 @endif
                             </td>
                             </td>
-                            <td class="border-bottom-0 d-flex " colspan="5">
+                            <td class="border-bottom-0 d-flex justify-content-center align-items-center" colspan="5">
                                 <a href="javascript:void(0)" class="btn btn-primary me-1"
                                     onclick="openUpdateModal('{{ $data->category_id }}')">
                                     <i class="ti ti-pencil"></i>

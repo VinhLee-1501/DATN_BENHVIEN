@@ -5,9 +5,9 @@
             <div class="mb-3">
                 {!! $medicineEnd->links() !!}
             </div>
-            <table class="table text-nowrap mb-0 align-middle">
+            <table class="table table-bordered text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4">
-                    <tr>
+                    <tr class="text-center">
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">STT</h6>
                         </th>

@@ -58,9 +58,9 @@
                 <!-- Tab Dịch vụ hoạt động -->
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
+                                <tr class="text-center">
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
                                     </th>
@@ -90,7 +90,7 @@
                                     </tr>
                                 @else
                                     @foreach ($ordersUnpaid as $data)
-                                        <tr class="order-row">
+                                        <tr class="order-row text-center">
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
                                             </td>
@@ -111,7 +111,7 @@
                                             <td class="border-bottom-0">
                                                 <p class="badge bg-danger mb-0 fw-semibold">Chưa thanh toán</p>
                                             </td>
-                                            <td class="border-bottom-0 d-flex">
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-center">
                                                 <a href="{{ route('system.order.print', $data->order_id) }}"
                                                     class="btn btn-primary me-1" target="_blank">
                                                     <i class="ti ti-printer"></i>
@@ -136,9 +136,9 @@
                 <!-- Tab Dịch vụ không hoạt động -->
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
+                                <tr class="text-center">
                                     <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
@@ -170,7 +170,7 @@
                                     </tr>
                                 @else
                                     @foreach ($ordersPaid as $data)
-                                        <tr>
+                                        <tr class="text-center">
                                             <td>
                                                 <input type="checkbox" name="order_id[]" value=""
                                                     class="blogCheckbox">
@@ -196,7 +196,7 @@
                                             <td class="border-bottom-0">
                                                 <p class="badge bg-success mb-0 fw-semibold">Đã thanh toán</p>
                                             </td>
-                                            <td class="border-bottom-0 d-flex">
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-center">
                                                 <a href="{{ route('system.order.print', $data->order_id) }}"
                                                     class="btn btn-primary me-1" target="_blank">
                                                     <i class="ti ti-printer"></i>
@@ -264,7 +264,7 @@
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
-                                    <tr>
+                                    <tr class="text-center">
                                         <th>#</th>
                                         <th>Dịch vụ</th>
                                         <th>Đơn giá</th>

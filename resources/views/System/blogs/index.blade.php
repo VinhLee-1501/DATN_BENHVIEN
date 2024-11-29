@@ -58,9 +58,9 @@
                 <!-- Tab Dịch vụ hoạt động -->
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
+                                <tr class="text-center">
                                     <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã bài viết</h6>
@@ -90,7 +90,7 @@
                             @else
                             
                                 @foreach ($blogs as $data)
-                                    <tr>
+                                    <tr class="text-center">
                                         <td>
                                             <input type="checkbox" name="blog_id[]" value="{{ $data->id }}"
                                                 class="blogCheckbox">
@@ -112,7 +112,7 @@
                                                 <p class="badge bg-success mb-0 fw-semibold">Chờ xuất bản</p>
                                             @endif
                                         </td>
-                                        <td class="border-bottom-0 d-flex">
+                                        <td class="border-bottom-0 d-flex justify-content-center align-items-centers">
                                             <a href="{{ route('system.blogs.edit', $data->slug) }}"
                                                 class="btn btn-primary me-1">
                                                 <i class="ti ti-pencil"></i>
@@ -136,9 +136,9 @@
                 <!-- Tab Dịch vụ không hoạt động -->
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
+                                <tr class="text-center">
                                     <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã bài viết</h6>

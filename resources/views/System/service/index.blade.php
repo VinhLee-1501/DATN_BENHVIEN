@@ -77,7 +77,7 @@
                 <!-- Tab Dịch vụ hoạt động -->
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr>
                                     <th></th>
@@ -167,9 +167,9 @@
                 <!-- Tab Dịch vụ không hoạt động -->
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
+                                <tr class="text-center">
                                     <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã dịch vụ</h6>
@@ -194,12 +194,12 @@
                             <tbody id="activeTable">
                                 @if ($service_inactive->isNotEmpty())
                                     @foreach ($service_inactive as $data)
-                                        <tr>
+                                        <tr class="text-center">
                                             <td>
                                                 <input type="checkbox" name="row_id[]" value="{{ $data->row_id }}"
                                                     class="blogCheckbox">
                                             </td>
-                                            <td class="border-bottom-0">
+                                            <td class="border-bottom-0 text-center">
                                                 <p class="fw-semibold mb-0">{{ $data->service_id }}</p>
                                             </td>
                                             <td class="border-bottom-0">
@@ -225,7 +225,7 @@
                                                     <p class="badge bg-danger mb-0 fw-semibold">Không hoạt động</p>
                                                 @endif
                                             </td>
-                                            <td class="border-bottom-0 d-flex">
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-center">
                                                 <a class="btn btn-primary me-1 edit-btn" data-id="{{ $data->row_id }}"
                                                     data-name="{{ $data->name }}" data-status="{{ $data->status }}"
                                                     data-price="{{ $data->price }}"

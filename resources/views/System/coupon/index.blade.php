@@ -58,9 +58,9 @@
                 <!-- Tab Dịch vụ hoạt động -->
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
+                                <tr class="text-center">
                                     <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã giảm giá</h6>
@@ -134,9 +134,9 @@
                 <!-- Tab Dịch vụ không hoạt động -->
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
+                                <tr class="text-center">
                                     <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã giảm giá</h6>

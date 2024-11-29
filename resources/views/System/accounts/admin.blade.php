@@ -4,9 +4,9 @@
 
         <div class="table-responsive">
             {!! $admin->links() !!}
-            <table class="table text-nowrap mb-0 align-middle">
+            <table class="table table-bordered text-nowrap mb-0 align-middle">
                 <thead class="text-dark fs-4  ">
-                    <tr>
+                    <tr class="text-center">
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">ID</h6>
                         </th>
@@ -30,7 +30,7 @@
                         <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
                     @else
                         @foreach ($admin as $item)
-                            <tr>
+                            <tr class="text-center">
                                 <td class="border-bottom-0">
                                     <h6 class="fw-semibold mb-0">{{ $item->user_id }}</h6>
                                 </td>
@@ -43,7 +43,7 @@
                                         Quản trị
                                     </p>
                                 </td>
-                                <td class="border-bottom-0 d-flex">
+                                <td class="border-bottom-0 d-flex justify-content-center align-items-centers">
                                     <a href="{{ route('system.accounts.edit', $item->user_id) }}" class="btn btn-primary">
                                         <i class="ti ti-pencil"></i>
                                     </a>

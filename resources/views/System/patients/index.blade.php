@@ -51,9 +51,9 @@
                 {!! $patients->links() !!}
             </div>
 
-            <table class="table text-nowrap mb-0 align-middle ">
+            <table class="table table-bordered text-nowrap mb-0 align-middle ">
                 <thead class="text-dark fs-4">
-                    <tr>
+                    <tr class="text-center">
                         <th class="border-bottom-0">
                             <p class="fw-semibold mb-0">ID</p>
                         </th>
@@ -85,7 +85,7 @@
                     <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
                     @else
                     @foreach($patients as $item)
-                    <tr>
+                    <tr class="text-center">
                         <td class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">{{ $item->patient_id }}</h6>
                         </td>
@@ -109,7 +109,7 @@
                         <td class="border-bottom-0">
                             <p class="mb-0 fw-semibold">{{ $item->emergency_contact }}</p>
                         </td>
-                        <td class="border-bottom-0 d-flex">
+                        <td class="border-bottom-0 d-flex justify-content-center align-items-center">
                             <a href="{{ route('system.patients.edit', $item->patient_id) }}" class="btn btn-primary"> <i
                                     class="ti ti-pencil"></i></a>
                             <a class="btn btn-warning ms-1" data-bs-toggle="collapse"
@@ -180,9 +180,9 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <h6 class="fw-semibold mb-0 fs-5">Lịch sử bệnh án:</h6>
-                                                <table class="table mt-1">
+                                                <table class="table table-bordered mt-1">
                                                     <thead>
-                                                        <tr>
+                                                        <tr class="text-center">
                                                             <th class="py-0" scope="col">Mã</th>
                                                             <th class="py-0" scope="col">Chuẩn đoán</th>
                                                         </tr>

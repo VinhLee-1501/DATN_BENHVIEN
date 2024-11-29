@@ -87,9 +87,9 @@
             <div class="mt-3">
                 {{ $doctors->links() }}
             </div>
-            <table class="table text-nowrap mb-0 align-middle">
-                <thead class="text-dark fs-4">
-                    <tr>
+            <table class="table table-bordered text-nowrap mb-0 align-middle">
+                <thead class="text-dark">
+                    <tr class="text-center">
                         <th>ID</th>
                         <th>Ảnh</th>
                         <th>Họ tên</th>
@@ -101,7 +101,7 @@
                 </thead>
                 <tbody>
                     @forelse($doctors as $doctor)
-                    <tr>
+                    <tr class="text-center">
                         <td>{{ $doctor->user_id }}</td>
                         <td>
                             @if (empty($doctor->avatar))
@@ -127,7 +127,7 @@
                         <td>{{ $doctor->specialty_name }}</td>
                         <td>{{ $doctor->email }}</td>
                         <td>{{ $doctor->phone }}</td>
-                        <td>
+                        <td class="d-flex justify-content-center align-items-center">
                             <a href="#" class="btn btn-primary me-2" data-bs-toggle="modal"
                                 data-bs-target="#editDoctorModal" onclick="loadDoctorData('{{ $doctor->user_id }}')">
                                 <i class="ti ti-pencil"></i>
