@@ -51,7 +51,8 @@
                                     <label for="" class="form-label">Trạng thái</label>
                                     <select class="form-select" id="statusSelect" name="status"
                                         onchange="toggleDateInput()">
-                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Chờ xuất bản</option>
+                                        <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Chờ xuất bản
+                                        </option>
                                         <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Xuất bản</option>
                                     </select>
                                 </div>
@@ -66,7 +67,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Tác giả</label>
-                                    <input type="text" id="authorInput" name="author" class="form-control"
+                                    <input type="text" id="authorInput" name="author" disabled class="form-control"
                                         value="{{ $user->lastname }} {{ $user->firstname }}" placeholder="Tác giả">
                                     @error('author')
                                         <div class="text-danger">*{{ $message }}</div>
@@ -145,10 +146,11 @@
                             }
 
                             const file = files[0];
-                            if (file.size > 1 * 1024 * 1024) {
-                                alert("Kích thước tệp phải nhỏ hơn 1MB.");
+                            if (file.size > 500 * 1024) {
+                                alert("Kích thước tệp phải nhỏ hơn 500KB.");
                                 return;
                             }
+
 
                             const reader = new FileReader();
                             reader.onload = (e) => {
@@ -176,8 +178,8 @@
                         }
 
                         const file = files[0];
-                        if (file.size > 1 * 1024 * 1024) {
-                            alert("Kích thước tệp phải nhỏ hơn 1MB.");
+                        if (file.size > 500 * 1024) {
+                            alert("Kích thước tệp phải nhỏ hơn 500KB.");
                             $(this).remove();
                             return;
                         }
@@ -253,13 +255,13 @@
                         }
                     }
                 },
-                labelIdle: `Tối đa 1,5MB <span class="filepond--label-action">Chọn tệp</span>`,
+                labelIdle: `Tối đa 1MB <span class="filepond--label-action">Chọn tệp</span>`,
                 acceptedFileTypes: ['image/jpeg', 'image/png'],
-                maxFileSize: 1.5 * 1024 * 1024, // 1.5MB in bytes
-                labelMaxFileSize: '1.5 MB',
+                maxFileSize: 1 * 1024 * 1024, // 1.5MB in bytes
+                labelMaxFileSize: '1MB',
                 imagePreviewHeight: 200,
                 // instantUpload: false,
-                
+
             });
         </script>
         <script>

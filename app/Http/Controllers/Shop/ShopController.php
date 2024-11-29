@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Number;
 
+
 class ShopController extends Controller
 {
     public function index(Request $request)
@@ -244,13 +245,13 @@ class ShopController extends Controller
         ]);
     }
 
-    public function grid()
+    public function grid(Request $request)
     {
+        $searchTerm = $request->input('search', '');
         // Categories
         $categories = Category::limit(10)->get();
         // Products active
-        $prodcutsActive =
-            Product::join('categories', 'categories.category_id', '=', 'products.category_id')
+        $productsActive = Product::join('categories', 'categories.category_id', '=', 'products.category_id')
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
@@ -261,7 +262,7 @@ class ShopController extends Controller
                 'coupons.percent',
                 DB::raw('MIN(img_products.img) as imgName'),
                 'coupons.time_start as dateStartSale',
-                'coupons.time_end as dateEndSale',
+                'coupons.time_end as dateEndSale'
             )
             ->groupBy(
                 'products.product_id',
@@ -273,6 +274,7 @@ class ShopController extends Controller
                 'products.price',
                 'products.name'
             )
+            ->where('products.name', 'like', '%' . $searchTerm . '%')
             ->orderBy('products.created_at', 'DESC')
             ->paginate(8);
 
@@ -317,12 +319,14 @@ class ShopController extends Controller
 
 
         // Count product
-        $countProducts = count($prodcutsActive);
+        $countProducts = count($productsActive);
+
+        // dd($productsActive);
         return view('Shop.grid', [
             'categories' => $categories,
             'SelectProductWithsaleProduct' => $SelectProductWithsaleProduct,
             'countProducts' => $countProducts,
-            'prodcutsActive' => $prodcutsActive,
+            'productsActive' => $productsActive,
             'chunkedProductsNew' => $chunkedProductsNew,
         ]);
     }
@@ -582,4 +586,48 @@ class ShopController extends Controller
         $coupon = Coupon::where('discount_code', $request->input('coupon'))->first();
         return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'coupon' => $coupon, 'discount' => $discount, 'sale' => $sale, 'cart' => $cart]);
     }
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $products = Product::select('products.status', 'products.name', 'products.product_id')
+            ->selectSub(function ($query) {
+                $query->select('ip.img')
+                    ->from('img_products as ip')
+                    ->whereColumn('ip.product_id', 'products.product_id')
+                    ->orderByRaw('LENGTH(ip.img) ASC')
+                    ->orderBy('ip.img', 'ASC')
+                    ->limit(1);
+            }, 'img')
+            ->where('products.status', 1)
+            ->where('products.name', 'LIKE', "%$search%")
+            ->orderByDesc('products.product_id')
+            ->limit(10)
+            ->get();
+
+        return response()->json([
+            'products' => $products,
+            'search' => $search
+        ]);
+    }
+
+    public function getSuggestedProducts()
+    {
+        $products = Product::select('products.status', 'products.name', 'products.product_id')
+            ->selectSub(function ($query) {
+                $query->select('ip.img')
+                    ->from('img_products as ip')
+                    ->whereColumn('ip.product_id', 'products.product_id')
+                    ->orderByRaw('LENGTH(ip.img) ASC')
+                    ->orderBy('ip.img', 'ASC')
+                    ->limit(1);
+            }, 'img')
+            ->where('products.status', 1)
+            ->orderByDesc('products.product_id')
+            ->limit(10)
+            ->get();
+        return response()->json([
+            'products' => $products
+        ]);
+    }
+
 }

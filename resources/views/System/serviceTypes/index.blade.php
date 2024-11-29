@@ -1,14 +1,15 @@
 @extends('layouts.admin.master')
-@section('Quản lí nhóm dịch vụ')
+@section('Quản lí danh mục dịch vụ')
 @section('content')
-<div class="card w-100">
-    <div class="card-body p-4">
-        <div class="d-flex justify-content-between align-items-center m-1 mb-2">
-            <a href="{{ route('system.serviceTypes.resetsearch') }}" class="card-title">
-                <h3>Quản lý nhóm dịch vụ</h3>
-            </a>
-            <div>
-                <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addNewModal">Thêm mới</a>
+    <div class="card w-100">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center m-1 mb-2">
+                <a href="{{ route('system.serviceTypes.resetsearch') }}" class="card-title">
+                    <h3>Quản lý danh mục dịch vụ</h3>
+                </a>
+                <div>
+                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addNewModal">Thêm mới</a>
+                </div>
             </div>
             <nav class="mb-4">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -21,12 +22,12 @@
             </nav>
             <div class="row align-items-center me-0">
                 <!-- Tìm kiếm và nút xóa -->
-                <div class="col-12 col-md-6 d-flex align-items-center mb-3 mb-md-0">
+                <div class="col-12 col-md-6 col-sm-2 d-flex align-items-center mb-3 mb-md-0">
                     <form id="searchForm" action="{{ route('system.serviceTypes.search') }}" method="GET"
                         class="d-flex align-items-center">
                         <div class="w-40">
                             <input type="text" name="search" id="searchInput" class="form-control"
-                                value="{{ request('search', $search) }}" placeholder="Nhập tên nhóm dịch vụ">
+                            value="{{ request('search', $search) }}" placeholder="Nhập tên danh mục dịch vụ">
                         </div>
                         <input type="hidden" name="tab" class="tab" id="tabInput" value="0">
                         <button type="submit" class="btn btn-success" id="searchButton">
@@ -40,8 +41,8 @@
 
                 <!-- Chọn số lượng hiển thị nằm trên cùng một hàng -->
                 <div class="col-auto ms-auto d-flex align-items-center">
-                    <span class="me-2">Hiển thị:</span>
-                    <select class="form-select w-50" id="itemsPerPage" aria-label="Items per page">
+                    <span class="me-2 d-none d-sm-inline">Hiển thị:</span>
+                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage" aria-label="Items per page">
                         <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
                             5
                         </option>

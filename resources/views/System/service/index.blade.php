@@ -39,7 +39,7 @@
             </nav>
             <div class="row align-items-center me-0">
                 <!-- Tìm kiếm và nút xóa -->
-                <div class="col-12 col-md-6 d-flex align-items-center mb-3 mb-md-0">
+                <div class="col-12 col-md-6 col-sm-2 d-flex align-items-center mb-3 mb-md-0">
                     <form id="searchForm" action="{{ route('system.services.search') }}" method="GET"
                         class="d-flex align-items-center">
                         <div class="w-40">
@@ -56,10 +56,9 @@
                     </button>
                 </div>
 
-                <!-- Chọn số lượng hiển thị nằm trên cùng một hàng -->
                 <div class="col-auto ms-auto d-flex align-items-center">
-                    <span class="me-2">Hiển thị:</span>
-                    <select class="form-select w-50" id="itemsPerPage" aria-label="Items per page">
+                    <span class="me-2 d-none d-sm-inline">Hiển thị:</span>
+                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage" aria-label="Items per page">
                         <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
                             5
                         </option>

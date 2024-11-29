@@ -146,29 +146,29 @@
                         </div>
                     </div>
                     <div class="row">
-                        @foreach ($prodcutsActive as $prodcutsActiveItem)
+                        @foreach ($productsActive as $productsActiveItem)
                             @php
-                                $price = $prodcutsActiveItem->price;
+                                $price = $productsActiveItem->price;
                                 $discountedPriceProductActive = $price;
-                                if ($prodcutsActiveItem->discount_code) {
-                                    $percent = $prodcutsActiveItem->percent;
+                                if ($productsActiveItem->discount_code) {
+                                    $percent = $productsActiveItem->percent;
                                     $discountedPriceProductActive = $price - ($price * $percent) / 100;
                                 }
                             @endphp
                             <div class="col-lg-3 col-md-4 col-sm-6">
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg"
-                                        data-setbg="{{ isset($prodcutsActiveItem->imgName) ? asset('storage/uploads/products/' . $prodcutsActiveItem->imgName) : asset('frontend/shop/img/image.jpg') }}">
-                                        @if ($prodcutsActiveItem->dateStartSale <= NOW() && $prodcutsActiveItem->dateEndSale >= NOW())
+                                        data-setbg="{{ isset($productsActiveItem->imgName) ? asset('storage/uploads/products/' . $productsActiveItem->imgName) : asset('frontend/shop/img/image.jpg') }}">
+                                        @if ($productsActiveItem->dateStartSale <= NOW() && $productsActiveItem->dateEndSale >= NOW())
                                             <div class="sale_product">
                                                 {{ $percent }}%
                                             </div>
                                         @endif
                                         <ul class="product__item__pic__hover">
                                             <form
-                                                action="{{ route('shop.addProductTocart', $prodcutsActiveItem->product_id) }}"
+                                                action="{{ route('shop.addProductTocart', $productsActiveItem->product_id) }}"
                                                 method="POST"
-                                                id="add-to-cart-form-{{ $prodcutsActiveItem->product_id }}">
+                                                id="add-to-cart-form-{{ $productsActiveItem->product_id }}">
                                                 @csrf
                                                 <input type="text" name="quantity" value="1" hidden>
                                                 <button type="submit" class="btn-add-to-cart">
@@ -180,10 +180,10 @@
                                     </div>
                                     <div class="product__item__text">
                                         <h6><a
-                                                href="{{ route('shop.shop-details', $prodcutsActiveItem->product_id) }}">{{ $prodcutsActiveItem->name }}</a>
+                                                href="{{ route('shop.shop-details', $productsActiveItem->product_id) }}">{{ $productsActiveItem->name }}</a>
                                         </h6>
                                         <h5>
-                                            @if ($prodcutsActiveItem->dateStartSale <= now() && $prodcutsActiveItem->dateEndSale >= now())
+                                            @if ($productsActiveItem->dateStartSale <= now() && $productsActiveItem->dateEndSale >= now())
                                                 {{ Number::currency($discountedPriceProductActive, 'VND', 'vi') }}
                                                 <span
                                                     class="price_sale">{{ Number::currency($price, 'VND', 'vi') }}</span>
@@ -197,7 +197,7 @@
                         @endforeach
 
                         <!-- <div class="product__pagination"> -->
-                            {{ $prodcutsActive->links() }}
+                            {{ $productsActive->appends(['search' => request()->input('search')])->links() }}
                         <!-- </div> -->
                     </div>
                 </div>

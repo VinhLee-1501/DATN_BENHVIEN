@@ -15,9 +15,11 @@ Route::prefix('cua-hang')->group(function () {
         $formattedTotal = number_format($request->totalCart, 0, ',', '.') . ' VND';
         return response()->json(['formattedTotal' => $formattedTotal]);
     });
+
     Route::post('/ship', [CheckoutController::class, 'calculateShippingFee'])->name('calculateShippingFee');
     Route::post('/mua-hang', [shopController::class, 'checkout'])->name('checkout');
- 
+    Route::post('/search', [shopController::class, 'search'])->name('search');
+    Route::get('/getSuggestedProducts', [shopController::class,'getSuggestedProducts'])->name('getSuggestedProducts');
     Route::post('/voucher', [shopController::class, 'checkVoucher'])->name('checkVoucher');
     Route::post('/thanh-toan-online', [PayController::class, 'order'])->name('order');
     Route::get('/chi-tiet-san-pham/{id}', [shopController::class, 'detail'])->name('shop-details');
@@ -33,6 +35,7 @@ Route::prefix('cua-hang')->group(function () {
     Route::get('/payment/vnpay/return', [PayController::class, 'handleVNPaymentResponse'])->name('vnpay.return');
     Route::get('/payment/zalopay/return', [PayController::class, 'handleZaloPaymentResponse'])->name('zalopay.return');
 
+   
 
 
     

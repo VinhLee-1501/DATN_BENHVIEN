@@ -40,21 +40,22 @@ class OrderRequest extends FormRequest
     }
 
     public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if ($this->input('payment_method') == 0) {
-                $cashReceived = $this->input('cash_received');
-                $totalAmount = $this->input('total_amount');
+{
+    $validator->after(function ($validator) {
+        if ($this->input('payment_method') == 0) {
+            $cashReceived = $this->input('cash_received');
+            $totalAmount = $this->input('total_amount');
 
-                // Kiểm tra nếu số tiền khách đưa nhỏ hơn tổng tiền
-                if ($cashReceived < $totalAmount) {
-                    $validator->errors()->add(
-                        'cash_received',
-                        'Số tiền khách đưa phải lớn hơn hoặc bằng tiền cần thanh toán.'
-                    );
-                }
+            // Kiểm tra nếu số tiền khách đưa nhỏ hơn tổng tiền và đảm bảo các giá trị hợp lệ
+            if (is_numeric($cashReceived) && is_numeric($totalAmount) && $cashReceived < $totalAmount) {
+                $validator->errors()->add(
+                    'cash_received',
+                    'Số tiền khách đưa phải lớn hơn hoặc bằng tiền cần thanh toán.'
+                );
             }
-        });
-    }
+        }
+    });
+}
+
 }
 

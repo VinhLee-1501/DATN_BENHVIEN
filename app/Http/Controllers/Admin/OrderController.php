@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Requests\Admin\Order\OrderRequest;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmation;
+use App\Mail\OrdersPrepaidConfirmation;
+
 
 class OrderController extends Controller
 {
@@ -18,6 +22,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search', '');
+
         $tab = $request->input('tab');
 
         $delete = $request->input('order_id', []);
@@ -103,10 +108,10 @@ class OrderController extends Controller
                 'patients.birthday',
                 'patients.patient_id'
             )
-            ->where('orders.status', '=', '1');
+            ->where('orders.status', '=', '2');
 
         // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng đã thanh toán
-        if ($search && $tab === '1') {
+        if ($search && $tab === '2') {
             $ordersPaidQuery->where('orders.order_id', 'LIKE', "%$search%");
         }
 
@@ -131,10 +136,61 @@ class OrderController extends Controller
             'tab' => $tab
         ]);
 
+        $ordersPerpaiddQuery = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
+            ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
+            ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
+            ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
+            ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+            ->select(
+                'orders.payment',
+                'orders.row_id',
+                'orders.status',
+                'orders.total_price',
+                'orders.order_id',
+                'orders.created_at',
+                DB::raw('GROUP_CONCAT(services.name SEPARATOR ", ") as service_names'),
+                DB::raw('GROUP_CONCAT(services.price SEPARATOR ", ") as service_prices'),
+                'medical_records.medical_id',
+                'treatment_details.treatment_id',
+                'patients.first_name',
+                'patients.last_name',
+                'patients.gender',
+                'patients.birthday',
+                'patients.patient_id'
+            )
+            ->where('orders.status', '=', '1');
+
+        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng đã thanh toán
+        if ($search && $tab === '2') {
+            $$ordersPerpaiddQuery->where('orders.order_id', 'LIKE', "%$search%");
+        }
+
+        // Lấy kết quả phân trang cho danh sách đơn hàng đã thanh toán
+        $ordersPrepaid  = $ordersPerpaiddQuery->groupBy(
+            'orders.payment',
+            'orders.status',
+            'orders.row_id',
+            'orders.total_price',
+            'orders.order_id',
+            'orders.created_at',
+            'medical_records.medical_id',
+            'treatment_details.treatment_id',
+            'patients.first_name',
+            'patients.last_name',
+            'patients.gender',
+            'patients.birthday',
+            'patients.patient_id'
+        )->orderBy('orders.created_at', 'desc')->paginate($itemsPerPage)->appends([
+            'search' => $search,
+            'itemsPerPage' => $itemsPerPage,
+            'tab' => $tab
+        ]);
+
         // Trả về view với các biến khác nhau
         return view('System.order.index', [
             'ordersUnpaid' => $ordersUnpaid,
             'ordersPaid' => $ordersPaid,
+            'ordersPrepaid' => $ordersPrepaid,
             'search' => $search,
             'itemsPerPage' => $itemsPerPage,
             'tab' => $tab
@@ -163,6 +219,7 @@ class OrderController extends Controller
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
             ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
             ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+            ->join('users', 'users.phone', '=', 'patients.phone')
             ->where('orders.order_id', $id)
             ->select(
                 'orders.payment',
@@ -179,7 +236,8 @@ class OrderController extends Controller
                 'patients.last_name',
                 'patients.gender',
                 'patients.birthday',
-                'patients.patient_id'
+                'patients.patient_id',
+                'users.email'
             )
             ->groupBy(
                 'orders.payment',
@@ -194,7 +252,8 @@ class OrderController extends Controller
                 'patients.last_name',
                 'patients.gender',
                 'patients.birthday',
-                'patients.patient_id'
+                'patients.patient_id',
+                'users.email'
             )
             ->orderBy('orders.created_at', 'desc')
             ->first();
@@ -217,7 +276,7 @@ class OrderController extends Controller
                 ]);
             }
         }
-        
+
         // Nếu không phải AJAX, trả về view
         return view('System.order.edit', ['orders' => $orders]);
     }
@@ -250,7 +309,7 @@ class OrderController extends Controller
                 'patients.gender',
                 'patients.birthday',
                 'patients.patient_id'
-                
+
             )
             ->groupBy(
                 'orders.payment',
@@ -315,18 +374,21 @@ class OrderController extends Controller
         $payment = $request->input('payment_method');
         $id = $request->input('order_id');
         $cash_received = $request->input('cash_received');
+        $cash_receiveds = $cash_received / 1000;
         $change_amount = $request->input('change_amount');
+        $change_amounts = $change_amount / 1000;
         $cashier_name = $request->input('cashier_name');
         $total_amount = $request->input('total_amount');
+       
 
         if ($payment == 0) {
             $order = Order::where('row_id', $id)->firstOrFail();
 
             $order->update([
                 'cashier' => $cashier_name,
-                'change_amount' => $change_amount,
-                'cash_received' => $cash_received,
-                'status' => 1,
+                'change_amount' => $change_amounts,
+                'cash_received' => $cash_receiveds,
+                'status' => 2,
                 'payment' => $payment,
             ]);
 
@@ -384,7 +446,6 @@ class OrderController extends Controller
             if ($jsonResult['resultCode'] === 0 && isset($jsonResult['payUrl'])) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Thanh toán hóa đơn thành công',
                     'payUrl' => $jsonResult['payUrl'],
                 ]);
             } else {
@@ -424,11 +485,75 @@ class OrderController extends Controller
 
         $order->update([
             'cashier' => $cashierName,
-            'status' => 1,
+            'status' => 2,
             'payment' => 1,
             'total_amount' => $total_amount,
 
         ]);
+
         return redirect()->route('system.order')->with('susses', 'Thanh toán hóa đơn thành công');
+    }
+
+    public function updateStatus($id)
+    {
+        $user = Auth::user();
+
+        $orders = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
+            ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
+            ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
+            ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
+            ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+            ->join('users', 'users.phone', '=', 'patients.phone')
+            ->where('orders.order_id', $id)
+            ->select(
+                'orders.payment',
+                'orders.status',
+                'orders.total_price',
+                'orders.order_id',
+                'orders.cashier',
+                'orders.created_at',
+                DB::raw('GROUP_CONCAT(services.name SEPARATOR "|") as service_names'),
+                DB::raw('GROUP_CONCAT(services.price SEPARATOR "|") as service_prices'),
+                'medical_records.medical_id',
+                'treatment_details.treatment_id',
+                'patients.first_name',
+                'patients.last_name',
+                'patients.gender',
+                'patients.birthday',
+                'patients.patient_id',
+                'users.email'
+            )
+            ->groupBy(
+                'orders.payment',
+                'orders.status',
+                'orders.cashier',
+                'orders.total_price',
+                'orders.order_id',
+                'orders.created_at',
+                'medical_records.medical_id',
+                'treatment_details.treatment_id',
+                'patients.first_name',
+                'patients.last_name',
+                'patients.gender',
+                'patients.birthday',
+                'patients.patient_id',
+                'users.email'
+            )
+            ->orderBy('orders.created_at', 'desc')
+            ->first();
+            $orderupdate = Order::where('order_id', $id)->first();
+        if ($orders->status == 0) {
+            $orderupdate->update(['status' => 1,  'cashier' => $user->firstname . ' ' . $user->lastname]);
+
+            Mail::to($orders->email)->send(new OrdersPrepaidConfirmation($orders));
+
+            return redirect()->route('system.order')->with('success', 'Đã xác nhận đơn hàng');
+        } elseif ($orders->status == 1) {
+            $orderupdate->update(['status' => 2,  'cashier' => $user->firstname . ' ' . $user->lastname]);
+          
+            Mail::to($orders->email)->send(new OrderConfirmation($orders));
+
+            return redirect()->route('system.order')->with('success', 'Đã xác nhận đơn hàng');
+        }
     }
 }

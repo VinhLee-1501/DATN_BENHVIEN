@@ -26,6 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend/library/fontawesome-6/css/all.min.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Nhà thuốc VietCare</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('backend/assets/images/logos/favicon.png') }}" />
 
@@ -47,7 +48,7 @@
     </script> -->
 
     <script src="{{ asset('frontend/shop/js/jquery-3.3.1.min.js') }}"></script>
-    <script src="{{ asset('frontend/shop/js/bootstrap.min.js') }}"></script>
+    {{-- <script src="{{ asset('frontend/shop/js/bootstrap.min.js') }}"></script> --}}
     {{-- <script src="{{ asset('frontend/shop/js/jquery.nice-select.min.js') }}"></script> --}}
     <script src="{{ asset('frontend/shop/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('frontend/shop/js/jquery.slicknav.js') }}"></script>
@@ -58,6 +59,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <x-message.message></x-message.message>
 
 </body>

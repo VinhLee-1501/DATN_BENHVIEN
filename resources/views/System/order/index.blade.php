@@ -5,7 +5,7 @@
         <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center m-1 mb-4">
                 <a href="{{ route('system.order.resetsearch') }}" class="card-title">
-                    <h3>Quản lý hóa đơn</h3>
+                    <h3>Quản lý hóa đơn dịch vụ</h3>
                 </a>
             </div>
 
@@ -14,14 +14,16 @@
                     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
                         type="button" role="tab" aria-controls="nav-home" aria-selected="true">Chưa thanh toán</button>
                     <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Đã thanh
-                        toán</button>
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Thanh toán trước</button>
+                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+                        type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                       Đã thanh toán</button>
                 </div>
             </nav>
             <div class="row align-items-center me-0">
                 <!-- Tìm kiếm và nút xóa -->
-                <div class="col-12 col-md-6 d-flex align-items-center mb-3 mb-md-0">
-                    <form id="searchForm" action="{{ route('system.coupons.search') }}" method="GET"
+                <div class="col-12 col-md-6 col-sm-2 d-flex align-items-center mb-3 mb-md-0">
+                    <form id="searchForm" action="{{ route('system.order') }}" method="GET"
                         class="d-flex align-items-center">
                         <div class="w-40">
                             <input type="text" name="search" id="searchInput" class="form-control"
@@ -40,8 +42,9 @@
 
                 <!-- Chọn số lượng hiển thị nằm trên cùng một hàng -->
                 <div class="col-auto ms-auto d-flex align-items-center">
-                    <span class="me-2">Hiển thị:</span>
-                    <select class="form-select w-50" id="itemsPerPage" aria-label="Items per page">
+                    <span class="me-2 d-none d-sm-inline">Hiển thị:</span>
+                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage"
+                        aria-label="Items per page">
                         <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
                             5
                         </option>
@@ -105,21 +108,24 @@
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
-                                                    {{ number_format($data->total_price * 1000 +20000, 0, ',', '.') }} VND
+                                                    {{ number_format($data->total_price * 1000 + 20000, 0, ',', '.') }} VND
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="badge bg-danger mb-0 fw-semibold">Chưa thanh toán</p>
                                             </td>
-                                            <td class="border-bottom-0 d-flex justify-content-center align-items-center">
-                                                <a href="{{ route('system.order.print', $data->order_id) }}"
-                                                    class="btn btn-primary me-1" target="_blank">
-                                                    <i class="ti ti-printer"></i>
-                                                </a>
-                                                <a href="#" class="btn btn-success payment-button"
-                                                    data-order-id="{{ $data->order_id }}" data-bs-target="#payModal">
-                                                    <i class="ti ti-check"></i>
-                                                </a>
+                                            <td class="border-bottom-0 d-flex">
+                                                @if ($data->payment == 0)
+                                                    <a href="#" class="btn btn-success payment-button"
+                                                        data-order-id="{{ $data->order_id }}" data-bs-target="#payModal">
+                                                        <i class="ti ti-check"></i>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('system.order.updateStatus', $data->order_id) }}"
+                                                        class="btn btn-success me-1">
+                                                        <i class="ti ti-check"></i>
+                                                    </a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -139,6 +145,85 @@
                         <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr class="text-center">
+                                    <th></th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Họ tên bệnh nhân</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Tông tiền</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Trạng thái</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Thao tác</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeTable">
+                                @if ($ordersPrepaid->isEmpty())
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <h5 class="text-muted">Không tìm thấy kết quả nào
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($ordersPrepaid as $data)
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="order_id[]" value=""
+                                                    class="blogCheckbox">
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
+                                            </td>
+                                            <td class="border-bottom-0 ">
+                                                <p class="mb-0 fw-semibold">{{ $data->last_name }}
+                                                    {{ $data->first_name }}
+                                                </p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">
+                                                    {{ Carbon\Carbon::parse($data->created_at)->format('d/m/Y | h:m:s') }}
+                                                </p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">
+                                                    {{ number_format($data->total_price * 1000 + 20000, 0, ',', '.') }} VND
+                                                </p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="badge bg-success mb-0 fw-semibold">Thanh toán trước</p>
+                                            </td>
+                                            <td class="border-bottom-0 d-flex">
+                                                <a href="{{ route('system.order.updateStatus', $data->order_id) }}"
+                                                    class="btn btn-success me-1">
+                                                    <i class="ti ti-check"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                        <div class="mt-3 d-flex justify-content-center">
+                            {{ $ordersPrepaid->links() }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <div class="table-responsive ">
+                        <table class="table text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr>
                                     <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
@@ -301,7 +386,6 @@
                                     <input type="number" min="0" id="cashReceived"
                                         class="form-control d-inline w-50" placeholder="Nhập số tiền">
                                 </div>
-
                                 <div class="mb-2">
                                     <strong>Tiền thừa:</strong> <span id="changeAmount"></span>
                                 </div>
@@ -347,7 +431,7 @@
                 document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(function(tabButton) {
                     tabButton.addEventListener('shown.bs.tab', function(e) {
                         // Kiểm tra nếu tab đang được chọn là tab "profile"
-                        if (e.target.id === 'nav-profile-tab') {
+                        if (e.target.id === 'nav-contact-tab') {
                             document.getElementById('deleteButton').style.display =
                                 'inline-block'; // Hiển thị nút xóa
                         } else {
@@ -359,7 +443,7 @@
 
                 // Kiểm tra trạng thái tab khi trang được tải để đảm bảo trạng thái của nút "Xóa" đúng lúc load trang
                 const activeTab = document.querySelector('button[data-bs-toggle="tab"].active');
-                if (activeTab && activeTab.id === 'nav-profile-tab') {
+                if (activeTab && activeTab.id === 'nav-contact-tab') {
                     document.getElementById('deleteButton').style.display = 'inline-block'; // Hiển thị nút xóa
                 } else {
                     document.getElementById('deleteButton').style.display = 'none'; // Ẩn nút xóa
@@ -458,7 +542,7 @@
                 function calculateChangeAmount() {
                     var cashReceived = $('#cashReceived').val();
                     var totalAmount = parseInt($('#totalAmount').text().replace(/\D/g, ''));
-                    var changeAmount = (cashReceived * 1000) - totalAmount;
+                    var changeAmount = (cashReceived) - totalAmount;
                     $('#changeAmount').text(new Intl.NumberFormat('vi-VN').format(changeAmount > 0 ? changeAmount : 0) +
                         ' VND');
                 }
@@ -476,9 +560,7 @@
                     var paymentMethod = $('#paymentMethod').val();
                     var cashReceived = $('#cashReceived').val();
                     var totalAmount = $('#totalAmount').text().replace(/\D/g, '');
-                    totalAmount = Math.floor(totalAmount / 1000);
                     var changeAmount = parseInt($('#changeAmount').text().replace(/\D/g, '')) || 0;
-                    changeAmount = Math.floor(changeAmount / 1000);
                     var cashierName = $('#cashierName').text().trim();
 
                     $.ajax({
@@ -638,6 +720,27 @@
                     $('#' + activeTabId).tab('show'); // Kích hoạt tab được lưu trong sessionStorage
                 }
             });
+        </script>
+        <script>
+             $(document).ready(function() {
+                    // Khi người dùng chuyển tab, cập nhật giá trị của input ẩn "tabInput"
+                    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                        const activeTab = $(e.target).attr('id');
+                        if (activeTab === 'nav-home-tab') {
+                            $('#tabInput').val(0);
+                        } else if (activeTab === 'nav-profile-tab') {
+                            $('#tabInput').val(1);
+                        } else if (activeTab === 'nav-contact-tab') {
+                            $('#tabInput').val(2);
+                        }
+                    });
+
+                    // Sự kiện khi nhấn nút tìm kiếm
+                    $('#searchButton').on('click', function() {
+                        // Trước khi gửi form, đảm bảo giá trị của "tabInput" đã được cập nhật đúng
+                        $('#searchForm').submit();
+                    });
+                });
         </script>
     @endpush
 @endsection

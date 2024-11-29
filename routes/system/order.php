@@ -12,6 +12,7 @@ Route::prefix('orders')->middleware('check_login_admin')
     Route::get('/resetsearch', [OrderController::class, 'resetSearch'])->name('order.resetsearch');
     Route::get('/perpage', [OrderController::class, 'index'])->name('order.perpage');
     Route::get('/edit/{id}', [OrderController::class, 'edit'])->name('order.edit');
+    Route::get('/updateStatus/{id}', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
     Route::post('/handlepay', [OrderController::class, 'handlepay'])->name('order.handlepay');
     Route::get('/print/{id}', [OrderController::class, 'print_order'])->name('order.print');
     Route::post('/checkout', [OrderController::class, 'checkout_online'])->name('order.checkout');

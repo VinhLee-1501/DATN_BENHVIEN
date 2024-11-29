@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Tác giả</label>
-                                    <input type="text" id="authorInput" name="author" class="form-control"
+                                    <input type="text" id="authorInput" disabled name="author" class="form-control"
                                         value="{{ $blogs->author }}" placeholder="Tác giả">
                                     @error('author')
                                         <div class="text-danger">*{{ $message }}</div>
@@ -147,8 +147,8 @@
                             }
 
                             const file = files[0];
-                            if (file.size > 1 * 1024 * 1024) {
-                                alert("Kích thước tệp phải nhỏ hơn 1MB.");
+                            if (file.size > 500 * 1024) {
+                                alert("Kích thước tệp phải nhỏ hơn 500KB.");
                                 return;
                             }
 
@@ -178,8 +178,8 @@
                         }
 
                         const file = files[0];
-                        if (file.size > 1 * 1024 * 1024) {
-                            alert("Kích thước tệp phải nhỏ hơn 1MB.");
+                        if (file.size > 500 * 1024) {
+                            alert("Kích thước tệp phải nhỏ hơn 500KB.");
                             $(this).remove();
                             return;
                         }
@@ -258,10 +258,10 @@
                         }
                     }
                 },
-                labelIdle: `Tối đa 1.5MB <span class="filepond--label-action">Chọn tệp</span>`,
+                labelIdle: `Tối đa 1MB <span class="filepond--label-action">Chọn tệp</span>`,
                 acceptedFileTypes: ['image/jpeg', 'image/png'],
-                maxFileSize: 1.5 * 1024 * 1024, // 1.5MB in bytes
-                labelMaxFileSize: '1.5 MB',
+                maxFileSize: 1 * 1024 * 1024, // 1.5MB in bytes
+                labelMaxFileSize: '1 MB',
                 imagePreviewHeight: 200,
             });
         </script>
