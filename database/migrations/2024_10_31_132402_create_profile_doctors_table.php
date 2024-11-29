@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('row_id')->primary();
             $table->text('description')->nullable();
             $table->text('work_experience')->nullable();
-            $table->string('degree')->nullable()->comment('bằng cấp');
+            $table->text('degree')->nullable()->comment('bằng cấp');
             $table->string('user_id')->nullable();
             $table->foreign('user_id')
                 ->references('user_id')

@@ -17,7 +17,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label for="lastname" class="form-label">Họ</label>
-                    <input type="text" name="lastname" class="form-control" id="lastname">
+                    <input type="text" name="lastname" class="form-control" id="lastname" value="{{ old('lastname') }}">
                     @error('lastname')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -25,7 +25,7 @@
 
                 <div class="col-md-6">
                     <label for="firstname" class="form-label">Tên</label>
-                    <input type="text" name="firstname" class="form-control" id="firstname">
+                    <input type="text" name="firstname" class="form-control" id="firstname" value="{{ old('firstname') }}">
                     @error('firstname')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -33,7 +33,7 @@
 
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="email">
+                    <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}">
                     @error('email')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -41,7 +41,7 @@
 
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Số điện thoại</label>
-                    <input type="text" name="phone" class="form-control" id="phone">
+                    <input type="text" name="phone" class="form-control" id="phone" value="{{ old('phone') }}">
                     @error('phone')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -49,7 +49,7 @@
 
                 <div class="col-md-6">
                     <label for="birthday" class="form-label">Ngày sinh</label>
-                    <input type="date" name="birthday" class="form-control" id="birthday">
+                    <input type="date" name="birthday" class="form-control" id="birthday" value="{{ old('birthday') }}">
                 </div>
 
                 <div class="col-md-6">
@@ -78,7 +78,7 @@
 
                 <div class="col-md-12">
                     <label for="degree" class="form-label">Bằng cấp</label>
-                    <textarea name="degree" id="degree" rows="3" class="form-control"></textarea>
+                    <textarea name="degree" id="degree" rows="3" class="form-control">{{ old('degree') }}</textarea>
                     @error('degree')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -86,7 +86,7 @@
 
                 <div class="col-md-12">
                     <label for="work_experience" class="form-label">Kinh nghiệm làm việc</label>
-                    <textarea name="work_experience" id="work_experience" rows="3" class="form-control"></textarea>
+                    <textarea name="work_experience" id="work_experience" rows="3" class="form-control">{{ old('work_experience') }}</textarea>
                     @error('work_experience')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -94,7 +94,7 @@
 
                 <div class="col-md-12">
                     <label for="description" class="form-label">Mô tả</label>
-                    <textarea name="description" id="description" rows="3" class="form-control"></textarea>
+                    <textarea name="description" id="description" rows="3" class="form-control">{{ old('description') }}</textarea>
                     @error('description')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror

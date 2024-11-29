@@ -210,10 +210,15 @@ $(function () {
 
         const total_price = total_data.reduce((acc, val) => acc + val, 0);
         document.querySelector('#totalPriceLineChart').innerText = total_price.toFixed(3);
+        
 
-        const totalPercentageMonth = (total_price / total_element) * 100;
+        const totalPercentageMonth = total_price / total_element;
+        const formatted_total_data = total_data.map(value => {
+            const newValue = parseInt(value + '000');
+            return newValue.toLocaleString();
+        });
+        document.querySelector('#percentagePriceMonthLineChart').innerText = `${totalPercentageMonth.toFixed(2)}%`;
 
-        document.querySelector('#percentagePriceMonthLineChart').innerText = totalPercentageMonth;
         var earning = {
             chart: {
                 id: "sparkline3",
@@ -230,7 +235,7 @@ $(function () {
                 {
                     name: "Tổng",
                     color: "#49BEFF",
-                    data: total_data,
+                    data: formatted_total_data,
                 },
             ],
             stroke: {

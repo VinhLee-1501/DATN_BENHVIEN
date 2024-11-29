@@ -125,7 +125,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="medicine" class="form-label">Tên thuốc</label>
+                                <label for="medicine" class="form-label">Tên danh mục</label>
                                 <input type="text" name="name" class="form-control " id="name">
                                 {{-- <select name="name" class="form-control" id="name">
                                     <option value="">Chọn tên thuốc</option>
@@ -168,7 +168,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="name" class="form-label">Tên nhóm thuốc</label>
+                                <label for="name" class="form-label">Tên danh mục</label>
                                 <input type="text" name="name" class="form-control" id="nametype">
                                 <div class="text-danger" id="nameedit_error"></div>
                             </div>
@@ -198,17 +198,7 @@
 <script>
     // Thêm danh mục 
     function openAddModal() {
-        $.ajax({
-            url: '/system/medicineTypes/create',
-            type: 'GET',
-            success: function (response) {
-                $('#addMedicineTypeModal').modal('show');
-            },
-            error: function (err) {
-                console.error("Lỗi khi tải modal:", err);
-            }
-
-        });
+        $('#addMedicineTypeModal').modal('show');
     }
 
     $(document).ready(function () {

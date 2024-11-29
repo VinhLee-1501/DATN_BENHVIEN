@@ -31,9 +31,9 @@ class DoctorCreateRequest extends FormRequest
             'email' => 'nullable|required|email|unique:users,email',
             'specialty_id' => 'required|exists:specialties,specialty_id',
             'avatar' => 'nullable|image|max:2048',
-            'degree' => 'nullable|string|max:255',
-            'work_experience' => 'nullable|string|max:1000',
-            'description' => 'nullable|string|max:1000',
+            'degree' => 'nullable|string',
+            'work_experience' => 'nullable',
+            'description' => 'nullable',
         ];
     }
 
@@ -90,13 +90,11 @@ class DoctorCreateRequest extends FormRequest
             'avatar.max' => 'Trường :attribute không được lớn hơn :max KB.',
 
             'degree.string' => 'Trường :attribute phải là chuỗi ký tự.',
-            'degree.max' => 'Trường :attribute không được vượt quá :max ký tự.',
 
             'work_experience.string' => 'Trường :attribute phải là chuỗi ký tự.',
-            'work_experience.max' => 'Trường :attribute không được vượt quá :max ký tự.',
 
             'description.string' => 'Trường :attribute phải là chuỗi ký tự.',
-            'description.max' => 'Trường :attribute không được vượt quá :max ký tự.',
+
         ];
     }
 }
