@@ -487,7 +487,6 @@ class ShopController extends Controller
 
         ]);
 
-
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -508,6 +507,10 @@ class ShopController extends Controller
 
             if ($request->total < $coupon->min_purchase) {
                 return response()->json(['error' => true, 'message' => 'Mã giảm giá chỉ áp dụng cho hóa đơn từ ' . $coupon->min_purchase . ' trở lên.']);
+            }
+
+            if ($coupon->use_limit == 0) {
+                return response()->json(['error' => true, 'message' => 'Mã giảm giá hết lượt sử dụng.']);
             }
 
             return response()->json([
@@ -550,7 +553,7 @@ class ShopController extends Controller
                 'cart_details.*',
                 'products.*',
                 'coupons.discount_code',
-                'coupons.percent',
+                'coupons.percent as percent',
                 'coupons.time_start as dateStartSale',
                 'coupons.time_end as dateEndSale',
                 DB::raw('SUBSTRING_INDEX(GROUP_CONCAT(img_products.img ORDER BY img_products.img SEPARATOR ","), ",", 1) as img_first')
@@ -575,9 +578,8 @@ class ShopController extends Controller
                 'coupons.time_end'
             )
             ->get();
-
-            // dd($cart);
-
-        return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'discount' => $discount, 'sale' => $sale, 'cart' => $cart]);
+       
+        $coupon = Coupon::where('discount_code', $request->input('coupon'))->first();
+        return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'coupon' => $coupon, 'discount' => $discount, 'sale' => $sale, 'cart' => $cart]);
     }
 }

@@ -137,6 +137,7 @@
                                 <input type="hidden" id="cart_id" name="cart_id" value="{{ $item->cart_id ?? '' }}">
                                 <input type="hidden" id="total" name="total">
                                 <input type="hidden" id="coupon" name="coupon">
+            
                                 <input type="hidden" id="sale_price_check" name="sale_price_check">
                                 <li>Tổng tiền<span class="total_cart"></span></li>
                                 <li class="d-flex">
@@ -283,7 +284,6 @@
                             document.querySelector('#sale_price_check').value = price_sale;
 
                             document.querySelector('#coupon').value = response.coupon;
-
 
                             const finalPrice = response.total - price_sale;
 

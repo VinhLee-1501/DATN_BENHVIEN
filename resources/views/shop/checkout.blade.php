@@ -25,17 +25,17 @@
 
             <div class="checkout__form">
                 <h4>Chi tiết thanh toán</h4>
-                <form id="formShip" action="{{ route('shop.order') }}" method="POST">
+                <form id="formShip" action="{{route('shop.order')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-lg-7 col-md-6">
-
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Tên<span>*</span></p>
                                         <input type="text" name="first_name"
                                             value="{{ $user->firstname ?? session('formData')['first_name'] }}" required>
+                                            <div class="invalid-feedback" id="first_name_error"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -43,6 +43,7 @@
                                         <p>Họ<span>*</span></p>
                                         <input type="text" name="last_name"
                                             value="{{ $user->lastname ?? session('formData')['last_name'] }}" required>
+                                             <div class="invalid-feedback" id="last_name_error"></div>
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +52,7 @@
                                     <div class="checkout__input">
                                         <p>Tỉnh<span>*</span></p>
                                         <select id="provinces" name="province" onchange="getProvinces(event)"
-                                            class="w-100">
+                                            class="w-100" required>
                                             <option value="">-- Chọn Tỉnh/thành phố --</option>
                                             <!-- Các tỉnh sẽ được thêm vào đây bằng JavaScript -->
                                         </select>
@@ -59,6 +60,7 @@
                                         <input type="hidden" id="provinceName" name="province_name" />
 
                                         <span id="provinceDisplay" class="selected-value"></span>
+                                         <div class="invalid-feedback" id="province_error"></div>
                                     </div>
 
                                 </div>
@@ -66,25 +68,27 @@
                                     <div class="checkout__input">
                                         <p>Quận/huyện<span>*</span></p>
                                         <select id="districts" name="district" onchange="getDistricts(event)"
-                                            class="w-100">
+                                            class="w-100" required>
                                             <option value="">-- Chọn quận/huyện --</option>
                                             <!-- Các quận sẽ được thêm vào đây bằng JavaScript -->
                                         </select>
                                         <!-- Thêm thẻ span để hiển thị giá trị đã chọn -->
                                         <input type="hidden" id="districtName" name="district_name" />
                                         <span id="districtDisplay" class="selected-value"></span>
+                                         <div class="invalid-feedback" id="district_error"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-12">
                                     <div class="checkout__input">
                                         <p>Phường/xã<span>*</span></p>
-                                        <select id="wards" name="ward" class="w-100">
+                                        <select id="wards" name="ward" class="w-100" required>
                                             <option value="">-- Chọn phường/xã --</option>
                                             <!-- Các phường sẽ được thêm vào đây bằng JavaScript -->
                                         </select>
                                         <!-- Thêm thẻ span để hiển thị giá trị đã chọn -->
                                         <input type="hidden" id="wardName" name="ward_name" />
                                         <span id="wardDisplay" class="selected-value"></span>
+                                         <div class="invalid-feedback" id="ward_error"></div>
                                     </div>
                                 </div>
                             </div>
@@ -92,8 +96,8 @@
                             <div class="checkout__input">
                                 <p>Địa chỉ cụ thể<span>*</span></p>
                                 <input type="text" name="address" placeholder="Địa chỉ nhận hàng"
-                                    class="checkout__input__add" value="{{ session('formData')['address'] ?? '' }}"
-                                    required>
+                                    class="checkout__input__add" value="{{ session('formData')['address'] ?? '' }}" required>
+                                    <div class="invalid-feedback" id="address_error"></div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -101,6 +105,7 @@
                                         <p>Số điện thoại<span>*</span></p>
                                         <input type="text" name="phone"
                                             value="{{ $user->phone ?? session('formData')['phone'] }}" required>
+                                            <div class="invalid-feedback" id="phone_error"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -108,6 +113,7 @@
                                         <p>Email<span>*</span></p>
                                         <input type="email" name="email"
                                             value="{{ $user->email ?? session('formData')['email'] }}" required>
+                                            <div class="invalid-feedback" id="email_error"></div>
                                     </div>
                                 </div>
                             </div>
@@ -167,14 +173,18 @@
 
 
                                 <div class="checkout__order__shipping-fee d-flex">
-                                    <p>Giảm giá</p>
+                                    <p>Giảm giá: @if (isset($coupon))
+                                        {{ $coupon->percent }}%
+                                    @endif
+                                </p>
                                     <p class="ms-auto" id="sale"> {{ number_format($sale) ?? '0' }} đ</p>
                                 </div>
                                 <div class="checkout__order__total">Tổng <span id="total_sale"></span>
                                     <input type="hidden" name="total_final" id="total_final">
-                                    <input type="hidden" name="cart_id" id="cart_id" value="{{$cart[0]->cart_id}}">
+                                    <input type="hidden" name="cart_id" id="cart_id"
+                                        value="{{ $cart[0]->cart_id }}">
                                 </div>
-                                    <input type="hidden" name="coupon_id" id="coupon_id" value="{{$discount}}">
+                                <input type="hidden" name="coupon_id" id="coupon_id" value="{{ $discount }}">
 
                                 <div class="checkout__input__checkbox">
                                     <label for="payment_cash">
@@ -203,7 +213,8 @@
                                 <div class="checkout__input__checkbox">
                                     <label for="payment_zalopay">
                                         Thanh toán Zalo Pay
-                                        <input type="radio" id="payment_zalopay" name="payment_option" value="zalopay">
+                                        <input type="radio" id="payment_zalopay" name="payment_option"
+                                            value="zalopay">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>

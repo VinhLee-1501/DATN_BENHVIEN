@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\shop;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Shop\PaymentRequest;
 use App\Models\Order;
 use App\Models\Products\CartDetail;
 use App\Models\Products\CartProduct;
+use App\Models\Products\Coupon;
 use App\Models\Products\OrderProduct;
 use App\Models\Products\PaymentProduct;
 use App\Models\Products\Product;
@@ -13,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PayController extends Controller
 {
@@ -172,17 +175,17 @@ class PayController extends Controller
 
     public function handleVNPaymentResponse(Request $request)
     {
-        
+
         $vnp_TransactionStatus = $request->query('vnp_TransactionStatus');
         $vnp_TxnRef = $request->query('vnp_TxnRef'); // Mã giao dịch
 
-      
+
         $paymentExists = PaymentProduct::where('order_id', $vnp_TxnRef)->exists();
         if ($paymentExists) {
             return redirect()->route('shop.bill')->with(['error' => 'Giao dịch này đã được xử lý trước đó.']);
         }
 
-      
+
         $order_id = OrderProduct::latest()->pluck('order_id')->first();
 
         // Kiểm tra trạng thái giao dịch
@@ -201,7 +204,7 @@ class PayController extends Controller
             $payment->payment_status = 2; // Không thành công
             $payment->save();
 
-            return redirect()->route('shop.bill')->with(['error' => 'Thanh toán không thành công!', ]);
+            return redirect()->route('shop.bill')->with(['error' => 'Thanh toán không thành công!',]);
         }
     }
 
@@ -211,21 +214,32 @@ class PayController extends Controller
     public function order(Request $request)
     {
 
+        // Nếu có lỗi xác thực, trả về lỗi dưới dạng JSON
+
+        $username = $request->input('first_name') . ' ' . $request->input('last_name');
+        $address = $request->input('address') . ', ' . $request->input('ward_name') . ', ' . $request->input('district_name') . ', ' . $request->input('province_name');
         $user = Auth::user();
         $user_id = $user->user_id;
         $order = new OrderProduct();
         $order->quantity = $request->input('quantity');
         $order->price_old = $request->input('total');
         $order->price_sale = $request->input('total_final');
-        $order->order_status = $request->input('coupon_id');;
+        $order->order_status = $request->input('coupon_id');
         $order->order_status = 0;
-        $order->order_username = $request->input('first_name') . ' ' . $request->input('last_name');
+        $order->order_username = $username;
         $order->order_phone = $request->input('phone');
-        $order->order_address = $request->input('address') . ', ' . $request->input('ward_name') . ', ' . $request->input('district_name') . ', ' . $request->input('province_name');
+        $order->order_address = $address;
         $order->note = $request->input('note');
         $order->cart_id  = $request->input('cart_id');
         $order->user_id   = $user_id;
         $order->save();
+        
+        if ($request->input('coupon_id')) {
+            $coupon = Coupon::where('discount_code', $request->input('coupon_id'))->first();
+            $quantity = $coupon->use_limit;
+            $coupon->use_limit = $quantity - 1;
+            $coupon->update();
+        }
 
         $cart_id = $order->cart_id;
         CartDetail::where('cart_id', $cart_id)->delete();
