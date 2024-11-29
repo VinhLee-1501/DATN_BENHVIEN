@@ -12,35 +12,30 @@ class CheckoutController extends Controller
 
     public function calculateShippingFee(Request $request)
     {
-
-    
         // Default pickup address
         $defaultPickProvince = 'Cần Thơ';
         $defaultPickDistrict = 'Thường Thạnh';
-        $defaultPickWeight = 100;  // weight in grams
+        $defaultPickWeight = 100;
         $defaultPickDeliverOption = 'none';
 
-        // Validate form inputs
+
         $validatedData = $request->validate([
             'province' => 'required',
             'district' => 'required',
             'ward' => 'required',
-       
         ]);
 
-      
 
-        // Retrieve form inputs (province, district, ward codes)
         $provinceCode = $validatedData['province'];
         $districtCode = $validatedData['district'];
         $wardCode = $validatedData['ward'];
 
-        // Get the province, district, and ward names based on the codes
+
         $provinceName = $this->getProvinceName($provinceCode);
         $districtName = $this->getDistrictName($districtCode, $provinceCode);
         $wardName = $this->getWardName($wardCode, $districtCode);
 
-        // Prepare data for API request
+
         $data = [
             "pick_province" => $defaultPickProvince,
             "pick_district" => $defaultPickDistrict,
@@ -52,103 +47,101 @@ class CheckoutController extends Controller
         ];
 
         try {
-            // Make API request using Http facade
+
             $response = Http::withHeaders([
                 'Token' => '4Bg6v8jOpSuZycjCLBx61pzJtBBVtvj5o1OZv5',
             ])->get('https://services.giaohangtietkiem.vn/services/shipment/fee', $data);
 
             if ($response->successful()) {
                 $result = $response->json();
-
-                if ($result['success'] == 1) {
+                if (isset($result['success']) && $result['success'] == 1) {
                     $shippingFee = $result['fee']['fee'] ?? 0;
                     $shippingText = $result['fee']['options'][0]['shipMoneyText'] ?? 'No shipping options available';
-                    
+
                     session()->flash('formData', request()->all());
-                  
-                    return response()->json([  
+
+                    return response()->json([
                         'shippingFee' => $shippingFee,
                         'shippingText' => $shippingText,
                         'oldInput' => request()->all(),
-                        
                     ]);
-
                 } else {
-                    return back()->withErrors(['error' => 'Không thể lấy thông tin phí vận chuyển.'])->withInput();
+                    return response()->json(['error' => 'Không thể lấy thông tin phí vận chuyển.'], 400);
                 }
             } else {
-                return back()->withErrors(['error' => 'Lỗi khi kết nối với API.'])->withInput();
+                $errorMessage = $response->body();
+                return response()->json(['error' => 'Lỗi khi kết nối với API: ' . $errorMessage], 500);
             }
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()])->withInput();
+            return response()->json(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()], 500);
         }
     }
 
 
-
-    // Helper method to get the province name by code
     private function getProvinceName($provinceCode)
     {
-        $response = Http::get("https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1");
-
-        if ($response->successful()) {
-            $responseData = $response->json();
-
-            // Check if "data" and "data.data" exist in the response
-            if (isset($responseData['data']['data']) && !empty($responseData['data']['data'])) {
-                $provinces = $responseData['data']['data'];
-                foreach ($provinces as $province) {
+        try {
+            $response = Http::get("https://provinces.open-api.vn/api/?depth=2");
+            if ($response->successful()) {
+                $responseData = $response->json();
+                foreach ($responseData as $province) {
                     if ($province['code'] == $provinceCode) {
-                        return $province['name']; // Return province name
+                        return $province['name'];
                     }
                 }
             }
+            return 'Unknown Province';
+        } catch (\Exception $e) {
+            return 'Unknown Province';
         }
-
-        return 'Unknown Province'; // Default if not found or API fails
     }
 
-    // Helper method to get the district name by code
+
     private function getDistrictName($districtCode, $provinceCode)
     {
-        $response = Http::get("https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode={$provinceCode}&limit=-1");
-
-        if ($response->successful()) {
-            $responseData = $response->json();
-
-            // Check if "data" and "data.data" exist in the response
-            if (isset($responseData['data']['data']) && !empty($responseData['data']['data'])) {
-                $districts = $responseData['data']['data'];
-                foreach ($districts as $district) {
-                    if ($district['code'] == $districtCode) {
-                        return $district['name']; // Return district name
+        try {
+            $response = Http::get("https://provinces.open-api.vn/api/?depth=2");
+            if ($response->successful()) {
+                $responseData = $response->json();
+                foreach ($responseData as $province) {
+                    if ($province['code'] == $provinceCode) {
+                        foreach ($province['districts'] as $district) {
+                            if ($district['code'] == $districtCode) {
+                                return $district['name'];
+                            }
+                        }
                     }
                 }
             }
+            return 'Unknown District';
+        } catch (\Exception $e) {
+            return 'Unknown District';
         }
-
-        return 'Unknown District'; // Default if not found or API fails
     }
 
-    // Helper method to get the ward name by code
+
     private function getWardName($wardCode, $districtCode)
     {
-        $response = Http::get("https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode={$districtCode}&limit=-1");
-
-        if ($response->successful()) {
-            $responseData = $response->json();
-
-            // Check if "data" and "data.data" exist in the response
-            if (isset($responseData['data']['data']) && !empty($responseData['data']['data'])) {
-                $wards = $responseData['data']['data'];
-                foreach ($wards as $ward) {
-                    if ($ward['code'] == $wardCode) {
-                        return $ward['name']; // Return ward name
+        try {
+            $response = Http::get("https://provinces.open-api.vn/api/?depth=2");
+            if ($response->successful()) {
+                $responseData = $response->json();
+                foreach ($responseData as $province) {
+                    foreach ($province['districts'] as $district) {
+                        if ($district['code'] == $districtCode) {
+                            foreach ($district['wards'] as $ward) {
+                                if ($ward['code'] == $wardCode) {
+                                    return $ward['name'];
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
+            return 'Unknown Ward';
+        } catch (\Exception $e) {
 
-        return 'Unknown Ward'; // Default if not found or API fails
+            return 'Unknown Ward';
+        }
     }
 }
