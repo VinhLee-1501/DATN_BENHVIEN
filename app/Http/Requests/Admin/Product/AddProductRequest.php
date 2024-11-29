@@ -26,7 +26,7 @@ class AddProductRequest extends FormRequest
             'product_images' => 'nullable|array',
             'product_images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
             'category_id' => 'required',
-            'actice_ingredient' => 'required',
+            'active_ingredient' => 'required',
             'unit_of_measurement' => 'required|max:50',
             'code_product' => 'required|unique:products,code_product|max:50',
             'used' => 'required',
@@ -57,7 +57,7 @@ class AddProductRequest extends FormRequest
             'description.required' => ':attribute không được để trống',
             
 
-            'actice_ingredient.required' => ':attribute không được để trống',
+            'active_ingredient.required' => ':attribute không được để trống',
 
             'unit_of_measurement.required' => ':attribute không được để trống',
             'unit_of_measurement.max' => ':attribute tối đa 50 ký tự',
@@ -86,7 +86,7 @@ class AddProductRequest extends FormRequest
             'name' => 'Tên thuốc',
             'product_images' => 'Ảnh sản phẩm',
             'category_id' => 'Nhóm thuốc',
-            'actice_ingredient' => 'Hoạt tính',
+            'active_ingredient' => 'Hoạt tính',
             'unit_of_measurement' => 'Đơn vị',
             'code_product' => 'Mã sản phẩm',
             'used' => 'Công dụng',

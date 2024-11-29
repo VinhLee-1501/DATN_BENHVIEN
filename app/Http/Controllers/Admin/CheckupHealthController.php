@@ -327,7 +327,7 @@ class CheckupHealthController extends Controller
             $order->order_id = strtoupper(Str::random(10));
             $order->treatment_id = $treatment->treatment_id;
             $order->status = 0;
-            $order->role = 0;
+            $order->payment = 0;
             $order->total_price = $totalprice;
             $order->save();
 
@@ -414,7 +414,7 @@ class CheckupHealthController extends Controller
         $order->treatment_id = $treatment->treatment_id;
         $order->total_price = 20;
         $order->status = 0;
-        $order->role = 0;
+        $order->payment = 0;
 
         $order->save();
 

@@ -115,7 +115,6 @@ class ProductController extends Controller
    public function store(AddProductRequest $request)
    {
 
-      // dd($request->all());
       $name = $request->input('name');
       $code_product = $request->input('code_product');
       $unit_of_measurement = $request->input('unit_of_measurement');

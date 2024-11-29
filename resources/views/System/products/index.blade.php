@@ -163,7 +163,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="active_ingredient" class="form-label">Hoạt tính</label>
-                            <textarea name="active_ingredient" class="form-control" id="active_ingredient"></textarea>
+                            <input name="active_ingredient" class="form-control" id="active_ingredient">
                             <div class="invalid-feedback" id="active_ingredient_error"></div>
                         </div>
                         <div class="col-md-6">
@@ -267,7 +267,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="active_ingredient_up" class="form-label">Hoạt tính</label>
-                            <textarea name="active_ingredient_up" class="form-control" id="active_ingredient_up"></textarea>
+                            <input name="active_ingredient_up" class="form-control" id="active_ingredient_up">
                             <div class="invalid-feedback" id="active_ingredient_error"></div>
                         </div>
 
@@ -527,8 +527,7 @@
                 },
                 error: function(err) {
                     console.error("Lỗi khi thêm sản phẩm thuốc:", err);
-                    console.error("Response Text:", err.responseText);
-
+                   
                     if (err.responseJSON && err.responseJSON.errors) {
                         var errors = err.responseJSON.errors;
 
