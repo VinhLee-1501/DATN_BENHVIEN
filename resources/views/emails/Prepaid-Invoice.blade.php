@@ -249,7 +249,7 @@
             </div>
 
             <div class="total-section">
-                <p><span>Tiền trả trước:</span> - {{ number_format(($orders->total_price * 0.30) * 1000, 0, ',', '.') }} VND</p>
+                <p><span>Tiền trả trước:</span> {{ number_format(($orders->total_price * 0.30) * 1000, 0, ',', '.') }} VND</p>
                 <p><span>Người thu ngân:</span> {{ $orders->cashier }}</p>
             </div>
         </div>

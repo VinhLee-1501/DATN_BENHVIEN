@@ -42,7 +42,8 @@
                 <!-- Chọn số lượng hiển thị nằm trên cùng một hàng -->
                 <div class="col-auto ms-auto d-flex align-items-center">
                     <span class="me-2 d-none d-sm-inline">Hiển thị:</span>
-                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage" aria-label="Items per page">
+                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage"
+                        aria-label="Items per page">
                         <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
                             5
                         </option>
@@ -139,13 +140,18 @@
                                                         <div class="col-md-12 d-flex mt-1">
                                                             <div class="col-md-6">
                                                                 <p><strong>Mã đơn hàng:</strong> {{ $data->order_id }}</p>
-                                                                <p><strong>Khách hàng:</strong> {{ $data->order_username }}</p>
+                                                                <p><strong>Khách hàng:</strong> {{ $data->order_username }}
+                                                                </p>
                                                                 <p><strong>Sđt:</strong> {{ $data->order_phone }}</p>
-                                                                 <p><strong>Email</strong> {{ $data->email }}</p>
-                                                                <p><strong>Địa chỉ:</strong> {{ $data->order_address }}</p>
+                                                                <p><strong>Email</strong> {{ $data->email }}</p>
+                                                                <p
+                                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                                                        white-space: normal; max-width: 100%; word-break: normal;">
+                                                                    <strong>Địa chỉ:</strong> {{ $data->order_address }}
+                                                                </p>
                                                             </div>
                                                             @php
-                                                                $product_names = explode(',', $data->product_names);
+                                                                $product_names = explode(';', $data->product_names);
                                                             @endphp
                                                             <div class="col-md-6">
                                                                 <p><strong>Số lượng:</strong> {{ $data->total_quantity }}
@@ -270,11 +276,14 @@
                                                             <p><strong>Mã đơn hàng:</strong> {{ $data->order_id }}</p>
                                                             <p><strong>Khách hàng:</strong> {{ $data->order_username }}</p>
                                                             <p><strong>Sđt:</strong> {{ $data->order_phone }}</p>
-                                                             <p><strong>Email</strong> {{ $data->email }}</p>
-                                                            <p><strong>Địa chỉ:</strong> {{ $data->order_address }}</p>
+                                                            <p><strong>Email</strong> {{ $data->email }}</p>
+                                                            <p
+                                                                style="word-wrap: break-word; overflow-wrap: break-word;
+                                                                        white-space: normal; max-width: 100%; word-break: normal;">
+                                                                <strong>Địa chỉ:</strong> {{ $data->order_address }}</p>
                                                         </div>
                                                         @php
-                                                            $product_names = explode(',', $data->product_names);
+                                                            $product_names = explode(';', $data->product_names);
                                                         @endphp
                                                         <div class="col-md-6">
                                                             <p><strong>Số lượng:</strong> {{ $data->total_quantity }}
@@ -398,11 +407,14 @@
                                                             <p><strong>Mã đơn hàng:</strong> {{ $data->order_id }}</p>
                                                             <p><strong>Khách hàng:</strong> {{ $data->order_username }}</p>
                                                             <p><strong>Sđt:</strong> {{ $data->order_phone }}</p>
-                                                             <p><strong>Email</strong> {{ $data->email }}</p>
-                                                            <p><strong>Địa chỉ:</strong> {{ $data->order_address }}</p>
+                                                            <p><strong>Email</strong> {{ $data->email }}</p>
+                                                            <p
+                                                                style="word-wrap: break-word; overflow-wrap: break-word;
+                                                                        white-space: normal; max-width: 100%; word-break: normal;">
+                                                                <strong>Địa chỉ:</strong> {{ $data->order_address }}</p>
                                                         </div>
                                                         @php
-                                                            $product_names = explode(',', $data->product_names);
+                                                            $product_names = explode(';', $data->product_names);
                                                         @endphp
                                                         <div class="col-md-6">
                                                             <p><strong>Số lượng:</strong> {{ $data->total_quantity }}
@@ -507,8 +519,8 @@
             </script>
             <script>
                 document.addEventListener('click', function(e) {
-                    const deleteButton = e.target.closest('.cancal'); 
-                    if (!deleteButton) return; 
+                    const deleteButton = e.target.closest('.cancal');
+                    if (!deleteButton) return;
                     e.preventDefault();
 
                     Swal.fire({
@@ -523,8 +535,8 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             const orderProductId = deleteButton.getAttribute('data-id');
-                            const deleteUrl = '/system/orderproducts/delete/' + orderProductId; 
-                            window.location.href = deleteUrl; 
+                            const deleteUrl = '/system/orderproducts/delete/' + orderProductId;
+                            window.location.href = deleteUrl;
                         }
                     });
                 });

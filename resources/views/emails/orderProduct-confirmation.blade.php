@@ -266,7 +266,7 @@
 
             <div class="total-section">
 
-                <!-- Tính phí vận chuyển -->
+                {{-- <!-- Tính phí vận chuyển -->
                 <p><span>Phí vận chuyển:</span>
                     @php
                         $price_sale = floatval($orderProduct->price_sale);
@@ -279,7 +279,7 @@
                     @else
                         {{ number_format($price_old - $price_old * $total_quantity, 0, ',', '.') }} VND
                     @endif
-                </p>
+                </p> --}}
 
 
                 <!-- Tính tổng tiền -->

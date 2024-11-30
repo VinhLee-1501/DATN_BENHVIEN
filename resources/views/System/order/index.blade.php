@@ -382,7 +382,7 @@
                                     <strong>Tổng tiền:</strong> <span id="totalAmount"></span>
                                 </div>
                                 <div class="mb-2" id="cashInputWrapper">
-                                    <label for="cashReceived" class="form-label me-2"><strong>Khách đưa:</strong></label>
+                                    <label for="cashReceived" class="form-label me-2"><strong>Tiền nhận:</strong></label>
                                     <input type="number" min="0" id="cashReceived"
                                         class="form-control d-inline w-50" placeholder="Nhập số tiền">
                                 </div>

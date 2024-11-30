@@ -35,7 +35,7 @@ class OrderProductController extends Controller
             'order_products.order_address',
             'order_products.order_phone',
             DB::raw('GROUP_CONCAT(cart_details.product_id) as product_ids'),
-            DB::raw('GROUP_CONCAT(products.name) as product_names'),
+            DB::raw('GROUP_CONCAT(products.name SEPARATOR ";") as product_names'),
             DB::raw('GROUP_CONCAT(products.price) AS product_prices'),
             'payment_products.payment_method',
             'users.email',
@@ -78,7 +78,7 @@ class OrderProductController extends Controller
             'order_products.order_status',
             'order_products.order_address',
             DB::raw('GROUP_CONCAT(cart_details.product_id) as product_ids'),
-            DB::raw('GROUP_CONCAT(products.name) as product_names'),
+            DB::raw('GROUP_CONCAT(products.name SEPARATOR ";") as product_names'),
             DB::raw('GROUP_CONCAT(products.price) AS product_prices'),
             'payment_products.payment_method',
             'users.email',
@@ -120,7 +120,7 @@ class OrderProductController extends Controller
             'order_products.order_status',
             'order_products.order_address',
             DB::raw('GROUP_CONCAT(cart_details.product_id) as product_ids'),
-            DB::raw('GROUP_CONCAT(products.name) as product_names'),
+            DB::raw('GROUP_CONCAT(products.name SEPARATOR ";") as product_names'),
             DB::raw('GROUP_CONCAT(products.price) AS product_prices'),
             'payment_products.payment_method',
             'users.email',
@@ -150,7 +150,7 @@ class OrderProductController extends Controller
             'itemsPerPage' => $itemsPerPage,
             'tab' => $tab
         ]);
-
+     
         return view('System.orderproduct.index', [
             'ordersPendings' => $ordersPendings,
             'ordersShippings' => $ordersShippings,
