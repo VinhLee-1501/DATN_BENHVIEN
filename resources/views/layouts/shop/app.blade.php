@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/shop/css/jquery-ui.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend/shop/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('frontend/shop/css/slicknav.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('frontend/shop/css/style.css') }}"type="text/css">
+    <link rel="stylesheet" href="{{ asset('frontend/shop/css/style.css') }}" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
@@ -30,8 +30,9 @@
     <title>Nhà thuốc VietCare</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('backend/assets/images/logos/favicon.png') }}" />
 
-  </head>
-  <body>
+</head>
+
+<body>
 
     <x-shop.header></x-shop.header>
     @yield('content')
@@ -46,6 +47,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script> -->
+
 
     <script src="{{ asset('frontend/shop/js/jquery-3.3.1.min.js') }}"></script>
     {{-- <script src="{{ asset('frontend/shop/js/bootstrap.min.js') }}"></script> --}}

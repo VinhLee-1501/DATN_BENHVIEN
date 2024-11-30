@@ -393,19 +393,21 @@ class ShopController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
-            return redirect()->route('client.login')->with('error', 'Bạn cần phải đăng nhập để truy cập giỏ hàng.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Bạn cần phải đăng nhập để truy cập giỏ hàng.'
+            ]);
         }
 
         $product = Product::find($id);
-        // dd($product);
         if (!$product) {
-            return redirect()->route('shop.cart')->with('error', 'Sản phẩm không tồn tại.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sản phẩm không tồn tại.'
+            ]);
         }
 
         $quantity = $request->input('quantity');
-        // dd($quantity);
-
-        // Kiểm tra user đã có giỏ hàng ?
         $cartProduct = CartProduct::where('user_id', $user->user_id)->first();
 
         if (!$cartProduct) {
@@ -418,7 +420,6 @@ class ShopController extends Controller
             ->where('product_id', $product->product_id)
             ->first();
 
-
         if ($cartDetail) {
             $cartDetail->quantity += $quantity;
             $cartDetail->save();
@@ -430,8 +431,13 @@ class ShopController extends Controller
             ]);
         }
 
-        return redirect()->route('shop.cart')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Thêm vào giỏ hàng thành công.'
+        ]);
     }
+
+
 
     public function updateCart(Request $request)
     {

@@ -324,11 +324,31 @@
         });
 
         // Khi mở modal khác, reset modal hiện tại (nếu cần)
-        $('.modal').on('show.bs.modal', function() {
-            // Xóa lỗi khỏi tất cả các modal khác trước khi mở modal mới
-            $('.modal').not(this).each(function() {
-                $(this).find('.is-invalid').removeClass('is-invalid');
-                $(this).find('.invalid-feedback').remove();
+        $('#editDoctorModal').on('show.bs.modal', function(event) {
+            // Lấy dữ liệu từ nút nhấn
+            let button = $(event.relatedTarget);
+            let doctorId = button.data('id'); // Giả định bạn đã đặt data-id cho nút nhấn
+            let modal = $(this);
+
+            // Gọi AJAX để lấy dữ liệu bác sĩ theo ID (nếu cần)
+            $.ajax({
+                url: `/system/doctors/${doctorId}`,
+                type: 'GET',
+                success: function(data) {
+                    // Gán giá trị cho các input trong modal
+                    modal.find('#doctor_id').val(data.user_id);
+                    modal.find('#lastname').val(data.lastname);
+                    modal.find('#firstname').val(data.firstname);
+                    modal.find('#phone').val(data.phone);
+                    modal.find('#email').val(data.email);
+                    modal.find('#degree').val(data.profileDoctor.degree || '');
+                    modal.find('#work_experience').val(data.profileDoctor.work_experience || '');
+                    modal.find('#description').val(data.profileDoctor.description || '');
+                    // Nếu bạn sử dụng Summernote hoặc các trình soạn thảo khác, cập nhật nội dung tại đây
+                },
+                error: function(xhr) {
+                    console.error('Không thể tải dữ liệu bác sĩ:', xhr);
+                }
             });
         });
     });

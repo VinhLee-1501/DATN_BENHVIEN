@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\OrderProductController;
 
 
-Route::prefix('orderproducts')->middleware('check_login_admin')
+Route::prefix('order-products')->middleware('check_login_admin')
 ->group(function () {
     Route::get('/', [OrderProductController::class, 'index'])->name('orderproduct');
     // Route::delete('/multipledelete', [OrderController::class, 'index'])->name('order.multipledelete');

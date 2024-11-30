@@ -1,7 +1,65 @@
+<!-- Humberger Begin -->
+<div class="humberger__menu__overlay"></div>
+<div class="humberger__menu__wrapper">
+    <div class="humberger__menu__logo">
+        <a href="#"><img src="{{ asset('frontend/shop/img/vietcare.png')}}" alt=""></a>
+    </div>
+    <div class="humberger__menu__cart">
+        <ul>
+            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+        </ul>
+        <div class="header__cart__price">item: <span>$150.00</span></div>
+    </div>
+
+    <nav class="humberger__menu__nav mobile-menu">
+        <ul>
+            <li class="{{ Request::routeIs('shop.shop') ? 'active' : '' }}">
+                <a class="" href="{{ route('shop.shop') }}">Cửa hàng</a>
+            </li>
+            <li class="{{ Request::routeIs('shop.shop-grid') ? 'active' : '' }}">
+                <a class="" href="{{ route('shop.shop-grid') }}">Sản phẩm</a>
+            </li>
+
+            <li class=" {{ Request::routeIs('shop.blog') ? 'active' : '' }}">
+                <a class="" href="{{ route('shop.blog') }}">Tin tức</a>
+            </li>
+
+            <li class=" {{ Request::routeIs('client.home') ? 'active' : '' }}">
+                <a href="{{ route('client.home') }}">Khám bệnh</a>
+            </li>
+            @if (auth()->check())
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('client.profile.index') }}">
+                    <i class="fa fa-user"></i> {{ auth()->user()->firstname }}
+                </a>
+            </li>
+            @else
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('client.login') }}">
+                    <i class="fa fa-sign-in-alt"></i> Đăng nhập
+                </a>
+            </li>
+            @endif
+
+            <!-- Thêm hỗ trợ 24/7 -->
+            <li class="nav-item">
+                <a class="nav-link" href="tel:+840364911491">
+                    <i class="fa fa-phone"></i> +84 0364911491 Hỗ trợ 24/7
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <div id="mobile-menu-wrap"></div>
+
+
+</div>
+<!-- Humberger End -->
 <!-- Header Section Begin -->
 <header class="header">
     <div class="container">
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-lg-3">
                 <div class="header__logo">
                     <a href="{{ route('client.home') }}">
@@ -23,63 +81,95 @@
                             <a class="" href="{{ route('shop.blog') }}">Tin tức</a>
                         </li>
 
-                        <li style="border: 1px solid #048647; border-radius: 3px;
-
-                        "
-                            class=" {{ Request::routeIs('client.home') ? 'active' : '' }}">
+                        <li style="border: 1px solid #048647; border-radius: 3px;" class=" {{ Request::routeIs('client.home') ? 'active' : '' }}">
                             <a class="px-2 " href="{{ route('client.home') }}">Khám bệnh</a>
                         </li>
-
-
-                        <!-- 3 danh mục -->
-                        <!-- <li class="{{ Request::routeIs('shop.medicine-category1') ? 'active' : '' }}">
-                            <a href="#">Thuốc</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li class="{{ Request::routeIs('shop.medicine-category2') ? 'active' : '' }}">
-                            <a href="#">Thuốc</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li class="{{ Request::routeIs('shop.medicine-category3') ? 'active' : '' }}">
-                            <a href="#">Thuốc</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li> -->
-                        <!-- /3 danh mục -->
                     </ul>
 
                 </nav>
+
             </div>
-            <div class="col-lg-3">
-                <div class="header__cart">
-                    <ul>
-                        <!-- <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
-                        <li><a href="{{ route('shop.cart') }}"><i class="fa fa-shopping-bag"></i>
-                                <span>{{ $cartCount ?? 0 }}</span></a>
-                        </li>
-                    </ul>
-                    <div class="header__cart__price">Tổng giá: <span id="header_total"></span></div>
+            <div class="col-lg-3 d-flex justify-content-end">
+                <div class="col-lg-3 d-none d-lg-block">
+                    <div class="header__cart d-flex align-items-center justify-content-end gap-3">
+                        @if (auth()->check())
+                        <div class="header__login position-relative" onclick="toggleMenu()" style="cursor: pointer;">
+                            @if (empty(auth()->user()->avatar))
+                            <img class="border-success" class="w-auto" style="width: 28px !important; height: 28px !important; cursor: pointer;"
+                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                alt="{{ auth()->user()->firstname }}">
+                            @else
+                            @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
+                            <img class="border-success" class="w-auto" style="width: 28px !important; height: 28px !important; cursor: pointer;"
+                                src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->firstname }}">
+                            @else
+                            @if (auth()->user()->avatar ===
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png')
+                            <img class="border-success" class="w-auto" style="width: 28px !important; height: 28px !important; cursor: pointer;"
+                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                                alt="{{ auth()->user()->firstname }}">
+                            @else
+                            <img class="border-success" class="w-auto" style="width: 28px !important; height: 28px !important; cursor: pointer;"
+                                src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->firstname }}">
+                            @endif
+                            @endif
+                            @endif
+
+
+                            <div id="dropdownMenuLoggedIn" class="dropdown-menu dropdown-menu-start">
+                                <ul class="list-unstyled mx-0">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('client.profile.index') }}">
+                                            <i class="fa-regular fa-user"></i> Thông tin tài khoản
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('client.logout') }}">
+                                            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        @else
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownLoggedOutButton">
+                                Đăng nhập
+                            </button>
+                            <div id="dropdownMenuLoggedOut" class="dropdown-menu dropdown-menu-start">
+                                <ul>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('client.login') }}">
+                                            <i class="fa-regular fa-user"></i> Đăng nhập người dùng
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('system.auth.login') }}">
+                                            <i class="fa-solid fa-user-doctor"></i> Đăng nhập bác sĩ
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        @endif
+
+
+                        <ul class="d-flex gap-3">
+                            <li>
+                                <a href="{{ route('shop.cart') }}" style="cursor: pointer;">
+                                    <i class="fa fa-shopping-bag"></i> <span>{{ $cartCount ?? 0 }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="humberger__open">
+                    <i class="fa fa-bars"></i>
                 </div>
             </div>
-        </div>
-        <div class="humberger__open">
-            <i class="fa fa-bars"></i>
-        </div>
-    </div>
 </header>
 <!-- Header Section End -->
 
@@ -87,7 +177,7 @@
 <section class="hero hero-normal">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-12">
                 <div class="hero__categories">
                     <div class="hero__categories__all">
                         <i class="fa fa-bars"></i>
@@ -95,42 +185,42 @@
                     </div>
                     <ul>
                         @foreach ($parent_categories as $parent_categories_item)
-                            <li><a href="#">{{ $parent_categories_item->name }}</a></li>
+                        <li><a href="#">{{ $parent_categories_item->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="container">
-                    <div class="dropdown w-100">
-                        <form id="searchForm" action="{{route('shop.shop-grid')}}" method="GET">
-                            <div class="input-group position-relative">
-                                <input type="text" name="search" class="form-control" autocomplete="off"
-                                    id="searchInput" placeholder="Tìm sản phẩm..." style="padding: 13px">
-                                <button class="btn btn-success position-absolute top-50 end-0 translate-middle-y me-2"
-                                    style="padding: 4px 20px; z-index: 1000;" type="submit" id="searchButton">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </form>
-                        <div class="dropdown-menu search-suggestions w-100 p-3" aria-labelledby="searchInput"
-                            id="searchSuggestions">
-                            <div>
-                                <div class="d-flex flex-wrap mb-3" id="productSuggestions">
-                                    <!-- Sản phẩm đề cử sẽ được hiển thị ở đây -->
-                                </div>
+                <div class="dropdown w-100">
+                    <form id="searchForm" action="{{route('shop.shop-grid')}}" method="GET">
+                        <div class="input-group position-relative">
+                            <input type="text" name="search" class="form-control" autocomplete="off"
+                                id="searchInput" placeholder="Tìm sản phẩm..." style="padding: 13px">
+                            <button class="btn btn-success position-absolute top-50 end-0 translate-middle-y me-2"
+                                style="padding: 4px 20px; z-index: 1000;" type="submit" id="searchButton">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="dropdown-menu search-suggestions w-100 p-3" aria-labelledby="searchInput"
+                        id="searchSuggestions">
+                        <div>
+                            <div class="d-flex flex-wrap mb-3" id="productSuggestions">
+                                <!-- Sản phẩm đề cử sẽ được hiển thị ở đây -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div class="hero__search__phone__icon">
-                    <i class="fa fa-phone"></i>
-                </div>
-                <div class="hero__search__phone__text">
-                    <h5>+84 0364911491</h5>
-                    <span>Hỗ trợ 24/7</span>
+            <div class="col-lg-3 col-12 d-none d-lg-block">
+                <div class="hero__search__phone d-flex align-items-center">
+                    <div class="hero__search__phone__icon me-3">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <div class="hero__search__phone__text">
+                        <h5>+84 0364911491</h5>
+                        <span>Hỗ trợ 24/7</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -189,7 +279,7 @@
     // Hàm AJAX gửi dữ liệu đến server để tìm kiếm sản phẩm
     function fetchSuggestions(query) {
         $.ajax({
-            url: '{{ route('shop.search') }}', // Đường dẫn đến server xử lý tìm kiếm
+            url: '{{ route("shop.search") }}', // Đường dẫn đến server xử lý tìm kiếm
             method: 'POST',
             data: {
                 _token: '{{ csrf_token() }}', // Thêm CSRF token
@@ -243,7 +333,7 @@
     // Hàm lấy sản phẩm đề cử khi input trống
     function getSuggestedProducts() {
         $.ajax({
-            url: '{{ route('shop.getSuggestedProducts') }}', // Đảm bảo đường dẫn đúng
+            url: '{{ route("shop.getSuggestedProducts") }}', // Đảm bảo đường dẫn đúng
             method: 'GET',
             success: function(response) {
                 const suggestionsContainer = $('#searchSuggestions'); // Cập nhật đúng phần tử này
@@ -311,3 +401,74 @@
 
 
 
+<!-- <div class="col-lg-6 col-12">
+    <div class="hero__search">
+        <div class="hero__search__form">
+            <form action="#">
+                <div class="input-group">
+                    <input type="text" placeholder="Bạn đang cần gì" class="form-control">
+                    <button type="submit" class="site-btn">TÌM KIẾM</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class="col-lg-3 col-12 d-none d-lg-block">
+    <div class="hero__search__phone d-flex align-items-center">
+        <div class="hero__search__phone__icon me-3">
+            <i class="fa fa-phone"></i>
+        </div>
+        <div class="hero__search__phone__text">
+            <h5>+84 0364911491</h5>
+            <span>Hỗ trợ 24/7</span>
+        </div>
+    </div>
+</div> -->
+
+</div>
+</div>
+</section>
+<!-- Hero Section End -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Dropdown cho đã đăng nhập
+        const loggedInContainer = document.querySelector('.header__login');
+        const loggedInMenu = document.querySelector('#dropdownMenuLoggedIn');
+
+        if (loggedInContainer && loggedInMenu) {
+            loggedInContainer.addEventListener('click', function(event) {
+                event.stopPropagation();
+                loggedInMenu.classList.toggle('show');
+            });
+
+            document.addEventListener('click', function() {
+                loggedInMenu.classList.remove('show');
+            });
+
+            loggedInMenu.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        }
+
+        // Dropdown cho chưa đăng nhập
+        const loggedOutButton = document.querySelector('#dropdownLoggedOutButton');
+        const loggedOutMenu = document.querySelector('#dropdownMenuLoggedOut');
+
+        if (loggedOutButton && loggedOutMenu) {
+            loggedOutButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                loggedOutMenu.classList.toggle('show');
+            });
+
+            document.addEventListener('click', function() {
+                loggedOutMenu.classList.remove('show');
+            });
+
+            loggedOutMenu.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+        }
+    });
+</script>
