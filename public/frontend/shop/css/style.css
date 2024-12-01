@@ -3604,7 +3604,7 @@ footer .contact__list .item__icon {
 .dropdown-menu {
     position: absolute;
     top: 100%;
-    left: 0;
+    right: 0;
     z-index: 1000;
     display: none;
     min-width: 160px;

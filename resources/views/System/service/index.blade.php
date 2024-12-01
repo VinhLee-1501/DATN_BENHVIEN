@@ -510,8 +510,9 @@
 
                             if (response.success) {
                                 toastr.success(response.message);
-                                updateServiceRow(response
-                                    .service); // Gọi hàm cập nhật dòng trong bảng
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 2000);
                             } else {
                                 toastr.error(response.message);
                             }

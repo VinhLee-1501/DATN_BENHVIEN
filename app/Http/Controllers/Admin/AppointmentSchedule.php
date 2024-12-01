@@ -186,8 +186,8 @@ class AppointmentSchedule extends Controller
 
         Order::create([
             'order_id' => strtoupper(Str::random(10)),
-            'role' => 1,
-            'status' => 0,
+            'payment' => 1,
+            'status' => 1,
             'total_price' => 200000
         ]);
         $clicnic = Sclinic::join('schedules', 'schedules.sclinic_id', '=', 'sclinics.sclinic_id')

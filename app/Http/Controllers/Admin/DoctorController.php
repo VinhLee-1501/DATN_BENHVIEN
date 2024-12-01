@@ -12,7 +12,7 @@ use App\Http\Requests\Admin\Doctor\DoctorCreateRequest;
 use App\Mail\DoctorCreated;
 use App\Events\Admin\DoctorCreated as EventDoctor;
 use Illuminate\Support\Facades\Mail;
-use Str;
+use Illuminate\Support\Str;
 class DoctorController extends Controller
 {
     public function index(Request $request)
@@ -103,7 +103,7 @@ class DoctorController extends Controller
         $userId = strtoupper(Str::random(10));
 
         // Tạo mật khẩu mặc định: firstname + user_id
-        $password = bcrypt($request->firstname . $userId);
+        $password = bcrypt($request->phone . $userId);
 
         // Tạo tài khoản người dùng
         $user = User::create([

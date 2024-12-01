@@ -189,7 +189,6 @@ class OrderProductController extends Controller
         ->join('payment_products', 'order_products.order_id', '=', 'payment_products.order_id')
         ->join('users', 'order_products.user_id', '=', 'users.user_id')
         ->where('order_products.order_id', $id)
-        ->where('order_products.order_status', 0)
         ->groupBy(
             'order_products.order_id',
             'order_products.order_phone',

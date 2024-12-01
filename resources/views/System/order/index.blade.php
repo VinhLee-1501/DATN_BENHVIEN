@@ -67,9 +67,9 @@
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
                                     </th>
-                                    <th class="border-bottom-0">
+                                    {{-- <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Họ tên bệnh nhân</h6>
-                                    </th>
+                                    </th> --}}
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
                                     </th>
@@ -97,10 +97,10 @@
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
                                             </td>
-                                            <td class="border-bottom-0">
+                                            {{-- <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">{{ $data->last_name }} {{ $data->first_name }}
                                                 </p>
-                                            </td>
+                                            </td> --}}
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
                                                     {{ Carbon\Carbon::parse($data->created_at)->format('d/m/Y | h:m:s') }}
@@ -149,9 +149,9 @@
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
                                     </th>
-                                    <th class="border-bottom-0">
+                                    {{-- <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Họ tên bệnh nhân</h6>
-                                    </th>
+                                    </th> --}}
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
                                     </th>
@@ -184,11 +184,11 @@
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
                                             </td>
-                                            <td class="border-bottom-0 ">
+                                            {{-- <td class="border-bottom-0 ">
                                                 <p class="mb-0 fw-semibold">{{ $data->last_name }}
                                                     {{ $data->first_name }}
                                                 </p>
-                                            </td>
+                                            </td> --}}
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
                                                     {{ Carbon\Carbon::parse($data->created_at)->format('d/m/Y | h:m:s') }}
@@ -228,9 +228,9 @@
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
                                     </th>
-                                    <th class="border-bottom-0">
+                                    {{-- <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Họ tên bệnh nhân</h6>
-                                    </th>
+                                    </th> --}}
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
                                     </th>
@@ -263,11 +263,11 @@
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
                                             </td>
-                                            <td class="border-bottom-0 ">
+                                            {{-- <td class="border-bottom-0 ">
                                                 <p class="mb-0 fw-semibold">{{ $data->last_name }}
                                                     {{ $data->first_name }}
                                                 </p>
-                                            </td>
+                                            </td> --}}
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
                                                     {{ Carbon\Carbon::parse($data->created_at)->format('d/m/Y | h:m:s') }}
@@ -460,7 +460,7 @@
 
                     // Gọi AJAX để lấy thông tin đơn hàng
                     $.ajax({
-                        url: '/system/orders/edit/' + orderId,
+                        url: '/system/order-services/edit/' + orderId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(response) {
@@ -679,7 +679,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
-                                url: './orders/multipledelete', // Đường dẫn tới route xóa
+                                url: './order-services/multipledelete', // Đường dẫn tới route xóa
                                 type: 'POST', // Sử dụng POST
                                 data: {
                                     _token: '{{ csrf_token() }}', // Token CSRF

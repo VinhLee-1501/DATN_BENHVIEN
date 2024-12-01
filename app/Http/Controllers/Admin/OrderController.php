@@ -136,7 +136,7 @@ class OrderController extends Controller
             'tab' => $tab
         ]);
 
-        $ordersPerpaiddQuery = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
+        $ordersPerpaiddQuery = Order::Join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
             ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
             ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
@@ -161,7 +161,7 @@ class OrderController extends Controller
             ->where('orders.status', '=', '1');
 
         // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng đã thanh toán
-        if ($search && $tab === '2') {
+        if ($search && $tab === '1') {
             $$ordersPerpaiddQuery->where('orders.order_id', 'LIKE', "%$search%");
         }
 
@@ -185,7 +185,7 @@ class OrderController extends Controller
             'itemsPerPage' => $itemsPerPage,
             'tab' => $tab
         ]);
-
+        // dd($ordersUnpaid);
         // Trả về view với các biến khác nhau
         return view('System.order.index', [
             'ordersUnpaid' => $ordersUnpaid,

@@ -2,7 +2,7 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="{{ asset('frontend/shop/img/vietcare.png')}}" alt=""></a>
+        <a href="#"><img src="{{ asset('frontend/shop/img/Vietcare.png')}}" alt=""></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>

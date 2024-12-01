@@ -1,25 +1,6 @@
 @extends('layouts.shop.app')
 
 @section('content')
-    <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="{{ asset('frontend/shop/img/breadcrumb.jpg') }}  ">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>Vegetable’s Package</h2>
-                        <div class="breadcrumb__option">
-                            <a href=" {{ route('shop.shop') }}">Trang chủ</a>
-                            <a href=" {{ route('shop.shop') }}">Danh mục</a>
-                            <span>Sản phẩm</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Breadcrumb Section End -->
-
     <!-- Product Details Section Begin -->
     <section class="product-details spad">
         <div class="container">
@@ -81,7 +62,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="primary-btn">
+                            <button type="submit" class="primary-btn btn-add-to-cart">
                                 vào giỏ hàng
                             </button>
                         </form>
@@ -298,6 +279,40 @@
                     description.classList.add('expanded');
                     toggleButton.textContent = 'Thu gọn';
                 }
+            });
+        });
+    </script>
+
+     <script>
+        document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // Ngăn không cho trang tải lại
+
+                const form = this.closest('form'); // Lấy form liên quan đến button
+                const formData = new FormData(form); // Lấy dữ liệu trong form
+
+                fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content')
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Phản hồi HTTP không hợp lệ!');
+                        }
+                        return response.json(); // Chuyển đổi phản hồi sang JSON
+                    })
+                    .then(data => {
+                        console.log(data.message); // Kiểm tra thông báo trong console
+                        toastr.success(data.message); // Hiển thị thông báo thành công
+                    })
+                    .catch(error => {
+                        console.error('Error:', error.message); // Hiển thị lỗi trong console
+                        toastr.error('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
+                    });
             });
         });
     </script>

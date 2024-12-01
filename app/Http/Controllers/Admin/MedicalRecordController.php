@@ -70,7 +70,7 @@ class MedicalRecordController extends Controller
         $medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
             ->where('treatment_medications.treatment_id', $treatment_id)
             ->get();
-        // dd($medicines);
+        // dd($medical);
         return view(
             'System.medicalrecord.detail',
             [

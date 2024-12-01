@@ -24,6 +24,7 @@
                     <p>Bạn đã đặt lịch khám thành công vào ngày <strong>{{ $book->day }}</strong> lúc
                         <strong>{{ $book->hour }}</strong>. Mời bạn thanh toán trước <strong>140.000</strong> (30%)
                         phí dịch vụ.
+                        Hãy nhấp vào <a href="{{ $book->url }}">liên kết</a>
                     </p>
                     <picture style="display: flex; justify-content: center; align-items: center;">
                         <img src="{{ $message->embed(public_path('backend/assets/images/QR_bank.jpg')) }}"

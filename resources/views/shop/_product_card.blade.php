@@ -54,4 +54,38 @@
             </div>
         </div>
     </div>
+    
 @endforeach
+ <script>
+        document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // Ngăn không cho trang tải lại
+
+                const form = this.closest('form'); // Lấy form liên quan đến button
+                const formData = new FormData(form); // Lấy dữ liệu trong form
+
+                fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content')
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Phản hồi HTTP không hợp lệ!');
+                        }
+                        return response.json(); // Chuyển đổi phản hồi sang JSON
+                    })
+                    .then(data => {
+                        console.log(data.message); // Kiểm tra thông báo trong console
+                        toastr.success(data.message); // Hiển thị thông báo thành công
+                    })
+                    .catch(error => {
+                        console.error('Error:', error.message); // Hiển thị lỗi trong console
+                        toastr.error('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
+                    });
+            });
+        });
+    </script>
