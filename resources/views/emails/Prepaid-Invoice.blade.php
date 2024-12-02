@@ -40,11 +40,6 @@
             overflow: hidden;
         }
 
-        .header-left {
-            float: left;
-            width: 68%;
-        }
-
         .header-left p {
             font-size: 14px;
             margin: 0;
@@ -55,22 +50,7 @@
             font-weight: bold;
         }
 
-        .header-right {
-            float: right;
-            width: 30%;
-            text-align: left;
-        }
 
-        .header-right p {
-            margin: 0;
-
-        }
-
-        .header-right p :first-child {
-            font-size: 12px;
-            font-weight: bold;
-            text-align: left;
-        }
 
         .header img {
             width: 60px;
@@ -145,14 +125,11 @@
         .total-section {
             font-size: 14px;
             text-align: right;
-            margin-top: 12px;
+            margin-top: 20px;
             padding-right: 15px;
             page-break-inside: avoid;
         }
 
-        .total-section p {
-            margin: 3px 0;
-        }
 
         .total-section p span {
             font-weight: bold;
@@ -169,11 +146,6 @@
                 float: none;
             }
 
-            .header-right {
-                float: none;
-                width: 100%;
-                text-align: right;
-            }
         }
 
         /* Styles for print */
@@ -205,21 +177,16 @@
                 <p>Địa chỉ: 315, Nguyễn Văn Linh, An Khánh, Ninh Kiều</p>
                 <p>SDT: 0292.382.0071 - 0292.382.3167</p>
             </div>
-            <div class="header-right">
-                <p><strong>Mã hóa đơn:</strong> {{ $orders->order_id }}</p>
-                <p><strong>Mã bệnh án:</strong> {{ $orders->medical_id }}</p>
-                <p><strong>Mã bệnh nhân:</strong> {{ $orders->patient_id }}</p>
-            </div>
         </div>
 
         <div class="title">Chi tiết hóa đơn</div>
         <div class="subtitle">{{ \Carbon\Carbon::parse($orders->created_at)->format('s:i:h d/m/Y') }}</div>
 
         <div class="info-section">
-            <p><strong>Họ tên:</strong> {{ $orders->last_name }} {{ $orders->first_name }}</p>
-            <p><strong>Năm sinh:</strong> {{ \Carbon\Carbon::parse($orders->birthday)->format('d/m/Y') }}</p>
-            <p><strong>Tuổi:</strong> {{ \Carbon\Carbon::parse($orders->birthday)->age }}</p>
-            <p><strong>Giới tính:</strong> {{ $orders->gender == 1 ? 'Nam' : 'Nữ' }}</p>
+            <p><strong>Mã hóa đơn:</strong> {{ $orders->order_id }}</p>
+            <p><strong>Họ tên:</strong>
+          {{ $orders->name }}
+            </p>
         </div>
 
         <div class="table-container">
@@ -234,22 +201,20 @@
                 <tbody>
                 <tbody>
                     <tr>
-                        <td>1</td>
+                        <td>{{ 1 }}</td>
                         <td>Khám online</td>
-                        <td>{{ number_format(($orders->total_price) * 1000, 0, ',', '.') }} VND</td>
+                        <td>{{ number_format($orders->total_price, 0, ',', '.') }} VND</td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
 
         <div class="footer">
             <div class="payment-method">
-                <p><strong>Hình thức thanh toán:</strong>Tiền mặt</p>
+                <p><strong>Hình thức thanh toán:</strong> {{ $orders->payment == 0 ? 'Tiền mặt' : 'Chuyển khoản' }}</p>
             </div>
-
             <div class="total-section">
-                <p><span>Tiền trả trước:</span> {{ number_format(($orders->total_price * 0.30) * 1000, 0, ',', '.') }} VND</p>
+                <p><span>Trả trước:</span> {{ number_format($orders->total_price * 0.3, 0, ',', '.') }} VND</p>
                 <p><span>Người thu ngân:</span> {{ $orders->cashier }}</p>
             </div>
         </div>

@@ -14,35 +14,35 @@ class ServiceSeeder extends Seeder
         Service::create([
             'service_id' => 'SERVICEID1',
             'name' => 'X-Quang ngực',
-            'price' => 165.00,
+            'price' => 165000,
             'directory_id' => 'DIRECTORY1', // X-Quang
         ]);
         
         Service::create([
             'service_id' => 'SERVICEID2',
             'name' => 'Siêu âm bụng',
-            'price' => 200.00,
+            'price' => 200000,
             'directory_id' => 'DIRECTORY2', // Siêu âm
         ]);
         
         Service::create([
             'service_id' => 'SERVICEID3',
             'name' => 'Nội soi dạ dày',
-            'price' => 350.00,
+            'price' => 350000,
             'directory_id' => 'DIRECTORY3', // Nội soi
         ]);
         
         Service::create([
             'service_id' => 'SERVICEID4',
             'name' => 'Xét nghiệm máu tổng quát',
-            'price' => 120.00,
+            'price' => 120000,
             'directory_id' => 'DIRECTORY4', // Xét nghiệm máu
         ]);
         
         Service::create([
             'service_id' => 'SERVICEID5',
             'name' => 'Chụp CT não',
-            'price' => 500.00,
+            'price' => 500000,
             'directory_id' => 'DIRECTORY5', // Chụp CT
         ]);
         

@@ -15,6 +15,7 @@ Route::prefix('order-services')->middleware('check_login_admin')
     Route::get('/updateStatus/{id}', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
     Route::post('/handlepay', [OrderController::class, 'handlepay'])->name('order.handlepay');
     Route::get('/print/{id}', [OrderController::class, 'print_order'])->name('order.print');
+    Route::get('/print_orderOnline/{id}', [OrderController::class, 'print_orderOnline'])->name('order.print_orderOnline');
     Route::post('/checkout', [OrderController::class, 'checkout_online'])->name('order.checkout');
     Route::get('/momo/callback', [OrderController::class, 'handleCallback'])->name('momo.callback');
  

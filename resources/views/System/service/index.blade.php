@@ -58,7 +58,8 @@
 
                 <div class="col-auto ms-auto d-flex align-items-center">
                     <span class="me-2 d-none d-sm-inline">Hiển thị:</span>
-                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage" aria-label="Items per page">
+                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage"
+                        aria-label="Items per page">
                         <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
                             5
                         </option>
@@ -275,8 +276,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="servicePrice" class="form-label">Giá tiền</label>
-                                    <input type="text" name="price" class="form-control" id="servicePrice"
-                                        placeholder="Nhập giá tiền" aria-label="price" value="{{ old('price') }}">
+                                    <input data-intro="Giá tiền phải có dạng 100000" autocomplete="off" type="text"
+                                        aria-label="price" name="price" class="form-control priceInput"
+                                        id="servicePrice" placeholder="Nhập giá tiền" value="{{ old('price') }}">
                                     <div class="text-danger" id="priceError"></div> <!-- Thêm div để hiển thị lỗi -->
                                 </div>
                             </div>
@@ -336,8 +338,10 @@
 
                                 <div class="mb-3">
                                     <label for="servicePrice" class="form-label">Giá tiền</label>
-                                    <input type="text" name="price" class="form-control" id="servicePriceUpdate"
-                                        placeholder="Nhập giá tiền" aria-label="price" value="{{ old('price') }}">
+                                    <input data-intro="Giá tiền phải có dạng 100000" autocomplete="off" type="text"
+                                        name="price" autocomplete="off" class="form-control priceInput"
+                                        id="servicePriceUpdate" placeholder="Nhập giá tiền" aria-label="price"
+                                        value="{{ old('price') }}">
                                     <div class="text-danger" id="priceErrorUpdate"></div>
                                 </div>
                             </div>
@@ -507,7 +511,7 @@
                         data: $(this).serialize(),
                         success: function(response) {
                             $('#addNewModal').modal('hide'); // Đóng modal sau khi cập nhật
-
+                                window.location.reload();
                             if (response.success) {
                                 toastr.success(response.message);
                                 setTimeout(() => {
@@ -711,6 +715,35 @@
                 if (activeTabId) {
                     $('#' + activeTabId).tab('show'); // Kích hoạt tab được lưu trong sessionStorage
                 }
+            });
+        </script>
+        <script>
+            // Lắng nghe sự kiện focus cho tất cả các phần tử có class "priceInput"
+            document.querySelectorAll('.priceInput').forEach(function(element) {
+                element.addEventListener('focus', function() {
+                    // Chỉ gọi introJs khi input này được focus (con trỏ chuột vào input)
+                    introJs()
+                        .setOptions({
+                            steps: [{
+                                element: '#' + element.id, // Lấy ID của input hiện tại
+                                intro: 'Giá tiền cần đúng định dạng VD 1000.',
+                                position: 'bottom'
+                            }],
+                            showStepNumbers: false, // Tắt số bước
+                            exitOnEsc: true, // Cho phép thoát tour khi nhấn ESC
+                            hidePrev: true, // Ẩn nút "Quay lại"
+                            hideNext: true, // Ẩn nút "Tiếp theo"
+                            doneLabel: 'Hoàn thành', // Tùy chỉnh nhãn nút "Hoàn thành"
+                            showBullets: false, // Ẩn các điểm bullets
+                            overlayOpacity: 0.8, // Độ mờ nền overlay
+                            disableInteraction: true // Ngừng tương tác cho đến khi tour hoàn tất
+                        })
+                        .oncomplete(function() {
+                            // Bạn có thể thêm logic sau khi tour hoàn tất
+                            console.log('Tour hoàn tất!');
+                        })
+                        .start();
+                });
             });
         </script>
     @endpush

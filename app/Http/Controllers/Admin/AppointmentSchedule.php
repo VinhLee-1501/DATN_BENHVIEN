@@ -185,6 +185,7 @@ class AppointmentSchedule extends Controller
         
 
         Order::create([
+            'book_id' => $book->book_id,
             'order_id' => strtoupper(Str::random(10)),
             'payment' => 1,
             'status' => 1,

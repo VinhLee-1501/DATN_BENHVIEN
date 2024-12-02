@@ -59,12 +59,11 @@ class OrderController extends Controller
             )
             ->where('orders.status', '=', '0');
 
-        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng chưa thanh toán
+
         if ($search && $tab === '0') {
             $ordersUnpaidQuery->where('orders.order_id', 'LIKE', "%$search%");
         }
 
-        // Lấy kết quả phân trang cho danh sách đơn hàng chưa thanh toán
         $ordersUnpaid = $ordersUnpaidQuery->groupBy(
             'orders.payment',
             'orders.status',
@@ -85,12 +84,11 @@ class OrderController extends Controller
             'tab' => $tab
         ]);
 
-        // Truy vấn danh sách đơn hàng đã thanh toán (`status = 1`)
-        $ordersPaidQuery = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
-            ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
-            ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
-            ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
-            ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+        // status 1
+        $ordersPerpaiddQuery = Order::join('books', 'books.book_id', '=', 'orders.book_id')
+            ->join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->join('users', 'users.user_id', '=', 'schedules.user_id')
             ->select(
                 'orders.payment',
                 'orders.row_id',
@@ -98,6 +96,94 @@ class OrderController extends Controller
                 'orders.total_price',
                 'orders.order_id',
                 'orders.created_at',
+                'books.day',
+                'books.hour',
+                'books.name',
+                'books.phone',
+                'books.email',
+                'books.symptoms',
+                'specialties.name as specialty',
+                'users.firstname',
+                'users.lastname'
+            )
+            ->where('orders.status', '1')
+            ->orderBy('orders.created_at', 'desc')
+            ->paginate($itemsPerPage)
+            ->appends([
+                'search' => $search,
+                'itemsPerPage' => $itemsPerPage,
+                'tab' => $tab
+            ]);
+
+        if ($search && $tab === '1') {
+            $ordersPerpaiddQuery->where('orders.order_id', 'LIKE', "%$search%");
+        }
+
+
+        $ordersPrepaid = $ordersPerpaiddQuery;
+
+        // status 2
+        $ordersisPerpaiddQuery = Order::join('books', 'books.book_id', '=', 'orders.book_id')
+            ->join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->join('users', 'users.user_id', '=', 'schedules.user_id')
+            ->select(
+                'orders.payment',
+                'orders.row_id',
+                'orders.status',
+                'orders.total_price',
+                'orders.order_id',
+                'orders.created_at',
+                'books.day',
+                'books.hour',
+                'books.name',
+                'books.phone',
+                'books.email',
+                'books.symptoms',
+                'specialties.name as specialty',
+                'users.firstname',
+                'users.lastname'
+            )
+            ->where('orders.status', '2')
+            ->orderBy('orders.created_at', 'desc')
+            ->paginate($itemsPerPage)
+            ->appends([
+                'search' => $search,
+                'itemsPerPage' => $itemsPerPage,
+                'tab' => $tab
+            ]);
+
+        if ($search && $tab === '2') {
+            $ordersisPerpaiddQuery->where('orders.order_id', 'LIKE', "%$search%");
+        }
+
+        $ordersisPrepaid = $ordersisPerpaiddQuery;
+        // stauts 3
+        $ordersPaidQuery = Order::leftJoin('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
+            ->leftJoin('services', 'services.service_id', '=', 'treatment_services.service_id')
+            ->leftJoin('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
+            ->leftJoin('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
+            ->leftJoin('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+            ->leftJoin('books', 'books.book_id', '=', 'orders.book_id')
+            ->leftJoin('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->leftJoin('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->leftJoin('users', 'users.user_id', '=', 'schedules.user_id')
+            ->select(
+                'orders.payment',
+                'orders.row_id',
+                'orders.status',
+                'orders.total_price',
+                'orders.order_id',
+                'orders.created_at',
+                'books.day',
+                'books.hour',
+                'books.name',
+                'books.phone',
+                'books.email',
+                'books.symptoms',
+                'specialties.name as specialty',
+                'users.firstname',
+                'users.lastname',
                 DB::raw('GROUP_CONCAT(services.name SEPARATOR ", ") as service_names'),
                 DB::raw('GROUP_CONCAT(services.price SEPARATOR ", ") as service_prices'),
                 'medical_records.medical_id',
@@ -108,10 +194,10 @@ class OrderController extends Controller
                 'patients.birthday',
                 'patients.patient_id'
             )
-            ->where('orders.status', '=', '2');
+            ->where('orders.status', '=', '3');
 
         // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng đã thanh toán
-        if ($search && $tab === '2') {
+        if ($search && $tab === '3') {
             $ordersPaidQuery->where('orders.order_id', 'LIKE', "%$search%");
         }
 
@@ -123,6 +209,15 @@ class OrderController extends Controller
             'orders.total_price',
             'orders.order_id',
             'orders.created_at',
+            'books.day',
+            'books.hour',
+            'books.name',
+            'books.phone',
+            'books.email',
+            'books.symptoms',
+            'specialties.name',
+            'users.firstname',
+            'users.lastname',
             'medical_records.medical_id',
             'treatment_details.treatment_id',
             'patients.first_name',
@@ -189,6 +284,7 @@ class OrderController extends Controller
         // Trả về view với các biến khác nhau
         return view('System.order.index', [
             'ordersUnpaid' => $ordersUnpaid,
+            'ordersisPrepaid' => $ordersisPrepaid,
             'ordersPaid' => $ordersPaid,
             'ordersPrepaid' => $ordersPrepaid,
             'search' => $search,
@@ -255,7 +351,6 @@ class OrderController extends Controller
                 'patients.patient_id',
                 'users.email'
             )
-            ->orderBy('orders.created_at', 'desc')
             ->first();
 
         // Kiểm tra nếu là yêu cầu AJAX, trả về JSON
@@ -336,6 +431,38 @@ class OrderController extends Controller
         return $pdf->stream('order_invoice_' . $orders->order_id . '.pdf');
     }
 
+    public function print_orderOnline($id)
+    {
+        $orders = Order::join('books', 'books.book_id', '=', 'orders.book_id')
+            ->join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->join('users', 'users.user_id', '=', 'schedules.user_id')
+            ->select(
+                'orders.payment',
+                'orders.row_id',
+                'orders.status',
+                'orders.total_price',
+                'orders.order_id',
+                'orders.created_at',
+                'books.day',
+                'books.hour',
+                'books.name AS book_name',
+                'books.phone AS book_phone',
+                'books.email AS book_email',
+                'books.symptoms AS book_symptoms',
+                'specialties.name AS specialty',
+                'users.firstname AS user_firstname',
+                'users.lastname AS user_lastname'
+            )
+            ->where('orders.order_id', $id)
+            ->orderByDesc('orders.created_at')
+            ->first();
+        
+        $pdf = Pdf::loadView('System.order.pdforderonline', ['orders' => $orders]);
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->stream('order_invoice_' . $orders->order_id . '.pdf');
+    }
+
     function execPostRequest($url, $data)
     {
         $ch = curl_init($url);
@@ -374,20 +501,18 @@ class OrderController extends Controller
         $payment = $request->input('payment_method');
         $id = $request->input('order_id');
         $cash_received = $request->input('cash_received');
-        $cash_receiveds = $cash_received / 1000;
         $change_amount = $request->input('change_amount');
-        $change_amounts = $change_amount / 1000;
         $cashier_name = $request->input('cashier_name');
         $total_amount = $request->input('total_amount');
-       
+
 
         if ($payment == 0) {
             $order = Order::where('row_id', $id)->firstOrFail();
 
             $order->update([
                 'cashier' => $cashier_name,
-                'change_amount' => $change_amounts,
-                'cash_received' => $cash_receiveds,
+                'change_amount' => $change_amount,
+                'cash_received' => $cash_received,
                 'status' => 2,
                 'payment' => $payment,
             ]);
@@ -498,62 +623,60 @@ class OrderController extends Controller
     {
         $user = Auth::user();
 
-        $orders = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
-            ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
-            ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
-            ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
-            ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
-            ->join('users', 'users.phone', '=', 'patients.phone')
-            ->where('orders.order_id', $id)
+        $orders = Order::join('books', 'books.book_id', '=', 'orders.book_id')
+            ->join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
+            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->join('users', 'users.user_id', '=', 'schedules.user_id')
             ->select(
                 'orders.payment',
+                'orders.row_id',
                 'orders.status',
                 'orders.total_price',
                 'orders.order_id',
-                'orders.cashier',
                 'orders.created_at',
-                DB::raw('GROUP_CONCAT(services.name SEPARATOR "|") as service_names'),
-                DB::raw('GROUP_CONCAT(services.price SEPARATOR "|") as service_prices'),
-                'medical_records.medical_id',
-                'treatment_details.treatment_id',
-                'patients.first_name',
-                'patients.last_name',
-                'patients.gender',
-                'patients.birthday',
-                'patients.patient_id',
-                'users.email'
+                'books.day',
+                'books.hour',
+                'books.name',
+                'books.phone',
+                'books.email',
+                'books.symptoms',
+                'specialties.name as specialty',
+                'users.firstname',
+                'users.lastname'
             )
-            ->groupBy(
-                'orders.payment',
-                'orders.status',
-                'orders.cashier',
-                'orders.total_price',
-                'orders.order_id',
-                'orders.created_at',
-                'medical_records.medical_id',
-                'treatment_details.treatment_id',
-                'patients.first_name',
-                'patients.last_name',
-                'patients.gender',
-                'patients.birthday',
-                'patients.patient_id',
-                'users.email'
-            )
-            ->orderBy('orders.created_at', 'desc')
-            ->first();
-            $orderupdate = Order::where('order_id', $id)->first();
-        if ($orders->status == 0) {
-            $orderupdate->update(['status' => 1,  'cashier' => $user->firstname . ' ' . $user->lastname]);
+            ->where('orders.order_id', $id)
+            ->whereIn('orders.status', [1, 2])
+            ->firstOrFail();
 
-            Mail::to($orders->email)->send(new OrdersPrepaidConfirmation($orders));
+        if (!$orders) {
+            return redirect()->route('system.order')->with('error', 'Không tìm thấy đơn hàng.');
+        }
 
-            return redirect()->route('system.order')->with('success', 'Đã xác nhận đơn hàng');
-        } elseif ($orders->status == 1) {
-            $orderupdate->update(['status' => 2,  'cashier' => $user->firstname . ' ' . $user->lastname]);
-          
-            Mail::to($orders->email)->send(new OrderConfirmation($orders));
+        // Lưu thông tin người thu ngân
+        $cashier = $user->firstname . ' ' . $user->lastname;
 
-            return redirect()->route('system.order')->with('success', 'Đã xác nhận đơn hàng');
+        // Kiểm tra trạng thái đơn hàng và cập nhật
+        switch ($orders->status) {
+            case 1:
+                // Từ trạng thái "Đã trả trước" (1) chuyển sang "Đã xác nhận" (2)
+                $orders->update([
+                    'status' => 2,
+                    'cashier' => $cashier
+                ]);
+                Mail::to($orders->email)->send(new OrdersPrepaidConfirmation($orders));
+                return redirect()->route('system.order')->with('success', 'Đã xác nhận đơn hàng');
+
+            case 2:
+                // Từ trạng thái "Đã xác nhận" (2) chuyển sang "Đã hoàn tất" (3)
+                $orders->update([
+                    'status' => 3,
+                    'cashier' => $cashier
+                ]);
+                Mail::to($orders->email)->send(new OrderConfirmation($orders));
+                return redirect()->route('system.order')->with('success', 'Đã hoàn tất đơn hàng');
+
+            default:
+                return redirect()->route('system.order')->with('error', 'Trạng thái đơn hàng không hợp lệ.');
         }
     }
 }

@@ -40,11 +40,6 @@
             overflow: hidden;
         }
 
-        .header-left {
-            float: left;
-            width: 68%;
-        }
-
         .header-left p {
             font-size: 14px;
             margin: 0;
@@ -55,22 +50,7 @@
             font-weight: bold;
         }
 
-        .header-right {
-            float: right;
-            width: 30%;
-            text-align: left;
-        }
 
-        .header-right p {
-            margin: 0;
-
-        }
-
-        .header-right p :first-child {
-            font-size: 12px;
-            font-weight: bold;
-            text-align: left;
-        }
 
         .header img {
             width: 60px;
@@ -169,11 +149,6 @@
                 float: none;
             }
 
-            .header-right {
-                float: none;
-                width: 100%;
-                text-align: right;
-            }
         }
 
         /* Styles for print */
@@ -205,21 +180,17 @@
                 <p>Địa chỉ: 315, Nguyễn Văn Linh, An Khánh, Ninh Kiều</p>
                 <p>SDT: 0292.382.0071 - 0292.382.3167</p>
             </div>
-            <div class="header-right">
-                <p><strong>Mã hóa đơn:</strong> {{ $orders->order_id }}</p>
-                <p><strong>Mã bệnh án:</strong> {{ $orders->medical_id }}</p>
-                <p><strong>Mã bệnh nhân:</strong> {{ $orders->patient_id }}</p>
-            </div>
         </div>
 
         <div class="title">Chi tiết hóa đơn</div>
         <div class="subtitle">{{ \Carbon\Carbon::parse($orders->created_at)->format('s:i:h d/m/Y') }}</div>
 
         <div class="info-section">
-            <p><strong>Họ tên:</strong> {{ $orders->last_name }} {{ $orders->first_name }}</p>
-            <p><strong>Năm sinh:</strong> {{ \Carbon\Carbon::parse($orders->birthday)->format('d/m/Y') }}</p>
-            <p><strong>Tuổi:</strong> {{ \Carbon\Carbon::parse($orders->birthday)->age }}</p>
-            <p><strong>Giới tính:</strong> {{ $orders->gender == 1 ? 'Nam' : 'Nữ' }}</p>
+            <p><strong>Mã hóa đơn:</strong> {{ $orders->order_id }}</p>
+            <p><strong>Họ tên:</strong>
+        
+                    {{ $orders->book_name }}
+            </p>
         </div>
 
         <div class="table-container">
@@ -233,20 +204,11 @@
                 </thead>
                 <tbody>
                 <tbody>
-                    @php
-                        $service_names = explode('|', $orders->service_names);
-                        $service_prices = array_map(fn($price) => $price, explode('|', $orders->service_prices));
-                        $count = 1;
-                        $total_price = array_sum($service_prices); // Tính tổng tiền
-                    @endphp
-
-                    @foreach ($service_names as $index => $service_name)
-                        <tr>
-                            <td>{{ $count++ }}</td>
-                            <td>{{ $service_name }}</td>
-                            <td>{{ number_format($service_prices[$index], 0, ',', '.') }} VND</td>
-                        </tr>
-                    @endforeach
+                    <tr>
+                        <td>{{ 1 }}</td>
+                        <td>Khám online</td>
+                        <td>{{ number_format($orders->total_price, 0, ',', '.') }} VND</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -257,13 +219,12 @@
             </div>
 
             <div class="total-section">
-                <p><span>Phí dịch vụ:</span> 20,000 VND</p>
-                <p><span>Tổng tiền:</span> {{ number_format($total_price + 20000, 0, ',', '.') }} VND</p>
-                @if($orders->payment == 0)
-                <p><span>Khách đưa</span> {{number_format($orders->cash_received, 0, ',', '.')}} VND</p>
-                <p><span>Tiền thừa</span>{{number_format($orders->change_amount, 0, ',', '.')}} VND</p>
+                <p><span>Tổng tiền:</span> {{ number_format($orders->total_price, 0, ',', '.') }} VND</p>
+                @if ($orders->payment == 0)
+                    <p><span>Khách đưa</span> {{ number_format($orders->cash_received, 0, ',', '.') }} VND</p>
+                    <p><span>Tiền thừa</span>{{ number_format($orders->change_amount, 0, ',', '.') }} VND</p>
                 @endif
-                <p><span>Người thu ngân:</span> {{$orders->cashier}}</p>
+                <p><span>Người thu ngân:</span> {{ $orders->cashier }}</p>
             </div>
         </div>
     </div>

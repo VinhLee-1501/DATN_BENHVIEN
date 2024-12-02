@@ -30,6 +30,8 @@ class ServiceRequest extends FormRequest
             'price' => [
                 'required',
                 'regex:/^[1-9]\d*$/',
+                'min:1000',
+                'integer'
             ],
             'directory' => 'required'
         ];
@@ -55,6 +57,7 @@ class ServiceRequest extends FormRequest
             'status.in' => 'Trạng thái chỉ có thể là 0 hoặc 1.',
             'price.required' => 'Giá tiền là bắt buộc.',
             'price.regex' => 'Giá tiền phải là số dương và không có số 0 ở đầu (ví dụ: 1000).',
+            'price.min' => 'Giá tiền nhỏ nhất 1000.',
             'directory.required' => 'Nhóm dịch vụ là bắt buộc.'
         ];
     }

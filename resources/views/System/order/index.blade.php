@@ -14,10 +14,14 @@
                     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
                         type="button" role="tab" aria-controls="nav-home" aria-selected="true">Chưa thanh toán</button>
                     <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Thanh toán trước</button>
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Thanh toán
+                        trước</button>
                     <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
                         type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
-                       Đã thanh toán</button>
+                        Đã thanh toán trước</button>
+                    <button class="nav-link" id="nav-contacts-tab" data-bs-toggle="tab" data-bs-target="#nav-contacts"
+                        type="button" role="tab" aria-controls="nav-contacts" aria-selected="false">
+                        Đã thanh toán</button>
                 </div>
             </nav>
             <div class="row align-items-center me-0">
@@ -84,7 +88,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="activeTable">
+                            <tbody>
                                 @if ($ordersUnpaid->isEmpty())
                                     <tr>
                                         <td colspan="6" class="text-center">
@@ -108,24 +112,17 @@
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
-                                                    {{ number_format($data->total_price * 1000 + 20000, 0, ',', '.') }} VND
+                                                    {{ number_format($data->total_price + 20000, 0, ',', '.') }} VND
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="badge bg-danger mb-0 fw-semibold">Chưa thanh toán</p>
                                             </td>
                                             <td class="border-bottom-0 d-flex">
-                                                @if ($data->payment == 0)
-                                                    <a href="#" class="btn btn-success payment-button"
-                                                        data-order-id="{{ $data->order_id }}" data-bs-target="#payModal">
-                                                        <i class="ti ti-check"></i>
-                                                    </a>
-                                                @else
-                                                    <a href="{{ route('system.order.updateStatus', $data->order_id) }}"
-                                                        class="btn btn-success me-1">
-                                                        <i class="ti ti-check"></i>
-                                                    </a>
-                                                @endif
+                                                <a href="#" class="btn btn-success payment-button"
+                                                    data-order-id="{{ $data->order_id }}" data-bs-target="#payModal">
+                                                    <i class="ti ti-check"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -145,7 +142,6 @@
                         <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr class="text-center">
-                                    <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
                                     </th>
@@ -156,7 +152,7 @@
                                         <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
                                     </th>
                                     <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Tông tiền</h6>
+                                        <h6 class="fw-semibold mb-0">Tổng tiền</h6>
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Trạng thái</h6>
@@ -166,7 +162,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="activeTable">
+                            <tbody>
                                 @if ($ordersPrepaid->isEmpty())
                                     <tr>
                                         <td colspan="6" class="text-center">
@@ -176,19 +172,13 @@
                                     </tr>
                                 @else
                                     @foreach ($ordersPrepaid as $data)
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="order_id[]" value=""
-                                                    class="blogCheckbox">
-                                            </td>
+                                        <tr class="order-row text-center">
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
                                             </td>
-                                            {{-- <td class="border-bottom-0 ">
-                                                <p class="mb-0 fw-semibold">{{ $data->last_name }}
-                                                    {{ $data->first_name }}
-                                                </p>
-                                            </td> --}}
+                                            <td class="border-bottom-0 ">
+                                                <p class="mb-0 fw-semibold">{{ $data->name }}</p>
+                                            </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
                                                     {{ Carbon\Carbon::parse($data->created_at)->format('d/m/Y | h:m:s') }}
@@ -196,17 +186,58 @@
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
-                                                    {{ number_format($data->total_price * 1000 + 20000, 0, ',', '.') }} VND
+                                                    {{ number_format($data->total_price * 0.3, 0, ',', '.') }} VND
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <p class="badge bg-success mb-0 fw-semibold">Thanh toán trước</p>
+                                                <p class="badge bg-warning mb-0 fw-semibold">Thanh toán trước</p>
                                             </td>
                                             <td class="border-bottom-0 d-flex">
                                                 <a href="{{ route('system.order.updateStatus', $data->order_id) }}"
                                                     class="btn btn-success me-1">
                                                     <i class="ti ti-check"></i>
                                                 </a>
+                                                <a class="btn btn-warning" data-bs-toggle="collapse"
+                                                    href="#collapse{{ $data->order_id }}" role="button"
+                                                    aria-expanded="false" aria-controls="collapse{{ $data->order_id }}">
+                                                    <i class="ti ti-arrow-narrow-down"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr id="show">
+                                            <td colspan="7">
+                                                <div class="collapse" id="collapse{{ $data->order_id }}">
+                                                    <div class="card card-body m-0">
+                                                        <h6 class="fw-semibold mb-2 fs-5">Thông tin chi tiết:</h6>
+                                                        <div class="col-md-12 d-flex mt-1">
+                                                            <div class="col-md-6">
+                                                                <p><strong>Mã đơn hàng:</strong> {{ $data->order_id }}</p>
+                                                                <p><strong>Khách hàng:</strong> {{ $data->name }}</p>
+                                                                <p><strong>Sđt:</strong> {{ $data->phone }}</p>
+                                                                <p><strong>Email:</strong> {{ $data->email }}</p>
+                                                                <p><strong>Triệu chứng:</strong> {{ $data->symptoms }}</p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <p><strong>Thời gian</strong>
+                                                                    {{ Carbon\Carbon::parse($data->day)->format('d/m/Y') }}
+                                                                    {{ Carbon\Carbon::parse($data->hour)->format('h:s') }}
+                                                                </p>
+                                                                <p><strong>Bác sĩ:</strong>{{ $data->firstname }}
+                                                                    {{ $data->lastname }}</p>
+                                                                <p><strong>KHoa:</strong> {{ $data->specialty }}</p>
+                                                                <p><strong>Hình thức thanh toán:</strong>
+                                                                    @if ($data->payment == 1)
+                                                                        Momo
+                                                                    @elseif($data->payment == 2)
+                                                                        VNpay
+                                                                    @elseif($data->payment == 3)
+                                                                        Zalopay
+                                                                    @endif
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -221,9 +252,124 @@
 
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                     <div class="table-responsive ">
-                        <table class="table text-nowrap mb-0 align-middle">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
+                                <tr class="text-center">
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Họ tên bệnh nhân</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Tổng tiền</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Trạng thái</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Thao tác</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($ordersisPrepaid->isEmpty())
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <h5 class="text-muted">Không tìm thấy kết quả nào
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($ordersisPrepaid as $data)
+                                        <tr class="order-row text-center">
+                                            <td class="border-bottom-0">
+                                                <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
+                                            </td>
+                                            <td class="border-bottom-0 ">
+                                                <p class="mb-0 fw-semibold">{{ $data->name }}
+                                                </p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">
+                                                    {{ Carbon\Carbon::parse($data->created_at)->format('d/m/Y | h:m:s') }}
+                                                </p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">
+                                                    {{ number_format($data->total_price - $data->total_price * 0.3, 0, ',', '.') }}
+                                                    VND
+                                                </p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="badge bg-info mb-0 fw-semibold">Đã thanh toán trước</p>
+                                            </td>
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-center">
+                                                <a href="{{ route('system.order.updateStatus', $data->order_id) }}"
+                                                    class="btn btn-success me-1">
+                                                    <i class="ti ti-check"></i>
+                                                </a>
+                                                <a class="btn btn-warning" data-bs-toggle="collapse"
+                                                    href="#collapse{{ $data->order_id }}" role="button"
+                                                    aria-expanded="false" aria-controls="collapse{{ $data->order_id }}">
+                                                    <i class="ti ti-arrow-narrow-down"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr id="show">
+                                            <td colspan="7">
+                                                <div class="collapse" id="collapse{{ $data->order_id }}">
+                                                    <div class="card card-body m-0">
+                                                        <h6 class="fw-semibold mb-2 fs-5">Thông tin chi tiết:</h6>
+                                                        <div class="col-md-12 d-flex mt-1">
+                                                            <div class="col-md-6">
+                                                                <p><strong>Mã đơn hàng:</strong> {{ $data->order_id }}</p>
+                                                                <p><strong>Khách hàng:</strong> {{ $data->name }}</p>
+                                                                <p><strong>Sđt:</strong> {{ $data->phone }}</p>
+                                                                <p><strong>Email:</strong> {{ $data->email }}</p>
+                                                                <p><strong>Triệu chứng:</strong> {{ $data->symptoms }}</p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <p><strong>Thời gian</strong>
+                                                                    {{ Carbon\Carbon::parse($data->day)->format('d/m/Y') }}
+                                                                    {{ Carbon\Carbon::parse($data->hour)->format('h:s') }}
+                                                                </p>
+                                                                <p><strong>Bác sĩ:</strong>{{ $data->firstname }}
+                                                                    {{ $data->lastname }}</p>
+                                                                <p><strong>KHoa:</strong> {{ $data->specialty }}</p>
+                                                                <p><strong>Hình thức thanh toán:</strong>
+                                                                    @if ($data->payment == 1)
+                                                                        Momo
+                                                                    @elseif($data->payment == 2)
+                                                                        VNpay
+                                                                    @elseif($data->payment == 3)
+                                                                        Zalopay
+                                                                    @endif
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                        <div class="mt-3 d-flex justify-content-center">
+                            {{ $ordersisPrepaid->links() }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="nav-contacts" role="tabpanel" aria-labelledby="nav-contacts-tab">
+                    <div class="table-responsive ">
+                        <table class="table table-bordered text-nowrap mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                                <tr class="text-center">
                                     <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
@@ -235,7 +381,7 @@
                                         <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
                                     </th>
                                     <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Tông tiền</h6>
+                                        <h6 class="fw-semibold mb-0">Tổng tiền</h6>
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Trạng thái</h6>
@@ -245,7 +391,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="activeTable">
+                            <tbody>
                                 @if ($ordersPaid->isEmpty())
                                     <tr>
                                         <td colspan="6" class="text-center">
@@ -255,7 +401,7 @@
                                     </tr>
                                 @else
                                     @foreach ($ordersPaid as $data)
-                                        <tr class="text-center">
+                                        <tr class="order-row text-center">
                                             <td>
                                                 <input type="checkbox" name="order_id[]" value=""
                                                     class="blogCheckbox">
@@ -266,6 +412,17 @@
                                             {{-- <td class="border-bottom-0 ">
                                                 <p class="mb-0 fw-semibold">{{ $data->last_name }}
                                                     {{ $data->first_name }}
+                                            <td class="border-bottom-0 ">
+                                                <p class="mb-0 fw-semibold">
+                                                    @if ($data->name)
+                                                        <!-- Nếu có tên, hiển thị tên bệnh nhân -->
+                                                        {{ $data->name }}
+                                                    @elseif($data->first_name && $data->last_name)
+                                                        <!-- Nếu không có tên, hiển thị họ tên -->
+                                                        {{ $data->first_name }} {{ $data->last_name }}
+                                                    @else
+                                                        Chưa có thông tin bệnh nhân
+                                                    @endif
                                                 </p>
                                             </td> --}}
                                             <td class="border-bottom-0">
@@ -275,17 +432,24 @@
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
-                                                    {{ number_format($data->total_price * 1000 + 20000, 0, ',', '.') }} VND
+                                                    {{ number_format($data->total_price, 0, ',', '.') }} VND
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="badge bg-success mb-0 fw-semibold">Đã thanh toán</p>
                                             </td>
                                             <td class="border-bottom-0 d-flex justify-content-center align-items-center">
-                                                <a href="{{ route('system.order.print', $data->order_id) }}"
-                                                    class="btn btn-primary me-1" target="_blank">
-                                                    <i class="ti ti-printer"></i>
-                                                </a>
+                                                @if (!empty($data->treatment_id))
+                                                    <a href="{{ route('system.order.print', $data->order_id) }}"
+                                                        class="btn btn-primary me-1" target="_blank">
+                                                        <i class="ti ti-printer"></i>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('system.order.print_orderOnline', $data->order_id) }}"
+                                                        class="btn btn-primary me-1" target="_blank">
+                                                        <i class="ti ti-printer"></i>
+                                                    </a>
+                                                @endif
                                                 <a data-id="{{ $data->order_id }}" class="btn btn-danger me-1">
                                                     <i class="ti ti-trash"></i>
                                                 </a>
@@ -414,7 +578,7 @@
                     // Lấy giá trị của select
                     var itemsPerPage = $(this).val();
 
-                    // Lấy URL hiện tại
+                    // Lấy \ hiện tại
                     var url = new URL(window.location.href);
 
                     // Thêm hoặc cập nhật tham số itemsPerPage trong URL
@@ -431,7 +595,7 @@
                 document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(function(tabButton) {
                     tabButton.addEventListener('shown.bs.tab', function(e) {
                         // Kiểm tra nếu tab đang được chọn là tab "profile"
-                        if (e.target.id === 'nav-contact-tab') {
+                        if (e.target.id === 'nav-contacts-tab') {
                             document.getElementById('deleteButton').style.display =
                                 'inline-block'; // Hiển thị nút xóa
                         } else {
@@ -443,7 +607,7 @@
 
                 // Kiểm tra trạng thái tab khi trang được tải để đảm bảo trạng thái của nút "Xóa" đúng lúc load trang
                 const activeTab = document.querySelector('button[data-bs-toggle="tab"].active');
-                if (activeTab && activeTab.id === 'nav-contact-tab') {
+                if (activeTab && activeTab.id === 'nav-contacts-tab') {
                     document.getElementById('deleteButton').style.display = 'inline-block'; // Hiển thị nút xóa
                 } else {
                     document.getElementById('deleteButton').style.display = 'none'; // Ẩn nút xóa
@@ -487,7 +651,7 @@
                                 if (serviceNames.length === servicePrices.length) {
 
                                     $.each(serviceNames, function(index, serviceName) {
-                                        const price = servicePrices[index] * 1000;
+                                        const price = servicePrices[index];
                                         serviceTableBody.append(
                                             `<tr>
                                                 <td>${index + 1}</td>
@@ -502,7 +666,7 @@
                                 $('#serviceFee').text(new Intl.NumberFormat('vi-VN').format(20000) +
                                     ' VND');
                                 $('#totalAmount').text(new Intl.NumberFormat('vi-VN').format(data
-                                    .total_price * 1000 + 20000) + ' VND');
+                                    .total_price + 20000) + ' VND');
 
                                 // Kích hoạt modal
                                 $('#payModal').modal('show');
@@ -577,9 +741,6 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                toastr.success(response.message);
-
-                                // Kiểm tra giá trị của payment_method
                                 if (paymentMethod === "0") {
                                     if (response.pdf_url) {
                                         window.open(response.pdf_url, '_blank'); // Mở file PDF
@@ -647,7 +808,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             const couponId = deleteButton.getAttribute('data-id');
-                            const deleteUrl = '/system/orders/delete/' + couponId;
+                            const deleteUrl = '/system/order-services/delete/' + couponId;
                             window.location.href = deleteUrl;
                         }
                     });
@@ -722,25 +883,27 @@
             });
         </script>
         <script>
-             $(document).ready(function() {
-                    // Khi người dùng chuyển tab, cập nhật giá trị của input ẩn "tabInput"
-                    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-                        const activeTab = $(e.target).attr('id');
-                        if (activeTab === 'nav-home-tab') {
-                            $('#tabInput').val(0);
-                        } else if (activeTab === 'nav-profile-tab') {
-                            $('#tabInput').val(1);
-                        } else if (activeTab === 'nav-contact-tab') {
-                            $('#tabInput').val(2);
-                        }
-                    });
-
-                    // Sự kiện khi nhấn nút tìm kiếm
-                    $('#searchButton').on('click', function() {
-                        // Trước khi gửi form, đảm bảo giá trị của "tabInput" đã được cập nhật đúng
-                        $('#searchForm').submit();
-                    });
+            $(document).ready(function() {
+                // Khi người dùng chuyển tab, cập nhật giá trị của input ẩn "tabInput"
+                $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    const activeTab = $(e.target).attr('id');
+                    if (activeTab === 'nav-home-tab') {
+                        $('#tabInput').val(0);
+                    } else if (activeTab === 'nav-profile-tab') {
+                        $('#tabInput').val(1);
+                    } else if (activeTab === 'nav-contact-tab') {
+                        $('#tabInput').val(2);
+                    } else if (activeTab === 'nav-contacts-tab') {
+                        $('#tabInput').val(3);
+                    }
                 });
+
+                // Sự kiện khi nhấn nút tìm kiếm
+                $('#searchButton').on('click', function() {
+                    // Trước khi gửi form, đảm bảo giá trị của "tabInput" đã được cập nhật đúng
+                    $('#searchForm').submit();
+                });
+            });
         </script>
     @endpush
 @endsection

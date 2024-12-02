@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Tác giả</label>
-                                    <input type="text" id="authorInput" name="author" disabled class="form-control"
+                                    <input type="text" id="authorInput" name="author" readonly class="form-control"
                                         value="{{ $user->lastname }} {{ $user->firstname }}" placeholder="Tác giả">
                                     @error('author')
                                         <div class="text-danger">*{{ $message }}</div>

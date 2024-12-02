@@ -29,7 +29,9 @@
     
     <link rel="stylesheet" href="{{ asset('backend/assets/css/filepond.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/summernote.css')}}">
-
+    
+    {{-- introjs --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/introjs.min.css">
 
     {{-- fullCalendar --}}
     <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.4.2/main.min.css' rel='stylesheet' />
@@ -91,6 +93,7 @@
     {{-- Blogs --}}
     <script src="{{ asset('backend/assets/js/app.js') }}"></script>
     <script src="{{ asset('backend/assets/css/lang/summernote-vi-VN.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/intro.min.js"></script>
     @stack('scripts')
 
     <x-message.message></x-message.message>

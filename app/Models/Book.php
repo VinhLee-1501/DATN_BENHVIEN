@@ -24,4 +24,8 @@ class Book extends Model
     {
         return $this->hasOne(MedicalRecord::class, 'book_id', 'book_id');
     }
+    public function orders()
+    {
+        return $this->hasOne(Order::class, 'book_id', 'book_id');
+    }
 }
