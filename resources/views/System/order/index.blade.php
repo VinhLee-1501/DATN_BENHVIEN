@@ -71,9 +71,9 @@
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
                                     </th>
-                                    {{-- <th class="border-bottom-0">
+                                    <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Họ tên bệnh nhân</h6>
-                                    </th> --}}
+                                    </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
                                     </th>
@@ -101,10 +101,10 @@
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
                                             </td>
-                                            {{-- <td class="border-bottom-0">
+                                            <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">{{ $data->last_name }} {{ $data->first_name }}
                                                 </p>
-                                            </td> --}}
+                                            </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
                                                     {{ Carbon\Carbon::parse($data->created_at)->format('d/m/Y | h:m:s') }}
@@ -145,9 +145,9 @@
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
                                     </th>
-                                    {{-- <th class="border-bottom-0">
+                                    <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Họ tên bệnh nhân</h6>
-                                    </th> --}}
+                                    </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
                                     </th>
@@ -374,9 +374,9 @@
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã hóa đơn</h6>
                                     </th>
-                                    {{-- <th class="border-bottom-0">
+                                    <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Họ tên bệnh nhân</h6>
-                                    </th> --}}
+                                    </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Ngày xuất bản</h6>
                                     </th>
@@ -409,9 +409,6 @@
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->order_id }}</p>
                                             </td>
-                                            {{-- <td class="border-bottom-0 ">
-                                                <p class="mb-0 fw-semibold">{{ $data->last_name }}
-                                                    {{ $data->first_name }}
                                             <td class="border-bottom-0 ">
                                                 <p class="mb-0 fw-semibold">
                                                     @if ($data->name)
@@ -424,7 +421,7 @@
                                                         Chưa có thông tin bệnh nhân
                                                     @endif
                                                 </p>
-                                            </td> --}}
+                                            </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
                                                     {{ Carbon\Carbon::parse($data->created_at)->format('d/m/Y | h:m:s') }}

@@ -224,7 +224,7 @@
                     <p><span>Khách đưa</span> {{ number_format($orders->cash_received, 0, ',', '.') }} VND</p>
                     <p><span>Tiền thừa</span>{{ number_format($orders->change_amount, 0, ',', '.') }} VND</p>
                 @endif
-                <p><span>Người thu ngân:</span> {{ $orders->cashier }}</p>
+                <p><span>Người thu ngân:</span> {{ $orders->user_lastname }} {{$orders->user_firstname}}</p>
             </div>
         </div>
     </div>

@@ -231,56 +231,8 @@ class OrderController extends Controller
             'tab' => $tab
         ]);
 
-        $ordersPerpaiddQuery = Order::Join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
-            ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
-            ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
-            ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
-            ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
-            ->select(
-                'orders.payment',
-                'orders.row_id',
-                'orders.status',
-                'orders.total_price',
-                'orders.order_id',
-                'orders.created_at',
-                DB::raw('GROUP_CONCAT(services.name SEPARATOR ", ") as service_names'),
-                DB::raw('GROUP_CONCAT(services.price SEPARATOR ", ") as service_prices'),
-                'medical_records.medical_id',
-                'treatment_details.treatment_id',
-                'patients.first_name',
-                'patients.last_name',
-                'patients.gender',
-                'patients.birthday',
-                'patients.patient_id'
-            )
-            ->where('orders.status', '=', '1');
-
-        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng đã thanh toán
-        if ($search && $tab === '1') {
-            $$ordersPerpaiddQuery->where('orders.order_id', 'LIKE', "%$search%");
-        }
-
-        // Lấy kết quả phân trang cho danh sách đơn hàng đã thanh toán
-        $ordersPrepaid  = $ordersPerpaiddQuery->groupBy(
-            'orders.payment',
-            'orders.status',
-            'orders.row_id',
-            'orders.total_price',
-            'orders.order_id',
-            'orders.created_at',
-            'medical_records.medical_id',
-            'treatment_details.treatment_id',
-            'patients.first_name',
-            'patients.last_name',
-            'patients.gender',
-            'patients.birthday',
-            'patients.patient_id'
-        )->orderBy('orders.created_at', 'desc')->paginate($itemsPerPage)->appends([
-            'search' => $search,
-            'itemsPerPage' => $itemsPerPage,
-            'tab' => $tab
-        ]);
-        // dd($ordersUnpaid);
+       
+      
         // Trả về view với các biến khác nhau
         return view('System.order.index', [
             'ordersUnpaid' => $ordersUnpaid,
@@ -457,7 +409,7 @@ class OrderController extends Controller
             ->where('orders.order_id', $id)
             ->orderByDesc('orders.created_at')
             ->first();
-        
+    
         $pdf = Pdf::loadView('System.order.pdforderonline', ['orders' => $orders]);
         $pdf->setPaper('A4', 'landscape');
         return $pdf->stream('order_invoice_' . $orders->order_id . '.pdf');
@@ -505,7 +457,6 @@ class OrderController extends Controller
         $cashier_name = $request->input('cashier_name');
         $total_amount = $request->input('total_amount');
 
-
         if ($payment == 0) {
             $order = Order::where('row_id', $id)->firstOrFail();
 
@@ -530,7 +481,7 @@ class OrderController extends Controller
             $accessKey = 'klm05TvNBzhg7h7j';
             $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
             $orderInfo = "Thanh toán qua MoMo";
-            $amount = $total_amount * 1000; // Chuyển đổi số tiền
+            $amount = $total_amount; // Chuyển đổi số tiền
             $ID = $id;
             $orderId = time() . ""; // Unique Order ID
             $redirectUrl = route('system.momo.callback');
@@ -586,35 +537,32 @@ class OrderController extends Controller
         // Lấy dữ liệu từ query string
 
         $amount = $request->input('amount');
-
-        $total_amount = $amount / 1000;
-
+        $message = $request->input('message');
         $extraData = $request->input('extraData');
-
-        // Giải mã extraData
+      
         $extraDataDecoded = json_decode($extraData, true); // Chuyển JSON thành mảng PHP
 
-        // Lấy các giá trị từ extraData
         $cashierName = $extraDataDecoded['cashier_name'] ?? null;
         $orderID = $extraDataDecoded['ID'] ?? null;
-
-        // Kiểm tra và cập nhật trạng thái đơn hàng
         $order = Order::where('order_id', $orderID)->first();
 
-        if (!$order) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Đơn hàng không tồn tại.',
-            ], 404);
+            if (!$order) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Đơn hàng không tồn tại.',
+                ], 404);
+            }
+            
+        if($message === 'Successful.'){
+        
+            $order->update([
+                'cashier' => $cashierName,
+                'status' => 3,
+                'payment' => 1,
+                'total_amount' => $amount,
+    
+            ]);
         }
-
-        $order->update([
-            'cashier' => $cashierName,
-            'status' => 2,
-            'payment' => 1,
-            'total_amount' => $total_amount,
-
-        ]);
 
         return redirect()->route('system.order')->with('susses', 'Thanh toán hóa đơn thành công');
     }
@@ -663,7 +611,7 @@ class OrderController extends Controller
                     'status' => 2,
                     'cashier' => $cashier
                 ]);
-                Mail::to($orders->email)->send(new OrdersPrepaidConfirmation($orders));
+                // Mail::to($orders->email)->send(new OrdersPrepaidConfirmation($orders));
                 return redirect()->route('system.order')->with('success', 'Đã xác nhận đơn hàng');
 
             case 2:
@@ -672,7 +620,7 @@ class OrderController extends Controller
                     'status' => 3,
                     'cashier' => $cashier
                 ]);
-                Mail::to($orders->email)->send(new OrderConfirmation($orders));
+                // Mail::to($orders->email)->send(new OrderConfirmation($orders));
                 return redirect()->route('system.order')->with('success', 'Đã hoàn tất đơn hàng');
 
             default:
