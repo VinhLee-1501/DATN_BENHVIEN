@@ -69,6 +69,7 @@ class MedicalRecordDocotrController extends Controller
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->select('medical_records.*', 'users.lastname as lastname', 'users.firstname as firstname')
             ->orderBy('medical_records.created_at', 'desc')
+            ->whereNotNull('medical_records.diaginsis')
             ->limit(5)
             ->get();
 
@@ -139,6 +140,7 @@ class MedicalRecordDocotrController extends Controller
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
             ->where('medical_id', $medical_id)
+            ->whereNotNull('medical_records.diaginsis')
             ->select(
                 'users.firstname as first_name_doctor',
                 'users.lastname as last_name_doctor',

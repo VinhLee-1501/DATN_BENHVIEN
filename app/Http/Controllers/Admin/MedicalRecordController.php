@@ -17,6 +17,7 @@ class MedicalRecordController extends Controller
     {
         $query = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
+            ->whereNotNull('medical_records.diaginsis')
             ->distinct()
             ->orderby('row_id', 'desc');
 

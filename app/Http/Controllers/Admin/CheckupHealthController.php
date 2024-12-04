@@ -71,6 +71,7 @@ class CheckupHealthController extends Controller
                 ->where('medical_records.patient_id', $patient_id)
                 ->groupBy('medical_records.medical_id', 'patients.patient_id', 'patients.first_name', 'patients.last_name', 'patients.gender')
                 ->orderBy('medical_records.created_at', 'desc')
+                ->whereNotNull('medical_records.diaginsis')
                 ->limit(3)
                 ->get();
             $user = [
@@ -149,6 +150,7 @@ class CheckupHealthController extends Controller
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
             ->where('medical_id', $medical_id)
+            ->whereNotNull('medical_records.diaginsis')
             ->select(
                 'users.firstname as first_name_doctor',
                 'users.lastname as last_name_doctor',
@@ -316,6 +318,7 @@ class CheckupHealthController extends Controller
             $medical_patient = MedicalRecord::where('patient_id', $patient_id)
                 ->join('users', 'users.user_id', '=', 'medical_records.user_id')
                 ->select('medical_records.*', 'users.lastname as lastname', 'users.firstname as firstname')
+                ->whereNotNull('medical_records.diaginsis')
                 ->orderBy('medical_records.created_at', 'desc')
                 ->limit(3)
                 ->get();
@@ -402,6 +405,7 @@ class CheckupHealthController extends Controller
         $medical_patient = MedicalRecord::where('patient_id', $patient_id)
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->select('medical_records.*', 'users.lastname as lastname', 'users.firstname as firstname')
+            ->whereNotNull('medical_records.diaginsis')
             ->orderBy('medical_records.created_at', 'desc')
             ->limit(3)
             ->get();

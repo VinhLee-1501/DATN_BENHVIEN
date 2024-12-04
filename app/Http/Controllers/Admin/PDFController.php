@@ -55,9 +55,10 @@ class PDFController extends Controller
             ->get();
            
             $order_id = $order[0]->order_id;
+            $total = $totalprice[0]->total_price + 20000;
         $data = [
             'services' => $services,
-            'totalprice' => $totalprice,
+            'total' => $total,
             'medical' => $medical,
             'specialty' => $specialty,
             'order_id' => $order_id,

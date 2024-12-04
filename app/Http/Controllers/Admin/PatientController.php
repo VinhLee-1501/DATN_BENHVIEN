@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Medical\CheckupPatientRequest;
 use App\Models\MedicalRecord;
 use App\Http\Requests\Admin\patient\PatientRequest;
 use App\Models\Patient;
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -73,9 +76,43 @@ class PatientController extends Controller
             'emergency_contact' => $request->input('emergency_contact'),
         ]);
 
-
-
-        // Thông báo thành công và chuyển hướng về trang danh sách bệnh nhân
         return redirect()->route('system.patient')->with('success', 'Thông tin bệnh nhân đã được cập nhật thành công.');
+    }
+
+    public function create(){
+        return view('System.patients.create');
+    }
+    
+    public function storePatient(CheckupPatientRequest $request)
+    {
+
+            $user = new User();
+            $user->user_id = strtoupper(Str::random(10));
+            $user->firstname = $request->input('first_name');
+            $user->lastname = $request->input('last_name');
+
+            $user->password = $user->user_id . '12345';
+            $user->phone = $request->input('phone');;
+            $user->role = 0;
+            $user->save();
+        
+      
+            $patient = new Patient();
+            $patient->patient_id = $request->input('patient_id');
+            $patient->first_name = $request->input('first_name');
+            $patient->last_name = $request->input('last_name');
+            $patient->phone = $request->input('phone');
+            $patient->gender = $request->input('gender');
+            $patient->cccd = $request->input('cccd');
+            $patient->birthday = $request->input('age');
+            $patient->address = $request->input('address');
+            $patient->occupation = $request->input('occupation');
+            $patient->national = $request->input('national');
+            $patient->insurance_number = $request->input('insurance_number');
+            $patient->emergency_contact = $request->input('emergency_contact');
+
+            $patient->save();
+
+        return redirect()->route('system.checkupHealth.create')->with('success', 'Lưu thông tin bệnh nhân thành công.');
     }
 }

@@ -125,16 +125,6 @@
                                             <div class="text-danger">*{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-12 mb-2">
-                                        <label for="insurance_number">Số bảo hiểm</label>
-                                        <input type="text"
-                                            class="form-control @error('insurance_number') is-invalid @enderror"
-                                            id="insurance_number" name="insurance_number"
-                                            value="{{ old('insurance_number') }}">
-                                        @error('insurance_number')
-                                            <div class="text-danger">*{{ $message }}</div>
-                                        @enderror
-                                    </div>
                                     <div class="col-md-12 text-end mt-2">
                                         <button type="submit" class="btn btn-success btn-sm">Lưu bệnh nhân</button>
                                     </div>
@@ -182,10 +172,6 @@
                                 <div class="d-flex m-1">
                                     <label for="patient_name">Quốc tịch: </label>
                                     <b>{{ $user['patient']->national }}</b>
-                                </div>
-                                <div class="d-flex m-1">
-                                    <label for="patient_name">Số bảo hiểm: </label>
-                                    <b> {{ $user['patient']->Insurance_number }}</b>
                                 </div>
                             </div>
                         @endif
@@ -271,9 +257,7 @@
                                             <div class="text-danger">*{{ $message }}</div>
                                         @enderror
                                     </div>
-    
                                 </div>
-                                
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">

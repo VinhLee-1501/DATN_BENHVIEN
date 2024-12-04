@@ -94,7 +94,7 @@
                                 <strong id="totalAmout">
                                     Tổng cộng:
                                     @isset($totalprice[0]->total_price)
-                                        {{ Number::format($totalprice[0]->total_price) }}.000VND
+                                        {{ Number::format($totalprice[0]->total_price) }}VND
                                     @endisset
                                 </strong>
                             </div>

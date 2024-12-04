@@ -146,12 +146,18 @@
                 <tr>
                     <td>{{ $int }}</td>
                     <td>{{ $item->name }}</td>
-                    <td>{{ $item->price }}.000 VNĐ</td>
+                    <td>{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
+                </tr>
             @endforeach
+            <tr>
+                <td></td>
+                <td>Phí dịch vụ</td>
+                <td>{{ number_format(20000, 0, ',', '.') }} VNĐ</td>
+            </tr>
         </tbody>
     </table>
     <div class="note">
-        <p class="total_price">Tổng cộng: {{ $data['totalprice'][0]->total_price }}.000 VNĐ</p>
+        <p class="total_price">Tổng cộng: {{ number_format($data['total'], 0, ',', '.') }} VNĐ</p>
         <p class="notes"><strong>Ghi chú:</strong> </p>
     </div>
 

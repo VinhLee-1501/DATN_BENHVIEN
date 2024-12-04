@@ -30,10 +30,8 @@ class CheckupPatientRequest extends FormRequest
             'address' => 'required',
             'cccd' => 'required|size:12',
             'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/',
-            // 'occupation' => 'required',
-            // 'emergency_contact' => 'required',
             'national' => 'required',
-            // 'insurance_number' => 'required|unique:patients,insurance_number',
+           
             
         ];
     }

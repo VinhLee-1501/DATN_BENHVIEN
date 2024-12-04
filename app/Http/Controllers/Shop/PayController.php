@@ -261,8 +261,6 @@ class PayController extends Controller
             $vnp_BankCode = 'NCB';
             $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
 
-            // dd($vnp_TxnRef);
-
             $inputData = array(
                 "vnp_Version" => "2.1.0",
                 "vnp_TmnCode" => $vnp_TmnCode,

@@ -76,10 +76,6 @@
                                 <label for="patient_name">Quốc tịch: </label>
                                 <b>{{ $patient->national }}</b>
                             </div>
-                            <div class="d-flex m-1">
-                                <label for="patient_name">Số bảo hiểm: </label>
-                                <b> {{ $patient->Insurance_number }}</b>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,14 +117,14 @@
                                                 <tr>
                                                     <td>{{ $count++ }}</td>
                                                     <td>{{ $data->name }}</td>
-                                                    <td>{{ $data->price }}.000 VNĐ</td>
+                                                    <td>{{ number_format($data->price, 0, ',', '.') }} VNĐ</td>                                          
                                                 </tr>
                                             @endforeach
                                         @endif
                                     </tbody>
                                 </table>
                                 @if (isset($totalprice) && !$totalprice->isEmpty())
-                                    <span id="totalAmout">Tổng cộng: {{ $totalprice[0]->total_price }}.000 VNĐ</span>
+                                    <span id="totalAmout">Tổng cộng: {{ number_format($totalprice[0]->total_price, 0, ',', '.') }} VNĐ</span>
                                     <div class="float-xxl-end">
                                         <a href="{{ route('system.pdfService', $data->treatment_id) }}"
                                             class="btn btn-success btn-sm" type="btn">In Phiếu</a>
