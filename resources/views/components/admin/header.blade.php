@@ -20,22 +20,27 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="mx-3">
                             @if (auth()->user()->role == 1)
-                                <div class="badge bg-danger">
-                                    Quản trị viên
-                                </div>
+                            <div class="badge bg-danger">
+                                Quản trị viên
+                            </div>
                             @elseif (auth()->user()->role == 2)
-                                <div class="badge bg-success">
-                                    Tài khoản bác sĩ
-                                </div>
+                            <div class="badge bg-success">
+                                Tài khoản bác sĩ
+                            </div>
+
+                            @elseif(auth()->user()->role == 3)
+                            <div class="badge bg-primary">
+                                Nhân viên </div>
                             @endif
+
 
                         </span>
                         @if (empty(auth()->user()->avatar))
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png" alt="" width="35"
-                                height="35">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png" alt="" width="35"
+                            height="35">
                         @else
-                            <img src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}" alt=""
-                                width="35" height="35">
+                        <img src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}" alt=""
+                            width="35" height="35">
                         @endif
 
                     </a>

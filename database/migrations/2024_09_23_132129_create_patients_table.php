@@ -17,8 +17,8 @@ return new class extends Migration
             $table->date('birthday');
             $table->string('address', 255);
             $table->string('cccd', 12)->nullable();
-            $table->bigInteger('insurance_number')->nullable(); 
-            $table->bigInteger('emergency_contact')->nullable();
+            $table->string('insurance_number')->nullable(); 
+            $table->string('emergency_contact')->nullable();
             $table->string('occupation', 30)->nullable();
             $table->string('national');
             $table->string('phone',10)->nullable();

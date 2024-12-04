@@ -16,7 +16,7 @@ class PatientRequest extends FormRequest
         // Lấy patient_id từ route
         $id = $this->route('patient_id'); // lấy patient_id từ URL
         return [
-            'patient_id'         => 'required|string|max:10|unique:patients,patient_id,' . $id . ',patient_id', // Sửa đổi ở đây
+            'patient_id'         => 'required|string|max:10|unique:patients,patient_id,' . $id . ',patient_id',
             'first_name'          => 'required|string|max:50',
             'last_name'          => 'required|string|max:50',
             'gender'             => 'required|boolean',
@@ -24,8 +24,8 @@ class PatientRequest extends FormRequest
             'address'            => 'required|string|max:255',
             'occupation'         => 'required|string|max:30',
             'national'           => 'required|string|max:255',
-            'phone'              => 'required|numeric|digits_between:10,11|unique:patients,phone,' . $id . ',patient_id', // Sửa đổi ở đây
-            'insurance_number'   => 'required|numeric|digits_between:1,10|unique:patients,insurance_number,' . $id . ',patient_id',
+            'phone'              => 'required|numeric|digits_between:10,11|unique:patients,phone,' . $id . ',patient_id',
+            'insurance_number'   => 'numeric|digits_between:1,10|unique:patients,insurance_number,' . $id . ',patient_id',
             'emergency_contact'  => 'required|numeric|digits_between:10,11',
         ];
     }

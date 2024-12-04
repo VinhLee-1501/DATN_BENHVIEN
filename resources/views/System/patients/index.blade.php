@@ -6,7 +6,7 @@
     <div class="card-body p-4">
         <h5 class="card-title fw-semibold mb-4">Quản lý bệnh nhân</h5>
 
-        <form action="{{ route('system.patient') }}" method="GET" class="row g-3 mb-4">
+        <form action="{{ route('system.patient') }}" method="GET" class="row g-3">
 
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="row g-2">
@@ -36,10 +36,9 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-12 col-lg-2">
-                <div class="d-flex gap-2 justify-content-between justify-content-md-start">
-                    <button type="submit" class="btn btn-primary w-100 w-md-auto">Tìm kiếm</button>
-                </div>
+            <div class="col-12 col-md-12 col-lg-2 row g-2">
+                <button type="submit" class="btn btn-primary w-100 w-md-auto">Tìm kiếm</button>
+
             </div>
 
         </form>

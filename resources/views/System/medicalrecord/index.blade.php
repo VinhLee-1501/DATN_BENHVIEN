@@ -5,35 +5,35 @@
     <div class="card-body p-4">
         <h5 class="card-title fw-semibold mb-4">Quản lý bệnh án</h5>
 
-        <form action="{{ route('system.medicalRecord') }}" method="GET" class="row">
-            <div class="row col-md-5">
+        <form action="{{ route('system.medicalRecord') }}" method="GET" class="row g-2 justify-content-center align-items-center">
+            <div class="row g-2 justify-content-center align-items-center col-md-5">
                 <div class="col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <input type="text" id="medicalIdInput" class="form-control" placeholder="Mã bệnh án"
-                            name="medical_id" value="{{ request('medical_id') }}">
-                    </div>
+
+                    <input type="text" id="medicalIdInput" class="form-control" placeholder="Mã bệnh án"
+                        name="medical_id" value="{{ request('medical_id') }}">
+
                 </div>
 
                 <div class="col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <input type="text" id="diaginsisInput" class="form-control" placeholder="Tiêu đề bệnh án"
-                            name="diaginsis" value="{{ request('diaginsis') }}">
-                    </div>
+
+                    <input type="text" id="diaginsisInput" class="form-control" placeholder="Tiêu đề bệnh án"
+                        name="diaginsis" value="{{ request('diaginsis') }}">
+
                 </div>
             </div>
-            <div class="row col-md-5">
+            <div class="row g-2 justify-content-center align-items-center col-md-5">
                 <div class="col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <input type="text" id="firstnameInput" class="form-control" placeholder="Họ bệnh nhân"
-                            name="lastname" value="{{ request('lastname') }}">
-                    </div>
+
+                    <input type="text" id="firstnameInput" class="form-control" placeholder="Họ bệnh nhân"
+                        name="lastname" value="{{ request('lastname') }}">
+
                 </div>
 
                 <div class="col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <input type="text" id="lastnameInput" class="form-control" placeholder="Tên bệnh nhân"
-                            name="firstname" value="{{ request('firstname') }}">
-                    </div>
+
+                    <input type="text" id="lastnameInput" class="form-control" placeholder="Tên bệnh nhân"
+                        name="firstname" value="{{ request('firstname') }}">
+
                 </div>
             </div>
 

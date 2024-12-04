@@ -22,14 +22,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            if ($user->role == 1 ||$user-> role == 2) {
+            if ($user->role == 1 ||$user-> role == 2 || $user->role == 3) {
                 $request->session()->regenerate();
                 session(['user_data' => $user]);
 
                 return redirect()->route('system.dashboard')->with('success', 'Đăng nhập thành công');
             } else {
                 Auth::logout();
-                return redirect()->back()->with('warning', 'Tài khoản thành viên không có quyền truy cập. Cố ý truy cập sẽ bị khóa tài khoản');
+                return redirect()->back()->with('warning', 'Tài khoản này không có quyền truy cập');
             }
         }
 

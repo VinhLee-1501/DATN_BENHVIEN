@@ -37,6 +37,7 @@ class PatientController extends Controller
         if ($request->filled('insurance_number')) {
             $query->where('patients.insurance_number', $request->insurance_number);
         }
+        
 
         $patientsWithRecords = $query->orderBy('patients.patient_id', 'desc')
             ->paginate(10)

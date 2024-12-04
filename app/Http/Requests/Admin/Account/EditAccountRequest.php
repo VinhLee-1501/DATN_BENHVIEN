@@ -5,6 +5,7 @@ namespace App\Http\Requests\Admin\Account;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+
 class EditAccountRequest extends FormRequest
 {
     public function authorize(): bool
@@ -64,5 +65,4 @@ class EditAccountRequest extends FormRequest
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
         ];
     }
-
 }
