@@ -19,19 +19,7 @@ class CouponController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search', '');
-        $tab = $request->input('tab', 'active'); // Mặc định là tab "Còn hiệu lực"
-
-        // Lấy các coupon_id cần xóa từ request
-        $delete = $request->input('coupon_id', []);
-        
-        // Xử lý xóa các coupon
-        if (!empty($delete)) {
-            Coupon::whereIn('coupon_id', $delete)->delete();
-            return redirect()->route('system.coupon')->with('success', 'Đã xóa các coupon được chọn.');
-        }
-
-        // Lấy số lượng phần tử trên mỗi trang, mặc định là 5
-        $itemsPerPage = $request->input('itemsPerPage', 5);
+        $tab = $request->input('tab', 'active'); 
 
         // Lấy giờ hiện tại theo múi giờ "Asia/Ho_Chi_Minh"
         $currentDate = Carbon::now('Asia/Ho_Chi_Minh');
@@ -46,9 +34,8 @@ class CouponController extends Controller
         }
 
         // Lấy kết quả phân trang cho coupon còn hiệu lực
-        $couponsActive = $couponsActiveQuery->paginate($itemsPerPage)->appends([
+        $couponsActive = $couponsActiveQuery->paginate(10)->appends([
             'search' => $search,
-            'itemsPerPage' => $itemsPerPage,
             'tab' => $tab
         ]);
 
@@ -62,9 +49,8 @@ class CouponController extends Controller
         }
 
         // Lấy kết quả phân trang cho coupon hết hạn
-        $couponsExpired = $couponsExpiredQuery->paginate($itemsPerPage)->appends([
+        $couponsExpired = $couponsExpiredQuery->paginate(10)->appends([
             'search' => $search,
-            'itemsPerPage' => $itemsPerPage,
             'tab' => $tab
         ]);
 
@@ -72,9 +58,8 @@ class CouponController extends Controller
         return view('System.coupon.index', [
             'couponsActive' => $couponsActive,
             'couponsExpired' => $couponsExpired,
-            'search' => $search,
-            'itemsPerPage' => $itemsPerPage,
-            'tab' => $tab
+            'tab' => $tab,
+            'search' => $search
         ]);
     }
 

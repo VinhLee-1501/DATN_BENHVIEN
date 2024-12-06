@@ -18,5 +18,5 @@ Route::prefix('order-services')->middleware('check_login_admin')
     Route::get('/print_orderOnline/{id}', [OrderController::class, 'print_orderOnline'])->name('order.print_orderOnline');
     Route::post('/checkout', [OrderController::class, 'checkout_online'])->name('order.checkout');
     Route::get('/momo/callback', [OrderController::class, 'handleCallback'])->name('momo.callback');
- 
+    Route::get('/vnpay/callback', [OrderController::class, 'handlecallbackVnpay'])->name('vnpay.callback');
 });

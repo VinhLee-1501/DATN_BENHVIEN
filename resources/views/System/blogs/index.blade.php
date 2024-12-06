@@ -16,10 +16,11 @@
                     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
                         type="button" role="tab" aria-controls="nav-home" aria-selected="true">Đã xuất bản</button>
                     <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Chờ xuất bản</button>
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Chờ xuất
+                        bản</button>
                 </div>
             </nav>
-            <div class="row align-items-center me-0">
+            <div class="row align-items-center me-0 mb-3">
                 <!-- Tìm kiếm và nút xóa -->
                 <div class="col-12 col-md-6 col-sm-2 d-flex align-items-center mb-3 mb-md-0">
                     <form id="searchForm" action="{{ route('system.blogs.search') }}" method="GET"
@@ -33,25 +34,6 @@
                             <i class="ti ti-search"></i>
                         </button>
                     </form>
-                    <button type="button" id="deleteButton" class="btn btn-danger ms-2 multiple-delete">
-                        <i class="ti ti-trash"></i>
-                    </button>
-                </div>
-
-                <!-- Chọn số lượng hiển thị nằm trên cùng một hàng -->
-                <div class="col-auto ms-auto d-flex align-items-center">
-                    <span class="me-2 d-none d-sm-inline">Hiển thị:</span>
-                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage" aria-label="Items per page">
-                        <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
-                            5
-                        </option>
-                        <option value="10" {{ request()->input('itemsPerPage', 5) == 10 ? 'selected' : '' }}>10
-                        </option>
-                        <option value="15" {{ request()->input('itemsPerPage', 5) == 15 ? 'selected' : '' }}>15
-                        </option>
-                        <option value="20" {{ request()->input('itemsPerPage', 5) == 20 ? 'selected' : '' }}>20
-                        </option>
-                    </select>
                 </div>
             </div>
             <div class="tab-content" id="nav-tabContent">
@@ -61,7 +43,6 @@
                         <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr class="text-center">
-                                    <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã bài viết</h6>
                                     </th>
@@ -81,49 +62,38 @@
                             </thead>
                             <tbody id="activeTable">
                                 @if ($blogs->isEmpty())
-                                <tr>
-                                    <td colspan="6" class="text-center">
-                                        <h5 class="text-muted">Không tìm thấy kết quả nào
-                                        </h5>
-                                    </td>
-                                </tr>
-                            @else
-                            
-                                @foreach ($blogs as $data)
-                                    <tr class="text-center">
-                                        <td>
-                                            <input type="checkbox" name="blog_id[]" value="{{ $data->id }}"
-                                                class="blogCheckbox">
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="fw-semibold mb-0">{{ $data->id }}</p>
-                                        </td>
-                                        <td class="border-bottom-0 ">
-                                            <p class="mb-0 fw-semibold" style="word-wrap: break-word; overflow-wrap: break-word;
-                                            white-space: normal; max-width: 200px; word-break: normal;">{{ $data->title }}</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-semibold">{{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            @if ($data->status == 0)
+                                    <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
+                                @else
+                                    @foreach ($blogs as $data)
+                                        <tr class="order-row text-center">
+                                            <td class="border-bottom-0">
+                                                <p class="fw-semibold mb-0">{{ $data->id }}</p>
+                                            </td>
+                                            <td class="border-bottom-0 ">
+                                                <p class="mb-0 fw-semibold"
+                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                            white-space: normal; max-width: 100%; word-break: normal;">
+                                                    {{ $data->title }}</p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">
+                                                    {{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</p>
+                                            </td>
+                                            <td class="border-bottom-0">
                                                 <p class="badge bg-danger mb-0 fw-semibold">Đã xuất bản</p>
-                                            @else
-                                                <p class="badge bg-success mb-0 fw-semibold">Chờ xuất bản</p>
-                                            @endif
-                                        </td>
-                                        <td class="border-bottom-0 d-flex justify-content-center align-items-centers">
-                                            <a href="{{ route('system.blogs.edit', $data->slug) }}"
-                                                class="btn btn-primary me-1">
-                                                <i class="ti ti-pencil"></i>
-                                            </a>
-                                            <a data-id="{{ $data->id }}" class="btn btn-danger me-1">
-                                                <i class="ti ti-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                                            </td>
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-centers">
+                                                <a href="{{ route('system.blogs.edit', $data->slug) }}"
+                                                    class="btn btn-primary me-1">
+                                                    <i class="ti ti-pencil"></i>
+                                                </a>
+                                                <a data-id="{{ $data->id }}" class="btn btn-danger me-1">
+                                                    <i class="ti ti-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
 
@@ -139,7 +109,6 @@
                         <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr class="text-center">
-                                    <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã bài viết</h6>
                                     </th>
@@ -160,45 +129,38 @@
                             <tbody id="activeTable">
                                 @if ($blogInactive->isNotEmpty())
                                     @foreach ($blogInactive as $data)
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="blog_id[]" value="{{ $data->id }}"
-                                                class="blogCheckbox">
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="fw-semibold mb-0">{{ $data->id }}</p>
-                                        </td>
-                                        <td class="border-bottom-0 ">
-                                            <p class="mb-0 fw-semibold" style="word-wrap: break-word; overflow-wrap: break-word;
-                                            white-space: normal; max-width: 200px; word-break: normal;">{{ $data->title }}</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-semibold">{{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            @if ($data->status == 0)
-                                                <p class="badge bg-danger mb-0 fw-semibold">Đã xuất bản</p>
-                                            @else
+                                    <tr class="order-row text-center">
+                                            <td class="border-bottom-0">
+                                                <p class="fw-semibold mb-0">{{ $data->id }}</p>
+                                            </td>
+                                            <td class="border-bottom-0 ">
+                                                <p class="mb-0 fw-semibold"
+                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                            white-space: normal; max-width: 100%; word-break: normal;">
+                                                    {{ $data->title }}</p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-semibold">
+                                                    {{ Carbon\Carbon::parse($data->date)->format('d/m/Y') }}</p>
+                                            </td>
+                                            <td class="border-bottom-0">
+
                                                 <p class="badge bg-success mb-0 fw-semibold">Chờ xuất bản</p>
-                                            @endif
-                                        </td>
-                                        <td class="border-bottom-0 d-flex">
-                                            <a href="{{ route('system.blogs.edit', $data->slug) }}"
-                                                class="btn btn-primary me-1">
-                                                <i class="ti ti-pencil"></i>
-                                            </a>
-                                            <a data-id="{{ $data->id }}" class="btn btn-danger me-1">
-                                                <i class="ti ti-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+
+                                            </td>
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-centers">
+                                                <a href="{{ route('system.blogs.edit', $data->slug) }}"
+                                                    class="btn btn-primary me-1">
+                                                    <i class="ti ti-pencil"></i>
+                                                </a>
+                                                <a data-id="{{ $data->id }}" class="btn btn-danger me-1">
+                                                    <i class="ti ti-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 @else
-                                    <tr>
-                                        <td colspan="7" class="text-center">
-                                            <h5 class="text-muted">Không tìm thấy kết quả nào</h5>
-                                        </td>
-                                    </tr>
+                                    <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
                                 @endif
                             </tbody>
                         </table>
@@ -213,24 +175,24 @@
     </div>
 
     @push('scripts')
-        <script>
+        {{-- <script>
             $(document).ready(function() {
                 // Gắn sự kiện onchange cho select
                 $('#itemsPerPage').on('change', function() {
                     // Lấy giá trị của select
                     var itemsPerPage = $(this).val();
 
-                // Lấy URL hiện tại
-                var url = new URL(window.location.href);
+                    // Lấy URL hiện tại
+                    var url = new URL(window.location.href);
 
-                // Thêm hoặc cập nhật tham số itemsPerPage trong URL
-                url.searchParams.set('itemsPerPage', itemsPerPage);
+                    // Thêm hoặc cập nhật tham số itemsPerPage trong URL
+                    url.searchParams.set('itemsPerPage', itemsPerPage);
 
-                // Thực hiện điều hướng (reload trang với tham số itemsPerPage mới)
-                window.location.href = url.toString();
+                    // Thực hiện điều hướng (reload trang với tham số itemsPerPage mới)
+                    window.location.href = url.toString();
+                });
             });
-        });
-        </script>
+        </script> --}}
         <script>
             $(document).ready(function() {
                 // Tạo khóa lưu trữ duy nhất dựa trên đường dẫn URL hiện tại để tránh xung đột
@@ -296,7 +258,7 @@
                 }
             });
         </script>
-         <script>
+        {{-- <script>
             document.getElementById('deleteButton').addEventListener('click', function(e) {
                 e.preventDefault();
 
@@ -341,6 +303,6 @@
                     toastr.error('Vui lòng chọn ít nhất một dịch vụ để xóa');
                 }
             });
-        </script>
+        </script> --}}
     @endpush
 @endsection

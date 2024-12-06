@@ -16,58 +16,35 @@ class ServiceController extends Controller
 
     public function index(Request $request)
     {
-        // Lấy giá trị tìm kiếm, nếu không có thì mặc định là rỗng
-        $search = $request->input('search', '');
-        $tab = $request->input('tab');
+        $activeTab = $request->query('tab', 0);
 
-        // Lấy các ID dịch vụ cần xóa, nếu có
-        $delete = $request->input('row_id', []);
-        if (!empty($delete)) {
-            Service::whereIn('row_id', $delete)->delete();
-            return redirect()->route('system.service')->with('success', 'Đã xóa các dịch vụ được chọn.');
-        }
-
-        // Số mục trên mỗi trang, mặc định là 5 nếu không có tham số trong request
-        $itemsPerPage = $request->input('itemsPerPage', 5);
-
-        // Truy vấn dịch vụ hoạt động
         $serviceQuery = Service::with('serviceDirectoryForeignKey')
-            ->where('status', 0)
             ->orderBy('created_at', 'desc');
-
-        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện cho dịch vụ hoạt động
-        if ($search && $tab == 0) {
-            $serviceQuery->where('name', 'LIKE', "%$search%");
+        if ($request->filled('name')) {
+            $serviceQuery->where('services.name', 'like', '%' . $request->name . '%');
         }
 
-        // Lấy kết quả phân trang và giữ lại tham số tìm kiếm và số lượng mục trên mỗi trang trong URL
-        $service = $serviceQuery->paginate($itemsPerPage)->appends([
-            'search' => $search,
-            'itemsPerPage' => $itemsPerPage
-        ]);
-
-        // Truy vấn dịch vụ không hoạt động
-        $serviceInactiveQuery = Service::with('serviceDirectoryForeignKey')
-            ->where('status', 1)
-            ->orderBy('created_at', 'desc');
-
-        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện cho dịch vụ không hoạt động
-        if ($search && $tab == 1) {
-            $serviceInactiveQuery->where('name', 'LIKE', "%$search%");
+        if ($request->filled('code_service')) {
+            $serviceQuery->where('services.service_id', 'like', '%' . $request->code_order . '%');
         }
 
-        // Lấy kết quả phân trang và giữ lại tham số tìm kiếm và số lượng mục trên mỗi trang trong URL
-        $serviceInactive = $serviceInactiveQuery->paginate($itemsPerPage)->appends([
-            'search' => $search,
-            'itemsPerPage' => $itemsPerPage
-        ]);
+        if ($request->filled('price_from')) {
+            $serviceQuery->where('orders.price', '>=', $request->price_from);
+        }
+        if ($request->filled('price_to')) {
+            $serviceQuery->where('orders.price', '<=', $request->price_to);
+        }
+        if($request->filled('directory')) {
+            $serviceQuery->where('services.directory_id', $request->directory);     
+        }
 
-        // Trả về view với dữ liệu cho cả dịch vụ hoạt động và không hoạt động
+        $service = $serviceQuery->clone()->where('services.status', 0)->paginate(10)->appends($request->query());
+
+        $serviceInactive = $serviceQuery->clone()->where('services.status', 1)->paginate(10)->appends($request->query());
         return view('System.service.index', [
             'service' => $service,
             'service_inactive' => $serviceInactive,
-            'search' => $search,
-            'itemsPerPage' => $itemsPerPage
+            'activeTab' => $activeTab,
         ]);
     }
 

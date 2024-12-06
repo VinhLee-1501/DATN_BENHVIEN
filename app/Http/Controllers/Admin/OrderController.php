@@ -21,18 +21,8 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->input('search', '');
 
-        $tab = $request->input('tab');
-
-        $delete = $request->input('order_id', []);
-
-        if (!empty($delete)) {
-            Order::whereIn('order_id', $delete)->delete();
-            return redirect()->route('system.order')->with('success', 'Đã xóa các đơn hàng được chọn.');
-        }
-
-        $itemsPerPage = $request->input('itemsPerPage', 5);
+        $activeTab = $request->query('tab', 0);
 
         // Truy vấn danh sách đơn hàng chưa thanh toán (`status = 0`)
         $ordersUnpaidQuery = Order::join('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
@@ -56,36 +46,53 @@ class OrderController extends Controller
                 'patients.gender',
                 'patients.birthday',
                 'patients.patient_id'
+            )->groupBy(
+                'orders.payment',
+                'orders.status',
+                'orders.row_id',
+                'orders.total_price',
+                'orders.order_id',
+                'orders.created_at',
+                'medical_records.medical_id',
+                'treatment_details.treatment_id',
+                'patients.first_name',
+                'patients.last_name',
+                'patients.gender',
+                'patients.birthday',
+                'patients.patient_id'
             )
-            ->where('orders.status', '=', '0');
+            ->orderBy('orders.created_at', 'desc');;
 
-
-        if ($search && $tab === '0') {
-            $ordersUnpaidQuery->where('orders.order_id', 'LIKE', "%$search%");
+        if ($request->filled('name')) {
+            $ordersUnpaidQuery->where(function ($query) use ($request) {
+                $query->where('patients.first_name', 'like', '%' . $request->name . '%')
+                    ->orWhere('patients.last_name', 'like', '%' . $request->name . '%')
+                    ->orWhere(DB::raw("CONCAT(patients.first_name, ' ', patients.last_name)"), 'like', '%' . $request->name . '%');
+            });
         }
 
-        $ordersUnpaid = $ordersUnpaidQuery->groupBy(
-            'orders.payment',
-            'orders.status',
-            'orders.row_id',
-            'orders.total_price',
-            'orders.order_id',
-            'orders.created_at',
-            'medical_records.medical_id',
-            'treatment_details.treatment_id',
-            'patients.first_name',
-            'patients.last_name',
-            'patients.gender',
-            'patients.birthday',
-            'patients.patient_id'
-        )->orderBy('orders.created_at', 'desc')->paginate($itemsPerPage)->appends([
-            'search' => $search,
-            'itemsPerPage' => $itemsPerPage,
-            'tab' => $tab
-        ]);
+        if ($request->filled('code_order')) {
+            $ordersUnpaidQuery->where('orders.order_id', 'like', '%' . $request->code_order . '%');
+        }
+
+        if ($request->filled('price_from')) {
+            $ordersUnpaidQuery->where('orders.total_price', '>=', $request->price_from);
+        }
+        if ($request->filled('price_to')) {
+            $ordersUnpaidQuery->where('orders.total_price', '<=', $request->price_to);
+        }
+
+        if ($request->filled('date_from') && $request->filled('date_to')) {
+            $ordersUnpaidQuery->whereBetween('orders.created_at', [$request->date_from, $request->date_to]);
+        } elseif ($request->filled('date_from')) {
+            $ordersUnpaidQuery->whereDate('orders.created_at', '>=', $request->date_from);
+        } elseif ($request->filled('date_to')) {
+            $ordersUnpaidQuery->whereDate('orders.created_at', '<=', $request->date_to);
+        }
+        $ordersUnpaid = $ordersUnpaidQuery->where('orders.status', 0)->paginate(10)->appends($request->query());
 
         // status 1
-        $ordersPerpaiddQuery = Order::join('books', 'books.book_id', '=', 'orders.book_id')
+        $ordersquery = Order::join('books', 'books.book_id', '=', 'orders.book_id')
             ->join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
             ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
             ->join('users', 'users.user_id', '=', 'schedules.user_id')
@@ -106,58 +113,40 @@ class OrderController extends Controller
                 'users.firstname',
                 'users.lastname'
             )
-            ->where('orders.status', '1')
-            ->orderBy('orders.created_at', 'desc')
-            ->paginate($itemsPerPage)
-            ->appends([
-                'search' => $search,
-                'itemsPerPage' => $itemsPerPage,
-                'tab' => $tab
-            ]);
+            ->orderBy('orders.created_at', 'desc');
 
-        if ($search && $tab === '1') {
-            $ordersPerpaiddQuery->where('orders.order_id', 'LIKE', "%$search%");
+        if ($request->filled('name')) {
+            $ordersquery->where('books.name', 'like', '%' . $request->name . '%');
         }
 
-
-        $ordersPrepaid = $ordersPerpaiddQuery;
-
-        // status 2
-        $ordersisPerpaiddQuery = Order::join('books', 'books.book_id', '=', 'orders.book_id')
-            ->join('specialties', 'specialties.specialty_id', '=', 'books.specialty_id')
-            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-            ->join('users', 'users.user_id', '=', 'schedules.user_id')
-            ->select(
-                'orders.payment',
-                'orders.row_id',
-                'orders.status',
-                'orders.total_price',
-                'orders.order_id',
-                'orders.created_at',
-                'books.day',
-                'books.hour',
-                'books.name',
-                'books.phone',
-                'books.email',
-                'books.symptoms',
-                'specialties.name as specialty',
-                'users.firstname',
-                'users.lastname'
-            )
-            ->where('orders.status', '2')
-            ->orderBy('orders.created_at', 'desc')
-            ->paginate($itemsPerPage)
-            ->appends([
-                'search' => $search,
-                'itemsPerPage' => $itemsPerPage,
-                'tab' => $tab
-            ]);
-
-        if ($search && $tab === '2') {
-            $ordersisPerpaiddQuery->where('orders.order_id', 'LIKE', "%$search%");
+        if ($request->filled('code_order')) {
+            $ordersquery->where('orders.order_id', 'like', '%' . $request->code_order . '%');
         }
 
-        $ordersisPrepaid = $ordersisPerpaiddQuery;
+        if ($request->filled('price_from')) {
+            $multiplier = ($activeTab == 1) ? 0.3 : 0.7;
+            $ordersquery->whereRaw('orders.total_price * ? >= ?', [$multiplier, $request->price_from]);
+        }
+        
+        if ($request->filled('price_to')) {
+            $multiplier = ($activeTab == 1) ? 0.3 : 0.7;
+            $ordersquery->whereRaw('orders.total_price * ? <= ?', [$multiplier, $request->price_to]);
+        }
+            
+
+        if ($request->filled('date_from') && $request->filled('date_to')) {
+            $ordersquery->whereBetween('orders.created_at', [$request->date_from, $request->date_to]);
+        } elseif ($request->filled('date_from')) {
+            $ordersquery->whereDate('orders.created_at', '>=', $request->date_from);
+        } elseif ($request->filled('date_to')) {
+            $ordersquery->whereDate('orders.created_at', '<=', $request->date_to);
+        }
+
+        $ordersPrepaid = $ordersquery->clone()->where('orders.status', 1)->paginate(10)->appends($request->query());
+
+        $ordersisPrepaid = $ordersquery->clone()->where('orders.status', 2)->paginate(10)->appends($request->query());
+
+
         // stauts 3
         $ordersPaidQuery = Order::leftJoin('treatment_services', 'treatment_services.treatment_id', '=', 'orders.treatment_id')
             ->leftJoin('services', 'services.service_id', '=', 'treatment_services.service_id')
@@ -175,6 +164,7 @@ class OrderController extends Controller
                 'orders.total_price',
                 'orders.order_id',
                 'orders.created_at',
+                'orders.total_amount',
                 'books.day',
                 'books.hour',
                 'books.name',
@@ -193,55 +183,66 @@ class OrderController extends Controller
                 'patients.gender',
                 'patients.birthday',
                 'patients.patient_id'
+            )->groupBy(
+                'orders.payment',
+                'orders.status',
+                'orders.row_id',
+                'orders.total_price',
+                'orders.order_id',
+                'orders.created_at',
+                'orders.updated_at',
+                'books.day',
+                'books.hour',
+                'books.name',
+                'books.phone',
+                'books.email',
+                'books.symptoms',
+                'specialties.name',
+                'users.firstname',
+                'users.lastname',
+                'medical_records.medical_id',
+                'treatment_details.treatment_id',
+                'patients.first_name',
+                'patients.last_name',
+                'patients.gender',
+                'patients.birthday',
+                'patients.patient_id'
             )
-            ->where('orders.status', '=', '3');
-
-        // Nếu có từ khóa tìm kiếm, thêm vào điều kiện tìm kiếm cho danh sách đơn hàng đã thanh toán
-        if ($search && $tab === '3') {
-            $ordersPaidQuery->where('orders.order_id', 'LIKE', "%$search%");
+            ->orderBy('orders.created_at', 'desc');
+        if ($request->filled('name')) {
+            $ordersPaidQuery->where('patients.first_name', 'like', '%' . $request->name . '%')
+                ->orWhere('patients.last_name', 'like', '%' . $request->name . '%')
+                ->orWhere('books.name', 'like', '%' . $request->name . '%');
         }
 
-        // Lấy kết quả phân trang cho danh sách đơn hàng đã thanh toán
-        $ordersPaid = $ordersPaidQuery->groupBy(
-            'orders.payment',
-            'orders.status',
-            'orders.row_id',
-            'orders.total_price',
-            'orders.order_id',
-            'orders.created_at',
-            'books.day',
-            'books.hour',
-            'books.name',
-            'books.phone',
-            'books.email',
-            'books.symptoms',
-            'specialties.name',
-            'users.firstname',
-            'users.lastname',
-            'medical_records.medical_id',
-            'treatment_details.treatment_id',
-            'patients.first_name',
-            'patients.last_name',
-            'patients.gender',
-            'patients.birthday',
-            'patients.patient_id'
-        )->orderBy('orders.created_at', 'desc')->paginate($itemsPerPage)->appends([
-            'search' => $search,
-            'itemsPerPage' => $itemsPerPage,
-            'tab' => $tab
-        ]);
+        if ($request->filled('code_order')) {
+            $ordersPaidQuery->where('orders.order_id', 'like', '%' . $request->code_order . '%');
+        }
+
+        if ($request->filled('price_from')) {
+            $ordersPaidQuery->where('orders.total_price', '>=', $request->price_from);
+        }
+        if ($request->filled('price_to')) {
+            $ordersPaidQuery->where('orders.total_price', '<=', $request->price_to);
+        }
+
+        if ($request->filled('date_from') && $request->filled('date_to')) {
+            $ordersPaidQuery->whereBetween('orders.created_at', [$request->date_from, $request->date_to]);
+        } elseif ($request->filled('date_from')) {
+            $ordersPaidQuery->whereDate('orders.created_at', '>=', $request->date_from);
+        } elseif ($request->filled('date_to')) {
+            $ordersPaidQuery->whereDate('orders.created_at', '<=', $request->date_to);
+        }
+
+        $ordersPaid = $ordersPaidQuery->where('orders.status', 3)->paginate(10)->appends($request->query());
 
        
-      
-        // Trả về view với các biến khác nhau
         return view('System.order.index', [
             'ordersUnpaid' => $ordersUnpaid,
             'ordersisPrepaid' => $ordersisPrepaid,
             'ordersPaid' => $ordersPaid,
             'ordersPrepaid' => $ordersPrepaid,
-            'search' => $search,
-            'itemsPerPage' => $itemsPerPage,
-            'tab' => $tab
+            'activeTab' => $activeTab,
         ]);
     }
 
@@ -409,7 +410,7 @@ class OrderController extends Controller
             ->where('orders.order_id', $id)
             ->orderByDesc('orders.created_at')
             ->first();
-    
+
         $pdf = Pdf::loadView('System.order.pdforderonline', ['orders' => $orders]);
         $pdf->setPaper('A4', 'landscape');
         return $pdf->stream('order_invoice_' . $orders->order_id . '.pdf');
@@ -464,8 +465,9 @@ class OrderController extends Controller
                 'cashier' => $cashier_name,
                 'change_amount' => $change_amount,
                 'cash_received' => $cash_received,
-                'status' => 2,
+                'status' => 3,
                 'payment' => $payment,
+                'total_amount' => $total_amount
             ]);
 
             // Tạo URL PDF cho hóa đơn
@@ -485,7 +487,7 @@ class OrderController extends Controller
             $ID = $id;
             $orderId = time() . ""; // Unique Order ID
             $redirectUrl = route('system.momo.callback');
-            $ipnUrl = 'http://127.0.0.1:8000/system/order';
+            $ipnUrl = route('system.order');
 
             $extraData = json_encode([
                 'cashier_name' => $cashier_name,
@@ -531,6 +533,69 @@ class OrderController extends Controller
                 ]);
             }
         }
+        elseif ($payment == 2) {
+            $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+            $vnp_Returnurl = route('system.vnpay.callback') . '?cashier_name=' . urlencode($cashier_name);;
+            $vnp_TmnCode = "ZAZD6H5N"; // Mã website tại VNPAY 
+            $vnp_HashSecret = "VG6VICU7L6V62EHHPKMPR7UG45FBK918"; // Chuỗi bí mật
+        
+            $vnp_TxnRef = $id;
+            $vnp_OrderInfo = 'Thanh toán hóa đơn';
+            $vnp_OrderType = 'billpayment';
+            $vnp_Amount = $total_amount * 100; // VNPAY yêu cầu số tiền phải nhân với 100
+            $vnp_Locale = 'vn';
+            $vnp_BankCode = 'NCB'; // Ví dụ ngân hàng
+            $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        
+            $inputData = array(
+                "vnp_Version" => "2.1.0",
+                "vnp_TmnCode" => $vnp_TmnCode,
+                "vnp_Amount" => $vnp_Amount,
+                "vnp_Command" => "pay",
+                "vnp_CreateDate" => date('YmdHis'),
+                "vnp_CurrCode" => "VND",
+                "vnp_IpAddr" => $vnp_IpAddr,
+                "vnp_Locale" => $vnp_Locale,
+                "vnp_OrderInfo" => $vnp_OrderInfo,
+                "vnp_OrderType" => $vnp_OrderType,
+                "vnp_ReturnUrl" => $vnp_Returnurl,
+                "vnp_TxnRef" => $vnp_TxnRef,
+            );
+        
+            if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+                $inputData['vnp_BankCode'] = $vnp_BankCode;
+            }
+            if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+                $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+            }
+        
+            ksort($inputData);
+            $query = "";
+            $i = 0;
+            $hashdata = "";
+            foreach ($inputData as $key => $value) {
+                if ($i == 1) {
+                    $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+                } else {
+                    $hashdata .= urlencode($key) . "=" . urlencode($value);
+                    $i = 1;
+                }
+                $query .= urlencode($key) . "=" . urlencode($value) . '&';
+            }
+        
+            $vnp_Url = $vnp_Url . "?" . $query;
+        
+            if (isset($vnp_HashSecret)) {
+                $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+                $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+            }
+        
+            // Trả về URL thanh toán VNPAY dưới dạng JSON
+            return response()->json([
+                'success' => true,
+                'payUrl' => $vnp_Url
+            ]);
+        }           
     }
     public function handleCallback(Request $request)
     {
@@ -539,32 +604,61 @@ class OrderController extends Controller
         $amount = $request->input('amount');
         $message = $request->input('message');
         $extraData = $request->input('extraData');
-      
+
         $extraDataDecoded = json_decode($extraData, true); // Chuyển JSON thành mảng PHP
 
         $cashierName = $extraDataDecoded['cashier_name'] ?? null;
         $orderID = $extraDataDecoded['ID'] ?? null;
         $order = Order::where('order_id', $orderID)->first();
 
-            if (!$order) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Đơn hàng không tồn tại.',
-                ], 404);
-            }
-            
-        if($message === 'Successful.'){
-        
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đơn hàng không tồn tại.',
+            ], 404);
+        }
+
+        if ($message === 'Successful.') {
+
             $order->update([
                 'cashier' => $cashierName,
                 'status' => 3,
                 'payment' => 1,
                 'total_amount' => $amount,
-    
+
             ]);
+            return redirect()->route('system.order')->with('success', 'Thanh toán hóa đơn thành công');
         }
 
-        return redirect()->route('system.order')->with('susses', 'Thanh toán hóa đơn thành công');
+    }
+
+    public function handlecallbackVnpay(Request $request){
+        
+        $vnp_ResponseCode = $request->input('vnp_TransactionStatus');
+
+        $order_id = $request->input('vnp_TxnRef');
+
+        $cashier = $request->input('cashier_name');
+
+        $price = $request->input('vnp_Amount');
+
+        $total_amount = $price / 100;
+
+        $order = Order::where('order_id', $order_id)->first();
+
+        $formatted_data = str_replace('+', ' ', $cashier);
+
+        if($vnp_ResponseCode == '00'){
+
+           $order->update([
+                'cashier' => $formatted_data,
+                'status' => 3,
+                'payment' => 2,
+                'total_amount' => $total_amount 
+           ]);
+           return redirect()->route('system.order')->with('success', 'Thanh toán hóa đơn thành công');
+        }
+        return redirect()->route('system.order');
     }
 
     public function updateStatus($id)
@@ -588,6 +682,7 @@ class OrderController extends Controller
                 'books.phone',
                 'books.email',
                 'books.symptoms',
+                'books.url',
                 'specialties.name as specialty',
                 'users.firstname',
                 'users.lastname'
@@ -609,7 +704,8 @@ class OrderController extends Controller
                 // Từ trạng thái "Đã trả trước" (1) chuyển sang "Đã xác nhận" (2)
                 $orders->update([
                     'status' => 2,
-                    'cashier' => $cashier
+                    'cashier' => $cashier,
+                    'total_amount' => $orders->total_price,
                 ]);
                 // Mail::to($orders->email)->send(new OrdersPrepaidConfirmation($orders));
                 return redirect()->route('system.order')->with('success', 'Đã xác nhận đơn hàng');
@@ -618,7 +714,8 @@ class OrderController extends Controller
                 // Từ trạng thái "Đã xác nhận" (2) chuyển sang "Đã hoàn tất" (3)
                 $orders->update([
                     'status' => 3,
-                    'cashier' => $cashier
+                    'cashier' => $cashier,
+                    'total_amount' => $orders->total_price,
                 ]);
                 // Mail::to($orders->email)->send(new OrderConfirmation($orders));
                 return redirect()->route('system.order')->with('success', 'Đã hoàn tất đơn hàng');

@@ -182,20 +182,22 @@ class AppointmentSchedule extends Controller
         $book->url = $request->input('url');
         // Lưu bản ghi
         $book->save();
-        
 
-        Order::create([
-            'book_id' => $book->book_id,
-            'order_id' => strtoupper(Str::random(10)),
-            'payment' => 1,
-            'status' => 1,
-            'total_price' => 200000
-        ]);
+
+        if ($book->role == 1) {
+            Order::create([
+                'book_id' => $book->book_id,
+                'order_id' => strtoupper(Str::random(10)),
+                'payment' => 1,
+                'status' => 1,
+                'total_price' => 200000
+            ]);
+        }
         $clicnic = Sclinic::join('schedules', 'schedules.sclinic_id', '=', 'sclinics.sclinic_id')
-        ->join('books', 'books.shift_id', '=', 'schedules.shift_id')
-        ->where('books.book_id', $book->book_id)
-        ->select('sclinics.*')
-        ->first();
+            ->join('books', 'books.shift_id', '=', 'schedules.shift_id')
+            ->where('books.book_id', $book->book_id)
+            ->select('sclinics.*')
+            ->first();
         // dd($clicnic);
         event(new BookingUpdated($book, $clicnic));
         // Mail::to($book->email)->send(new BookingConfirmationLink($book, $clicnic));

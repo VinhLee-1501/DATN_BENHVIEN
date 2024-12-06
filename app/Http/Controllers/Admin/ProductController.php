@@ -92,13 +92,13 @@ class ProductController extends Controller
       foreach ($productEnd as $item) {
          $barcodeEnd[$item->product_id] = $generatorHTML->getBarcode($item->code_product, $generatorHTML::TYPE_CODE_128);
       }
-
+    
       return view('System.products.index', [
          'product' => $product,
          'barcodes' => $barcodes,
          'barcodeEnd' => $barcodeEnd,
          'productEnd' => $productEnd,
-         'activeTab' => $activeTab, 
+         'activeTab' => $activeTab,
       ]);
    }
 

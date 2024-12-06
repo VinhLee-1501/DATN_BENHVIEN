@@ -24,9 +24,6 @@
                 <a href="{{ route('system.services.resetsearch') }}" class="card-title">
                     <h3>Quản lý dịch vụ</h3>
                 </a>
-                <div>
-                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addNewModal">Thêm mới</a>
-                </div>
             </div>
             <nav class="mb-4">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -37,41 +34,60 @@
                         động</button>
                 </div>
             </nav>
-            <div class="row align-items-center me-0">
-                <!-- Tìm kiếm và nút xóa -->
-                <div class="col-12 col-md-6 col-sm-2 d-flex align-items-center mb-3 mb-md-0">
-                    <form id="searchForm" action="{{ route('system.services.search') }}" method="GET"
-                        class="d-flex align-items-center">
-                        <div class="w-40">
-                            <input type="text" name="search" id="searchInput" class="form-control"
-                                value="{{ request('search', $search) }}" placeholder="Nhập tên dịch vụ">
+            <form action="{{ route('system.service') }}" method="GET" class="row mb-3 g-2 align-items-center">
+                <!-- Hidden input to maintain the active tab -->
+                <input type="hidden" name="tab" class="tab" id="tabInput" value="{{ request('tab', '0') }}">
+
+                <!-- Tìm kiếm -->
+                <div class="col-md-9 col-lg-10">
+                    <div class="row g-2">
+                        <!-- Tên sản phẩm -->
+                        <div class="col-md-4">
+                            <input type="text" id="inputName" class="form-control" placeholder="Tên sản phẩm"
+                                name="name" value="{{ request('name') }}">
                         </div>
-                        <input type="hidden" name="tab" class="tab" id="tabInput" value="0">
-                        <button type="submit" class="btn btn-success" id="searchButton">
-                            <i class="ti ti-search"></i>
-                        </button>
-                    </form>
-                    <button type="button" id="deleteButton" class="btn btn-danger ms-2 multiple-delete">
-                        <i class="ti ti-trash"></i>
-                    </button>
+
+
+
+                        <!-- Giá từ -->
+                        <div class="col-md-4">
+                            <input type="number" id="inputPriceFrom" class="form-control" placeholder="Giá từ"
+                                name="price_from" value="{{ request('price_from') }}">
+                        </div>
+
+                        <!-- Giá đến -->
+                        <div class="col-md-4">
+                            <input type="number" id="inputPriceTo" class="form-control" placeholder="Giá đến"
+                                name="price_to" value="{{ request('price_to') }}">
+                        </div>
+                        <!-- Mã sản phẩm -->
+                        <div class="col-md-4">
+                            <input type="text" id="inputCode" class="form-control" placeholder="Mã sản phẩm"
+                                name="code_service" value="{{ request('code_product') }}">
+                        </div>
+                        <!-- Ngày từ -->
+                        <div class="col-md-4">
+                            <select name="directory" id="category-select-search" class="form-control">
+                            </select>
+                        </div>
+
+
+                    </div>
                 </div>
 
-                <div class="col-auto ms-auto d-flex align-items-center">
-                    <span class="me-2 d-none d-sm-inline">Hiển thị:</span>
-                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage"
-                        aria-label="Items per page">
-                        <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
-                            5
-                        </option>
-                        <option value="10" {{ request()->input('itemsPerPage', 5) == 10 ? 'selected' : '' }}>10
-                        </option>
-                        <option value="15" {{ request()->input('itemsPerPage', 5) == 15 ? 'selected' : '' }}>15
-                        </option>
-                        <option value="20" {{ request()->input('itemsPerPage', 5) == 20 ? 'selected' : '' }}>20
-                        </option>
-                    </select>
+                <!-- Nút tìm kiếm và thêm sản phẩm -->
+                <div class="col-md-3 col-lg-2">
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <a href="#" class="btn btn-success w-100" data-bs-toggle="modal"
+                                data-bs-target="#addNewModal">Thêm mới</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
             <!-- Nội dung của 2 tab -->
             <div class="tab-content" id="nav-tabContent">
                 <!-- Tab Dịch vụ hoạt động -->
@@ -79,8 +95,7 @@
                     <div class="table-responsive ">
                         <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
-                                    <th></th>
+                                <tr class="text-center">
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã dịch vụ</h6>
                                     </th>
@@ -104,24 +119,20 @@
                             <tbody id="activeTable">
                                 @if ($service->isNotEmpty())
                                     @foreach ($service as $data)
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="row_id[]" value="{{ $data->row_id }}"
-                                                    class="blogCheckbox">
-                                            </td>
+                                        <tr class="order-row text-center">
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->service_id }}</p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold"
                                                     style="word-wrap: break-word; overflow-wrap: break-word;
-                                                    white-space: normal; max-width: 150px; word-break: normal;">
+                                                    white-space: normal; max-width: 100%; word-break: normal;">
                                                     {{ $data->name }}
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">
-                                                    {{ number_format($data->price * 1000, 0, ',', '.') }} VND
+                                                    {{ number_format($data->price, 0, ',', '.') }} VND
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
@@ -135,7 +146,7 @@
                                                     <p class="badge bg-danger mb-0 fw-semibold">Không hoạt động</p>
                                                 @endif
                                             </td>
-                                            <td class="border-bottom-0 d-flex">
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-centers">
                                                 <a class="btn btn-primary me-1 edit-btn" data-id="{{ $data->row_id }}"
                                                     data-name="{{ $data->name }}" data-status="{{ $data->status }}"
                                                     data-price="{{ $data->price }}"
@@ -149,11 +160,7 @@
                                         </tr>
                                     @endforeach
                                 @else
-                                    <tr>
-                                        <td colspan="7" class="text-center">
-                                            <h5 class="text-muted">Không tìm thấy kết quả nào</h5>
-                                        </td>
-                                    </tr>
+                                <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
                                 @endif
                             </tbody>
                         </table>
@@ -170,7 +177,6 @@
                         <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr class="text-center">
-                                    <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã dịch vụ</h6>
                                     </th>
@@ -194,24 +200,20 @@
                             <tbody id="activeTable">
                                 @if ($service_inactive->isNotEmpty())
                                     @foreach ($service_inactive as $data)
-                                        <tr class="text-center">
-                                            <td>
-                                                <input type="checkbox" name="row_id[]" value="{{ $data->row_id }}"
-                                                    class="blogCheckbox">
-                                            </td>
+                                        <tr class="order-row text-center">
                                             <td class="border-bottom-0 text-center">
                                                 <p class="fw-semibold mb-0">{{ $data->service_id }}</p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold"
                                                     style="word-wrap: break-word; overflow-wrap: break-word;
-                                                    white-space: normal; max-width: 150px; word-break: normal;">
+                                                    white-space: normal; max-width: 100%; word-break: normal;">
                                                     {{ $data->name }}
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">
-                                                    {{ number_format($data->price * 1000, 0, ',', '.') }} VND
+                                                    {{ number_format($data->price, 0, ',', '.') }} VND
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
@@ -225,7 +227,7 @@
                                                     <p class="badge bg-danger mb-0 fw-semibold">Không hoạt động</p>
                                                 @endif
                                             </td>
-                                            <td class="border-bottom-0 d-flex justify-content-center align-items-center">
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-centers">
                                                 <a class="btn btn-primary me-1 edit-btn" data-id="{{ $data->row_id }}"
                                                     data-name="{{ $data->name }}" data-status="{{ $data->status }}"
                                                     data-price="{{ $data->price }}"
@@ -239,11 +241,7 @@
                                         </tr>
                                     @endforeach
                                 @else
-                                    <tr>
-                                        <td colspan="7" class="text-center">
-                                            <h5 class="text-muted">Không tìm thấy kết quả nào</h5>
-                                        </td>
-                                    </tr>
+                                <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
                                 @endif
                             </tbody>
                         </table>
@@ -376,7 +374,7 @@
 
 
     @push('scripts')
-        <script>
+        {{-- <script>
             $(document).ready(function() {
                 // Gắn sự kiện onchange cho select
                 $('#itemsPerPage').on('change', function() {
@@ -393,7 +391,7 @@
                     window.location.href = url.toString();
                 });
             });
-        </script>
+        </script> --}}
         <script>
             $(document).ready(function() {
                 // Cấu hình Select2 cho modal thêm mới
@@ -511,7 +509,7 @@
                         data: $(this).serialize(),
                         success: function(response) {
                             $('#addNewModal').modal('hide'); // Đóng modal sau khi cập nhật
-                                window.location.reload();
+                            window.location.reload();
                             if (response.success) {
                                 toastr.success(response.message);
                                 setTimeout(() => {
@@ -631,7 +629,7 @@
                 }
             });
         </script>
-        <script>
+        {{-- <script>
             document.getElementById('deleteButton').addEventListener('click', function(e) {
                 e.preventDefault();
 
@@ -678,7 +676,7 @@
                     toastr.error('Vui lòng chọn ít nhất một dịch vụ để xóa');
                 }
             });
-        </script>
+        </script> --}}
         <script>
             $(document).ready(function() {
                 // Khi người dùng chuyển tab, cập nhật giá trị của input ẩn "tabInput"
@@ -745,6 +743,41 @@
                         .start();
                 });
             });
+        </script>
+        <script>
+            $('#category-select-search').select2({
+                ajax: {
+                    url: '/system/services/listservice',
+                    type: 'get',
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                searchItem: params.term,
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function(data, params) {
+                            params.page = params.page || 1;
+                            return {
+                                results: data.data.map(function(item) {
+                                    return {
+                                        id: item.directory_id, // id từ dữ liệu
+                                        text: item.name // Hiển thị tên danh mục
+                                    };
+                                }),
+                                pagination: {
+                                    more: data.last_page != params.page
+                                }
+                            };
+                        },
+                        cache: true
+                    },
+                    placeholder: 'Chọn danh mục',
+                    minimumInputLength: 0,
+                    width: '100%',
+                    allowClear: true
+                });
         </script>
     @endpush
 @endsection

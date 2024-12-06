@@ -14,7 +14,7 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'payment_method' => ['required', 'in:0,1'], // Yêu cầu payment_method là 0 hoặc 1
+            'payment_method' => ['required', 'in:0,1,2'], // Yêu cầu payment_method là 0 hoặc 1
         ];
 
         // Nếu payment_method là 0, yêu cầu nhập cash_received

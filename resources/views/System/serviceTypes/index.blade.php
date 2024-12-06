@@ -20,29 +20,30 @@
                         động</button>
                 </div>
             </nav>
-            <div class="row align-items-center me-0">
+            <div class="row align-items-center me-0 mb-3">
                 <!-- Tìm kiếm và nút xóa -->
                 <div class="col-12 col-md-6 col-sm-2 d-flex align-items-center mb-3 mb-md-0">
                     <form id="searchForm" action="{{ route('system.serviceTypes.search') }}" method="GET"
                         class="d-flex align-items-center">
                         <div class="w-40">
                             <input type="text" name="search" id="searchInput" class="form-control"
-                            value="{{ request('search', $search) }}" placeholder="Nhập tên danh mục dịch vụ">
+                                value="{{ request('search', $search) }}" placeholder="Nhập tên danh mục dịch vụ">
                         </div>
                         <input type="hidden" name="tab" class="tab" id="tabInput" value="0">
                         <button type="submit" class="btn btn-success" id="searchButton">
                             <i class="ti ti-search"></i>
                         </button>
                     </form>
-                    <button type="button" id="deleteButton" class="btn btn-danger ms-2 multiple-delete">
+                    {{-- <button type="button" id="deleteButton" class="btn btn-danger ms-2 multiple-delete">
                         <i class="ti ti-trash"></i>
-                    </button>
+                    </button> --}}
                 </div>
 
                 <!-- Chọn số lượng hiển thị nằm trên cùng một hàng -->
-                <div class="col-auto ms-auto d-flex align-items-center">
+                {{-- <div class="col-auto ms-auto d-flex align-items-center">
                     <span class="me-2 d-none d-sm-inline">Hiển thị:</span>
-                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage" aria-label="Items per page">
+                    <select class="form-select d-none d-sm-inline" style="width: 75px" id="itemsPerPage"
+                        aria-label="Items per page">
                         <option value="5" {{ request()->input('itemsPerPage', 5) == 5 ? 'selected' : '' }}>
                             5
                         </option>
@@ -53,7 +54,7 @@
                         <option value="20" {{ request()->input('itemsPerPage', 5) == 20 ? 'selected' : '' }}>20
                         </option>
                     </select>
-                </div>
+                </div> --}}
             </div>
 
             <div class="tab-content" id="nav-tabContent">
@@ -62,8 +63,7 @@
                     <div class="table-responsive ">
                         <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
-                                <tr>
-                                    <th></th>
+                                <tr class="text-center">
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã nhóm dịch vụ</h6>
                                     </th>
@@ -80,27 +80,17 @@
                             </thead>
                             <tbody id="activeTable">
                                 @if ($serviceType->isEmpty())
-                                    <tr>
-                                        <td colspan="6" class="text-center">
-                                            <h5 class="text-muted">Không tìm thấy kết quả nào</h5>
-                                        </td>
-                                    </tr>
+                                <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
                                 @else
                                     @foreach ($serviceType as $data)
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="row_id[]" value="{{ $data->row_id }}"
-                                                    class="blogCheckbox">
-                                                <input type="hidden" name="directory_id[]"
-                                                    value="{{ $data->directory_id }}">
-                                            </td>
+                                        <tr class="order-row text-center">
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->directory_id }}</p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold"
-                                                style="word-wrap: break-word; overflow-wrap: break-word;
-                                                    white-space: normal; max-width: 150px; word-break: normal;">
+                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                                    white-space: normal; max-width: 100%; word-break: normal;">
                                                     {{ $data->name }}
                                                 </p>
                                             </td>
@@ -111,7 +101,7 @@
                                                     <p class="badge bg-danger mb-0 fw-semibold">Không hoạt động</p>
                                                 @endif
                                             </td>
-                                            <td class="border-bottom-0 d-flex">
+                                            <td class="border-bottom-0 d-flex justify-content-center align-items-center">
                                                 <a class="btn btn-primary me-1 edit-btn" data-id="{{ $data->row_id }}"
                                                     data-name="{{ $data->name }}" data-status="{{ $data->status }}">
                                                     <i class="ti ti-pencil"></i>
@@ -140,7 +130,6 @@
                         <table class="table table-bordered text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr class="text-center">
-                                    <th></th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Mã nhóm dịch vụ</h6>
                                     </th>
@@ -157,27 +146,17 @@
                             </thead>
                             <tbody id="activeTable">
                                 @if ($serviceTypeInactive->isEmpty())
-                                    <tr>
-                                        <td colspan="6" class="text-center">
-                                            <h5 class="text-muted">Không tìm thấy kết quả nào</h5>
-                                        </td>
-                                    </tr>
+                                <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
                                 @else
                                     @foreach ($serviceTypeInactive as $data)
-                                        <tr class="text-center">
-                                            <td>
-                                                <input type="checkbox" name="row_id[]" value="{{ $data->row_id }}"
-                                                    class="blogCheckbox">
-                                                <input type="hidden" name="directory_id[]"
-                                                    value="{{ $data->directory_id }}">
-                                            </td>
+                                        <tr class="order-row text-center">
                                             <td class="border-bottom-0">
                                                 <p class="fw-semibold mb-0">{{ $data->directory_id }}</p>
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold"
-                                                style="word-wrap: break-word; overflow-wrap: break-word;
-                                                    white-space: normal; max-width: 150px; word-break: normal;">
+                                                    style="word-wrap: break-word; overflow-wrap: break-word;
+                                                    white-space: normal; max-width: 100%; word-break: normal;">
                                                     {{ $data->name }}
                                                 </p>
                                             </td>
@@ -231,7 +210,8 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Trạng thái</label>
                                 <select class="form-select" id="statusSelect" name="status">
-                                    <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Ngừng hoạt động</option>
+                                    <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Ngừng hoạt động
+                                    </option>
                                     <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Hoạt động</option>
                                 </select>
                                 <div class="text-danger" id="statusError"></div> <!-- Thêm div để hiển thị lỗi -->
@@ -291,7 +271,7 @@
         </div>
 
         @push('scripts')
-            <script>
+            {{-- <script>
                 document.getElementById('deleteButton').addEventListener('click', function(e) {
                     e.preventDefault();
 
@@ -346,8 +326,8 @@
                         toastr.error('Vui lòng chọn ít nhất một dịch vụ để xóa');
                     }
                 });
-            </script>
-            <script>
+            </script> --}}
+            {{-- <script>
                 $(document).ready(function() {
                     // Gắn sự kiện onchange cho select
                     $('#itemsPerPage').on('change', function() {
@@ -364,7 +344,7 @@
                         window.location.href = url.toString();
                     });
                 });
-            </script>
+            </script> --}}
             <script>
                 document.addEventListener('click', function(e) {
                     const deleteButton = e.target.closest('.btn-danger');
@@ -409,9 +389,9 @@
                             success: function(response) {
                                 $('#addNewModal').modal('hide');
                                 toastr.success(response.message);
-                           
-                                    location.reload();
-                             
+
+                                location.reload();
+
                             },
                             error: function(response) {
                                 // Xóa thông báo lỗi cũ
@@ -522,6 +502,25 @@
                     if (activeTabId) {
                         $('#' + activeTabId).tab('show'); // Kích hoạt tab được lưu trong sessionStorage
                     }
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+                    // Khi người dùng chuyển tab, cập nhật giá trị của input ẩn "tabInput"
+                    $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                        const activeTab = $(e.target).attr('id');
+                        if (activeTab === 'nav-home-tab') {
+                            $('#tabInput').val(0); // Tab "Hoạt động"
+                        } else if (activeTab === 'nav-profile-tab') {
+                            $('#tabInput').val(1); // Tab "Không hoạt động"
+                        }
+                    });
+
+                    // Sự kiện khi nhấn nút tìm kiếm
+                    $('#searchButton').on('click', function() {
+                        // Trước khi gửi form, đảm bảo giá trị của "tabInput" đã được cập nhật đúng
+                        $('#searchForm').submit();
+                    });
                 });
             </script>
         @endpush
