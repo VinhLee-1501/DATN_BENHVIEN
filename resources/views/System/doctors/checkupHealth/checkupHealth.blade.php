@@ -53,7 +53,7 @@
                                     <div class="col-12  mb-2">
                                         <label for="patient_name">Họ</label>
                                         <input type="text" class="form-control" id="patient_name" name="last_name"
-                                            value="">
+                                             value="{{ old('last_name') }}">
                                     </div>
                                     <div class="col-12 mb-2">
                                         <label for="patient_name">Tên</label>

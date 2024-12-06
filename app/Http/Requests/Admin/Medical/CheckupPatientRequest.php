@@ -25,12 +25,13 @@ class CheckupPatientRequest extends FormRequest
             'patient_id' => 'required',
             'last_name' => 'required',
             'first_name' => 'required',
-            'gender' => 'required', 
+            'emergency_contact' => 'size:10|regex:/^[0-9]{10,15}$/',
             'age' => 'required|date',
             'address' => 'required',
-            'cccd' => 'required|size:12',
-            'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/',
+            'cccd' => 'required|digits:12',
+            'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/|unique:patients,phone',
             'national' => 'required',
+            'email' => 'required|email',
            
             
         ];
@@ -42,17 +43,19 @@ class CheckupPatientRequest extends FormRequest
             'patient_id.required' => ':attribute không để trống',
             'last_name.required' => ':attribute không để trống',
             'first_name.required' => ':attribute không để trống',
-            'gender.required' => ':attribute không để trống',
             'age.required' => ':attribute không để trống',
             'address.required' => ':attribute không để trống',
-            'cccd.size' => ':attribute phải đủ 12 số',
+            'cccd.digits' => ':attribute phải là số và có 12 chữ số.',
             'cccd.required' => ':attribute không để trống',
             'phone.size' => ':attribute phải đủ 10 số',
             'phone.required' => ':attribute không để trống',
-            'phone.regex' => ':attribute phải là số hợp lệ',
-            
+            'phone.unique' => ':attribute đã được sử dụng',
+            'emergency_contact.size' => ':attribute phải đủ 10 số',
+            'emergency_contact.regex' => ':attribute phải là số hợp lệ',
+            'phone.regex' => ':attribute phải là số hợp lệ',  
             'national.required' => ':attribute không để trống',
-           
+            'email.required' => 'Email không được để trống.',
+            'email.email' => 'Email không đúng định dạng.',
 
         ];
     }
@@ -64,12 +67,11 @@ class CheckupPatientRequest extends FormRequest
             'first_name' => 'Họ',
             'last_name' => 'Tên',
             'phone' => 'Số điện thoại',
-            'gender' => 'Giới tính',
             'age' => 'Ngày sinh',
             'address' => 'Địa chỉ',
             'cccd' => 'CCCD/CMND',
             'national' => 'Quốc tịch',
-           
+            'emergency_contact' => 'SĐT khẩn cấp',
         ];
     }
 }

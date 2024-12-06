@@ -449,13 +449,6 @@
                         .name + '</option>');
                 });
 
-                // Khởi tạo Select2
-                // categorySelect.select2({
-                //     placeholder: "Chọn nhóm thuốc",
-                //     allowClear: true
-                // });
-
-
 
                 $('#addProduct').modal('show');
             },

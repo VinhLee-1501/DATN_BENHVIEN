@@ -15,6 +15,13 @@ Route::prefix('patients')->middleware('check_login_admin')->group(function () {
     Route::patch('update/{patient_id}', [PatientController::class, 'update'])->name('patients.update');
 
     Route::delete('delete/{patient_id}', [PatientController::class, 'destroy'])->name('patients.destroy');
+    
+    Route::get('/addMedical/{patient_id}', [PatientController::class, 'addMedical']);
+    Route::get('/getDoctor/{specialty_id}', [PatientController::class, 'getDOctor']);
+    Route::post('/saveMedical', [PatientController::class, 'saveMedical']);
+
+    
+
+    
 
 });
-
