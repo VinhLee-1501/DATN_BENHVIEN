@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Schedule\CreateRequest;
 use App\Models\Schedule;
 use App\Models\Sclinic;
+use App\Models\Shift;
 use App\Models\Specialty;
+use App\Models\TableShift;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -117,18 +119,37 @@ class ScheduleController extends Controller
         $userId = $request->input('user_id');
         $sclinicId = $request->input('sclinic');
         //         dd($userId, $sclinicId);
+        $specialtyId = $request->input('specialty_id');
         $day = $request->input('day');
+        $dayStatus =
+            Carbon::parse($day)->toDateString();;
         $note = $request->input('note');
+        $status = $request->input('status');
 
         // Kiểm tra ngày
         $now = Carbon::now();
-        if($day < $now) {
+        if ($day < $now) {
             return response()->json(['error' => true, 'message' => 'Bạn không thể thêm sự kiện vào ngày trước ngày hiện tại.']);
         }
         // Kiểm tra số lượng lịch đã có cho chuyên khoa này trong ngày
         $existingSchedules = Schedule::where('user_id', $userId)
             ->where('day', $day)
             ->count();
+
+        $existingDoctorWithStatus = Schedule::join('users', 'users.user_id', '=', 'schedules.user_id')
+            ->where('users.specialty_id', $specialtyId)
+            ->where('schedules.day', $dayStatus)
+            ->where('schedules.status', 1)
+            ->exists();
+
+        // Kiểm tra kết quả
+        // dd($existingDoctorWithStatus);
+
+        if ($existingDoctorWithStatus) {
+            if ($status == 1) {
+                return response()->json(['error' => true, 'message' => 'Đã tồn tại bác sĩ trong chuyên khoa này có lịch khám trực tuyến.']);
+            }
+        }
 
         // Kiểm tra xem số lượng tối đa có vượt quá 3 hay không
         if ($existingSchedules >= 3) {
@@ -169,10 +190,21 @@ class ScheduleController extends Controller
         $schedule->sclinic_id = $sclinicId;
         $schedule->day = $day;
         $schedule->note = $note;
-        $schedule->status = 1;
+        $schedule->status = $status;
         // $this->updateSclinic($schedule->sclinic_id);
         $schedule->save();
 
+        $statusSchedule = Schedule::orderBy('row_id', 'DESC')->first();
+        if ($statusSchedule && $statusSchedule->status == 1) {
+            // $shiftIds = [];
+            for ($i = 1; $i <= 6; $i++) {
+                $shifts = new TableShift();
+                $shifts->name = 'Ca' . $i;
+                $shifts->status = 0;
+                $shifts->shift_id = $statusSchedule->shift_id;
+                $shifts->save();
+            }
+        }
         // dd($schedule);
 
         return response()->json(['success' => true, 'message' => 'Thêm lịch khám thành công.']);
@@ -209,12 +241,14 @@ class ScheduleController extends Controller
         return response()->json(['schedules' => $schedule, 'sclinic' => $sclinic, 'user' => $user]);
     }
 
-    public function update(CreateRequest $request, $shift_id)
+    public function update(Request $request, $shift_id)
     {
         $schedule = Schedule::findOrFail($shift_id);
         $userId = $schedule->user_id;
         $newSclinicId = $request->input('sclinic_id'); // Phòng khám mới
         $day = $request->input('day');
+        $status = $request->input('status');
+        $specialtyId = $request->input('specialty_id');
 
         // Kiểm tra xem bác sĩ đã được lên lịch cho phòng khác chưa
         $existingScheduleForAnotherClinic = Schedule::where('user_id', $userId)
@@ -234,6 +268,21 @@ class ScheduleController extends Controller
 
         if ($existingRoomSchedule) {
             return response()->json(['error' => true, 'message' => 'Phòng này đã có bác sĩ khác được lên lịch vào ngày này.']);
+        }
+
+        $existingDoctorWithStatus = Schedule::join('users', 'users.user_id', '=', 'schedules.user_id')
+            ->where('users.specialty_id', $specialtyId)
+            ->where('schedules.day', $day)
+            ->where('schedules.status', 1)
+            ->exists();
+
+        // Kiểm tra kết quả
+        // dd($existingDoctorWithStatus);
+
+        if ($existingDoctorWithStatus) {
+            if ($status == 1) {
+                return response()->json(['error' => true, 'message' => 'Đã tồn tại bác sĩ trong chuyên khoa này có lịch khám trực tuyến.']);
+            }
         }
 
         $schedule->day = $day;

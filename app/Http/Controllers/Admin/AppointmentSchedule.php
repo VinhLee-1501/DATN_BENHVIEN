@@ -9,6 +9,7 @@ use App\Models\Book;
 use App\Models\Order;
 use App\Models\Schedule;
 use App\Models\Sclinic;
+use App\Models\TableShift;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-
 
 class AppointmentSchedule extends Controller
 {
@@ -58,25 +58,47 @@ class AppointmentSchedule extends Controller
         return view('System.appointmentschedule.index', ['book' => $books]);
     }
 
-
-
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $book = Book::where('book_id', $id)->first();
         $specialty_id = $book->specialty_id;
-        $selectedDay = \request()->input('selectedDay');
+        $selectedDay = $request->input('appointment_time');
 
-        $doctor = User::where('role', 2)
+
+
+        $schedulesQuery = Schedule::leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
+            ->join('users', 'users.user_id', '=', 'schedules.user_id')
+            ->where('schedules.day', $book->day)
             ->where('users.specialty_id', $specialty_id)
-            ->join('schedules', 'schedules.user_id', '=', 'users.user_id')
-            ->whereDate('schedules.day', $selectedDay)
-            ->select('users.*', 'schedules.*')
-            ->get();
+            ->select('schedules.*', 'table_shifts.name as shiftName', 'table_shifts.status as shiftStatus', 'table_shifts.row_id')
+            ->groupBy(
+                'table_shifts.shift_id',
+                'table_shifts.name',
+                'table_shifts.status',
+                'table_shifts.row_id',
+                'schedules.shift_id',
+                'schedules.user_id',
+                'schedules.note',
+                'schedules.status',
+                'schedules.day',
+                'schedules.sclinic_id',
+                'schedules.created_at',
+                'schedules.updated_at',
+                'schedules.deleted_at'
+            );
+
+        if ($book->role == 1) {
+            $schedulesQuery->where('table_shifts.status', 0);
+        }
+
+        $schedules = $schedulesQuery->get();
+        // dd($schedulesQuery);
+        // dd($schedules);
 
         return response()->json([
             'appointment_time' => $book->day,
             'hour' => $book->hour,
-            'doctor_name' => $doctor,
+            'schedules' => $schedules,
             'specialty_id' => $specialty_id,
             'status' => $book->status,
             'role' => $book->role,
@@ -89,23 +111,39 @@ class AppointmentSchedule extends Controller
     {
         $date = $request->input('date');
         $specialtyId = $request->input('specialty_id');
+        $role = $request->input('role');
 
-        $doctors = User::join('schedules', 'schedules.user_id', '=', 'users.user_id')
+        $doctorsQuery = User::join('schedules', 'schedules.user_id', '=', 'users.user_id')
+            ->leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
             ->where('users.role', 2)
             ->where('users.specialty_id', $specialtyId)
             ->whereDate('schedules.day', $date)
-            ->select('users.user_id', 'users.firstname', 'users.lastname')
+            ->select('users.user_id', 'users.firstname', 'users.lastname', 'schedules.status');
+
+        if ($role == 1) {
+            $doctorsQuery->where('schedules.status', 1);
+        }
+
+        $doctors = $doctorsQuery
+            ->groupBy(
+                'users.firstname',
+                'users.lastname',
+                'schedules.status',
+                'users.user_id',
+                'table_shifts.status'
+            )
             ->get();
 
         return response()->json(['doctors' => $doctors]);
     }
 
-
     public function update($id, Request $request)
     {
-        $book = Book::where('book_id', $id)->first();
-        $user = Auth::user();
 
+        $book = Book::where('book_id', $id)->first();
+        $rowId = $request->input('row_id');
+        // dd($rowId);
+        // $user = Auth::user();
 
         if (!$book) {
             return response()->json(['error' => true, 'message' => 'Không tìm thấy bản ghi']);
@@ -117,14 +155,10 @@ class AppointmentSchedule extends Controller
         }
         $status = $request->input('status');
         $hour = $request->input('hour');
-        // dd($hour, $status);
 
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $hourNow = Carbon::parse($hour)->format('H:i:s');
         $hourDeadline = Carbon::createFromTime(16, 0, 0)->toTimeString();
-
-        // dd($hourNow);
-        // dd($hourDeadline);
 
         if ($hourNow > $hourDeadline) {
             return response()->json(['error' => true, 'message' => 'Giờ không hợp lệ']);
@@ -138,6 +172,7 @@ class AppointmentSchedule extends Controller
 
         $appointmentTime = $request->input('appointment_time');
 
+
         $date = Carbon::parse($appointmentTime)->toDateString();
         // dd($date);
         $currentDate = Carbon::now()->toDateString();
@@ -148,12 +183,11 @@ class AppointmentSchedule extends Controller
 
         $doctorUserId = $request->input('doctor_name');
 
-        $schedule = Schedule::where('user_id', $doctorUserId)
+        $schedule = Schedule::leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
+            ->where('table_shifts.status', 0)
+            ->where('user_id', $doctorUserId)
             ->whereDate('day', $date)
-            ->get();
-        // dd('đây là ' . $schedule);
-
-        // $bookDay = Book::where('day', $date)->get();
+            ->first();
 
         if (!$schedule) {
             return response()->json(['error' => true, 'message' => 'Bác sĩ này không có lịch khám vào ngày này']);
@@ -162,7 +196,15 @@ class AppointmentSchedule extends Controller
         $scheduleDate = Schedule::whereDate('day', $date)
             ->where('user_id', $doctorUserId)
             ->first();
-        // dd($scheduleDate);
+
+        // $shiftSchedules = TableShift::where('shift_id', $scheduleDate->shift_id)->first();
+        $shiftStarus = TableShift::where('row_id', $rowId)->first();
+        // dd($shiftStarus);
+        if ($shiftStarus->status == 1) {
+            return response()->json(['error' => true, 'message' => 'Ca làm đã được đặt.']);
+        }
+
+        // dd($shiftSchedules);
         $bookCount = Book::join('schedules', 'schedules.shift_id', 'books.shift_id')
             ->where('books.shift_id', $scheduleDate->shift_id)
             ->whereDate('schedules.day', $date)
@@ -172,7 +214,6 @@ class AppointmentSchedule extends Controller
             return response()->json(['error' => true, 'message' => 'Bác sĩ đã đầy lịch']);
         }
 
-
         // dd($book);
         $book->shift_id = $scheduleDate->shift_id;
         $book->day = $date;
@@ -180,19 +221,19 @@ class AppointmentSchedule extends Controller
         $book->status = $status;
         $book->hour = $hour;
         $book->url = $request->input('url');
+        // dd($shiftSchedules);
         // Lưu bản ghi
         $book->save();
+        $shiftStarus->status = 1;
+        $shiftStarus->save();
 
-
-        if ($book->role == 1) {
-            Order::create([
-                'book_id' => $book->book_id,
-                'order_id' => strtoupper(Str::random(10)),
-                'payment' => 1,
-                'status' => 1,
-                'total_price' => 200000
-            ]);
-        }
+        Order::create([
+            'book_id' => $book->book_id,
+            'order_id' => strtoupper(Str::random(10)),
+            'payment' => 1,
+            'status' => 1,
+            'total_price' => 200000
+        ]);
         $clicnic = Sclinic::join('schedules', 'schedules.sclinic_id', '=', 'sclinics.sclinic_id')
             ->join('books', 'books.shift_id', '=', 'schedules.shift_id')
             ->where('books.book_id', $book->book_id)
@@ -201,7 +242,6 @@ class AppointmentSchedule extends Controller
         // dd($clicnic);
         event(new BookingUpdated($book, $clicnic));
         // Mail::to($book->email)->send(new BookingConfirmationLink($book, $clicnic));
-
 
         return response()->json(['success' => true, 'message' => 'Dữ liệu đã được cập nhật thành công.']);
     }

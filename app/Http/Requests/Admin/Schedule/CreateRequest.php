@@ -23,7 +23,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'user_id' => 'required',
-            'sclinic_id' => 'required',
+            'sclicnic' => 'required',
             'day' => 'required|date|after_or_equal:today',
             'note' => 'required',
         ];
@@ -37,7 +37,7 @@ class CreateRequest extends FormRequest
         return [
             'user_id.required' => ':attribute không được để trống',
 
-            'sclinic_id.required' => ':attribute không được để trống',
+            'sclicnic.required' => ':attribute không được để trống',
 
             'day.required' => ':attribute không được để trống',
             'day.date' => ':attribute không hợp lệ',
