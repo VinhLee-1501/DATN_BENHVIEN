@@ -111,18 +111,20 @@
                                         nhật thông tin</button>
                                     <button class="button btn-small btn-cta" onclick="openTab(event, 'change_password')">Đổi
                                         mật khẩu</button>
-                                    <a href="{{ route('shop.bill') }}" class="button btn-small btn-cta">Đơn hàng</a>
+                                    <a href="{{ route('shop.cart') }}" class="button btn-small btn-cta">Giỏ hàng của tôi</a>
                                 </div>
                             </div>
 
                         </div>
                         <div class="col l-8 mc-12 c-12">
                             <div class="tabs">
-                                <button class="tab-btn active" onclick="openTab(event, 'history')">Lịch sử khám
-                                    bệnh</button>
+                                <button
+                                    class="tab-btn {{ session('active_tab') === null || session('active_tab') === 'history' ? 'active' : '' }}"
+                                    onclick="openTab(event, 'history')">Lịch sử khám bệnh</button>
                                 <button class="tab-btn" onclick="openTab(event, 'medical_record')">Lịch sử bệnh
                                     án</button>
-                                <button class="tab-btn" onclick="openTab(event, 'prescription')">Đơn thuốc</button>
+                                <button class="tab-btn {{ session('active_tab') === 'order' ? 'active' : '' }}"
+                                    onclick="openTab(event, 'order')">Đơn hàng</button>
                             </div>
                             <div class="tab-content">
                                 <!-- Tab Lịch sử khám bệnh -->
@@ -140,7 +142,7 @@
                                                     <th>Trạng thái</th>
                                                     <th>Hình thức khám</th>
                                                     <th>Link khám trực tuyến</th>
-                                                    <th>Chi tiết</th>
+                                                    <th>Thao tác</th>
                                                 </tr>
                                             </thead>
 
@@ -159,8 +161,14 @@
                                                             <td>
                                                                 @if ($history->status == 0)
                                                                     Chưa xác nhận
-                                                                @else
+                                                                @elseif ($history->status == 1)
                                                                     Đã xác nhận
+                                                                @elseif ($history->status == 2)
+                                                                    Đang khám
+                                                                @elseif ($history->status == 3)
+                                                                    Đã khám
+                                                                @elseif ($history->status == 4)
+                                                                    Đã hủy
                                                                 @endif
                                                             </td>
                                                             <td>
@@ -179,11 +187,19 @@
                                                                     (Trống)
                                                                 @endif
                                                             </td>
-                                                            <td>
+                                                            <td colspan="2" style="display: flex">
                                                                 <!-- Nút Chi tiết -->
                                                                 <button style="border:none" class="button btn-small btn-cta"
                                                                     onclick="openDetailsModal('{{ $history->user_id }}')">Chi
                                                                     tiết</button>
+
+                                                                <!-- Kiểm tra trạng thái và ẩn nút Hủy lịch nếu trạng thái là 3 -->
+                                                                @if ($history->status == 0)
+                                                                    <button style="margin: 5px" class="button btn-small btn-cta"
+                                                                        onclick="openCancelModal('{{ $history->book_id }}')">
+                                                                        Hủy lịch
+                                                                    </button>
+                                                                @endif
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -192,6 +208,34 @@
 
 
                                         </table>
+                                        <div id="confirmModal" class="modal" style="display: none;" style="width: 50%">
+                                            <div class="modal-content">
+                                                <h3 style="text-align: center">Bạn có chắc chắn muốn hủy lịch khám không?</h3>
+                                                <br>
+                                                <div class="btn-container" style="display: flex">
+                                                    <button id="confirmCancel" class="button btn-small btn-cta">Đồng
+                                                        ý</button>
+                                                    <button id="cancelCancel" class="button btn-small">Hủy</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            function openCancelModal(bookId) {
+                                               
+                                                document.getElementById('confirmModal').style.display = 'block';
+
+                                                
+                                                document.getElementById('confirmCancel').onclick = function() {
+                                                    
+                                                    window.location.href = 'ho-so/huy-lich/' + bookId;
+                                                };
+
+                                               
+                                                document.getElementById('cancelCancel').onclick = function() {
+                                                    document.getElementById('confirmModal').style.display = 'none';
+                                                };
+                                            }
+                                        </script>
                                         <script>
                                             console.log('Script has been loaded');
 
@@ -403,31 +447,63 @@
 
 
                                 <!-- Tab Đơn thuốc -->
-                                <div id="prescription" class="tab">
+                                <div id="order" class="tab">
                                     <div class="profile__medical-history">
-                                        <h1 class="text-center">Đơn thuốc</h1>
+                                        <h1 class="text-center">Đơn hàng</h1>
                                         <table class="medical-history__table">
                                             <thead>
                                                 <tr>
                                                     <th>STT</th>
-                                                    <th>Ngày</th>
-                                                    <th>Nội dung</th>
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Ngày đặt hàng</th>
+                                                    <th>Giá trị đơn hàng</th>
+                                                    <th>Phương thức thanh toán</th>
+                                                    <th>Địa chỉ</th>
+                                                    <th>Trạng thái</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>20/08/2024</td>
-                                                    <td>Paracetamol</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>20/08/2024</td>
-                                                    <td>Vitamin C</td>
-                                                </tr>
+                                                @php $index = 1; @endphp
+                                                @foreach ($order_user as $item)
+                                                    @php
+                                                        // Xác định phương thức thanh toán
+                                                        $methodText = match ($item->payment_method) {
+                                                            0 => 'Thanh toán khi nhận hàng',
+                                                            1 => 'Thanh toán bằng VNPAY',
+                                                            2 => 'Thanh toán bằng MOMOPAY',
+                                                            default => 'Thanh toán bằng ZaloPay',
+                                                        };
+
+                                                        // Xác định trạng thái đơn hàng
+                                                        $orderStatus = match ($item->order_status) {
+                                                            1 => 'Đã xác nhận',
+                                                            0 => 'Đang chờ xử lý',
+                                                            default => 'Đã hủy',
+                                                        };
+
+                                                        // Xác định giá trị đơn hàng
+                                                        $orderValue =
+                                                            number_format($item->price_sale ?? $item->price_old) . 'đ';
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $index++ }}</td>
+                                                        <td>{{ $item->order_id }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($item->created_at)->format('H:i d/m/Y') }}
+                                                        </td>
+                                                        <td>{{ $orderValue }}</td>
+                                                        <td>{{ $methodText }}</td>
+                                                        <td>{{ $item->order_address }}</td>
+                                                        <td>{{ $orderStatus }}</td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
+                                        <br>
+                                        <div class="pagination">
+                                            {{ $order_user->appends(request()->except('page'))->links() }}
+                                        </div>
                                     </div>
+
 
                                 </div>
                                 <!-- Form Cập nhật thông tin -->
@@ -636,6 +712,13 @@
             function closeDetailsMediaRecordModal() {
                 document.getElementById("detailsMediaRecordModal").style.display = "none";
             }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const activeTab = "{{ session('active_tab') }}";
+                if (activeTab) {
+                    openTab(null, activeTab); // Mở tab từ session
+                }
+            });
         </script>
 
     @endsection

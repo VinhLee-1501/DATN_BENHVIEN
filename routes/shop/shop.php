@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Client\CheckoutController;
-use App\Http\Controllers\shop\PayController;
+use App\Http\Controllers\Shop\PayController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\shop\ShopController;
+use App\Http\Controllers\Shop\ShopController;
 use Illuminate\Http\Request;
 
 

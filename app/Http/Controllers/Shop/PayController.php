@@ -135,7 +135,11 @@ class PayController extends Controller
             $payment->order_id = $orderId;
             $payment->save();
 
-            return redirect()->route('shop.bill')->with('success', 'Thanh toán thành công!');
+
+            return redirect()->route('client.profile.index')->with([
+                'success' => 'Thanh toán thành công!',
+                'active_tab' => 'order',
+            ]);
         } else {
             $payment = new PaymentProduct();
             $payment->payment_method = 2;
@@ -143,7 +147,11 @@ class PayController extends Controller
             $payment->order_id = $orderId;
             $payment->save();
 
-            return redirect()->route('shop.bill')->with('error', 'Thanh toán không thành công!');
+
+            return redirect()->route('client.profile.index')->with([
+                'error' => 'Thanh toán không thành công!',
+                'active_tab' => 'order',
+            ]);
         }
     }
     public function handleZaloPaymentResponse(Request $request)
@@ -159,7 +167,10 @@ class PayController extends Controller
             $payment->order_id = $orderId;
             $payment->save();
 
-            return redirect()->route('shop.bill')->with('success', 'Thanh toán thành công!');
+            return redirect()->route('client.profile.index')->with([
+                'success' => 'Thanh toán thành công!',
+                'active_tab' => 'order',
+            ]);
         } else {
             $payment = new PaymentProduct();
             $payment->payment_method = 4;
@@ -167,7 +178,11 @@ class PayController extends Controller
             $payment->order_id = $orderId;
             $payment->save();
             // Thanh toán thất bại
-            return redirect()->route('shop.bill')->with('error', 'Thanh toán không thành công.');
+
+            return redirect()->route('client.profile.index')->with([
+                'error' => 'Thanh toán không thành công!',
+                'active_tab' => 'order',
+            ]);
         }
     }
 
@@ -182,7 +197,7 @@ class PayController extends Controller
 
         $paymentExists = PaymentProduct::where('order_id', $vnp_TxnRef)->exists();
         if ($paymentExists) {
-            return redirect()->route('shop.bill')->with(['error' => 'Giao dịch này đã được xử lý trước đó.']);
+            return redirect()->route('client.profile.index')->with(['error' => 'Giao dịch này đã được xử lý trước đó.']);
         }
 
 
@@ -196,7 +211,11 @@ class PayController extends Controller
             $payment->payment_status = 1; // Thành công
             $payment->save();
 
-            return redirect()->route('shop.bill')->with(['success' => 'Thanh toán thành công!',]);
+
+            return redirect()->route('client.profile.index')->with([
+                'success' => 'Thanh toán thành công!',
+                'active_tab' => 'order',
+            ]);
         } else { // Không thành công
             $payment = new PaymentProduct();
             $payment->order_id = $order_id;
@@ -204,7 +223,11 @@ class PayController extends Controller
             $payment->payment_status = 2; // Không thành công
             $payment->save();
 
-            return redirect()->route('shop.bill')->with(['error' => 'Thanh toán không thành công!',]);
+
+            return redirect()->route('client.profile.index')->with([
+                'error' => 'Thanh toán không thành công!',
+                'active_tab' => 'order',
+            ]);
         }
     }
 
@@ -233,7 +256,7 @@ class PayController extends Controller
         $order->cart_id  = $request->input('cart_id');
         $order->user_id   = $user_id;
         $order->save();
-        
+
         if ($request->input('coupon_id')) {
             $coupon = Coupon::where('discount_code', $request->input('coupon_id'))->first();
             $quantity = $coupon->use_limit;
@@ -424,7 +447,10 @@ class PayController extends Controller
 
 
 
-            return redirect()->route('shop.bill')->with('success', 'Đặt hàng thành công');
+            return redirect()->route('client.profile.index')->with([
+                'success' => 'Đặt hàng thành công!',
+                'active_tab' => 'order',
+            ]);
         }
     }
 }

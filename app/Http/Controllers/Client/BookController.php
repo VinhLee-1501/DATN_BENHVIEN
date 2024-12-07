@@ -29,10 +29,10 @@ class BookController extends Controller
     {
         $showPopup = 'booking';
         $doctor = User::join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
-        ->where('role', 2)
-        ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
-        ->limit(6)
-        ->get();
+            ->where('role', 2)
+            ->select('users.*', 'specialties.specialty_id', 'specialties.name as specialtyName')
+            ->limit(6)
+            ->get();
 
         return view('client.index', [
             'showPopup' => $showPopup,
@@ -74,10 +74,10 @@ class BookController extends Controller
         $validatedData = $request->validated();
 
 
-        
+
         $specialty = Specialty::where('specialty_id', $request->specialty_id)
             ->where('status', 1)
-            ->get(); 
+            ->get();
 
         if (!$specialty) {
             return redirect()->back()->with('error', 'Chuyên khoa không tồn tại hoặc đã bị khóa.');
@@ -86,14 +86,30 @@ class BookController extends Controller
         $book->user_id = Auth::check() ? Auth::user()->user_id : null;
         $book->save();
 
-       
+
         Mail::to($book->email)->send(new BookingConfirmation($book, $specialty));
 
 
         return redirect()->back()->with('success', 'Đặt lịch thành công');
     }
+    public function cancelBooking($book_id)
+    {
 
+        $book = Book::where('book_id', $book_id)->first();
 
+        if (!$book) {
+            return redirect()->back()->with('error', 'Lịch khám không tồn tại.');
+        }
+
+        if ($book->status == 4) {
+            return redirect()->back()->with('error', 'Lịch khám đã bị hủy.');
+        }
+
+        $book->status = 4;
+        $book->save();
+
+        return redirect()->back()->with('success', 'Lịch khám đã được hủy.');
+    }
     protected function generateUserId()
     {
         return strtoupper(Str::random(10));

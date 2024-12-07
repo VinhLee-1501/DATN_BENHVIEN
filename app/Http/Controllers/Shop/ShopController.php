@@ -50,15 +50,21 @@ class ShopController extends Controller
                 'products.unit_of_measurement',
                 'products.active_ingredient',
                 'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
                 'products.description',
                 'products.price',
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
+                'products.created_at',
+                'products.updated_at',
                 'coupons.discount_code',
                 'coupons.percent',
                 'coupons.time_start',
                 'coupons.time_end'
+
             )
             ->orderBy('products.product_id', 'DESC');
 
@@ -102,8 +108,21 @@ class ShopController extends Controller
                 'categories.name',
                 'coupons.percent',
                 'coupons.discount_code',
+                'products.name',
+                'products.code_product',
+                'products.unit_of_measurement',
+                'products.active_ingredient',
+                'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
+                'products.description',
                 'products.price',
-                'products.name'
+                'products.manufacture',
+                'products.registration_number',
+                'products.status',
+                'products.created_at',
+                'products.updated_at',
             )
             ->limit(6)
             ->get();
@@ -130,8 +149,21 @@ class ShopController extends Controller
                 'coupons.percent',
                 'coupons.time_start',
                 'coupons.time_end',
+                'products.name',
+                'products.code_product',
+                'products.unit_of_measurement',
+                'products.active_ingredient',
+                'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
+                'products.description',
                 'products.price',
-                'products.name'
+                'products.manufacture',
+                'products.registration_number',
+                'products.status',
+                'products.created_at',
+                'products.updated_at',
             )
             ->orderBy('products.product_id', 'DESC')
             ->limit(6)
@@ -139,7 +171,7 @@ class ShopController extends Controller
         $chunkedProductsNew = $productNew->chunk(3);
 
         return view(
-            'Shop.index',
+            'shop.index',
             [
                 'parentCategoryProductFillter' => $parentCategoryProductFillter,
                 'products' => $products,
@@ -152,7 +184,7 @@ class ShopController extends Controller
 
     public function contact()
     {
-        return view('Shop.contact');
+        return view('shop.contact');
     }
 
     public function detail($id)
@@ -181,11 +213,16 @@ class ShopController extends Controller
                 'products.unit_of_measurement',
                 'products.active_ingredient',
                 'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
                 'products.description',
                 'products.price',
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
+                'products.created_at',
+                'products.updated_at',
                 'coupons.discount_code',
                 'coupons.percent',
                 'coupons.time_start',
@@ -220,11 +257,16 @@ class ShopController extends Controller
                 'products.unit_of_measurement',
                 'products.active_ingredient',
                 'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
                 'products.description',
                 'products.price',
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
+                'products.created_at',
+                'products.updated_at',
                 'coupons.discount_code',
                 'coupons.percent',
                 'coupons.time_start',
@@ -239,7 +281,7 @@ class ShopController extends Controller
         });
 
 
-        return view('Shop.detail', [
+        return view('shop.detail', [
             'productById' => $productById,
             'productByCategory' => $productByCategory,
         ]);
@@ -271,8 +313,21 @@ class ShopController extends Controller
                 'coupons.percent',
                 'coupons.time_start',
                 'coupons.time_end',
+                'products.name',
+                'products.code_product',
+                'products.unit_of_measurement',
+                'products.active_ingredient',
+                'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
+                'products.description',
                 'products.price',
-                'products.name'
+                'products.manufacture',
+                'products.registration_number',
+                'products.status',
+                'products.created_at',
+                'products.updated_at',
             )
             ->where('products.name', 'like', '%' . $searchTerm . '%')
             ->orderBy('products.created_at', 'DESC')
@@ -301,7 +356,27 @@ class ShopController extends Controller
                 'coupons.percent',
                 DB::raw('MIN(img_products.img) as imgNameSale')
             )
-            ->groupBy('products.product_id', 'categories.name', 'coupons.discount_code', 'coupons.percent', 'products.price', 'products.name')
+            ->groupBy(
+                'products.product_id',
+                'categories.name',
+                'coupons.discount_code',
+                'coupons.percent',
+                'products.name',
+                'products.code_product',
+                'products.unit_of_measurement',
+                'products.active_ingredient',
+                'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
+                'products.description',
+                'products.price',
+                'products.manufacture',
+                'products.registration_number',
+                'products.status',
+                'products.created_at',
+                'products.updated_at',
+            )
             ->limit(6)
             ->get();
 
@@ -311,7 +386,26 @@ class ShopController extends Controller
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->leftJoin('img_products', 'img_products.product_id', '=', 'products.product_id')
             ->select('products.*', 'categories.name as nameCategory', 'coupons.discount_code', DB::raw('MIN(img_products.img) as imgName'))
-            ->groupBy('products.product_id', 'categories.name', 'coupons.discount_code', 'products.price', 'products.name')
+            ->groupBy(
+                'products.product_id',
+                'categories.name',
+                'coupons.discount_code',
+                'products.name',
+                'products.code_product',
+                'products.unit_of_measurement',
+                'products.active_ingredient',
+                'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
+                'products.description',
+                'products.price',
+                'products.manufacture',
+                'products.registration_number',
+                'products.status',
+                'products.created_at',
+                'products.updated_at',
+            )
             ->orderBy('products.created_at', 'DESC')
             ->limit(6)
             ->get();
@@ -322,7 +416,7 @@ class ShopController extends Controller
         $countProducts = count($productsActive);
 
         // dd($productsActive);
-        return view('Shop.grid', [
+        return view('shop.grid', [
             'categories' => $categories,
             'SelectProductWithsaleProduct' => $SelectProductWithsaleProduct,
             'countProducts' => $countProducts,
@@ -366,11 +460,27 @@ class ShopController extends Controller
                 'cart_details.quantity',
                 'cart_details.cart_id',
                 'cart_details.product_id',
+                'cart_details.deleted_at',
+                'cart_details.updated_at',
+                'cart_details.created_at',
                 'products.product_id',
                 'categories.category_id',
                 'categories.name',
                 'products.name',
+                'products.code_product',
+                'products.unit_of_measurement',
+                'products.active_ingredient',
+                'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
+                'products.description',
                 'products.price',
+                'products.manufacture',
+                'products.registration_number',
+                'products.status',
+                'products.created_at',
+                'products.updated_at',
                 'coupons.discount_code',
                 'coupons.percent',
                 'coupons.time_start',
@@ -384,7 +494,7 @@ class ShopController extends Controller
         });
 
         // dd($cartItems);
-        return view('Shop.cart', [
+        return view('shop.cart', [
             'cartItems' => $cartItems,
         ]);
     }
@@ -482,7 +592,7 @@ class ShopController extends Controller
 
     public function blog()
     {
-        return view('Shop.blog');
+        return view('shop.blog');
     }
 
     public function checkVoucher(Request $request)
@@ -570,27 +680,50 @@ class ShopController extends Controller
             )
             ->groupBy(
                 'cart_products.cart_id',
+                'cart_products.user_id',
+                'cart_products.deleted_at',
+                'cart_products.created_at',
+                'cart_products.updated_at',
                 'products.product_id',
                 'products.name',
                 'products.code_product',
                 'products.unit_of_measurement',
                 'products.active_ingredient',
                 'products.used',
+                'products.brand',
+                'products.category_id',
+                'products.deleted_at',
                 'products.description',
                 'products.price',
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
+                'products.created_at',
+                'products.updated_at',
                 'cart_details.cart_detail_id',
+                'cart_details.product_id',
+                'cart_details.quantity',
+                'cart_details.cart_id',
+                'cart_details.deleted_at',
+                'cart_details.updated_at',
+                'cart_details.created_at',
                 'coupons.discount_code',
                 'coupons.percent',
                 'coupons.time_start',
-                'coupons.time_end'
+                'coupons.time_end',
+                'coupons.coupon_id',
+                'coupons.type',
+                'coupons.use_limit',
+                'coupons.min_purchase',
+                'coupons.note',
+                'coupons.created_at',
+                'coupons.updated_at',
+                'coupons.deleted_at',
             )
             ->get();
-       
+
         $coupon = Coupon::where('discount_code', $request->input('coupon'))->first();
-        return view('Shop.checkout', ['user' => $user, 'total_price' => $total, 'coupon' => $coupon, 'discount' => $discount, 'sale' => $sale, 'cart' => $cart]);
+        return view('shop.checkout', ['user' => $user, 'total_price' => $total, 'coupon' => $coupon, 'discount' => $discount, 'sale' => $sale, 'cart' => $cart]);
     }
     public function search(Request $request)
     {
@@ -635,5 +768,4 @@ class ShopController extends Controller
             'products' => $products
         ]);
     }
-
 }
