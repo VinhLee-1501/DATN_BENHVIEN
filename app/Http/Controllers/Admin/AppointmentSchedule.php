@@ -118,10 +118,13 @@ class AppointmentSchedule extends Controller
             ->where('users.role', 2)
             ->where('users.specialty_id', $specialtyId)
             ->whereDate('schedules.day', $date)
+            ->whereNull('schedules.deleted_at')
             ->select('users.user_id', 'users.firstname', 'users.lastname', 'schedules.status');
 
         if ($role == 1) {
             $doctorsQuery->where('schedules.status', 1);
+        } else {
+            $doctorsQuery->where('schedules.status', 0);
         }
 
         $doctors = $doctorsQuery
@@ -183,9 +186,7 @@ class AppointmentSchedule extends Controller
 
         $doctorUserId = $request->input('doctor_name');
 
-        $schedule = Schedule::leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
-            ->where('table_shifts.status', 0)
-            ->where('user_id', $doctorUserId)
+        $schedule = Schedule::where('user_id', $doctorUserId)
             ->whereDate('day', $date)
             ->first();
 
@@ -200,8 +201,13 @@ class AppointmentSchedule extends Controller
         // $shiftSchedules = TableShift::where('shift_id', $scheduleDate->shift_id)->first();
         $shiftStarus = TableShift::where('row_id', $rowId)->first();
         // dd($shiftStarus);
-        if ($shiftStarus->status == 1) {
-            return response()->json(['error' => true, 'message' => 'Ca làm đã được đặt.']);
+        if ($book->role == 1) {
+            if ($shiftStarus->status == 1) {
+                return response()->json(['error' => true, 'message' => 'Ca làm đã được đặt.']);
+            } else {
+                $shiftStarus->status = 1;
+                $shiftStarus->save();
+            }
         }
 
         // dd($shiftSchedules);
@@ -224,11 +230,10 @@ class AppointmentSchedule extends Controller
         // dd($shiftSchedules);
         // Lưu bản ghi
         $book->save();
-        $shiftStarus->status = 1;
-        $shiftStarus->save();
+
 
         Order::create([
-            'book_id' => $book->book_id,
+            // 'book_id' => $book->book_id,
             'order_id' => strtoupper(Str::random(10)),
             'payment' => 1,
             'status' => 1,
