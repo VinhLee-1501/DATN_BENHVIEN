@@ -221,29 +221,30 @@ class UserController extends Controller
 
             // Truy vấn thông tin về đơn hàng người dùng
             $order_user = OrderProduct::join('payment_products', 'payment_products.order_id', '=', 'order_products.order_id')
-                ->join('cart_products', 'cart_products.cart_id', '=', 'order_products.cart_id')
-                ->join('cart_details', 'cart_details.cart_id', '=', 'cart_products.cart_id')
-                ->join('products', 'products.product_id', '=', 'cart_details.product_id')
-                ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
-                ->where('order_products.user_id', $userId)
-                ->whereNull('order_products.deleted_at')
-                ->when(request()->payment_status, function ($query) {
-                    return $query->where('payment_products.payment_status', request()->payment_status);
-                })
-                ->when(request()->order_status, function ($query) {
-                    return $query->where('order_products.order_status', request()->order_status);
-                })
-                ->select(
-                    'order_products.*',
-                    'payment_products.payment_method',
-                    'payment_products.payment_status',
-                    'payment_products.payment_id',
-                    'cart_products.cart_id as cart_id_order',  // Alias cho cart_id trong bảng cart_products
-                    DB::raw('GROUP_CONCAT(DISTINCT products.product_id ORDER BY products.product_id SEPARATOR ",") as product_ids')
-                )
-                ->groupBy('order_products.order_id', 'cart_products.cart_id', 'payment_products.payment_id', 'payment_products.payment_method', 'payment_products.payment_status')
-                ->orderBy('order_products.created_at', 'desc')
-                ->paginate(5);
+            ->join('cart_products', 'cart_products.cart_id', '=', 'order_products.cart_id')
+            ->join('cart_details', 'cart_details.cart_id', '=', 'cart_products.cart_id')
+            ->join('products', 'products.product_id', '=', 'cart_details.product_id')
+            ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+            ->where('order_products.user_id', $userId)
+            ->whereNull('order_products.deleted_at')
+            ->select(
+                'order_products.*',
+                'payment_products.payment_method',
+                'payment_products.payment_status',
+                'payment_products.payment_id',
+                'cart_products.cart_id as cart_id_order',
+                DB::raw('GROUP_CONCAT(DISTINCT products.product_id ORDER BY products.product_id SEPARATOR ",") as product_ids')
+            )
+            ->groupBy(
+                'order_products.order_id',
+                'cart_products.cart_id',
+                'payment_products.payment_id',
+                'payment_products.payment_method',
+                'payment_products.payment_status'
+            )
+            ->orderBy('order_products.created_at', 'desc')
+            ->paginate(5);
+
         } else {
             // Nếu không có đơn hàng
             $product = [];

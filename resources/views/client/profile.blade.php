@@ -195,7 +195,8 @@
 
                                                                 <!-- Kiểm tra trạng thái và ẩn nút Hủy lịch nếu trạng thái là 3 -->
                                                                 @if ($history->status == 0)
-                                                                    <button style="margin: 5px" class="button btn-small btn-cta"
+                                                                    <button style="margin: 5px"
+                                                                        class="button btn-small btn-cta"
                                                                         onclick="openCancelModal('{{ $history->book_id }}')">
                                                                         Hủy lịch
                                                                     </button>
@@ -210,7 +211,8 @@
                                         </table>
                                         <div id="confirmModal" class="modal" style="display: none;" style="width: 50%">
                                             <div class="modal-content">
-                                                <h3 style="text-align: center">Bạn có chắc chắn muốn hủy lịch khám không?</h3>
+                                                <h3 style="text-align: center">Bạn có chắc chắn muốn hủy lịch khám không?
+                                                </h3>
                                                 <br>
                                                 <div class="btn-container" style="display: flex">
                                                     <button id="confirmCancel" class="button btn-small btn-cta">Đồng
@@ -221,16 +223,16 @@
                                         </div>
                                         <script>
                                             function openCancelModal(bookId) {
-                                               
+
                                                 document.getElementById('confirmModal').style.display = 'block';
 
-                                                
+
                                                 document.getElementById('confirmCancel').onclick = function() {
-                                                    
+
                                                     window.location.href = 'ho-so/huy-lich/' + bookId;
                                                 };
 
-                                               
+
                                                 document.getElementById('cancelCancel').onclick = function() {
                                                     document.getElementById('confirmModal').style.display = 'none';
                                                 };
@@ -458,8 +460,8 @@
                                                     <th>Ngày đặt hàng</th>
                                                     <th>Giá trị đơn hàng</th>
                                                     <th>Phương thức thanh toán</th>
-                                                    <th>Địa chỉ</th>
-                                                    <th>Trạng thái</th>
+                                                    <th>Địa chỉ giao hàng</th>
+                                                    <th>Trạng thái đơn hàng</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -500,7 +502,11 @@
                                         </table>
                                         <br>
                                         <div class="pagination">
-                                            {{ $order_user->appends(request()->except('page'))->links() }}
+                                            @if (is_object($order_user) && method_exists($order_user, 'count') && $order_user->count() > 0)
+                                                {{ $order_user->links() }}
+                                            @else
+                                                <p>Không có đơn hàng nào.</p>
+                                            @endif
                                         </div>
                                     </div>
 
