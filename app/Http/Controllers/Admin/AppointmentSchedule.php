@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\Admin\BookingUpdated;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendBookingConfirmation;
 use App\Mail\BookingConfirmationLink;
 use App\Models\Book;
 use App\Models\Order;
@@ -26,7 +27,8 @@ class AppointmentSchedule extends Controller
             ->leftJoin('schedules', 'schedules.shift_id', '=', 'books.shift_id')
             ->leftJoin('users', 'users.user_id', '=', 'schedules.user_id')
             ->leftJoin('sclinics', 'sclinics.sclinic_id', '=', 'schedules.sclinic_id')
-            ->select('books.*', 'users.lastname', 'users.firstname', 'sclinics.name AS sclinicName', 'specialties.name AS specialtyName')
+            ->leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
+            ->select('books.*', 'users.lastname', 'users.firstname', 'sclinics.name AS sclinicName', 'specialties.name AS specialtyName', 'table_shifts.name as shiftName', 'table_shifts.note as shiftNote')
             ->orderByRaw('CASE WHEN books.status = 0 THEN 0 ELSE 1 END')
             ->orderBy('books.row_id', 'DESC');
 
@@ -63,19 +65,18 @@ class AppointmentSchedule extends Controller
         $book = Book::where('book_id', $id)->first();
         $specialty_id = $book->specialty_id;
         $selectedDay = $request->input('appointment_time');
+        $date = Carbon::parse($selectedDay, 'Asia/Ho_Chi_Minh')->setTimezone('UTC')->format('Y-m-d');
 
 
+        // dd($date);
 
         $schedulesQuery = Schedule::leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
             ->join('users', 'users.user_id', '=', 'schedules.user_id')
-            ->where('schedules.day', $book->day)
+            ->whereDate('schedules.day', $book->day)
             ->where('users.specialty_id', $specialty_id)
-            ->select('schedules.*', 'table_shifts.name as shiftName', 'table_shifts.status as shiftStatus', 'table_shifts.row_id')
+            ->select('schedules.*')
             ->groupBy(
-                'table_shifts.shift_id',
-                'table_shifts.name',
-                'table_shifts.status',
-                'table_shifts.row_id',
+
                 'schedules.shift_id',
                 'schedules.user_id',
                 'schedules.note',
@@ -119,10 +120,20 @@ class AppointmentSchedule extends Controller
             ->where('users.specialty_id', $specialtyId)
             ->whereDate('schedules.day', $date)
             ->whereNull('schedules.deleted_at')
-            ->select('users.user_id', 'users.firstname', 'users.lastname', 'schedules.status');
+            ->select(
+                'users.user_id',
+                'users.firstname',
+                'users.lastname',
+                'schedules.status',
+                'table_shifts.name as shiftName',
+                'table_shifts.status as shiftStatus',
+                'table_shifts.row_id',
+                'table_shifts.note as noteShift'
+            );
 
         if ($role == 1) {
             $doctorsQuery->where('schedules.status', 1);
+            $doctorsQuery->where('table_shifts.status', 0);
         } else {
             $doctorsQuery->where('schedules.status', 0);
         }
@@ -133,7 +144,10 @@ class AppointmentSchedule extends Controller
                 'users.lastname',
                 'schedules.status',
                 'users.user_id',
-                'table_shifts.status'
+                'table_shifts.name',
+                'table_shifts.status',
+                'table_shifts.row_id',
+                'table_shifts.note'
             )
             ->get();
 
@@ -245,7 +259,8 @@ class AppointmentSchedule extends Controller
             ->select('sclinics.*')
             ->first();
         // dd($clicnic);
-        event(new BookingUpdated($book, $clicnic));
+        // event(new BookingUpdated($book, $clicnic));
+        SendBookingConfirmation::dispatch($book, $clicnic);
         // Mail::to($book->email)->send(new BookingConfirmationLink($book, $clicnic));
 
         return response()->json(['success' => true, 'message' => 'Dữ liệu đã được cập nhật thành công.']);

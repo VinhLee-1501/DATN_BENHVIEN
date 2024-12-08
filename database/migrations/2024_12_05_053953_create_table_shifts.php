@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('row_id')->primary();
             $table->string('name', 50)->nullable();
             $table->boolean('status')->nullable();
+            $table->string('note', 100)->nullable();
 
             $table->string('shift_id', 10)->nullable();
             $table->foreign('shift_id')

@@ -152,8 +152,10 @@
                                                             <li><strong>Số điện thoại:</strong> {{ $item->phone }}</li>
                                                             <li><strong>Phòng khám:</strong> {{ $item->sclinicName }}</li>
                                                             <li><strong>Thời gian khám:</strong>
-                                                                {{ Carbon\Carbon::parse($item->day)->format('d/m/Y') }} -
-                                                                {{ Carbon\Carbon::parse($item->hour)->format('H:i:s') }}
+                                                                {{ Carbon\Carbon::parse($item->day)->format('d/m/Y') }}
+                                                                @if (!empty($item->shiftName) && !empty($item->shiftNote))
+                                                                    - {{ $item->shiftName }} ( {{ $item->shiftNote }} )
+                                                                @endif
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -265,17 +267,9 @@
                             $('#createMeetingBtn').on('click', function() {
                                 createRoom();
                             });
-
-                            $('#shiftOption').append(`
-                                <label for="shift_id">Chọn ca:</label>
-                                <select id="shift_id" name="rowId" class="form-control">
-                                ${response.schedules.map(function(schedule) {
-                                    return `<option value="${schedule.row_id}">${schedule.shiftName}</option>`;
-                                    }).join('')}
-                                </select>
-                            `);
                         } else {
                             $('#urlMeeting')
+                            $('#shiftOption').empty();
                         }
 
                         var appointmentTime = new Date(response.appointment_time);
@@ -403,6 +397,19 @@
                     success: function(response) {
                         $('#doctor_name').empty();
                         console.log(response);
+                        if (role == 1) {
+                            $('#shiftOption').empty(); // Đảm bảo không trùng lặp các option
+                            $('#shiftOption').append(`
+                            <label for="shift_id">Chọn ca:</label>
+                                <select id="shift_id" name="rowId" class="form-control">
+                                ${response.doctors.map(function(doctor) {
+                            return `<option value="${doctor.row_id}">${doctor.shiftName} - (${doctor.noteShift ?? ""})</option>`;
+                                }).join('')}
+                            </select>
+                                `);
+                        } else {
+                            $('#shiftOption').empty(); // Xóa nếu role khác 1
+                        }
 
                         response.doctors.forEach(function(doctor) {
 
@@ -414,7 +421,7 @@
                             );
                             if (doctor.shiftStatus === 1) {
                                 $('#doctor_name option[value="' + doctor.user_id + '"]').prop('disabled',
-                                        true)
+                                    true)
                             } else {
                                 // Nếu shiftStatus = 0 (còn trống), cho chọn
                                 $('#doctor_name option[value="' + doctor.user_id + '"]').prop('disabled',

@@ -508,16 +508,28 @@
                 },
                 editable: true,
                 eventClick: function(info) {
-                    var eventId = info.event.id;
-                    var newDay = formatDate(info.event
-                        .start);
-                    var userId = info.event.extendedProps.user_id;
-                    var sclinicId = info.event.extendedProps.sclinic_id;
-                    var note = info.event.extendedProps.note;
-                    var status = info.event.extendedProps.status;
-
-                    showEditPopup(eventId, newDay, userId, sclinicId, note, status);
+                    // Kiểm tra xem người dùng có bấm vào phần tử có class "delete-event"
+                    const target = $(info.jsEvent.target);
+                    
+                    if (target.hasClass('delete-event')) {
+                        // Nếu là tiêu đề xóa, hiển thị popup xóa
+                        var eventId = info.event.id;
+                        // Gọi hàm để hiển thị popup xóa
+                        showDeletePopup(eventId);
+                    } else {
+                        // Nếu không phải tiêu đề xóa, hiển thị popup edit
+                        var eventId = info.event.id;
+                        var newDay = formatDate(info.event.start);
+                        var userId = info.event.extendedProps.user_id;
+                        var sclinicId = info.event.extendedProps.sclinic_id;
+                        var note = info.event.extendedProps.note;
+                        var status = info.event.extendedProps.status;
+                        // Hiển thị popup edit cho sự kiện này
+                        showEditPopup(eventId, newDay, userId, sclinicId, note, status);
+                    }
                 },
+
+
                 // Event cập nhật dữ liệu
                 eventDrop: function(info) {
 
@@ -592,7 +604,8 @@
                         '<b class="delete-event" data-event-id="' + info.event.id + '">' + info.event
                         .title + '</b><br>' +
                         'SDT: ' + info.event.extendedProps.phone + '<br>' +
-                        'CK: ' + info.event.extendedProps.specialty_name;
+                        'CK: ' + info.event.extendedProps.specialty_name + '<br>' +
+                        'TT: ' + (info.event.extendedProps.status == 1 ? 'Trực tuyến' : 'Trực tiếp');
                 },
                 // Event thêm dữ liệu
                 dateClick: function(info) {
@@ -708,43 +721,44 @@
             });
 
             // Chức năng xóa event
-            $(document).on('click', '.delete-event', function() {
-                var eventId = $(this).data('event-id');
-                Swal.fire({
-                    title: "Bạn có chắc muốn xóa?",
-                    text: "Bạn sẽ không thể hoàn tác lại",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Đồng ý"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: '/system/schedules/delete/' + eventId,
-                            type: "DELETE",
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (response.success) {
-                                    toastr.success(response.message);
-                                    calendar.refetchEvents();
-                                } else {
-                                    toastr.error(response.message);
+            function showDeletePopup(eventId) {
+                $(document).on('click', '.delete-event', function() {
+                    var eventId = $(this).data('event-id');
+                    Swal.fire({
+                        title: "Bạn có chắc muốn xóa?",
+                        text: "Bạn sẽ không thể hoàn tác lại",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Đồng ý"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/system/schedules/delete/' + eventId,
+                                type: "DELETE",
+                                data: {
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        toastr.success(response.message);
+                                        calendar.refetchEvents();
+                                    } else {
+                                        toastr.error(response.message);
+                                    }
+                                },
+                                error: function(err) {
+                                    alert('Có lỗi xảy ra: ' + (err.responseJSON
+                                        .message ||
+                                        'Không thấy lỗi'));
                                 }
-                            },
-                            error: function(err) {
-                                alert('Có lỗi xảy ra: ' + (err.responseJSON.message ||
-                                    'Không thấy lỗi'));
-                            }
-                        });
-                    } else {
-                        return false;
-                    }
+                            });
+                        }
+                    });
                 });
+            }
 
-            })
             document.getElementById('specialty-filter').addEventListener('change', function() {
                 calendar.refetchEvents();
             });

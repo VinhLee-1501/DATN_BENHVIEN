@@ -79,6 +79,7 @@ class ScheduleController extends Controller
                 'note' => $shift->note,
                 'phone' => $shift->phone,
                 'specialty_name' => $shift->specialty_name,
+                'status' => $shift->status,
                 'doctorData' => [
                     [
                         'user_id' => $shift->userId,
@@ -140,6 +141,7 @@ class ScheduleController extends Controller
             ->where('users.specialty_id', $specialtyId)
             ->where('schedules.day', $dayStatus)
             ->where('schedules.status', 1)
+            ->whereNull('schedules.deleted_at')
             ->exists();
 
         // Kiểm tra kết quả
@@ -196,12 +198,22 @@ class ScheduleController extends Controller
 
         $statusSchedule = Schedule::orderBy('row_id', 'DESC')->first();
         if ($statusSchedule && $statusSchedule->status == 1) {
-            // $shiftIds = [];
-            for ($i = 1; $i <= 6; $i++) {
+            $shiftNotes = [
+                '7h-8h',
+                '8h15-9h15',
+                '9h30-10h30',
+                '10h45-11h45',
+                '13h-14h',
+                '14h15-15h15',
+                '15h30-16h30',
+            ];
+
+            for ($i = 1; $i <= 7; $i++) {
                 $shifts = new TableShift();
                 $shifts->name = 'Ca' . $i;
                 $shifts->status = 0;
                 $shifts->shift_id = $statusSchedule->shift_id;
+                $shifts->note = $shiftNotes[$i - 1];
                 $shifts->save();
             }
         }
@@ -297,7 +309,6 @@ class ScheduleController extends Controller
     }
     public function Sclinic($sclinic_id)
     {
-
         $sclinic = Sclinic::find($sclinic_id);
         if ($sclinic) {
             $sclinic->status = 0;
@@ -307,13 +318,15 @@ class ScheduleController extends Controller
 
     public function delete($shift_id)
     {
-
         $schedule = Schedule::findOrFail($shift_id);
         $id = $schedule->shift_id;
 
-        // $this->Sclinic($schedule->sclinic_id);
+        $tableShifts = TableShift::where('shift_id', $id)->get();
 
         $schedule->delete();
+        foreach ($tableShifts as $tableShift) {
+            $tableShift->delete();
+        }
         return response()->json(['success' => true, 'message' => 'Xóa lịch khám thành công.']);
     }
 }
