@@ -20,10 +20,10 @@ class MedicalRequest extends FormRequest
             'specialty_id' => 'required',
             'shift_id' => 'required',
             'symptoms' => 'required',
-            'blood_pressure' => 'required|numeric',
-            'respiratory_rate' => 'required|numeric',
-            'height' => 'required|numeric',
-            'weight' => 'required|numeric',
+            'blood_pressure' => 'nullable|numeric',
+            'respiratory_rate' => 'nullable|numeric',
+            'height' => 'nullable|numeric',
+            'weight' => 'nullable|numeric',
         ];
     }
     /**
@@ -35,13 +35,9 @@ class MedicalRequest extends FormRequest
     {
         return [
 
-            'blood_pressure.required' => ':attribute không để trống',
             'blood_pressure.numeric' => ':attribute phải là một số',
-            'respiratory_rate.required' => ':attribute không để trống',
             'respiratory_rate.numeric' => ':attribute phải là một số',
-            'height.required' => ':attribute không để trống',
             'height.numeric' => ':attribute phải là một số',
-            'weight.required' => ':attribute không để trống',
             'weight.numeric' => ':attribute phải là một số',
             'symptoms.required' => ':attribute không để trống',
             'specialty_id.required' => ':attribute không để trống',

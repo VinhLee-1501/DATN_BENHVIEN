@@ -7,91 +7,49 @@
             };
         </script>
     @endif
-
-    <div class="card-body p-4">
-        <div class="col-md-12 d-flex justify-content-around align-items-center">
-            <div class="col-md-4">
-                <h5 class="card-title fw-semibold mb-4">Quản lý bệnh án</h5>
-            </div>
-            <div class="col-md-4">
-                <input type="text" id="inputName" class="form-control" placeholder="Tìm bệnh nhân">
-            </div>
+    <!-- Tab nav -->
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
+                role="tab" aria-controls="nav-home" aria-selected="true">Đang khám</button>
+            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button"
+                role="tab" aria-controls="nav-profile" aria-selected="false">Đã khám</button>
         </div>
-        <div class="table-responsive">
-            <table class="table text-nowrap mb-0 align-middle">
-                <thead class="text-dark fs-4">
-                    <tr>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Chuẩn đoán</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Bệnh nhân</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">SĐT Bệnh nhân</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Ngày khám</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Trạng thái</h6>
-                        </th>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Thao tác</h6>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="myTable">
-                    @foreach ($medicalRecord as $item)
-                        <tr>
-                            <td class="border-bottom-0">
+    </nav>
+      <form action="" method="GET" class="row g-2 justify-content-center align-items-center">
+            <div class="row g-2 justify-content-center align-items-center col-md-5">
+                <div class="col-md-6 col-sm-6">
 
-                                @if ($item->diaginsis == '')
-                                    <p class="mb-0 fw-semibold">Chưa có chuẩn đoán</p>
-                                @else
-                                    <p class="mb-0 fw-semibold">{{ $item->diaginsis }}</p>
-                                @endif
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-semibold">
-                                    {{ $item->patientForeignKey->last_name . ' ' . $item->patientForeignKey->first_name }}
-                                </p>
-                                <p class="mb-0 fw-semibold" hidden>{{ $item->patientForeignKey->phone }}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-semibold">{{ $item->patientForeignKey->phone }}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                <p class="mb-0 fw-semibold">
-                                    {{ Carbon\Carbon::parse($item->date)->format('H:m  d/m/Y') }}</p>
-                            </td>
-                            <td class="border-bottom-0">
-                                @if ($item->status == 2)
-                                    <span class="badge bg-warning">Đang khám</span>
-                            </td>
-                            <td class="border-bottom-0 d-flex">
-                                <a href="{{ route('system.recordDoctors.record', $item->medical_id) }}"
-                                    class="btn btn-success btn-sm">
-                                    Khám
-                                </a>
-                            </td>
-                        @elseif($item->status == 3)
-                            <span class="badge bg-success">Đã khám</span>
-                            </td>
-                            <td class="border-bottom-0 d-flex">
-                                <a href="{{ route('system.recordDoctors.detail', $item->medical_id) }}"
-                                    class="btn btn-primary btn-sm">Xem</a>
-                            </td>
-                    @endif
+                    <input type="text" id="nameInput" class="form-control" placeholder="Tên bệnh nhân"
+                        name="lastname" value="{{ request('lastname') }}">
 
+                </div>
 
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            {!! $medicalRecord->links() !!}
+                <div class="col-md-6 col-sm-6">
+
+                    <input type="text" id="phoneInput" class="form-control" placeholder="Số điện thoại"
+                        name="firstname" value="{{ request('phone') }}">
+
+                </div>
+            </div>
+
+            <div class="col-md-2 col-sm-12">
+                <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+            </div>
+        </form>
+      <!-- Tab content -->
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <!-- Thuốc hoạt động -->
+            @include('System.doctors.medical.examined', ['medicalRecord' => $medicalRecord])
+        </div>
+
+        <div class="tab-pane fade show" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <!-- Thuốc hết -->
+            @include('System.doctors.medical.examining', ['medicalRecording' => $medicalRecording])
         </div>
     </div>
+
     </div>
     <script>
         $(document).ready(function() {

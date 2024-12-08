@@ -26,11 +26,11 @@ use Illuminate\Support\Facades\Storage;
 class CheckupHealthController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $user_id = $user->user_id;
-        // dd($user_id);
+       
         $book = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
             ->join('users', 'users.user_id', '=', 'schedules.user_id')
             ->where('users.user_id', $user_id)
@@ -38,9 +38,44 @@ class CheckupHealthController extends Controller
             ->select(
                 'books.*'
             )
+            ->orderBy('books.row_id', 'desc');
+        if ($request->filled('name')) {
+            $book->where('books.name', 'like', '%' . $request->name . '%');
+        }
+        if ($request->filled('phone')) {
+            $book->where('books.phone', 'like', '%' . $request->name . '%');
+        }
+
+        $online = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+        ->join('users', 'users.user_id', '=', 'schedules.user_id')
+        ->where('schedules.user_id', $user_id)
+        ->where('books.status', 1)
+        ->where('books.role', 1)
+        ->select(
+            'books.*'
+        )
             ->paginate(10);
 
-        return view('System.doctors.checkupHealth.index', compact('book'));
+
+
+        $offline = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+        ->join('users', 'users.user_id', '=', 'schedules.user_id')
+        ->where('schedules.user_id', $user_id)
+        ->where('books.status', 1)
+            ->where('books.role', 0)
+        ->select(
+            'books.*'
+        )
+            ->paginate(10);
+
+            
+           
+        return view('System.doctors.checkupHealth.index', [
+            'book' => $book,
+            'online' => $online,
+            'offline' => $offline,
+
+        ]);
     }
 
     public function create($book_id, Request $request)
@@ -59,10 +94,11 @@ class CheckupHealthController extends Controller
             ->get();
 
 
-
         if (!$patient) {
             $user = $book->first();
         } else {
+
+            $health = MedicalRecord::where('medical_records.book_id', $book_id)->first();
 
             $patient_id = $patient->patient_id;
             $medicalRecord = Book::join('medical_records', 'medical_records.book_id', 'books.book_id')
@@ -77,10 +113,13 @@ class CheckupHealthController extends Controller
             $user = [
                 'medicalRecord' => $medicalRecord,
                 'patient' => $patient,
+                'health' => $health,
                 'book' => $book->first(),
 
             ];
         }
+
+
         $service = Service::get();
         $medicine = Medicine::select('*')->distinct()->get();
         return view(
@@ -117,6 +156,7 @@ class CheckupHealthController extends Controller
 
         $medicines = json_decode($request->input('selectedMedicines'), true);
 
+
         foreach ($medicines as $medicineData) {
             $saveMedicine = new TreatmentMedication();
             $saveMedicine->medicine_id = $medicineData['id'];
@@ -127,7 +167,8 @@ class CheckupHealthController extends Controller
             $saveMedicine->quantity = $medicineData['quantity'];
             $saveMedicine->save();
         }
-
+        $user = Auth::user();
+        $user_id = $user->user_id;
 
         $patient_id = $patient->patient_id;
         $medical = MedicalRecord::where('medical_id', $medical_id)->first();
@@ -142,6 +183,7 @@ class CheckupHealthController extends Controller
         $medical->height = $request->input('height');
         $medical->patient_id  = $patient_id;
         $medical->book_id  = $book_id;
+        $medical->user_id  = $user_id;
         $medical->date  = now();
 
         $medical->update();
@@ -150,7 +192,6 @@ class CheckupHealthController extends Controller
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->join('specialties', 'specialties.specialty_id', '=', 'users.specialty_id')
             ->where('medical_id', $medical_id)
-            ->whereNotNull('medical_records.diaginsis')
             ->select(
                 'users.firstname as first_name_doctor',
                 'users.lastname as last_name_doctor',
@@ -160,6 +201,7 @@ class CheckupHealthController extends Controller
             )
             ->get();
 
+            // dd($medical_id);
 
 
         $data = [
@@ -190,8 +232,10 @@ class CheckupHealthController extends Controller
         return $pdf->download('Donthuoc.pdf');
     }
 
-    public function storePatient(CheckupPatientRequest $request, $book_id)
+    public function storePatient(Request $request, $book_id)
     {
+
+        // dd($book_id);
         $book = Book::where('book_id', $book_id)->first();
         $phone = $book->phone;
 
@@ -253,33 +297,39 @@ class CheckupHealthController extends Controller
                 ->with('success', 'Bạn đã không chọn dịch vụ.');
         } elseif ($request->input('action') === 'select') {
 
-            if(!$request->input('selectedService')){
+            if (!$request->input('selectedService')) {
                 return redirect()->route('system.checkupHealth.create', $book_id)
-                ->with('error', 'Vui lòng chọn cận lâm sàng');
+                    ->with('error', 'Vui lòng chọn cận lâm sàng');
             }
-            $medical_record = new MedicalRecord();
-            $medical_record->medical_id =  strtoupper(Str::random(10));
-            $medical_record->date = now();
-            $medical_record->symptom = $symptom;
-            $medical_record->book_id = $book_id;
-            $medical_record->patient_id = $patient_id;
-            $medical_record->user_id = $user_id;
-            $medical_record->status = 2;
-            $medical_record->save();
+        
+           $medical_recordbook = MedicalRecord::where('medical_records.book_id', $book_id)->first();
 
-            if ($medical_record) {
-                $book->status = 2;
-                $book->update();
-            }
+           if(!$medical_recordbook){
+                $medical_record = new MedicalRecord();
+                $medical_record->medical_id = strtoupper(Str::random(10));
+                $medical_record->date = now();
+                $medical_record->symptom = $symptom;
+                $medical_record->book_id = $book_id;
+                $medical_record->patient_id = $patient_id;
+                $medical_record->user_id = $user_id;
+                $medical_record->status = 2;
+                $medical_record->save();
+           }else{
+             
+                $medical_record = $medical_recordbook;
+                $medical_record->update([
+                    'status' => 2,
+                ]);
 
+           }
 
-            if ($medical_record) {
+            $book->status = 2;
+            $book->update();
 
-                $treatment = new TreatmentDetail();
-                $treatment->treatment_id = strtoupper(Str::random(10));
-                $treatment->medical_id = $medical_record->medical_id;
-                $treatment->save();
-            }
+            $treatment = new TreatmentDetail();
+            $treatment->treatment_id = strtoupper(Str::random(10));
+            $treatment->medical_id = $medical_record->medical_id;
+            $treatment->save();
 
             if ($treatment) {
                 $selectedServices = $request->input('selectedService');
@@ -340,8 +390,8 @@ class CheckupHealthController extends Controller
                 ->where('books.book_id', $book_id)
                 ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
                 ->get();
+            $health = MedicalRecord::where('medical_records.book_id', $book_id)->first();
 
-                // dd($patient);
             return view(
                 'System.doctors.checkupHealth.medicalRecord',
                 [
@@ -356,6 +406,7 @@ class CheckupHealthController extends Controller
                     'user' => $user,
                     'doctor' => $user,
                     'content' => $content,
+                    'health' => $health,
                 ]
             )->with('success', 'Lưu cận lâm sàng thành công.');
         }
@@ -364,7 +415,6 @@ class CheckupHealthController extends Controller
     public function saveMedical(Request $request, $book_id)
     {
 
-        // dd($book_id);
         $user = Auth::user();
         $user_id = $user->user_id;
         $book = Book::where('book_id', $book_id)->first();
@@ -377,29 +427,34 @@ class CheckupHealthController extends Controller
         }
 
         $patient_id = $patient->patient_id;
-        $medical_record = new MedicalRecord();
-        $medical_record->medical_id =  strtoupper(Str::random(10));
-        $medical_record->date = now();
-        $medical_record->symptom = $symptom;
-        $medical_record->book_id = $book_id;
-        $medical_record->patient_id = $patient_id;
-        $medical_record->user_id = $user_id;
-        $medical_record->status = 2;
-        $medical_record->save();
-
-        if ($medical_record) {
-            $book->status = 2;
-            $book->update();
+        
+        $medical_book = MedicalRecord::where('medical_records.book_id',$book_id)->first();
+        
+        if(!$medical_book){
+            $medical_record = new MedicalRecord();
+            $medical_record->medical_id =  strtoupper(Str::random(10));
+            $medical_record->date = now();
+            $medical_record->symptom = $symptom;
+            $medical_record->book_id = $book_id;
+            $medical_record->patient_id = $patient_id;
+            $medical_record->user_id = $user_id;
+            $medical_record->status = 2;
+            $medical_record->save();
+        }else{
+            $medical_record = $medical_book;
+            $medical_record->update([
+                'status' => 2,
+            ]);
         }
 
-
-        if ($medical_record) {
+            $book->status = 2;
+            $book->update();
 
             $treatment = new TreatmentDetail();
             $treatment->treatment_id = strtoupper(Str::random(10));
             $treatment->medical_id = $medical_record->medical_id;
             $treatment->save();
-        }
+        
 
         $phone = $book->phone;
         $medical_patient = MedicalRecord::where('patient_id', $patient_id)
@@ -409,6 +464,7 @@ class CheckupHealthController extends Controller
             ->orderBy('medical_records.created_at', 'desc')
             ->limit(3)
             ->get();
+            
         $service = Service::get();
         $medicine = Medicine::select('*')->distinct()->get();
         $medical = MedicalRecord::orderBy('row_id', 'desc')->first();
@@ -431,6 +487,7 @@ class CheckupHealthController extends Controller
 
         $totalprice = 20;
 
+        $health = $medical_book;
         return view(
             'System.doctors.checkupHealth.medicalRecord',
             [
@@ -440,6 +497,7 @@ class CheckupHealthController extends Controller
                 'service' => $service,
                 'medicine' => $medicine,
                 'content' => $content,
+                'health' => $health,
                 'doctor' => $user,
                 'totalprice' => $totalprice,
                 'medical_patient' => $medical_patient

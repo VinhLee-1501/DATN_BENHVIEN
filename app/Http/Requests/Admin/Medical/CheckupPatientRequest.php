@@ -25,7 +25,6 @@ class CheckupPatientRequest extends FormRequest
             'patient_id' => 'required',
             'last_name' => 'required',
             'first_name' => 'required',
-            'emergency_contact' => 'size:10|regex:/^[0-9]{10,15}$/',
             'age' => 'required|date',
             'address' => 'required',
             'cccd' => 'required|digits:12',
@@ -49,13 +48,13 @@ class CheckupPatientRequest extends FormRequest
             'cccd.required' => ':attribute không để trống',
             'phone.size' => ':attribute phải đủ 10 số',
             'phone.required' => ':attribute không để trống',
-            'phone.unique' => ':attribute đã được sử dụng',
-            'emergency_contact.size' => ':attribute phải đủ 10 số',
-            'emergency_contact.regex' => ':attribute phải là số hợp lệ',
+            'phone.unique' => ':attrib
+            ute đã được sử dụng',
             'phone.regex' => ':attribute phải là số hợp lệ',  
             'national.required' => ':attribute không để trống',
-            'email.required' => 'Email không được để trống.',
-            'email.email' => 'Email không đúng định dạng.',
+            'email.required' => ':attribute không được để trống.',
+            'email.email' => ':attribute không đúng định dạng.',
+            
 
         ];
     }
@@ -64,14 +63,15 @@ class CheckupPatientRequest extends FormRequest
     {
         return [
             'patient_id' => 'Mã bệnh nhân',
-            'first_name' => 'Họ',
-            'last_name' => 'Tên',
+            'first_name' => 'Tên',
+            'last_name' => 'Họ',
             'phone' => 'Số điện thoại',
             'age' => 'Ngày sinh',
             'address' => 'Địa chỉ',
             'cccd' => 'CCCD/CMND',
             'national' => 'Quốc tịch',
-            'emergency_contact' => 'SĐT khẩn cấp',
+            'email' => 'Email',
+            
         ];
     }
 }

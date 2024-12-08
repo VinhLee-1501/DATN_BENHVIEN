@@ -12,9 +12,7 @@ Route::prefix('recordDoctors')->middleware('check_login_admin')
       Route::get('/record/{medical_id}', [MedicalRecordDocotrController::class, 'record'])->name('recordDoctors.record');
       Route::get('/detail/{medical_id}', [MedicalRecordDocotrController::class, 'detail'])->name('recordDoctors.detail');
 
-
+      
+      Route::get('/print/{medical_id}', [PDFController::class, 'printMedical'])->name('printMedical');
       Route::get('/service/{treatment_id}', [PDFController::class, 'printService'])->name('pdfService');
-
-
-
    });

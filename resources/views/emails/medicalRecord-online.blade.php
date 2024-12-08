@@ -92,7 +92,8 @@
 
 <body>
     <div class="header">
-        <img src="{{ base_path('public/backend/assets/images/logos/logo.png') }}" alt="Hospital Logo">
+        
+         <img src="{{ $message->embed(public_path('backend/assets/images/logos/logo.png')) }}">
         <div class="hospital-info">
             <h4>Bệnh Viện VietCare</h4>
             <p><strong>Địa chỉ: </strong>315, Nguyễn Văn Linh, An Khánh, Ninh Kiều</p>
@@ -102,16 +103,16 @@
 
     <h2>ĐƠN THUỐC</h2>
     <div class="patient-info">
-        <p><strong>Họ tên người bệnh:</strong> {{ $data['medicals'][0]->last_name }}
-            {{ $data['medicals'][0]->first_name }}</p>
-        <p><strong>Ngày sinh:</strong>{{ \Carbon\Carbon::parse( $data['medicals'][0]->birthday)->format('d/m/Y') }}</p>
-        <p><strong>Địa chỉ:</strong> {{ $data['medicals'][0]->address }}</p>
-        @if ($data['medicals'][0]->gender == 1)
+        <p><strong>Họ tên người bệnh:</strong> 
+            {{ $medicals[0]->last_name }} {{ $medicals[0]->first_name }}</p>
+        <p><strong>Ngày sinh:</strong>{{ \Carbon\Carbon::parse( $medicals[0]->birthday)->format('d/m/Y') }}</p>
+        <p><strong>Địa chỉ:</strong> {{ $medicals[0]->address }}</p>
+        @if ($medicals[0]->gender == 1)
             <p><strong>Giới tính:</strong> Nam</p>
         @else
             <p><strong>Giới tính:</strong> Nữ</p>
         @endif
-        <p><strong>Khoa khám bệnh:</strong> {{ $data['medicals'][0]->specialty }}</p>
+        <p><strong>Khoa khám bệnh:</strong> {{ $medicals[0]->specialty }}</p>
     </div>
 
     <h3>Danh Sách Thuốc</h3>
@@ -128,7 +129,7 @@
         </thead>
         <tbody>
             @php $count = 1; @endphp
-            @foreach ($data['medicines'] as $medicine)
+            @foreach ($medicines as $medicine)
                 <tr>
                     <td>{{ $count++ }}</td>
                     <td>{{ $medicine['name'] }}</td>
@@ -143,15 +144,15 @@
     <div class="footer">
         <div class="left">
             <p class="notes"><strong>Ngày tái khám:</strong>
-                {{ \Carbon\Carbon::parse($data['medicals'][0]->re_examination_date)->format('d/m/Y') }}</p>
-            <p class="notes"><strong>Chuẩn đoán:</strong> {{ $data['medicals'][0]->diaginsis }}</p>
-            <p class="notes"><strong>Lời dặn:</strong> {{ $data['medicals'][0]->advice }}</p>
+                {{ \Carbon\Carbon::parse($medicals[0]->re_examination_date)->format('d/m/Y') }}</p>
+            <p class="notes"><strong>Chuẩn đoán:</strong> {{ $medicals[0]->diaginsis }}</p>
+            <p class="notes"><strong>Lời dặn:</strong> {{ $medicals[0]->advice }}</p>
             <p class="notes"><strong>Ghi chú:</strong></p>
         </div>
         <div class="right">
             <p><strong>Ngày:</strong> {{ \Carbon\Carbon::now()->format('d/m/Y') }}</p>
-            <p><strong>Bác sĩ điều trị:</strong> {{ $data['medicals'][0]->last_name_doctor }}
-                {{ $data['medicals'][0]->first_name_doctor }}</p>
+            <p><strong>Bác sĩ điều trị:</strong> {{ $medicals[0]->last_name_doctor }}
+                {{ $medicals[0]->first_name_doctor }}</p>
         </div>
     </div>
     

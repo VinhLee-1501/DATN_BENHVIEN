@@ -22,14 +22,15 @@ class CheckupHealthRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'blood_pressure' => 'required|numeric',
-            'respiratory_rate' => 'required|numeric',
-            'height' => 'required|numeric',
-            'weight' => 'required|numeric',
+            'blood_pressure' => 'nullable|numeric',
+            'respiratory_rate' => 'nullable|numeric',
+            'height' => 'nullable|numeric',
+            'weight' => 'nullable|numeric',
             'symptoms' => 'required',
             'diaginsis' => 'required',
             're_examination_date' => 'required',
             'advice' => 'required',
+     
 
         ];
     }
@@ -37,18 +38,14 @@ class CheckupHealthRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'blood_pressure.required' => ':attribute không để trống',
+            
             'blood_pressure.numeric' => ':attribute phải là một số',
-            'respiratory_rate.required' => ':attribute không để trống',
             'respiratory_rate.numeric' => ':attribute phải là một số',
-            'height.required' => ':attribute không để trống',
             'height.numeric' => ':attribute phải là một số',
-            'weight.required' => ':attribute không để trống',
             'weight.numeric' => ':attribute phải là một số',
             'symptoms.required' => ':attribute không để trống',
             'diaginsis.required' => ':attribute không để trống',
             're_examination_date.required' => ':attribute không để trống',
-            // 're_examination_date.date' => ':attribute phải là một ngày hợp lệ',
             'advice.required' => ':attribute không để trống',
 
         ];

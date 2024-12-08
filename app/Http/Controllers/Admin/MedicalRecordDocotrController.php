@@ -28,13 +28,23 @@ class MedicalRecordDocotrController extends Controller
         $medicalRecord = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->where(function ($query) {
-                $query->where('status', 3)
-                    ->orWhere('status', 2);
+                $query->where('status', 2);
+                   
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('System.doctors.medical.index', ['medicalRecord' => $medicalRecord]);
+        $medicalRecording = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+        ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
+        ->where(function ($query) {
+            $query->where('status', 3);
+            
+        })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+
+        return view('System.doctors.medical.index', ['medicalRecord' => $medicalRecord, 'medicalRecording' => $medicalRecording]);
     }
 
 
@@ -84,6 +94,9 @@ class MedicalRecordDocotrController extends Controller
         ->where('medical_records.medical_id', $medical_id)
         ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
         ->get();
+        $health = MedicalRecord::where('medical_records.medical_id', $medical_id)->first();
+
+        // dd($health);
 
         return view(
             'System.doctors.medical.medicalRecording',
@@ -97,6 +110,7 @@ class MedicalRecordDocotrController extends Controller
                 'medicine' => $medicine,
                 'doctor' => $doctor,
                 'content' => $content,
+                'health' => $health,
             ]
         );
     }
@@ -150,10 +164,14 @@ class MedicalRecordDocotrController extends Controller
             )
             ->get();
 
+ 
+           
         $data = [
             'medicines' => $medicines,
             'medicals' => $medicals,
         ];
+
+   
 
         session()->put('pdf_data', $data);
 
@@ -235,40 +253,8 @@ class MedicalRecordDocotrController extends Controller
         );
     }
 
-    public function storePatient(CheckupPatientRequest $request)
-    {
-        $user = new User();
-        $user->user_id = strtoupper(Str::random(10));
-        $user->firstname = $request->input('first_name');
-        $user->lastname = $request->input('last_name');
 
-        $user->phone = $request->input('phone');
-        $user->role = 0;
-        $user->save();
 
-        $patient = new Patient();
-        $patient->patient_id = $request->input('patient_id');
-        $patient->first_name = $request->input('first_name');
-        $patient->last_name = $request->input('last_name');
-        $patient->phone = $request->input('phone');
-        $patient->gender = $request->input('gender');
-        $patient->birthday = $request->input('age');
-        $patient->address = $request->input('address');
-        $patient->occupation = $request->input('occupation');
-        $patient->national = $request->input('national');
-        $patient->insurance_number = $request->input('insurance_number');
-        $patient->emergency_contact = $request->input('emergency_contact');
 
-        $patient->save();
-        $patient = Patient::orderBy('row_id', 'desc')->first();
-        $service = Service::get();
-        $medicine = Medicine::select('*')->distinct()->get();
-        return view('System.doctors.medical.createpatient', [
-            'service' => $service,
-            'medicine' => $medicine,
-            'patient' => $patient,
-
-        ])->with('success', 'Lưu thông tin bệnh nhân thành công.');
-    }
 
 }

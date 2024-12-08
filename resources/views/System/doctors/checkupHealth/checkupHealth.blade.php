@@ -232,10 +232,10 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        {{-- <label for="blood_pressure" class="ms-2">Huyết áp</label> --}}
+                                        <label for="blood_pressure" class="ms-2">Huyết áp</label>
                                         <div class="d-flex align-items-center">
-                                            <input placeholder="Huyết áp" type="text" class="form-control"
-                                                id="bloodPressure" name="blood_pressure" value="{{ old('blood_pressure') }}"
+                                            <input type="text" class="form-control"
+                                                id="bloodPressure" name="blood_pressure" value="{{ $user['health']->blood_pressure ?? '' }} "
                                                 style="max-width: 120px;">
                                             <p class="mt-3 ms-2">mmHg</p>
                                         </div>
@@ -246,11 +246,11 @@
     
     
                                     <div class="col-md-6 mb-3">
-                                        {{-- <label for="respiratory_rate" class="ms-2">Nhịp thở</label> --}}
+                                        <label for="respiratory_rate" class="ms-2">Nhịp thở</label>
                                         <div class="d-flex align-items-center">
-                                            <input placeholder="Nhịp thở" type="text" class="form-control"
+                                            <input type="text" class="form-control"
                                                 id="respiration" name="respiratory_rate"
-                                                value="{{ old('respiratory_rate') }}" style="max-width: 120px;">
+                                                value="{{ $user['health']->respiratory_rate ?? '' }}" style="max-width: 120px;">
                                             <p class="mt-3 ms-2">nhịp/phút</p>
                                         </div>
                                         @error('respiratory_rate')
@@ -261,10 +261,10 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        {{-- <label for="height" class="ms-2">Chiều cao</label> --}}
+                                        <label for="height" class="ms-2">Chiều cao</label>
                                         <div class="d-flex align-items-center">
-                                            <input placeholder="Chiều cao" type="text" class="form-control"
-                                                id="height" name="height" value="{{ old('height') }}"
+                                            <input  type="text" class="form-control"
+                                                id="height" name="height" value="{{ $user['health']->height ?? '' }}"
                                                 style="max-width: 120px;">
                                             <p class="mt-3 ms-2">cm</p>
                                         </div>
@@ -273,10 +273,10 @@
                                         @enderror
                                     </div>
                                     <div class=" col-md-6 mb-3">
-                                        {{-- <label for="weight" class="ms-2">Cân nặng</label> --}}
+                                        <label for="weight" class="ms-2">Cân nặng</label>
                                         <div class="d-flex align-items-center">
-                                            <input placeholder="Cân nặng" type="text" class="form-control" id="weight"
-                                                name="weight" value="{{ old('weight') }}" style="max-width: 120px;">
+                                            <input  type="text" class="form-control" id="weight"
+                                                name="weight" value="{{ $user['health']->weight ?? '' }}" style="max-width: 120px;">
                                             <p class="mt-3 ms-2">kg</p>
                                         </div>
                                         @error('weight')

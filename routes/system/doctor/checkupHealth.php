@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CheckupHealthController;
+use App\Http\Controllers\Admin\OnlineDotor;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,5 +18,9 @@ Route::prefix('checkupHealths')->middleware('check_login_admin')
       
       Route::get('/download-pdf', [CheckupHealthController::class, 'download'])->name('downloadPdf');
 
+   //online
+   Route::get('/createOnline/{book_id}', [OnlineDotor::class, 'createOnline'])->name('Online.create');
+   Route::post('/savePatient/{book_id}', [OnlineDotor::class, 'savePatient'])->name('Online.savePatient');
+   Route::post('/tore/{book_id}', [OnlineDotor::class, 'store'])->name('Online.store');
 
    });

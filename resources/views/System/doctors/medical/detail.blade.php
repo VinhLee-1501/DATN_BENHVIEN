@@ -130,7 +130,7 @@
                             
                                 @if (isset($totalprice) && !$totalprice->isEmpty())
                                     <div class="d-flex justify-content-end">
-                                        <span id="totalAmout">Tổng cộng: {{ $totalprice[0]->total_price }}.000 VNĐ</span>
+                                        <span id="totalAmout">Tổng cộng: {{ number_format($totalprice[0]->total_price, 0, ',', '.') }}₫</span>
                                     </div>
                                 @else
                                     <div class="d-flex justify-content-end">    

@@ -54,18 +54,17 @@
                                             <div class="text-danger">*{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="col-md-6">
+                                </div><div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Tên</label>
-                                        <input type="text" name="first_name" id="first_name"
-                                            class="form-control @error('first_name') is-invalid @enderror"
-                                            value="{{ old('first_name') }}">
-                                       @error('first_name')
+                                        <label class="form-label">Nghề nghiệp</label>
+                                        <input type="text" class="form-control @error('occupation') is-invalid @enderror"
+                                            id="occupation" name="occupation" value="{{ old('occupation') }}">
+                                        @error('occupation')
                                             <div class="text-danger">*{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
+                               
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Giới tính</label>
@@ -114,12 +113,13 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label class="form-label">Nghề nghiệp</label>
-                                        <input type="text" class="form-control @error('occupation') is-invalid @enderror"
-                                            id="occupation" name="occupation" value="{{ old('occupation') }}">
-                                        @error('occupation')
+                                        <label class="form-label">Tên</label>
+                                        <input type="text" name="first_name" id="first_name"
+                                            class="form-control @error('first_name') is-invalid @enderror"
+                                            value="{{ old('first_name') }}">
+                                       @error('first_name')
                                             <div class="text-danger">*{{ $message }}</div>
                                         @enderror
                                     </div>
