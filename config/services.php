@@ -51,6 +51,8 @@ return [
         'client_secret' => env('ZALO_CLIENT_SECRET'),
         'redirect' => env('ZALO_REDIRECT_URI'),
     ],
-
+    'abstract' => [
+        'api_key' => env('ABSTRACT_API_KEY'),
+    ],
 
 ];

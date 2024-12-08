@@ -40,40 +40,63 @@ class BookController extends Controller
         ]);
     }
 
-    // Xử lý yêu cầu booking
 
 
     public function handleBooking(BookingRequest $request)
     {
+        $email = $request->email;
+
+        // Lấy API key từ file .env qua config
+        $apiKey = config('services.abstract.api_key');
+        $url = "https://emailvalidation.abstractapi.com/v1/?api_key={$apiKey}&email={$email}";
+
+        $response = Http::get($url);
+
+        if ($response->ok()) {
+            $emailData = $response->json();
+
+            // Kiểm tra trạng thái `deliverability`
+            if ($emailData['deliverability'] !== 'DELIVERABLE') {
+                return redirect()->back()
+                    ->withErrors(['email' => 'Email không hợp lệ hoặc không tồn tại.'])
+                    ->withInput();
+            }
+        } else {
+            return redirect()->back()
+                ->withErrors(['email' => 'Không thể xác minh email. Vui lòng thử lại sau.'])
+                ->withInput();
+        }
+
+        // Xác minh reCAPTCHA
+        $recaptchaSecret = config('recaptcha.secret_key');
+        $recaptchaResponse = $request->input('g-recaptcha-response');
+
+        $recaptchaVerifyResponse = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => $recaptchaSecret,
+            'response' => $recaptchaResponse,
+            'remoteip' => $request->ip(),
+        ]);
+
+        $recaptchaResult = $recaptchaVerifyResponse->json();
+
+        if (!$recaptchaResult['success']) {
+            return redirect()->back()
+                ->withErrors(['g-recaptcha-response' => 'Vui lòng xác minh reCAPTCHA.'])
+                ->withInput();
+        }
+
+        // Tiếp tục xử lý đặt lịch
         $book = new Book();
         $book->book_id = $this->generateUserId();
         $book->name = $request->name;
         $book->phone = $request->phone;
-        $book->email = $request->email;
+        $book->email = $email;
         $book->symptoms = $request->symptoms;
         $book->day = $request->day;
         $book->hour = $request->hour;
         $book->shift_id = $request->shift_id ?? null;
         $book->specialty_id = $request->specialty_id;
         $book->role = $request->role;
-        // Validate reCAPTCHA
-
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => config('recaptcha.secret_key'),
-            'response' => $request->input('g-recaptcha-response'),
-            'remoteip' => $request->ip(),
-        ]);
-
-        $responseBody = $response->json();
-
-        if (!$responseBody['success']) {
-            return redirect()->route('client.booking')
-                ->withErrors(['g-recaptcha-response' => 'Vui lòng xác minh reCAPTCHA.'])
-                ->withInput();
-        }
-        $validatedData = $request->validated();
-
-
 
         $specialty = Specialty::where('specialty_id', $request->specialty_id)
             ->where('status', 1)
@@ -86,12 +109,13 @@ class BookController extends Controller
         $book->user_id = Auth::check() ? Auth::user()->user_id : null;
         $book->save();
 
-
+        // Gửi email xác nhận
         Mail::to($book->email)->send(new BookingConfirmation($book, $specialty));
-
 
         return redirect()->back()->with('success', 'Đặt lịch thành công');
     }
+
+
     public function cancelBooking($book_id)
     {
 
