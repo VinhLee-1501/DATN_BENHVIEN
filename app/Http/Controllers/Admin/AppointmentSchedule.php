@@ -15,6 +15,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -27,8 +28,33 @@ class AppointmentSchedule extends Controller
             ->leftJoin('schedules', 'schedules.shift_id', '=', 'books.shift_id')
             ->leftJoin('users', 'users.user_id', '=', 'schedules.user_id')
             ->leftJoin('sclinics', 'sclinics.sclinic_id', '=', 'schedules.sclinic_id')
-            ->leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
-            ->select('books.*', 'users.lastname', 'users.firstname', 'sclinics.name AS sclinicName', 'specialties.name AS specialtyName', 'table_shifts.name as shiftName', 'table_shifts.note as shiftNote')
+            ->leftJoin('table_shifts', 'table_shifts.row_id', '=', 'books.table_shift_id')
+            ->select(
+                'books.*',
+                DB::raw('MAX(users.lastname) as lastname'),
+                DB::raw('MAX(users.firstname) as firstname'),
+                DB::raw('MAX(sclinics.name) as sclinicName'),
+                DB::raw('MAX(specialties.name) as specialtyName'),
+                DB::raw('MAX(table_shifts.name) as shiftName'),
+                DB::raw('MAX(table_shifts.note) as shiftNote')
+            )
+            ->groupBy(
+                'books.row_id',
+                'books.book_id',
+                'books.name',
+                'books.day',
+                'books.hour',
+                'books.role',
+                'books.status',
+                'books.specialty_id',
+                'books.user_id',
+                'books.shift_id',
+                'books.table_shift_id',
+                'books.symptoms',
+                'books.deleted_at',
+                'books.created_at',
+                'books.updated_at',
+            )
             ->orderByRaw('CASE WHEN books.status = 0 THEN 0 ELSE 1 END')
             ->orderBy('books.row_id', 'DESC');
 
@@ -76,7 +102,6 @@ class AppointmentSchedule extends Controller
             ->where('users.specialty_id', $specialty_id)
             ->select('schedules.*')
             ->groupBy(
-
                 'schedules.shift_id',
                 'schedules.user_id',
                 'schedules.note',
@@ -126,9 +151,11 @@ class AppointmentSchedule extends Controller
                 'users.lastname',
                 'schedules.status',
                 'table_shifts.name as shiftName',
-                'table_shifts.status as shiftStatus',
-                'table_shifts.row_id',
-                'table_shifts.note as noteShift'
+                DB::raw('MAX(table_shifts.status) as shiftStatus'),
+                DB::raw('MAX(table_shifts.row_id) as rowId'),
+                DB::raw(
+                    'MAX(table_shifts.note) as noteShift'
+                )
             );
 
         if ($role == 1) {
@@ -139,16 +166,7 @@ class AppointmentSchedule extends Controller
         }
 
         $doctors = $doctorsQuery
-            ->groupBy(
-                'users.firstname',
-                'users.lastname',
-                'schedules.status',
-                'users.user_id',
-                'table_shifts.name',
-                'table_shifts.status',
-                'table_shifts.row_id',
-                'table_shifts.note'
-            )
+            ->groupBy('users.user_id', 'users.firstname', 'users.lastname', 'schedules.status', 'table_shifts.name')
             ->get();
 
         return response()->json(['doctors' => $doctors]);
@@ -213,18 +231,27 @@ class AppointmentSchedule extends Controller
             ->first();
 
         // $shiftSchedules = TableShift::where('shift_id', $scheduleDate->shift_id)->first();
-        $shiftStarus = TableShift::where('row_id', $rowId)->first();
+        $shiftStatus = TableShift::where('row_id', $rowId)->first();
+        if (!$shiftStatus) {
+            return response()->json(['error' => true, 'message' => 'Không tìm thấy ca làm việc']);
+        }
         // dd($shiftStarus);
         if ($book->role == 1) {
-            if ($shiftStarus->status == 1) {
+            if ($shiftStatus->status == 1) {
                 return response()->json(['error' => true, 'message' => 'Ca làm đã được đặt.']);
             } else {
-                $shiftStarus->status = 1;
-                $shiftStarus->save();
+                if ($book->table_shift_id) {
+                    $tableShitId =
+                        TableShift::where('row_id', $book->table_shift_id)->first();
+
+                    $tableShitId->status = 0;
+                    $tableShitId->save();
+                }
+                $shiftStatus->status = 1;
+                $shiftStatus->save();
             }
         }
 
-        // dd($shiftSchedules);
         $bookCount = Book::join('schedules', 'schedules.shift_id', 'books.shift_id')
             ->where('books.shift_id', $scheduleDate->shift_id)
             ->whereDate('schedules.day', $date)
@@ -234,17 +261,14 @@ class AppointmentSchedule extends Controller
             return response()->json(['error' => true, 'message' => 'Bác sĩ đã đầy lịch']);
         }
 
-        // dd($book);
         $book->shift_id = $scheduleDate->shift_id;
         $book->day = $date;
 
         $book->status = $status;
         $book->hour = $hour;
         $book->url = $request->input('url');
-        // dd($shiftSchedules);
-        // Lưu bản ghi
+        $book->table_shift_id = $rowId;
         $book->save();
-
 
         Order::create([
             // 'book_id' => $book->book_id,

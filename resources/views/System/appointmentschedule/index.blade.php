@@ -138,7 +138,7 @@
                                                 <div class="col-md-12 row align-items-center">
                                                     <!-- Phần ảnh đại diện -->
                                                     <div class="col-md-4 text-center">
-                                                        <img src="{{ $item->avatar ? $item->avatar : asset('backend/assets/images/profile/user-1.jpg') }}"
+                                                        <img src="{{ $item->avatar ? asset('storage/uploads/avatars/'. $item->avatar) : asset('backend/assets/images/profile/user-1.jpg') }}"
                                                             alt="Ảnh đại diện bác sĩ" class="img-fluid rounded-circle"
                                                             style="width: 150px; height: 150px; object-fit: cover;">
                                                     </div>
@@ -403,7 +403,7 @@
                             <label for="shift_id">Chọn ca:</label>
                                 <select id="shift_id" name="rowId" class="form-control">
                                 ${response.doctors.map(function(doctor) {
-                            return `<option value="${doctor.row_id}">${doctor.shiftName} - (${doctor.noteShift ?? ""})</option>`;
+                            return `<option value="${doctor.rowId}">${doctor.shiftName} - (${doctor.noteShift ?? ""})</option>`;
                                 }).join('')}
                             </select>
                                 `);
@@ -446,7 +446,7 @@
             $('#save-btn').click(function() {
                 var id = $('#exampleModal').data('id');
                 var row_id = $('#shift_id').val();
-                // console.log(id);
+                console.log(row_id);
                 var appointmentTime = $('#selectedDay').val();
                 var hour = $('#hour').val();
                 var doctorName = $('#doctor_name').val();
