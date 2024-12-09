@@ -42,9 +42,11 @@ class AccountController extends Controller
         $admin = clone $usersQuery; // Tạo bản sao của truy vấn
         $admin = $admin->where('role', 1)->orderBy('row_id', 'desc')->paginate(10)->appends($request->query());
 
+        // Truy vấn người dùng có role = 0 (Người dùng)
         $staff = clone $usersQuery; // Tạo bản sao của truy vấn
         $staff = $staff->where('role', 3)->orderBy('row_id', 'desc')->paginate(10)->appends($request->query());
-        return view('System.accounts.index', compact('users', 'admin', 'activeTab'));
+
+        return view('System.accounts.index', compact('users', 'admin', 'staff' ,'activeTab'));
     }
 
 

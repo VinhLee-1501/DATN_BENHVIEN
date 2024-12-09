@@ -90,80 +90,78 @@
 
             </div>
             <div class="col-lg-3 d-flex justify-content-end">
-                <div class="col-lg-3 d-none d-lg-block">
-                    <div class="header__cart d-flex align-items-center justify-content-end gap-3">
-                        @if (auth()->check())
-                        <div class="header__login position-relative" onclick="toggleMenu()" style="cursor: pointer;">
-                            @if (empty(auth()->user()->avatar))
-                            <img class="border-success" class="w-auto" style="width: 28px !important; height: 28px !important; cursor: pointer;"
-                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                alt="{{ auth()->user()->firstname }}">
-                            @else
-                            @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
-                            <img class="border-success" class="w-auto" style="width: 28px !important; height: 28px !important; cursor: pointer;"
-                                src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->firstname }}">
-                            @else
-                            @if (auth()->user()->avatar ===
-                            'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png')
-                            <img class="border-success" class="w-auto" style="width: 28px !important; height: 28px !important; cursor: pointer;"
-                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
-                                alt="{{ auth()->user()->firstname }}">
-                            @else
-                            <img class="border-success" class="w-auto" style="width: 28px !important; height: 28px !important; cursor: pointer;"
-                                src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->firstname }}">
-                            @endif
-                            @endif
-                            @endif
-
-
-                            <div id="dropdownMenuLoggedIn" class="dropdown-menu dropdown-menu-start">
-                                <ul class="list-unstyled mx-0">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('client.profile.index') }}">
-                                            <i class="fa-regular fa-user"></i> Thông tin tài khoản
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('client.logout') }}">
-                                            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div>
+                <div class="header__cart d-flex align-items-center justify-content-end gap-3">
+                    @if (auth()->check())
+                    <div class="header__login position-relative " onclick="toggleMenu()" style="cursor: pointer;  border: 1px solid #048647;">
+                        @if (empty(auth()->user()->avatar))
+                        <img class="border-success" class="w-auto" style="width: 32px !important; height: 32px !important; cursor: pointer;"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                            alt="{{ auth()->user()->firstname }}">
                         @else
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownLoggedOutButton">
-                                Đăng nhập
-                            </button>
-                            <div id="dropdownMenuLoggedOut" class="dropdown-menu dropdown-menu-start">
-                                <ul>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('client.login') }}">
-                                            <i class="fa-regular fa-user"></i> Đăng nhập người dùng
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('system.auth.login') }}">
-                                            <i class="fa-solid fa-user-doctor"></i> Đăng nhập bác sĩ
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
+                        @if (auth()->user()->google_id || auth()->user()->zalo_id || auth()->user()->facebook_id)
+                        <img class="border-success" class="w-auto" style="width: 32px !important; height: 32px !important; cursor: pointer;"
+                            src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->firstname }}">
+                        @else
+                        @if (auth()->user()->avatar ===
+                        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png')
+                        <img class="border-success" class="w-auto" style="width: 32px !important; height: 32px !important; cursor: pointer;"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
+                            alt="{{ auth()->user()->firstname }}">
+                        @else
+                        <img class="border-success" class="w-auto" style="width: 32px !important; height: 32px !important; cursor: pointer;"
+                            src="{{ asset('storage/uploads/avatars/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->firstname }}">
+                        @endif
+                        @endif
                         @endif
 
 
-                        <ul class="d-flex gap-3">
-                            <li>
-                                <a href="{{ route('shop.cart') }}" style="cursor: pointer;">
-                                    <i class="fa fa-shopping-bag"></i> <span>{{ $cartCount ?? 0 }}</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <div id="dropdownMenuLoggedIn" class="dropdown-menu dropdown-menu-start">
+                            <ul class="list-unstyled mx-0">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('client.profile.index') }}">
+                                        <i class="fa-regular fa-user"></i> Thông tin tài khoản
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('client.logout') }}">
+                                        <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
+                    @else
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownLoggedOutButton">
+                            Đăng nhập
+                        </button>
+                        <div id="dropdownMenuLoggedOut" class="dropdown-menu dropdown-menu-start">
+                            <ul>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('client.login') }}">
+                                        <i class="fa-regular fa-user"></i> Đăng nhập người dùng
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('system.auth.login') }}">
+                                        <i class="fa-solid fa-user-doctor"></i> Đăng nhập bác sĩ
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    @endif
+
+
+                    <ul class="d-flex gap-3">
+                        <li>
+                            <a href="{{ route('shop.cart') }}" style="cursor: pointer;">
+                                <i class="fa fa-shopping-bag"></i> <span>{{ $cartCount ?? 0 }}</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="humberger__open">

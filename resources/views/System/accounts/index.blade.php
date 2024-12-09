@@ -10,7 +10,11 @@
         </button>
         <button class="nav-link {{ $activeTab == 'nav-contact' ? 'active' : '' }}" id="nav-contact-tab"
             data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact"
-            aria-selected="false" onclick="window.location='?tab=nav-contact'">Người dùng
+            aria-selected="false" onclick="window.location='?tab=nav-contact'">Bệnh nhân
+        </button>
+        <button class="nav-link {{ $activeTab == 'nav-staff' ? 'active' : '' }}" id="nav-staff-tab"
+            data-bs-toggle="tab" data-bs-target="#nav-staff" type="button" role="tab" aria-controls="nav-staff"
+            aria-selected="false" onclick="window.location='?tab=nav-staff'">Nhân viên
         </button>
     </div>
 </nav>
@@ -58,6 +62,11 @@
     <div class="tab-pane fade {{ $activeTab == 'nav-contact' ? 'show active' : '' }}" id="nav-contact" role="tabpanel"
         aria-labelledby="nav-contact-tab">
         @include('System.accounts.users', ['users' => $users]) <!-- Truyền biến users vào view -->
+    </div>
+
+    <div class="tab-pane fade {{ $activeTab == 'nav-staff' ? 'show active' : '' }}" id="nav-staff" role="tabpanel"
+        aria-labelledby="nav-staff-tab">
+        @include('System.accounts.staff', ['staff' => $staff]) <!-- Truyền biến users vào view -->
     </div>
 
 </div>

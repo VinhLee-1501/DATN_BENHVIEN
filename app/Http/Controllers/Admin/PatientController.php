@@ -21,13 +21,13 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $query = Patient::leftJoin('medical_records', 'patients.patient_id', '=', 'medical_records.patient_id')
-            ->leftJoin('users', 'patients.phone', '=', 'users.phone')
-            ->whereNotNull('medical_records.diaginsis')
+            ->leftJoin('users', 'patients.phone', '=', 'users.phone') // Kết nối với bảng users
             ->select(
                 'patients.*',
                 'medical_records.medical_id',
                 'medical_records.diaginsis',
                 'users.avatar'
+
             )
             ->orderby('row_id', 'desc');
 
@@ -42,8 +42,8 @@ class PatientController extends Controller
         if ($request->filled('phone')) {
             $query->where('patients.phone', $request->phone);
         }
-        if ($request->filled('insurance_number')) {
-            $query->where('patients.insurance_number', $request->insurance_number);
+        if ($request->filled('gender')) {
+            $query->where('patients.gender', $request->gender);
         }
 
 
@@ -180,7 +180,7 @@ class PatientController extends Controller
         $book->specialty_id = $request->input('specialty_id');
         $book->day = $request->input('day');
         $book->symptoms = $request->input('symptoms');
-        $book->status = 1;
+        $book->status = 0;
 
         $book->save();
         

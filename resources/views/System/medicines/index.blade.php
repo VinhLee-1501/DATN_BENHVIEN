@@ -320,6 +320,7 @@
             success: function (response) {
 
                 if (response.success) {
+                    
                     $('#medicineId').val(response.medicine.medicine_id);
                     $('#nameedit').val(response.medicine.name);
                     $('#status').val(response.medicine.status);

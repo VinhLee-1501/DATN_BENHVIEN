@@ -214,12 +214,12 @@
             </div>
         </div>
 
-
-        <!-- modal -->
+        @if(isset($doctor))
         <div class="modal fade" id="editDoctorModal" tabindex="-1" aria-labelledby="editDoctorModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable">
-                <form id="editDoctorForm" method="POST" action="{{ old('action_url') }}">
+
+                <form id="editDoctorForm" method="POST" action="{{ route('system.doctor.update',$doctor->user_id) }}">
                     @csrf
                     @method('PATCH')
                     <div class="modal-content">
@@ -291,6 +291,9 @@
                 </form>
             </div>
         </div>
+        @endif
+        <!-- modal -->
+
 
 
     </div>

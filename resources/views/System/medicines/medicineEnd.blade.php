@@ -15,6 +15,12 @@
                             <h6 class="fw-semibold mb-0">Tên thuốc</h6>
                         </th>
                         <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Số lượng</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Giá</h6>
+                        </th>
+                        <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">Đơn vị</h6>
                         </th>
                         <th class="border-bottom-0">
@@ -38,12 +44,20 @@
                     $count = 1;
                     @endphp
                     @foreach ($medicineEnd as $data)
-                    <tr>
+                    <tr class="text-center">
                         <td class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">{{ $count++ }}</h6>
                         </td>
                         <td class="border-bottom-0">
                             <p class="mb-0 fw-semibold text-truncate">{{ Str::limit($data->name, 30) }}</p>
+                        </td>
+                        <td class="border-bottom-0">
+                            <p class="mb-0 fw-semibold">{{ $data->amount }}
+                            </p>
+                        </td>
+                        <td class="border-bottom-0">
+                            <p class="mb-0 fw-semibold">{{ $data->price }}
+                            </p>
                         </td>
                         <td class="border-bottom-0">
                             <p class="mb-0 fw-semibold">{{ $data->unit_of_measurement }}
@@ -60,7 +74,7 @@
                             <span class="badge bg-danger">Hết hạn</span>
                             @endif
                         </td>
-                        <td class="border-bottom-0 d-flex">
+                        <td class="border-bottom-0 d-flex justify-content-center align-items-center">
                             <a href="javascript:void(0)" class="btn btn-primary me-1"
                                 onclick="openEditModalMedicine('{{ $data->medicine_id }}')">
                                 <i class="ti ti-pencil"></i>

@@ -435,8 +435,9 @@
                         <span class="hide-menu">Thống kê (Bác sĩ)</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="#" aria-expanded="false">
+                <li
+                    class="sidebar-item {{ request()->is('system/patient*') || request()->is('system/patient?*') ? 'selected' : '' }}">
+                    <a class="sidebar-link" href="{{ route('system.patient') }}" aria-expanded="false">
                         <span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

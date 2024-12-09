@@ -42,7 +42,7 @@
 
                                 <td class="border-bottom-0">
                                     <span class="fw-semibold mb-0">
-                                        <p class="badge bg-primary mb-0 fw-semibold">Người dùng</p>
+                                        <p class="badge bg-primary mb-0 fw-semibold">Bệnh nhân</p>
                                     </span>
                                 </td>
 

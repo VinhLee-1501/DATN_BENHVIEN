@@ -16,7 +16,7 @@ class MedicineController extends Controller
     public function index(Request $request)
     {
         // Khởi tạo query gốc
-        $query = Medicine::join('medicine_types', 'medicine_types.medicine_type_id', '=', 'medicines.medicine_type_id')
+        $query = Medicine::leftjoin('medicine_types', 'medicine_types.medicine_type_id', '=', 'medicines.medicine_type_id')
             ->select(
                 'medicine_types.name as medicine_types_name',
                 'medicines.medicine_id as medicine_id',
@@ -27,6 +27,8 @@ class MedicineController extends Controller
                 'medicines.status as status',
                 'medicines.medicine_type_id as medicine_type_id',
                 'medicines.created_at as created_at',
+                'medicines.price as price',
+                'medicines.amount as amount',
                 'medicines.updated_at as updated_at'
             )
             ->orderBy('medicines.row_id', 'desc');

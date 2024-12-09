@@ -12,19 +12,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('medicines', function (Blueprint $table) {
-            $table->id('row_id')->primary();
-            $table->string('medicine_id', 10)->unique();
-            $table->string('name', 255);
-            $table->string('active_ingredient', 255);
-            $table->string('unit_of_measurement', 255);
-            $table->tinyInteger('status');
+            $table->id('row_id')->primary()->comment('Khóa chính của bảng');
+            $table->string('medicine_id', 10)->unique()->comment('Mã định danh duy nhất của thuốc');
+            $table->string('name', 255)->comment('Tên thuốc');
+            $table->text('active_ingredient')->comment('Hoạt chất có trong thuốc');
+            $table->string('unit_of_measurement', 255)->comment('Đơn vị đo (ví dụ: mg, ml)');
+            $table->float('price')->nullable()->comment('Giá thuốc');
 
-            $table->string('medicine_type_id', 10)->nullable();
+            $table->tinyInteger('status')->comment('Trạng thái của thuốc (đang hoạt động hay không)');
+
+            $table->string('medicine_type_id', 10)->nullable()->comment('Khóa ngoại liên kết với bảng loại thuốc');
             $table->foreign('medicine_type_id')
                 ->references('medicine_type_id')
                 ->on('medicine_types')
-                ->onDelete('set null');
-            $table->softDeletes();
+                ->onDelete('set null')
+                ->comment('Đặt giá trị null nếu loại thuốc liên kết bị xóa');
+            $table->integer('amount')->nullable()->default(100)->comment('Số lượng thuốc');
+            // Các trường mới thêm vào
+            $table->text('dosage' )->nullable()->comment('Hàm lượng thuốc (ví dụ: 500mg)');
+            $table->text('packaging' )->nullable()->comment('Thông tin về quy cách đóng gói (ví dụ: hộp 10 viên)');
+            $table->text('license_number' )->nullable()->comment('Số GPLH/GPNK của thuốc');
+            $table->dateTime('expiration_date' )->nullable()->comment('Hạn sử dụng của thuốc (ví dụ: 24 tháng, 2 năm)');
+
+            $table->softDeletes()->comment('Hỗ trợ xóa mềm');
             $table->timestamps();
         });
     }

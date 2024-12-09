@@ -58,5 +58,10 @@ class OrderProduct extends Model
     public function couponForeignKLey()
     {
         return $this->belongsTo(Coupon::class, 'coupon_id', 'coupon_id');
+    } 
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'product_id', 'product_id');
     }
 }

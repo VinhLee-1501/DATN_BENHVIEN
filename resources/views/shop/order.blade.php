@@ -1,7 +1,8 @@
-@extends('layouts.shop.app') <style>
+@extends('layouts.shop.app')
+
+<style>
     .order-info {
         background-color: #f9f9f9;
-        padding: 15px;
         margin-bottom: 20px;
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -14,26 +15,6 @@
         font-weight: bold;
     }
 
-    .product-list {
-        margin-top: 10px;
-    }
-
-    .product-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .product-image {
-        width: 150px;
-        height: auto;
-        margin-right: 10px;
-    }
-
-    .product-details p {
-        margin: 0;
-    }
-
     .order-status {
         margin-bottom: 10px;
         font-weight: bold;
@@ -41,43 +22,33 @@
 
     .status-success {
         color: #28a745;
-        /* Màu xanh lá cây để biểu thị trạng thái hoàn thành */
     }
 
     .status-failure {
         color: #dc3545;
-        /* Màu đỏ để biểu thị trạng thái thất bại */
     }
 
     .status-pending {
         color: #ffc107;
-        /* Màu vàng để biểu thị trạng thái đang chờ */
     }
 
     .status-cod {
         color: #17a2b8;
-        /* Màu xanh để biểu thị trạng thái thanh toán khi nhận hàng */
     }
 
-    @media (max-width: 768px) {
-        .order-info {
-            padding: 10px;
-        }
+    .table th,
+    .table td {
+        vertical-align: middle;
+    }
 
-        .product-image {
-            width: 40px;
-            margin-right: 5px;
-        }
-
-        .product-details p {
-            font-size: 14px;
-        }
+    td img {
+        height: 100px;
+        width: auto;
     }
 </style>
-@section('content')
-<!-- Breadcrumb Section End -->
 
-<!-- Shopping Cart Section Begin -->
+@section('content')
+
 @if (!$order_user)
 <h5 class="text-center p-4">Chưa có đơn hàng mua nhé !!!</h5>
 @else
@@ -108,82 +79,136 @@
         }
         @endphp
 
+        <h5 class="mb-3">Thông tin đơn hàng vừa đặt</h5>
+
         <!-- Thông tin đơn hàng vừa đặt -->
-        <div class="order-info">
-            <h5>Thông tin đơn hàng vừa đặt</h5>
+        <div class="order-info p-3">
             @if (request('vnp_TransactionStatus'))
             <div>
                 <p>Trạng thái giao dịch: {{ request('vnp_TransactionStatus') }}</p>
             </div>
             @endif
             <h5>Mã đơn hàng: {{ $order->order_id }}</h5>
-            <p>Ngày đặt hàng: {{ \Carbon\Carbon::parse($order->created_at)->format('H:i d/m/Y') }}
-                {{ $order->created_at }}
-            </p>
-            <p class="status-failure">Tổng giá trị đơn hàng:
-                {{ number_format($order->price_sale ?? $order->price_old) }} VND
-            </p>
-            <p class="order-status ">{{ $methodText }}</p>
-            <p class="order-status {{ $statusClass }}">{{ $statusText }}</p>
-            <div class="product-list">
-                @foreach ($product as $item)
-                <div class="product-item">
-                    <img src="{{ asset('storage/uploads/products/' . $item->img_first) }}"
-                        class="product-image">
-                    <div class="pt-3">
-                        <p class="m-0">{{ $item->name }}</p>
-                        <p class="m-0">{{ number_format($item->price) }} VND</p>
-                        <p class="m-0">Số lượng: {{ $item->quantity }}</p>
+
+            <div class="row">
+                <div class="col-6">
+                    <p>Ngày đặt hàng: {{ \Carbon\Carbon::parse($order->created_at)->format('H:i d/m/Y') }}</p>
+                    <p class="status-failure">Tổng giá trị đơn hàng: {{ number_format($order->price_sale ?? $order->price_old) }} VND</p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="order-status">{{ $methodText }}</p>
+                    <p class="order-status {{ $statusClass }}">{{ $statusText }}</p>
+                </div>
+            </div>
+
+            <!-- Accordion for Products -->
+            <div class="accordion" id="orderAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingAllProducts">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAllProducts" aria-expanded="true" aria-controls="collapseAllProducts">
+                            Tất cả sản phẩm trong đơn hàng
+                        </button>
+                    </h2>
+                    <div id="collapseAllProducts" class="accordion-collapse collapse show" aria-labelledby="headingAllProducts" data-bs-parent="#orderAccordion">
+                        <div class="accordion-body">
+                            <!-- Product Table -->
+                            <table class="table table-bordered align-middle">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th scope="col">Ảnh</th>
+                                        <th scope="col">Tên sản phẩm</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Tổng giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($product as $item)
+                                    <tr class="text-center">
+                                        <td><img src="{{ asset('storage/uploads/products/' . $item->img_first) }}" class="product-image" alt="{{ $item->name }}"></td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ number_format($item->price) }} VND</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>{{ number_format($item->price * $item->quantity) }} VND</td>
+                                        <td> <a href="{{ route('shop.shop-details', $item->product_id)}}" class="btn btn-primary">Đánh giá</a></td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                @endforeach
             </div>
         </div>
 
         <!-- Các đơn hàng trước đây -->
-        <h5>Các đơn hàng trước đây</h5>
+        <h5 class="mb-3">Các đơn hàng trước đây</h5>
+
         @foreach ($order_user as $item)
-        <div class="order-info">
+        <div class="order-info row p-3">
             <h5>Mã đơn hàng: {{ $item->order_id }}</h5>
-            <p>Ngày đặt hàng: {{ \Carbon\Carbon::parse($item->created_at)->format('H:i d/m/Y') }}</p>
-            <!-- Định dạng ngày giờ -->
-            <p class="d-flex status-failure">Giá trị đơn hàng:
-                {{ number_format($item->price_sale ?? $item->price_old) }}đ
-            </p>
-            @php
-            $statusText = '';
-            $statusClass = '';
-            if ($item->payment_method == 0) {
-            $statusText = 'Thanh toán khi nhận hàng';
-            } elseif ($item->payment_method == 1) {
-            $statusText = 'Thanh toán bằng VNPAY';
-            } elseif ($item->payment_method == 2) {
-            $statusText = 'Thanh toán bằng MOMOPAY';
-            } else {
-            $statusText = 'Thanh toán bằng ZaloPay';
-            }
-            @endphp
-            <p class="order-status status-success">Phương thức thanh toán: {{ $statusText }}</p>
+            <div class="col-md-6 col-12">
+                <p>Ngày đặt hàng: {{ \Carbon\Carbon::parse($item->created_at)->format('H:i d/m/Y') }}</p>
+                <p class="d-flex status-failure">Giá trị đơn hàng: {{ number_format($item->price_sale ?? $item->price_old) }}đ</p>
+            </div>
 
-            <!-- Thông tin địa chỉ giao hàng -->
-            <p>Địa chỉ giao hàng: {{ $item->order_address }}</p>
+            <div class="col-md-6 col-12 text-end">
+                <p class="order-status status-success">Phương thức thanh toán: {{ $statusText }}</p>
+                <p class="order-status 
+                @if ($item->order_status === 1) status-success
+                @elseif ($item->order_status === 0)
+                    status-pending
+                @else
+                    status-cancelled @endif">
+                    {{ $item->order_status === 1 ? 'Đã xác nhận' : ($item->order_status === 0 ? 'Đang chờ xử lý' : 'Đã hủy') }}
+                </p>
+            </div>
 
-            <!-- Trạng thái đơn hàng -->
-            <p
-                class="order-status 
-            @if ($item->order_status === 1) status-success
-            @elseif ($item->order_status === 0)
-                status-pending
-            @else
-                status-cancelled @endif">
-                {{ $item->order_status === 1 ? 'Đã xác nhận' : ($item->order_status === 0 ? 'Đang chờ xử lý' : 'Đã hủy') }}
-            </p>
+            <!-- Foreach các sản phẩm trong đơn hàng -->
+            <div class="accordion" id="orderAccordion_{{ $item->order_id }}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingProducts_{{ $item->order_id }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProducts_{{ $item->order_id }}" aria-expanded="true" aria-controls="collapseProducts_{{ $item->order_id }}">
+                            Tất cả sản phẩm trong đơn hàng
+                        </button>
+                    </h2>
+                    <div id="collapseProducts_{{ $item->order_id }}" class="accordion-collapse collapse show" aria-labelledby="headingProducts_{{ $item->order_id }}" data-bs-parent="#orderAccordion_{{ $item->order_id }}">
+                        <div class="accordion-body">
+                            <!-- Bảng các sản phẩm trong đơn hàng -->
+                            <table class="table table-bordered align-middle">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th scope="col">Ảnh</th>
+                                        <th scope="col">Tên sản phẩm</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Tổng giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($item->products as $product)
+                                    <tr class="text-center">
+                                        <td><img src="{{ asset('storage/uploads/products/' . $product->img_first) }}" class="product-image" alt="{{ $product->name }}"></td>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ number_format($product->price) }} VND</td>
+                                        <td>{{ $product->pivot->quantity }}</td> <!-- 'pivot' nếu quan hệ nhiều-nhiều -->
+                                        <td>{{ number_format($product->price * $product->pivot->quantity) }} VND</td>
+                                        <td><a href="{{ route('shop.shop-details', $product->id) }}" class="btn btn-primary">Đánh giá</a></td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @endforeach
+
+
 
     </div>
 </section>
 @endif
 
-<!-- Shopping Cart Section End -->
 @endsection

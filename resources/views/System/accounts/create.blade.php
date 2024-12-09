@@ -23,8 +23,9 @@
                                 <label for="roleSelect" class="form-label">Vai trò</label>
                                 <select id="roleSelect" name="role" class="form-control" onchange="toggleInputs()">
                                     <option value="">Chọn vai trò</option>
-                                    <option value="0" {{ old('role') == 0 ? 'selected' : '' }}>Người dùng</option>
+                                    <option value="0" {{ old('role') == 0 ? 'selected' : '' }}>Bệnh nhân</option>
                                     <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Quản trị</option>
+                                    <option value="3" {{ old('role') == 3 ? 'selected' : '' }}>Nhân viên</option>
                                 </select>
                                 @error('role')
                                 <div class="text-danger">*{{ $message }}</div>
