@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer('price_service')->default(150000)->comment('phí khám');
             $table->integer('total_price')->nullable();
             $table->integer('cash_received')->nullable()->comment('tiền nhận');
-            $table->integer('cash_received')->nullable()->comment('tiền nhận');
             $table->integer('change')->nullable()->comment("tiền thừa");
             $table->string('user_id', 10)->nullable();
             $table->foreign('user_id')
