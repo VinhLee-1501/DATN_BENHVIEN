@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id('row_id')->primary();
             $table->string('book_id', 10)->unique();
             $table->dateTime('day');
-            $table->time('hour');
+            $table->time('hour')->nullable();
             $table->string('name', 50);
             $table->string('phone',10);
-            $table->string('email', 255);
+            $table->string('email', 255)->nullable();
             $table->string('symptoms', 255)->nullable();
             $table->string('shift_id', 10)->nullable();
 

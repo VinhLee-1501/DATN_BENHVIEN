@@ -103,7 +103,7 @@
     </div>
    
 
-    <h2>Hồ sơ Bệnh ÁN</h2>
+    <h2>Hồ Sơ Bệnh Án</h2>
 
     <div class="patient-info">
         <p><strong>Họ tên người bệnh:</strong> {{ $data['medicals']->last_name }}

@@ -232,9 +232,9 @@ class AppointmentSchedule extends Controller
 
         // $shiftSchedules = TableShift::where('shift_id', $scheduleDate->shift_id)->first();
         $shiftStatus = TableShift::where('row_id', $rowId)->first();
-        if (!$shiftStatus) {
-            return response()->json(['error' => true, 'message' => 'Không tìm thấy ca làm việc']);
-        }
+        // if (!$shiftStatus) {
+        //     return response()->json(['error' => true, 'message' => 'Không tìm thấy ca làm việc']);
+        // }
         // dd($shiftStarus);
         if ($book->role == 1) {
             if ($shiftStatus->status == 1) {

@@ -9,6 +9,7 @@ use App\Models\Book;
 use App\Models\MedicalRecord;
 use App\Models\Medicine;
 use App\Models\Order;
+use App\Models\OrderMedicine;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Models\TreatmentDetail;
@@ -201,8 +202,10 @@ class CheckupHealthController extends Controller
             )
             ->get();
 
-            // dd($medical_id);
-
+        $order_medicine = new OrderMedicine();
+        $order_medicine->treatment_id = $treatment_id;
+        $order_medicine->save();
+        
 
         $data = [
             'medicines' => $medicines,
@@ -472,10 +475,9 @@ class CheckupHealthController extends Controller
         $order = new Order();
         $order->order_id = strtoupper(Str::random(10));
         $order->treatment_id = $treatment->treatment_id;
-        $order->total_price = 20;
+        $order->total_price = 20000;
         $order->status = 0;
         $order->payment = 0;
-
         $order->save();
 
         $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')

@@ -17,10 +17,9 @@
             font-size: 0.8rem;
         }
 
-       .card .card-header {
-        background-color: #94e4bd37
-       }
-     
+        .card .card-header {
+            background-color: #94e4bd37
+        }
     </style>
 
     <div class="container p-0">
@@ -41,8 +40,7 @@
                     <b class="py-2 px-3">Thông tin bệnh nhân</b>
                     <div class="card-body px-3">
                         @if (!$patient)
-                            <form action="{{ route('system.checkupHealth.storePatient', $book->book_id) }}"
-                                method="post">
+                            <form action="{{ route('system.checkupHealth.storePatient', $book->book_id) }}" method="post">
                                 @csrf
                                 <div class=" mb-2">
                                     <div class="col-12 mb-2 mt-2">
@@ -53,7 +51,7 @@
                                     <div class="col-12  mb-2">
                                         <label for="patient_name">Họ</label>
                                         <input type="text" class="form-control" id="patient_name" name="last_name"
-                                             value="{{ old('last_name') }}">
+                                            value="{{ old('last_name') }}">
                                     </div>
                                     <div class="col-12 mb-2">
                                         <label for="patient_name">Tên</label>
@@ -149,14 +147,14 @@
                                     <b>{{ Carbon\Carbon::parse($user['patient']->birthday)->format('d/m/Y') }}</b>
                                 </div>
                                 <div class="d-flex m-1">
-                                    <label for="patient_id">CCCD/CMND:  </label>
+                                    <label for="patient_id">CCCD/CMND: </label>
                                     <b> {{ $user['patient']->cccd }}</b>
                                 </div>
                                 <div class="d-flex m-1">
                                     <label for="patient_name">Địa chỉ: </label>
                                     <b>{{ $user['patient']->address }}</b>
                                 </div>
-                              
+
                                 <div class="d-flex m-1">
                                     <label for="patient_name">Số điện thoại: </label>
                                     <b> {{ $user['patient']->phone }}</b>
@@ -234,8 +232,9 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="blood_pressure" class="ms-2">Huyết áp</label>
                                         <div class="d-flex align-items-center">
-                                            <input type="text" class="form-control"
-                                                id="bloodPressure" name="blood_pressure" value="{{ $user['health']->blood_pressure ?? '' }} "
+                                            <input type="text" class="form-control" id="bloodPressure"
+                                                name="blood_pressure"
+                                                value="{{ $user['health']->blood_pressure ?? '' }} "
                                                 style="max-width: 120px;">
                                             <p class="mt-3 ms-2">mmHg</p>
                                         </div>
@@ -243,14 +242,15 @@
                                             <div class="text-danger">*{{ $message }}</div>
                                         @enderror
                                     </div>
-    
-    
+
+
                                     <div class="col-md-6 mb-3">
                                         <label for="respiratory_rate" class="ms-2">Nhịp thở</label>
                                         <div class="d-flex align-items-center">
-                                            <input type="text" class="form-control"
-                                                id="respiration" name="respiratory_rate"
-                                                value="{{ $user['health']->respiratory_rate ?? '' }}" style="max-width: 120px;">
+                                            <input type="text" class="form-control" id="respiration"
+                                                name="respiratory_rate"
+                                                value="{{ $user['health']->respiratory_rate ?? '' }}"
+                                                style="max-width: 120px;">
                                             <p class="mt-3 ms-2">nhịp/phút</p>
                                         </div>
                                         @error('respiratory_rate')
@@ -263,9 +263,8 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="height" class="ms-2">Chiều cao</label>
                                         <div class="d-flex align-items-center">
-                                            <input  type="text" class="form-control"
-                                                id="height" name="height" value="{{ $user['health']->height ?? '' }}"
-                                                style="max-width: 120px;">
+                                            <input type="text" class="form-control" id="height" name="height"
+                                                value="{{ $user['health']->height ?? '' }}" style="max-width: 120px;">
                                             <p class="mt-3 ms-2">cm</p>
                                         </div>
                                         @error('height')
@@ -275,8 +274,8 @@
                                     <div class=" col-md-6 mb-3">
                                         <label for="weight" class="ms-2">Cân nặng</label>
                                         <div class="d-flex align-items-center">
-                                            <input  type="text" class="form-control" id="weight"
-                                                name="weight" value="{{ $user['health']->weight ?? '' }}" style="max-width: 120px;">
+                                            <input type="text" class="form-control" id="weight" name="weight"
+                                                value="{{ $user['health']->weight ?? '' }}" style="max-width: 120px;">
                                             <p class="mt-3 ms-2">kg</p>
                                         </div>
                                         @error('weight')
@@ -285,7 +284,7 @@
                                     </div>
 
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -374,32 +373,43 @@
                             <div class="card-header py-2 px-3">
                                 <b>Tạo đơn thuốc</b>
                             </div>
-
                             <div class="card-body px-3">
                                 <div class="d-flex flex-wrap align-items-center justify-content-center">
                                     <label for="days" class="form-label fw-bold mt-2 me-2">Ngày uống:</label>
                                     <span id="selectedDay" class="me-3">3 ngày</span>
                                     <div class="btn-group" role="group" aria-label="Select days">
-                                        <input type="radio" class="btn-check" name="days" id="btnradio1" autocomplete="off" value="3" checked>
-                                        <label class="btn btn-outline-primary rounded-0" for="btnradio1" onclick="updateSelectedDay(3)">3</label>
-                                
-                                        <input type="radio" class="btn-check" name="days" id="btnradio2" autocomplete="off" value="5">
-                                        <label class="btn btn-outline-primary" for="btnradio2" onclick="updateSelectedDay(5)">5</label>
-                                
-                                        <input type="radio" class="btn-check" name="days" id="btnradio3" autocomplete="off" value="7">
-                                        <label class="btn btn-outline-primary" for="btnradio3" onclick="updateSelectedDay(7)">7</label>
-                                
-                                        <input type="radio" class="btn-check" name="days" id="btnradio4" autocomplete="off" value="10">
-                                        <label class="btn btn-outline-primary" for="btnradio4" onclick="updateSelectedDay(10)">10</label>
-                                
-                                        <input type="radio" class="btn-check" name="days" id="btnradio5" autocomplete="off" value="14">
-                                        <label class="btn btn-outline-primary" for="btnradio5" onclick="updateSelectedDay(14)">14</label>
-                                
-                                        <input type="radio" class="btn-check" name="days" id="btnradio6" autocomplete="off" value="15">
-                                        <label class="btn btn-outline-primary rounded-0" for="btnradio6" onclick="updateSelectedDay(15)">15</label>
+                                        <input type="radio" class="btn-check" name="days" id="btnradio1"
+                                            autocomplete="off" value="3" checked>
+                                        <label class="btn btn-outline-primary rounded-0" for="btnradio1"
+                                            onclick="updateSelectedDay(3)">3</label>
+
+                                        <input type="radio" class="btn-check" name="days" id="btnradio2"
+                                            autocomplete="off" value="5">
+                                        <label class="btn btn-outline-primary" for="btnradio2"
+                                            onclick="updateSelectedDay(5)">5</label>
+
+                                        <input type="radio" class="btn-check" name="days" id="btnradio3"
+                                            autocomplete="off" value="7">
+                                        <label class="btn btn-outline-primary" for="btnradio3"
+                                            onclick="updateSelectedDay(7)">7</label>
+
+                                        <input type="radio" class="btn-check" name="days" id="btnradio4"
+                                            autocomplete="off" value="10">
+                                        <label class="btn btn-outline-primary" for="btnradio4"
+                                            onclick="updateSelectedDay(10)">10</label>
+
+                                        <input type="radio" class="btn-check" name="days" id="btnradio5"
+                                            autocomplete="off" value="14">
+                                        <label class="btn btn-outline-primary" for="btnradio5"
+                                            onclick="updateSelectedDay(14)">14</label>
+
+                                        <input type="radio" class="btn-check" name="days" id="btnradio6"
+                                            autocomplete="off" value="15">
+                                        <label class="btn btn-outline-primary rounded-0" for="btnradio6"
+                                            onclick="updateSelectedDay(15)">15</label>
                                     </div>
                                 </div>
-                                
+
                                 <div class="row mt-3">
                                     <div class="col-12 col-md-6 col-lg-4 ms-auto">
                                         <div class="form-group mb-3">
@@ -437,10 +447,8 @@
                                     </table>
                                 </div>
 
-
                                 <div class="col-12 mt-3 p-3">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                       
                                         <div class="d-flex flex-wrap align-items-center flex-grow-1">
                                             <label for="reexam" class="mb-2 me-2">Ngày tái khám</label>
                                             <input type="text" id="reexamDateInput"
@@ -484,5 +492,5 @@
             </div>
         </div>
     </div>
-    
+
 @endsection

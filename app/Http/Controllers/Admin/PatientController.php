@@ -20,8 +20,8 @@ class PatientController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Patient::leftJoin('medical_records', 'patients.patient_id', '=', 'medical_records.patient_id')
-            ->leftJoin('users', 'patients.phone', '=', 'users.phone') // Kết nối với bảng users
+        $query = Patient:: leftJoin('users', 'patients.phone', '=', 'users.phone')
+            ->whereNotNull('medical_records.diaginsis')
             ->select(
                 'patients.*',
                 'medical_records.medical_id',

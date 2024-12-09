@@ -164,6 +164,15 @@ class OnlineDotor extends Controller
             
         }
 
+        $book = Book::where('book_id', $book_id)->first();
+        $table_shift = $book->table_shift_id;
+
+        $shift = TableShift::where('table_shift_id', $table_shift)->first();
+        $shift->status = 0;
+        $shift->update();
+       
+    
+
         $treatment_id = $treatment->treatment_id;
         $medicines = json_decode($request->input('selectedMedicines'), true);
 
@@ -200,9 +209,6 @@ class OnlineDotor extends Controller
 
 
         session()->put('pdf_data', $data);
-
-        // dd($medicines,
-        //     $medicals);
         Mail::to($book->email)->send(new MailMedicalRecord($medicals, $medicines));
 
 
