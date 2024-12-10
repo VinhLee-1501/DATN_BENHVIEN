@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\Validator\Constraints\Length;
 
 return new class extends Migration
 {
@@ -14,6 +15,8 @@ return new class extends Migration
         Schema::create('treatment_services', function (Blueprint $table) {
             $table->id();
             $table->string('treatment_id', 10)->nullable();
+            $table->string('note', length:255)->nullable();
+            $table->string('result', length:255)->nullable();
             $table->foreign('treatment_id')
                 ->references('treatment_id')
                 ->on('treatment_details')

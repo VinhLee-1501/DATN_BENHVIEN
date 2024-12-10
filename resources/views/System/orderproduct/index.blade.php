@@ -11,15 +11,12 @@
 
             <nav class="mb-4">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-home-tab"
-                        data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab"
-                        aria-controls="nav-home" aria-selected="true">Chờ xác nhận</button>
-                    <button class="nav-link  "id="nav-profile-tab"
-                        data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab"
-                        aria-controls="nav-profile" aria-selected="false">Đang giao</button>
-                    <button class="nav-link  "id="nav-contact-tab"
-                        data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab"
-                        aria-controls="nav-contact" aria-selected="false">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                        type="button" role="tab" aria-controls="nav-home" aria-selected="true">Chờ xác nhận</button>
+                    <button class="nav-link  "id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Đang giao</button>
+                    <button class="nav-link  "id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+                        type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         Đã giao</button>
                 </div>
             </nav>
@@ -122,11 +119,7 @@
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
-                                                    @if (is_null($data->price_old))
-                                                        {{ number_format($data->price_sale, 0, ',', '.') }} VND
-                                                    @else
-                                                        {{ number_format($data->price_old, 0, ',', '.') }} VND
-                                                    @endif
+                                                    {{ number_format($data->price_sale, 0, ',', '.') }} VND
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
@@ -172,6 +165,15 @@
                                                             @endphp
                                                             <div class="col-md-6">
                                                                 <p><strong>Số lượng:</strong> {{ $data->total_quantity }}
+                                                                </p>
+                                                                <p><strong>Phí ship:</strong>
+                                                                    @if (is_null($data->coupon_id))
+                                                                        {{ number_format($data->price_sale - $data->price_old, 0, ',', '.') }}
+                                                                        VND
+                                                                    @else
+                                                                        {{ number_format($data->price_sale - $data->price_old * $data->percent, 0, ',', '.') }}
+                                                                        VND
+                                                                    @endif
                                                                 </p>
                                                                 <p><strong>Hình thức thanh toán:</strong>
                                                                     @if ($data->payment_method == 0)
@@ -257,11 +259,9 @@
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
-                                                    @if (is_null($data->price_old))
-                                                        {{ number_format($data->price_sale, 0, ',', '.') }} VND
-                                                    @else
-                                                        {{ number_format($data->price_old, 0, ',', '.') }} VND
-                                                    @endif
+
+                                                    {{ number_format($data->price_sale, 0, ',', '.') }} VND
+
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
@@ -304,6 +304,15 @@
                                                             @endphp
                                                             <div class="col-md-6">
                                                                 <p><strong>Số lượng:</strong> {{ $data->total_quantity }}
+                                                                </p>
+                                                                <p><strong>Phí ship:</strong>
+                                                                    @if (is_null($data->coupon_id))
+                                                                        {{ number_format($data->price_sale - $data->price_old, 0, ',', '.') }}
+                                                                        VND
+                                                                    @else
+                                                                        {{ number_format($data->price_sale - $data->price_old * $data->percent, 0, ',', '.') }}
+                                                                        VND
+                                                                    @endif
                                                                 </p>
                                                                 <p><strong>Hình thức thanh toán:</strong>
                                                                     @if ($data->payment_method == 0)
@@ -389,11 +398,9 @@
                                             </td>
                                             <td class="border-bottom-0">
                                                 <p class="mb-0 fw-semibold">
-                                                    @if (is_null($data->price_old))
-                                                        {{ number_format($data->price_sale, 0, ',', '.') }} VND
-                                                    @else
-                                                        {{ number_format($data->price_old, 0, ',', '.') }} VND
-                                                    @endif
+
+                                                    {{ number_format($data->price_sale, 0, ',', '.') }} VND
+
                                                 </p>
                                             </td>
                                             <td class="border-bottom-0">
@@ -435,6 +442,15 @@
                                                             @endphp
                                                             <div class="col-md-6">
                                                                 <p><strong>Số lượng:</strong> {{ $data->total_quantity }}
+                                                                </p>
+                                                                <p><strong>Phí ship:</strong>
+                                                                    @if (is_null($data->coupon_id))
+                                                                        {{ number_format($data->price_sale - $data->price_old, 0, ',', '.') }}
+                                                                        VND
+                                                                    @else
+                                                                        {{ number_format($data->price_sale - $data->price_old * $data->percent, 0, ',', '.') }}
+                                                                        VND
+                                                                    @endif
                                                                 </p>
                                                                 <p><strong>Hình thức thanh toán:</strong>
                                                                     @if ($data->payment_method == 0)
@@ -548,7 +564,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         const orderProductId = deleteButton.getAttribute('data-id');
-                        const deleteUrl = '/system/orderproducts/delete/' + orderProductId;
+                        const deleteUrl = '/system/order-products/delete/' + orderProductId;
                         window.location.href = deleteUrl;
                     }
                 });

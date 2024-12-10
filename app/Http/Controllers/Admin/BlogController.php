@@ -143,15 +143,7 @@ class BlogController extends Controller
 
         $tab = $request->input('tab');
 
-        $delete = $request->input('blog_id', []);
-
-        $itemsPerPage = $request->input('itemsPerPage', 5);
-
-        // Xử lý xóa các bài viết
-        if (!empty($delete)) {
-            Blog::whereIn('id', $delete)->delete();
-            return redirect()->route('system.blog')->with('success', 'Đã xóa các bài viết được chọn.');
-        }
+        $itemsPerPage = 10;
 
         $blogQuery = Blog::where('status', 0)
             ->orderBy('created_at', 'desc');
@@ -180,7 +172,6 @@ class BlogController extends Controller
         return view('System.blogs.index', [
             'blogs' => $blogs,
             'blogInactive' => $blogInactive,
-            'itemsPerPage' => $itemsPerPage,
             'search' => $search
         ]);
     }
@@ -263,11 +254,35 @@ class BlogController extends Controller
     public function delete($id)
     {
         $blog = Blog::findOrFail($id);
+        $content = $blog->content;
+
+        preg_match_all('/<img[^>]+src=["\'](.*?)["\'][^>]*>/i', $content, $matches);
+
+        $imageUrls = $matches[1];
+
+        foreach ($imageUrls as $imageUrl) {
+     
+            $imageName = basename($imageUrl); 
+            $relativePath = storage_path('app/public/uploads/blogs/' . $imageName);  
+
+            if (file_exists($relativePath)) {
+                // Kiểm tra quyền ghi vào tệp trước khi xóa
+                if (is_writable($relativePath)) {
+                    // Xóa tệp
+                    if (unlink($relativePath)) {
+                        echo "Đã xóa tệp: " . $relativePath;
+                    } 
+                }
+            }
+        }
+
+        // Xóa bài viết khỏi database
         $blog->delete();
+
         return redirect()->route('system.blog')->with('success', 'Xóa thành công.');
     }
 
-    public function blogviewclient(Request $request)
+    public function blogviewclient()
     {
         $this->updatestatus();
 
@@ -279,15 +294,15 @@ class BlogController extends Controller
         return view('client.news', [
             'blogs' => $blogs,
             'newblogs' => $newblogs,
-            'slug' => $firstBlog ? $firstBlog->slug : null 
+            'slug' => $firstBlog ? $firstBlog->slug : null
         ]);
     }
 
     public function detailblog($slug)
     {
-    
+
         $blog = Blog::where('slug', $slug)->firstOrFail();
-        
+
         return view('client.detailnews', ['blog' => $blog]);
     }
 }

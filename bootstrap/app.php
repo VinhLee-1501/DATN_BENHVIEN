@@ -55,6 +55,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'category.php',
                 'doctor.php',
                 'orderproduct.php',
+                'borderlineResult.php'
             ];
 
 

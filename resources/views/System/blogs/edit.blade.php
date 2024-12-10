@@ -237,10 +237,7 @@
                     console.error('Error adding thumbnail:', error);
                 });
             @endif
-
-
-
-
+            
             pond.setOptions({
                 server: {
                     process: {

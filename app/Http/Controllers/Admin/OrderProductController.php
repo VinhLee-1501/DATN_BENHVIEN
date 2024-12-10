@@ -31,6 +31,7 @@ class OrderProductController extends Controller
             'order_products.price_sale',
             'order_products.order_status',
             'order_products.order_address',
+            'coupons.percent',
             DB::raw('GROUP_CONCAT(cart_details.product_id) as product_ids'),
             DB::raw('GROUP_CONCAT(products.name SEPARATOR ";") as product_names'),
             DB::raw('GROUP_CONCAT(products.price) AS product_prices'),
@@ -41,6 +42,7 @@ class OrderProductController extends Controller
             ->leftjoin('products', 'cart_details.product_id', '=', 'products.product_id')
             ->leftjoin('payment_products', 'order_products.order_id', '=', 'payment_products.order_id')
             ->leftjoin('users', 'order_products.user_id', '=', 'users.user_id')
+            ->leftjoin('coupons', 'order_products.coupon_id', '=', 'order_products.coupon_id')
             ->groupBy(
                 'order_products.order_id',
                 'order_products.order_phone',
@@ -52,6 +54,7 @@ class OrderProductController extends Controller
                 'order_products.created_at',
                 'users.email',
                 'order_products.order_username',
+                'coupons.percent',
             )->orderBy('order_products.created_at', 'desc');
 
         if ($request->filled('name')) {
@@ -97,7 +100,7 @@ class OrderProductController extends Controller
         $ordersShippings = $ordersquery->clone()->where('order_products.order_status', 1)->paginate(10)->appends($request->query());
 
         $ordersCompleteds = $ordersquery->clone()->where('order_products.order_status', 2)->paginate(10)->appends($request->query());
-       
+        // dd($ordersPendings);
         return view('System.orderproduct.index', [
             'ordersPendings' => $ordersPendings,
             'ordersShippings' => $ordersShippings,
@@ -147,11 +150,11 @@ class OrderProductController extends Controller
                 'users.email',
             )
             ->first();
-        // dd($orderProduct);
-        if ($orderProduct->order_status == 0) {
-            $orderProduct->order_status == 1;
+
+        if ($orderProduct->order_status == '0') {
+            $orderProduct->order_status = 1;
             $orderProduct->save();
-            Mail::to($orderProduct->email)->send(new OrderProductConfirmation($orderProduct));
+            // Mail::to($orderProduct->email)->send(new OrderProductConfirmation($orderProduct));
             return redirect()->route('system.orderproduct')->with('success', 'Xác nhân đơn hàng.');
         } elseif ($orderProduct->order_status == 1) {
             $orderProduct->order_status = 2;
