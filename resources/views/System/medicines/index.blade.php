@@ -24,9 +24,9 @@
                 <select class="form-select" name="unit_of_measurement">
                     <option value="">Chọn đơn vị thuốc</option>
                     @foreach ($unitOfMeasurements as $unit)
-                        <option value="{{ $unit }}" {{ request('unit_of_measurement') == $unit ? 'selected' : '' }}>
-                            {{ $unit }}
-                        </option>
+                    <option value="{{ $unit }}" {{ request('unit_of_measurement') == $unit ? 'selected' : '' }}>
+                        {{ $unit }}
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -34,8 +34,8 @@
                 <select class="form-select" name="medicine_type_id">
                     <option value="">Chọn danh mục thuốc</option>
                     @foreach ($medicineTypes as $type)
-                        <option value="{{ $type->medicine_type_id }}" {{ request('medicine_type_id') == $type->medicine_type_id ? 'selected' : '' }}>{{ $type->name }}
-                        </option>
+                    <option value="{{ $type->medicine_type_id }}" {{ request('medicine_type_id') == $type->medicine_type_id ? 'selected' : '' }}>{{ $type->name }}
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -100,12 +100,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tên thuốc</label>
-                                {{-- <select name="name" class="form-control" id="name">
-                                    <option value="">Chọn tên thuốc</option>
-                                    @foreach ($unique_medicine_names as $medicine_name)
-                                    <option value="{{ $medicine_name }}">{{ $medicine_name }}</option>
-                                    @endforeach
-                                </select> --}}
+
                                 <input name="name" class="form-control" id="name">
                                 <div class="invalid-feedback" id="name_error"></div>
                             </div>
@@ -130,12 +125,28 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="price" class="form-label">Giá thuốc</label>
+                                <input name="price" type="number" class="form-control" id="price" step="100">
+                                <div class="invalid-feedback" id="price_error"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Số lượng</label>
+                                <input name="amount" type="number" class="form-control" id="amount" min="0">
+                                <div class="invalid-feedback" id="amount_error"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label for="unit_of_measurement" class="form-label">Đơn vị</label>
                                 {{-- <select name="unit_of_measurement" class="form-control" id="unit_of_measurement">
                                     <option value="">Chọn đơn vị</option>
                                     @foreach ($unique_units as $units)
                                     <option value="{{ $units }}">{{ $units }}</option>
-                                    @endforeach
+                                @endforeach
                                 </select> --}}
                                 <input name="unit_of_measurement" class="form-control" id="unit_of_measurement">
                                 <div class="invalid-feedback" id="unit_of_measurement_error"></div>
@@ -180,12 +191,29 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="exampleInputPassword1" class="form-label">Nhóm</label>
+                                <label for="medicineTypeId" class="form-label">Nhóm thuốc</label>
                                 <select class="form-select" name="medicine_type_id" id="medicineTypeId">
                                     <option value="">Chọn nhóm thuốc</option>
-                                    <!-- Các tùy chọn sẽ được thêm vào bằng AJAX -->
+                                    <!-- Các tùy chọn nhóm thuốc -->
                                 </select>
                                 <div class="text-danger" id="medicine_type_id_error"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                              
+
+                                <label for="price" class="form-label">Giá thuốc</label>
+                                <input type="number" name="price" class="form-control" id="priceedit">
+                                <div class="invalid-feedback" id="price_error"></div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Số lượng</label>
+                                <input type="number" name="amount" class="form-control" id="amountedit">
+                                <div class="text-danger" id="amount_error"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -200,16 +228,14 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="activeIngredient" class="form-label">Hoạt tính</label>
-                                <textarea name="active_ingredient" class="form-control"
-                                    id="activeIngredient"></textarea>
+                                <textarea name="active_ingredient" class="form-control" id="activeIngredient"></textarea>
                                 <div class="text-danger" id="active_ingredientedit_error"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="unitOfMeasurement" class="form-label">Đơn vị</label>
-                                <input type="text" name="unit_of_measurement" class="form-control"
-                                    id="unitOfMeasurement">
+                                <input type="text" name="unit_of_measurement" class="form-control" id="unitOfMeasurement">
                                 <div class="text-danger" id="unit_of_measurementedit_error"></div>
                             </div>
                         </div>
@@ -220,10 +246,10 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
+
 
 
 <script>
@@ -233,27 +259,27 @@
         $.ajax({
             url: '/system/medicines/create',
             type: 'GET',
-            success: function (response) {
+            success: function(response) {
                 var medicineTypeSelect = $('#medicineTypeIdadd');
                 medicineTypeSelect.empty();
                 medicineTypeSelect.append(
                     '<option value="">Chọn nhóm thuốc</option>');
 
-                response.medicineType.forEach(function (item) {
+                response.medicineType.forEach(function(item) {
                     medicineTypeSelect.append('<option value="' + item.medicine_type_id + '">' +
                         item.name + '</option>');
                 });
 
                 $('#addMedicineModal').modal('show');
             },
-            error: function (err) {
+            error: function(err) {
                 console.error("Lỗi khi lấy dữ liệu thuốc:", err);
             }
         });
     }
 
-    $(document).ready(function () {
-        $('#addMedicineForm').on('submit', function (e) {
+    $(document).ready(function() {
+        $('#addMedicineForm').on('submit', function(e) {
             e.preventDefault();
 
             var formData = $(this).serialize();
@@ -263,7 +289,7 @@
                 url: '/system/medicines/store',
                 type: 'POST',
                 data: formData,
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
                         toastr.success(response.message);
                         $('#addMedicineModal').modal('hide');
@@ -272,7 +298,7 @@
                         toastr.error(response.message);
                     }
                 },
-                error: function (err) {
+                error: function(err) {
                     console.error("Lỗi khi thêm thuốc:", err);
 
                     // Kiểm tra xem có lỗi không
@@ -284,7 +310,7 @@
                         $('.form-control').removeClass('is-invalid');
 
                         // Hiển thị lỗi mới
-                        $.each(errors, function (key, value) {
+                        $.each(errors, function(key, value) {
                             $('#' + key).addClass('is-invalid');
                             $('#' + key + '_error').text(value[0]);
                         });
@@ -301,10 +327,10 @@
 
     // Cập nhật 
 
-    $(document).ready(function () {
-        $("#inputName").on("keyup", function () {
+    $(document).ready(function() {
+        $("#inputName").on("keyup", function() {
             var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function () {
+            $("#myTable tr").filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
@@ -316,44 +342,45 @@
         $.ajax({
             url: '/system/medicines/edit/' + id,
             type: 'GET',
-
-            success: function (response) {
-
+            success: function(response) {
                 if (response.success) {
-                    
+                    // Set các trường dữ liệu thuốc
                     $('#medicineId').val(response.medicine.medicine_id);
                     $('#nameedit').val(response.medicine.name);
                     $('#status').val(response.medicine.status);
                     $('#activeIngredient').val(response.medicine.active_ingredient);
                     $('#unitOfMeasurement').val(response.medicine.unit_of_measurement);
+                    $('#priceedit').val(response.medicine.price); // Set giá thuốc
+                    $('#amountedit').val(response.medicine.amount); // Set số lượng
 
+                    // Cập nhật các nhóm thuốc vào select box
                     var medicineTypeSelect = $('#medicineTypeId');
                     medicineTypeSelect.empty();
-                    medicineTypeSelect.append(
-                        '<option value="">Chọn nhóm thuốc</option>');
-
-                    response.medicineType.forEach(function (item) {
-                        medicineTypeSelect.append('<option value="' + item.medicine_type_id + '">' +
-                            item.name + '</option>');
+                    medicineTypeSelect.append('<option value="">Chọn nhóm thuốc</option>');
+                    response.medicineType.forEach(function(item) {
+                        medicineTypeSelect.append('<option value="' + item.medicine_type_id + '">' + item.name + '</option>');
                     });
 
+                    // Set nhóm thuốc đã chọn
                     medicineTypeSelect.val(response.medicine.medicine_type_id);
 
+                    // Hiển thị modal
                     $('#exampleModal').modal('show');
                 }
             },
-            error: function (err) {
+            error: function(err) {
                 console.error("Lỗi khi lấy dữ liệu thuốc:", err);
             }
         });
     }
+
     // $('#updateMedicineBtn').on('click', function() {
     //     $('#editMedicineForm').submit();
     // });
 
     let isSubmitting = false;
 
-    $('#editMedicineForm').on('submit', function (e) {
+    $('#editMedicineForm').on('submit', function(e) {
         e.preventDefault();
 
         if (isSubmitting) return;
@@ -367,6 +394,8 @@
             status: $('#status').val(),
             active_ingredient: $('#activeIngredient').val(),
             unit_of_measurement: $('#unitOfMeasurement').val(),
+            price: $('#priceedit').val(), // Gửi giá thuốc
+            amount: $('#amountedit').val(), // Gửi số lượng thuốc
             _token: '{{ csrf_token() }}'
         };
 
@@ -376,7 +405,7 @@
             data: JSON.stringify(formData),
             contentType: 'application/json',
             processData: false,
-            success: function (response) {
+            success: function(response) {
                 if (response.success) {
                     toastr.success(response.message);
                     $('#exampleModal').modal('hide');
@@ -387,7 +416,7 @@
                     toastr.error(response.message);
                 }
             },
-            error: function (err) {
+            error: function(err) {
                 console.error("Lỗi khi thêm thuốc:", err);
 
                 if (err.responseJSON && err.responseJSON.errors) {
@@ -396,18 +425,15 @@
                     $('.text-danger').text('');
                     $('.form-control').removeClass('is-invalid');
 
-                    $.each(errors, function (key, value) {
-
+                    $.each(errors, function(key, value) {
                         $('#' + key).addClass('is-invalid');
                         $('#' + key + 'edit_error').text(value);
-
                     });
-
                 } else {
                     alert('Có lỗi xảy ra, vui lòng kiểm tra console.');
                 }
             },
-            complete: function () {
+            complete: function() {
                 isSubmitting = false;
             }
         });

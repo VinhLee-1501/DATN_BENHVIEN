@@ -87,37 +87,45 @@ class MedicineController extends Controller
     }
     public function store(CreateRequest $request)
     {
-        // Kiểm tra xem các giá trị đã được gửi có đúng không
+        // Lấy dữ liệu từ request
         $medicine_id = $request->input('medicine_id');
         $name = $request->input('name');
         $medicine_type_id = $request->input('medicine_type_id');
         $active_ingredient = $request->input('active_ingredient');
         $unit_of_measurement = $request->input('unit_of_measurement');
+        $price = $request->input('price');  // Giá thuốc
+        $amount = $request->input('amount');  // Số lượng
 
-        // Đảm bảo không có trường nào bị trống (ngoại trừ medicine_id)
-        if (!$name || !$medicine_type_id || !$active_ingredient || !$unit_of_measurement) {
+        // Kiểm tra các trường không bị trống (ngoại trừ medicine_id)
+        if (!$name || !$medicine_type_id || !$active_ingredient || !$unit_of_measurement || !$price || !$amount) {
             return response()->json(['error' => true, 'message' => 'Vui lòng điền đầy đủ thông tin.']);
         }
 
+        // Tạo đối tượng Medicine và lưu thông tin
         $medicine = new Medicine();
         $medicine->medicine_id = $medicine_id;
         $medicine->medicine_type_id = $medicine_type_id;
         $medicine->name = $name;
         $medicine->active_ingredient = $active_ingredient;
         $medicine->unit_of_measurement = $unit_of_measurement;
-        $medicine->status = 1;
+        $medicine->price = $price;  // Lưu giá thuốc
+        $medicine->amount = $amount;  // Lưu số lượng
+        $medicine->status = 1;  // Trạng thái thuốc (có thể là 1: còn hàng)
 
-        // Lưu thông tin thuốc vào cơ sở dữ liệu
+        // Lưu thông tin vào cơ sở dữ liệu
         $medicine->save();
 
         return response()->json(['success' => true, 'message' => 'Thuốc đã được thêm thành công']);
     }
 
 
+
     public function edit($medicine_id)
     {
+        // Lấy thông tin nhóm thuốc
         $medicineType = MedicineType::where('status', 1)->get();
 
+        // Lấy thông tin thuốc từ cơ sở dữ liệu
         $medicine = Medicine::join('medicine_types', 'medicine_types.medicine_type_id', '=', 'medicines.medicine_type_id')
             ->select(
                 'medicine_types.name as medicine_types_name',
@@ -128,11 +136,15 @@ class MedicineController extends Controller
                 'medicines.unit_of_measurement as unit_of_measurement',
                 'medicines.status as status',
                 'medicines.medicine_type_id as medicine_type_id',
+                'medicines.price as price',
+                'medicines.amount as amount',
                 'medicines.created_at as created_at',
                 'medicines.updated_at as updated_at'
             )
-            ->where('medicine_id', $medicine_id)->first();
+            ->where('medicine_id', $medicine_id)
+            ->first();
 
+        // Nếu không tìm thấy thuốc, trả về thông báo lỗi
         if (!$medicine) {
             return response()->json(['success' => false, 'message' => 'Không tìm thấy thuốc.']);
         }
@@ -152,13 +164,15 @@ class MedicineController extends Controller
             return response()->json(['success' => false, 'error' => 'Không tìm thấy thuốc.'], 404);
         }
 
-
         // Cập nhật thông tin thuốc
         $medicine->name = $request->input('name');
         $medicine->medicine_type_id = $request->input('medicine_type_id');
         $medicine->status = $request->input('status');
         $medicine->active_ingredient = $request->input('active_ingredient');
         $medicine->unit_of_measurement = $request->input('unit_of_measurement');
+        $medicine->price = $request->input('price');
+        $medicine->amount = $request->input('amount');
+
         $medicine->save();
 
         return response()->json(['success' => true, 'message' => 'Cập nhật thành công']);

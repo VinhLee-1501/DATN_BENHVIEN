@@ -20,19 +20,14 @@ class PatientController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Patient:: leftJoin('users', 'patients.phone', '=', 'users.phone')
-            ->whereNotNull('medical_records.diaginsis')
+        // Tạo truy vấn cơ bản cho bảng bệnh nhân
+        $query = Patient::leftJoin('users', 'patients.phone', '=', 'users.phone')
             ->select(
                 'patients.*',
-                'medical_records.medical_id',
-                'medical_records.diaginsis',
                 'users.avatar'
+            );
 
-            )
-            ->orderby('row_id', 'desc');
-
-        // Tìm kiếm động    
-
+        // Tìm kiếm động
         if ($request->filled('firstname')) {
             $query->where('patients.first_name', 'like', '%' . $request->firstname . '%');
         }
@@ -46,12 +41,21 @@ class PatientController extends Controller
             $query->where('patients.gender', $request->gender);
         }
 
-
-        $patientsWithRecords = $query->orderBy('patients.patient_id', 'desc')
+        // Lấy danh sách bệnh nhân cùng với bệnh án của họ
+        $patients = $query->orderBy('patients.patient_id', 'desc')
+            ->with(['medicalRecords' => function ($query) {
+                $query->orderBy('created_at', 'desc') // Sắp xếp bệnh án theo ngày, gần nhất lên đầu
+                    ->take(5); // Lấy 5 bệnh án gần nhất
+            }])
             ->paginate(10)
             ->appends($request->all());
-        return view('System.patients.index', ['patients' => $patientsWithRecords]);
+
+
+        // Gửi dữ liệu tới view
+        return view('System.patients.index', ['patients' => $patients]);
     }
+
+
 
 
 
@@ -163,16 +167,16 @@ class PatientController extends Controller
 
     public function saveMedical(MedicalRequest $request)
     {
-     
+
         $phone = $request->input('phone');
 
-        $user = User::where('users.phone',$phone)->first();
+        $user = User::where('users.phone', $phone)->first();
         $email = $user->email;
         $user_id = $user->user_id;
         $book = new Book();
         $book->book_id = strtoupper(Str::random(10));
         $book_id = $book->book_id;
-  
+
         $book->name = $request->input('name');
         $book->phone = $phone;
         $book->email = $email;
@@ -183,22 +187,22 @@ class PatientController extends Controller
         $book->status = 0;
 
         $book->save();
-        
+
         $medical = new MedicalRecord();
         $medical->medical_id = strtoupper(Str::random(10));
         $medical->patient_id = $request->input('patient_id');
-        $medical->book_id = $book_id ;
+        $medical->book_id = $book_id;
         $medical->symptom = $request->input('symptoms');
         $medical->blood_pressure = $request->input('blood_pressure');
         $medical->respiratory_rate = $request->input('respiratory_rate');
-        $medical->weight = $request->input('weight'); 
+        $medical->weight = $request->input('weight');
         $medical->height = $request->input('height');
         $medical->patient_id  = $request->input('patient_id');
         $medical->user_id = $user_id;
         $medical->date = Carbon::now()->format('Y-m-d H:i:s');
         $medical->status = 0;
         $medical->save();
-        
+
         return response()->json(['success' => true, 'message' => 'Tạo hồ sơ thành công !']);
     }
 }

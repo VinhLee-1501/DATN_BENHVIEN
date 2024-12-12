@@ -11,31 +11,29 @@ class Patient extends Model
     protected $primaryKey = 'row_id'; // Khóa chính
 
     protected $fillable = [
-        'patien_id',
+        'patient_id',
         'first_name',
         'last_name',
         'gender',
         'birthday',
         'address',
         'cccd',
-        'Insurance_number',
+        'insurance_number',
         'emergency_contact',
         'occupation',
         'national',
         'phone' //Khóa ngoại
     ];
 
-    public function medicalRecord()
-    {
-        return $this->hasOne(MedicalRecord::class, 'patient_id', 'patient_id');
-    }
-
-    public function userForeignKey()
-    {
-        return $this->belongsTo(User::class,);
-    }
+    // Quan hệ với model MedicalRecord (1 bệnh nhân có nhiều bệnh án)
     public function medicalRecords()
     {
-        return $this->hasMany(MedicalRecord::class, 'patient_id');
+        return $this->hasMany(MedicalRecord::class, 'patient_id', 'patient_id');
+    }
+
+    // Quan hệ với model User
+    public function userForeignKey()
+    {
+        return $this->belongsTo(User::class);
     }
 }

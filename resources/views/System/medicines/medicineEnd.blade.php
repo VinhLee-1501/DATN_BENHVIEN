@@ -56,8 +56,8 @@
                             </p>
                         </td>
                         <td class="border-bottom-0">
-                            <p class="mb-0 fw-semibold">{{ $data->price }}
-                            </p>
+                            <p class="mb-0 fw-semibold">{{ number_format($data->price, 0, ',', '.') }} VNĐ</p>
+
                         </td>
                         <td class="border-bottom-0">
                             <p class="mb-0 fw-semibold">{{ $data->unit_of_measurement }}

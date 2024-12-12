@@ -32,9 +32,9 @@ class UpdateMedicineRequest extends FormRequest
             'unit_of_measurement' => 'required|max:255',
         ];
 
-        if($this->medicine && $this->input('name') !== $this->medicine->name){
+        if ($this->medicine && $this->input('name') !== $this->medicine->name) {
             $rule['name'] = 'required|max:255|unique:medicines,name';
-        }else{
+        } else {
             $rule['name'] = 'required|max:255';
         }
         return $rule;
@@ -43,13 +43,17 @@ class UpdateMedicineRequest extends FormRequest
     public function messages(): array
     {
         return [
+
             'medicine_type_id.required' => ':attribute không để trống',
             'medicine_id.required' => ':attribute không để trống',
+
             'name.required' => ':attribute không để trống',
             'name.max' => ':attribute không được vượt quá 255 ký tự',
             'name.unique' => ':attribute đã tồn tại',
+
             'active_ingredient.required' => ':attribute không để trống',
             'active_ingredient.max' => ':attribute không được vượt quá 255 ký tự',
+            
             'unit_of_measurement.required' => ':attribute không để trống',
             'unit_of_measurement.max' => ':attribute không được vượt quá 255 ký tự',
         ];
@@ -63,6 +67,7 @@ class UpdateMedicineRequest extends FormRequest
             'name' => 'Tên thuốc',
             'active_ingredient' => 'Hoạt tính',
             'unit_of_measurement' => 'Đơn vị',
+
         ];
     }
 }

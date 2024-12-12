@@ -58,21 +58,21 @@ class AppointmentSchedule extends Controller
             ->orderByRaw('CASE WHEN books.status = 0 THEN 0 ELSE 1 END')
             ->orderBy('books.row_id', 'DESC');
 
-        // Tìm kiếm theo tên
+        $activeTab = $request->query('tab', default: 'nav-home'); // Tab mặc định là 'nav-home'
+
+        // Tìm kiếm theo tên, số điện thoại, trạng thái, ngày từ/đến
         if ($request->filled('name')) {
             $query->where('books.name', 'like', '%' . $request->name . '%');
         }
 
-        // Tìm kiếm theo số điện thoại
         if ($request->filled('phone')) {
             $query->where('books.phone', 'like', '%' . $request->phone . '%');
         }
 
-        // Tìm kiếm theo trạng thái
         if ($request->filled('status')) {
             $query->where('books.status', $request->status);
         }
-        // Tìm kiếm theo ngày
+
         if ($request->filled('date_from') && $request->filled('date_to')) {
             $query->whereBetween('books.created_at', [$request->date_from, $request->date_to]);
         } elseif ($request->filled('date_from')) {
@@ -81,10 +81,23 @@ class AppointmentSchedule extends Controller
             $query->whereDate('books.created_at', '<=', $request->date_to);
         }
 
-        $books = $query->paginate(10)->appends($request->all());
+        $booksOnline = clone $query;
+        $booksOffline = clone $query;
 
-        return view('System.appointmentschedule.index', ['book' => $books]);
+        $booksOnline = $booksOnline->where('books.role', 1)->paginate(10)->appends($request->all());
+        $booksOffline = $booksOffline->where('books.role', 0)->paginate(10)->appends($request->all());
+
+        // Trả về kết quả cho AJAX
+        if ($request->ajax()) {
+            return response()->json([
+                'navHome' => view('System.appointmentschedule.offline', ['book' => $booksOffline])->render(),
+                'navContact' => view('System.appointmentschedule.online', ['book' => $booksOnline])->render(),
+            ]);
+        }
+
+        return view('System.appointmentschedule.index', ['booksOnline' => $booksOnline, 'booksOffline' => $booksOffline, 'activeTab' => $activeTab]);
     }
+
 
     public function edit(Request $request, $id)
     {

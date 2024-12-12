@@ -14,8 +14,8 @@ class MedicalRecord extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     protected $fillable = [
-      'medical_id',
-      'date',
+        'medical_id',
+        'date',
         'diaginsis',
         're_examination_date',
         'symptom',
@@ -25,8 +25,8 @@ class MedicalRecord extends Model
         'respiratory_rate',
         'weight',
         'height',
-        'patien_id', //Khóa ngoại
-        'book_id' ,//Khóa ngoại
+        'patient_id', //Khóa ngoại
+        'book_id', //Khóa ngoại
         'user_id' //Khóa ngoại
     ];
 
@@ -43,5 +43,9 @@ class MedicalRecord extends Model
     public function userForeignKey()
     {
         return $this->belongsTo(Patient::class, 'user_id', 'user_id');
+    } // In Patient model
+    public function medicalRecords()
+    {
+        return $this->hasMany(MedicalRecord::class, 'patient_id', 'patient_id');
     }
 }

@@ -27,22 +27,31 @@ class CreateRequest extends FormRequest
             'name' => 'required|max:255|unique:medicines,name',
             'active_ingredient' => 'required|max:255',
             'unit_of_measurement' => 'required|max:255',
+            'price' => 'required',
+            'amount' => 'required',
         ];
     }
 
     public function messages(): array
     {
         return [
+            'price.required' => ':attribute không để trống',
+            'amount.required' => ':attribute không để trống',
+
             'medicine_type_id.required' => ':attribute không để trống',
             'medicine_type_id.max' => ':attribute không được vượt quá 10 ký tự',
+
             'medicine_id.required' => ':attribute không để trống',
             'medicine_id.max' => ':attribute không được vượt quá 10 ký tự',
             'medicine_id.unique' => ':attribute đã tồn tại',
             'name.required' => ':attribute không để trống',
+
             'name.max' => ':attribute không được vượt quá 255 ký tự',
             'name.unique' => ':attribute đã tồn tại',
+
             'active_ingredient.required' => ':attribute không để trống',
             'active_ingredient.max' => ':attribute không được vượt quá 255 ký tự',
+
             'unit_of_measurement.required' => ':attribute không để trống',
             'unit_of_measurement.max' => ':attribute không được vượt quá 255 ký tự',
         ];
@@ -56,6 +65,8 @@ class CreateRequest extends FormRequest
             'name' => 'Tên thuốc',
             'active_ingredient' => 'Hoạt tính',
             'unit_of_measurement' => 'Đơn vị',
+            'price' => 'Giá thuốc',
+            'amount' => 'Đơn vị thuốc',
         ];
     }
 }
