@@ -106,7 +106,6 @@ class AppointmentSchedule extends Controller
         $selectedDay = $request->input('appointment_time');
         $date = Carbon::parse($selectedDay, 'Asia/Ho_Chi_Minh')->setTimezone('UTC')->format('Y-m-d');
 
-
         // dd($date);
 
         $schedulesQuery = Schedule::leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
@@ -162,25 +161,33 @@ class AppointmentSchedule extends Controller
                 'users.user_id',
                 'users.firstname',
                 'users.lastname',
-                'schedules.status',
+                'table_shifts.row_id as rowId',
                 'table_shifts.name as shiftName',
-                DB::raw('MAX(table_shifts.status) as shiftStatus'),
-                DB::raw('MAX(table_shifts.row_id) as rowId'),
-                DB::raw(
-                    'MAX(table_shifts.note) as noteShift'
-                )
+                'table_shifts.note as noteShift',
+                'table_shifts.status as shiftStatus',
+                'table_shifts.shift_id as shiftIdShift',
+                'schedules.shift_id'
             );
 
         if ($role == 1) {
-            $doctorsQuery->where('schedules.status', 1);
-            $doctorsQuery->where('table_shifts.status', 0);
+            $doctorsQuery->where('schedules.status', 1)
+                ->where('table_shifts.status', 0);
         } else {
             $doctorsQuery->where('schedules.status', 0);
         }
 
         $doctors = $doctorsQuery
-            ->groupBy('users.user_id', 'users.firstname', 'users.lastname', 'schedules.status', 'table_shifts.name')
-            ->get();
+            ->groupBy(
+                'users.user_id',
+                'users.firstname',
+                'users.lastname',
+                'table_shifts.name',
+                'table_shifts.row_id',
+                'table_shifts.status',
+                'table_shifts.note',
+                'table_shifts.shift_id',
+                'schedules.shift_id'
+            )->get();
 
         return response()->json(['doctors' => $doctors]);
     }
@@ -302,7 +309,6 @@ class AppointmentSchedule extends Controller
 
         return response()->json(['success' => true, 'message' => 'Dữ liệu đã được cập nhật thành công.']);
     }
-
 
     public function destroy($id)
     {
