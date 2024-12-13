@@ -50,11 +50,6 @@ class AccountController extends Controller
     }
 
 
-
-
-
-
-
     public function create()
     {
         $users = user::all();

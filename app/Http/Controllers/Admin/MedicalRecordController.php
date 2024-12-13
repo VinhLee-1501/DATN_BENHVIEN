@@ -18,10 +18,10 @@ class MedicalRecordController extends Controller
         $query = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->whereNotNull('medical_records.diaginsis')
-            ->where('medical_records.status',2)
+            ->where('medical_records.status', 3)
             ->distinct()
             ->orderby('row_id', 'desc');
- 
+
         if ($request->filled('medical_id')) {
             $query->where('medical_records.medical_id', 'like', '%' . $request->medical_id . '%');
         }
@@ -48,7 +48,7 @@ class MedicalRecordController extends Controller
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->where('medical_records.medical_id', $id)
             ->get();
-  
+
         $treatment_id = $medical[0]->treatment_id;
 
         $services = Service::join('treatment_services', 'treatment_services.service_id', '=', 'services.service_id')
@@ -62,13 +62,21 @@ class MedicalRecordController extends Controller
                 DB::raw('COUNT(services.service_id) AS service_count'),
                 DB::raw('SUM(services.price) AS total_price')
             )
-            ->groupBy('treatment_services.treatment_id')
+            ->groupBy(
+                'treatment_services.treatment_id',
+                'treatment_services.note',
+                'treatment_services.result',
+                'treatment_services.service_id',
+                'treatment_services.deleted_at',
+                'treatment_services.created_at',
+                'treatment_services.updated_at',
+            )
             ->get();
 
         $medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
             ->where('treatment_medications.treatment_id', $treatment_id)
             ->get();
-      
+
         return view(
             'System.medicalrecord.detail',
             [
@@ -78,7 +86,6 @@ class MedicalRecordController extends Controller
                 'totalprice' => $totalprice,
             ]
         );
-
     }
 
     public function prescription($medical_id, $treatment_id)

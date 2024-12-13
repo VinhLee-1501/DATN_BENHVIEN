@@ -31,7 +31,7 @@ class CheckupPatientRequest extends FormRequest
             'cccd' => 'required|digits:12',
             'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/|unique:patients,phone',
             'national' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
   
         ];
     }
@@ -53,6 +53,7 @@ class CheckupPatientRequest extends FormRequest
             'national.required' => ':attribute không để trống',
             'email.required' => ':attribute không được để trống.',
             'email.email' => ':attribute không đúng định dạng.',
+            'email.unique' => ':attribute đã tồn tại.',
 
         ];
     }

@@ -29,17 +29,15 @@ class MedicalRecordDocotrController extends Controller
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->where(function ($query) {
                 $query->where('status', 2);
-                   
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         $medicalRecording = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
-        ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
-        ->where(function ($query) {
-            $query->where('status', 3);
-            
-        })
+            ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
+            ->where(function ($query) {
+                $query->where('status', 3);
+            })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -55,7 +53,7 @@ class MedicalRecordDocotrController extends Controller
         $doctor = Auth::user();
         $medical_id = $medical->medical_id;
         $patient_id = $medical->patient_id;
-        
+
         $treatment = TreatmentDetail::where('medical_id', $medical_id)->first();
 
         $treatment_id = $treatment->treatment_id;
@@ -72,7 +70,15 @@ class MedicalRecordDocotrController extends Controller
                 DB::raw('COUNT(services.service_id) AS service_count'),
                 DB::raw('SUM(services.price) AS total_price')
             )
-            ->groupBy('treatment_services.treatment_id')
+            ->groupBy(
+                'treatment_services.treatment_id',
+                'treatment_services.note',
+                'treatment_services.result',
+                'treatment_services.service_id',
+                'treatment_services.deleted_at',
+                'treatment_services.created_at',
+                'treatment_services.updated_at',
+            )
             ->get();
 
         $medical_patient = MedicalRecord::where('patient_id', $patient_id)
@@ -87,21 +93,21 @@ class MedicalRecordDocotrController extends Controller
         $medicine = Medicine::select('*')->distinct()->get();
 
         $content = MedicalRecord::join('users', 'users.user_id', '=', 'medical_records.user_id')
-        ->join('books', 'books.book_id', '=', 'medical_records.book_id')
-        ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
-        ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-        ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
-        ->where('medical_records.medical_id', $medical_id)
-        ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
-        ->get();
+            ->join('books', 'books.book_id', '=', 'medical_records.book_id')
+            ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
+            ->join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
+            ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
+            ->where('medical_records.medical_id', $medical_id)
+            ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
+            ->get();
         $health = MedicalRecord::where('medical_records.medical_id', $medical_id)->first();
 
         $imgService = TreatmentService::join('img_treatment_service', 'img_treatment_service.treatment_id', '=', 'treatment_services.treatment_id')
-        ->join('services', 'services.service_id' , '=', 'treatment_services.service_id')
-        ->where('img_treatment_service.treatment_id', $treatment_id)
-        ->select('treatment_services.*', 'img_treatment_service.*', 'services.name as name')
-        ->get();
-        
+            ->join('services', 'services.service_id', '=', 'treatment_services.service_id')
+            ->where('img_treatment_service.treatment_id', $treatment_id)
+            ->select('treatment_services.*', 'img_treatment_service.*', 'services.name as name')
+            ->get();
+
         // dd($imgService);
         return view(
             'System.doctors.medical.medicalRecording',
@@ -170,14 +176,14 @@ class MedicalRecordDocotrController extends Controller
             )
             ->get();
 
- 
-           
+
+
         $data = [
             'medicines' => $medicines,
             'medicals' => $medicals,
         ];
 
-   
+
 
         session()->put('pdf_data', $data);
 
@@ -186,26 +192,26 @@ class MedicalRecordDocotrController extends Controller
 
     public function download()
     {
-        $data = session('pdf_data'); 
-    
+        $data = session('pdf_data');
+
         if (!$data) {
             return redirect()->back()->with('error', 'Không có dữ liệu để tải.');
         }
-    
-    
+
+
         session()->forget('pdf_data');
-    
+
         $pdf = Pdf::loadView('System.doctors.medical.pdfMedicine', ['data' => $data]);
         $pdf->setPaper('A4', 'portrait');
-    
+
         return $pdf->download('Donthuoc.pdf');
     }
-    
+
 
 
     public function detail($medical_id)
     {
-      
+
         $medical = MedicalRecord::select('medical_records.*', 'patients.*', 'users.*', 'treatment_details.*')
             ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->join('treatment_details', 'treatment_details.medical_id', '=', 'medical_records.medical_id')
@@ -226,13 +232,21 @@ class MedicalRecordDocotrController extends Controller
                 DB::raw('COUNT(services.service_id) AS service_count'),
                 DB::raw('SUM(services.price) AS total_price')
             )
-            ->groupBy('treatment_services.treatment_id')
+            ->groupBy(
+                'treatment_services.treatment_id',
+                'treatment_services.note',
+                'treatment_services.result',
+                'treatment_services.service_id',
+                'treatment_services.deleted_at',
+                'treatment_services.created_at',
+                'treatment_services.updated_at',
+            )
             ->get();
 
         $medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
             ->where('treatment_medications.treatment_id', $treatment_id)
             ->get();
-        
+
         return view(
             'System.doctors.medical.detail',
             [
@@ -258,9 +272,4 @@ class MedicalRecordDocotrController extends Controller
 
         );
     }
-
-
-
-
-
 }

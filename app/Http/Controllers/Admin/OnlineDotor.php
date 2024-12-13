@@ -36,11 +36,11 @@ class OnlineDotor extends Controller
         $patient = Patient::where('phone', $phone)->first();
 
         $content = Book::join('schedules', 'schedules.shift_id', '=', 'books.shift_id')
-        ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
-        ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
-        ->where('books.book_id', $book_id)
-        ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
-        ->get();
+            ->join('specialties', 'specialties.specialty_id', 'books.specialty_id')
+            ->join('sclinics', 'sclinics.sclinic_id', 'schedules.sclinic_id')
+            ->where('books.book_id', $book_id)
+            ->select('sclinics.name as sclinicName', 'specialties.name as specialtyName')
+            ->get();
 
 
         if (!$patient) {
@@ -51,14 +51,32 @@ class OnlineDotor extends Controller
 
             $patient_id = $patient->patient_id;
             $medicalRecord = Book::join('medical_records', 'medical_records.book_id', 'books.book_id')
-            ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
-            ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
-            ->where('medical_records.patient_id', $patient_id)
-                ->groupBy('medical_records.medical_id', 'patients.patient_id', 'patients.first_name', 'patients.last_name', 'patients.gender')
+                ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
+                ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
+                ->where('medical_records.patient_id', $patient_id)
+                ->groupBy(
+                    'medical_records.medical_id',
+                    'patients.patient_id',
+                    'patients.first_name',
+                    'patients.last_name',
+                    'patients.gender',
+                    'patients.birthday',
+                    'patients.address',
+                    'patients.cccd',
+                    'patients.insurance_number',
+                    'patients.emergency_contact',
+                    'patients.occupation',
+                    'patients.national',
+                    'patients.phone',
+                    'patients.deleted_at',
+                    'patients.created_at',
+                    'patients.updated_at',
+                )
                 ->orderBy('medical_records.created_at', 'desc')
                 ->whereNotNull('medical_records.diaginsis')
                 ->limit(3)
                 ->get();
+
             $user = [
                 'medicalRecord' => $medicalRecord,
                 'patient' => $patient,
@@ -155,24 +173,23 @@ class OnlineDotor extends Controller
         $medical->user_id  = $user_id;
         $medical->date  = now();
         $medical->save();
-        
+
         $medical_id = $medical->medical_id;
-        if($medical){
+        if ($medical) {
             $treatment = new TreatmentDetail();
             $treatment->treatment_id = strtoupper(Str::random(10));
             $treatment->medical_id  = $medical_id;
             $treatment->save();
-            
         }
 
         $book = Book::where('book_id', $book_id)->first();
         $table_shift = $book->table_shift_id;
 
-        $shift = TableShift::where('table_shift_id', $table_shift)->first();
+        $shift = TableShift::where('row_id', $table_shift)->first();
         $shift->status = 0;
         $shift->update();
-       
-    
+
+
 
         $treatment_id = $treatment->treatment_id;
         $medicines = json_decode($request->input('selectedMedicines'), true);
@@ -201,7 +218,7 @@ class OnlineDotor extends Controller
                 'medical_records.*'
             )
             ->get();
-            
+
 
         $data = [
             'medicines' => $medicines,
@@ -233,5 +250,4 @@ class OnlineDotor extends Controller
 
         return $pdf->download('Donthuoc.pdf');
     }
-
 }

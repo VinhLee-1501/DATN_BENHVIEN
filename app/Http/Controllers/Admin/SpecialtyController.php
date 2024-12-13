@@ -26,7 +26,7 @@ class SpecialtyController extends Controller
             $query->where('status', $request->status);
         }
 
-      
+
 
         // dd($query);
 
@@ -42,7 +42,15 @@ class SpecialtyController extends Controller
         )
             ->leftJoin('users', 'users.specialty_id', '=', 'specialties.specialty_id')
             ->where('users.role', 2)
-            ->groupBy('specialties.specialty_id', 'specialties.name')
+            ->groupBy(
+                'specialties.specialty_id',
+                'specialties.name',
+                'specialties.status',
+                'specialties.deleted_at',
+                'specialties.created_at',
+                'specialties.updated_at',
+
+            )
             ->orderBy('user_count', 'DESC')
             ->get();
 

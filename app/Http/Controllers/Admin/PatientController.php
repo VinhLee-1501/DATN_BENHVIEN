@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Medical\CheckupPatientRequest;
 use App\Models\MedicalRecord;
 use App\Http\Requests\Admin\patient\PatientRequest;
 use App\Http\Requests\Staff\MedicalRequest;
+use App\Mail\PatientAccount;
 use App\Models\Book;
 use App\Models\Patient;
 use App\Models\Schedule;
@@ -14,6 +15,7 @@ use App\Models\Specialty;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class PatientController extends Controller
@@ -111,6 +113,7 @@ class PatientController extends Controller
             $user->email = $request->input('email');
             $user->role = 0;
             $user->save();
+            Mail::to($user->email)->send(new PatientAccount($user));
         }
 
 

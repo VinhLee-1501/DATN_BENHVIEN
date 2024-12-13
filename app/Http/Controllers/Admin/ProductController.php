@@ -31,8 +31,6 @@ class ProductController extends Controller
          ->whereNull('products.deleted_at')
          ->groupBy(
             'products.product_id',
-            'categories.category_id',
-            'categories.name',
             'products.name',
             'products.code_product',
             'products.unit_of_measurement',
@@ -40,9 +38,23 @@ class ProductController extends Controller
             'products.used',
             'products.description',
             'products.price',
+            'products.brand',
             'products.manufacture',
             'products.registration_number',
-            'products.status'
+            'products.status',
+            'products.category_id',
+            'products.deleted_at',
+            'products.created_at',
+            'products.updated_at',
+            'categories.category_id',
+            'categories.name',
+            'categories.status',
+            'categories.img',
+            'categories.parent_id',
+            'categories.deleted_at',
+            'categories.created_at',
+            'categories.updated_at',
+
          )
          ->orderBy('products.status', 'desc');
 
@@ -92,7 +104,7 @@ class ProductController extends Controller
       foreach ($productEnd as $item) {
          $barcodeEnd[$item->product_id] = $generatorHTML->getBarcode($item->code_product, $generatorHTML::TYPE_CODE_128);
       }
-    
+
       return view('System.products.index', [
          'product' => $product,
          'barcodes' => $barcodes,
@@ -187,8 +199,6 @@ class ProductController extends Controller
          ->whereNull('products.deleted_at')
          ->groupBy(
             'products.product_id',
-            'categories.category_id',
-            'categories.name',
             'products.name',
             'products.code_product',
             'products.unit_of_measurement',
@@ -196,9 +206,22 @@ class ProductController extends Controller
             'products.used',
             'products.description',
             'products.price',
+            'products.brand',
             'products.manufacture',
             'products.registration_number',
-            'products.status'
+            'products.status',
+            'products.category_id',
+            'products.deleted_at',
+            'products.created_at',
+            'products.updated_at',
+            'categories.category_id',
+            'categories.name',
+            'categories.status',
+            'categories.img',
+            'categories.parent_id',
+            'categories.deleted_at',
+            'categories.created_at',
+            'categories.updated_at',
          )
          ->first();
 

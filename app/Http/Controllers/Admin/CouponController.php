@@ -19,7 +19,7 @@ class CouponController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search', '');
-        $tab = $request->input('tab', 'active'); 
+        $tab = $request->input('tab', 'active');
 
         // Lấy giờ hiện tại theo múi giờ "Asia/Ho_Chi_Minh"
         $currentDate = Carbon::now('Asia/Ho_Chi_Minh');
@@ -121,7 +121,7 @@ class CouponController extends Controller
 
     public function edit($id)
     {
-       
+
         $coupon = Coupon::selectRaw('coupons.*, 
         GROUP_CONCAT(CONCAT(product_sale.product_id, ":", products.name) SEPARATOR "; ") AS product_info,
         GROUP_CONCAT(CONCAT(category_sale.category_id, ":", categories.name) SEPARATOR "; ") AS category_info')
@@ -132,7 +132,22 @@ class CouponController extends Controller
             ->where('coupons.discount_code', $id)
             ->whereNull('category_sale.deleted_at')
             ->whereNull('product_sale.deleted_at')
-            ->groupBy('coupons.coupon_id')
+            ->groupBy(
+                'coupons.coupon_id',
+                'coupons.discount_code',
+                'coupons.type',
+                'coupons.percent',
+                'coupons.use_limit',
+                'coupons.min_purchase',
+                'coupons.coupon_id',
+                'coupons.note',
+                'coupons.time_start',
+                'coupons.time_end',
+                'coupons.deleted_at',
+                'coupons.created_at',
+                'coupons.updated_at',
+
+            )
             ->first();
 
         // Kiểm tra nếu request là AJAX
@@ -145,7 +160,7 @@ class CouponController extends Controller
                 ]
             ]);
         }
-        
+
         return view('System.coupon.edit', ['coupon' => $coupon, 'old_dicount_code' => $coupon->discount_code]);
     }
 

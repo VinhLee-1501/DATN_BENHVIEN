@@ -34,7 +34,15 @@ class PDFController extends Controller
                 DB::raw('COUNT(services.service_id) AS service_count'),
                 DB::raw('SUM(services.price) AS total_price')
             )
-            ->groupBy('treatment_services.treatment_id')
+            ->groupBy(
+                'treatment_services.treatment_id',
+                'treatment_services.note',
+                'treatment_services.result',
+                'treatment_services.service_id',
+                'treatment_services.deleted_at',
+                'treatment_services.created_at',
+                'treatment_services.updated_at',
+            )
             ->get();
 
         $streatment = TreatmentDetail::where('treatment_id', $treatment_id)->first();
@@ -108,23 +116,31 @@ class PDFController extends Controller
                 DB::raw('COUNT(services.service_id) AS service_count'),
                 DB::raw('SUM(services.price) AS total_price')
             )
-            ->groupBy('treatment_services.treatment_id')
+            ->groupBy(
+                'treatment_services.treatment_id',
+                'treatment_services.note',
+                'treatment_services.result',
+                'treatment_services.service_id',
+                'treatment_services.deleted_at',
+                'treatment_services.created_at',
+                'treatment_services.updated_at',
+            )
             ->get();
 
         $medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
             ->where('treatment_medications.treatment_id', $treatment_id)
             ->get();
 
-       
+
 
         $data = [
             'totalprice' => $totalprice,
             'medicals' => $medicals,
             'medicines' => $medicines,
             'services' => $services,
-            
-        
-           
+
+
+
         ];
 
         // dd($data['totalprice'][0]->total_price);

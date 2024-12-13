@@ -69,7 +69,7 @@
                             <h6 class="fw-semibold mb-0">Ngày Sinh</h6>
                         </th>
                         <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">BHYT</h6>
+                            <h6 class="fw-semibold mb-0">CCCD</h6>
                         </th>
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">Số Điện thoại</h6>
@@ -106,7 +106,7 @@
                             </p>
                         </td>
                         <td class="border-bottom-0">
-                            <p class="mb-0 fw-semibold">{{ $item->insurance_number }}</p>
+                            <p class="mb-0 fw-semibold">{{ $item->cccd }}</p>
                         </td>
                         <td class="border-bottom-0">
                             <p class="mb-0 fw-semibold">{{ $item->phone }}</p>
