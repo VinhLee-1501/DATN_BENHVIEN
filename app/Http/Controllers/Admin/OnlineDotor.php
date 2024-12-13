@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Medical\CheckupHealthRequest;
+use App\Http\Requests\Admin\Medical\CheckupPatientRequest;
 use App\Mail\MedicalRecord as MailMedicalRecord;
 use App\Models\Book;
 use App\Models\MedicalRecord;

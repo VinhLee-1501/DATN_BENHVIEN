@@ -96,8 +96,13 @@ class MedicalRecordDocotrController extends Controller
         ->get();
         $health = MedicalRecord::where('medical_records.medical_id', $medical_id)->first();
 
-        // dd($health);
-
+        $imgService = TreatmentService::join('img_treatment_service', 'img_treatment_service.treatment_id', '=', 'treatment_services.treatment_id')
+        ->join('services', 'services.service_id' , '=', 'treatment_services.service_id')
+        ->where('img_treatment_service.treatment_id', $treatment_id)
+        ->select('treatment_services.*', 'img_treatment_service.*', 'services.name as name')
+        ->get();
+        
+        // dd($imgService);
         return view(
             'System.doctors.medical.medicalRecording',
             [
@@ -111,6 +116,7 @@ class MedicalRecordDocotrController extends Controller
                 'doctor' => $doctor,
                 'content' => $content,
                 'health' => $health,
+                'imgService' => $imgService,
             ]
         );
     }

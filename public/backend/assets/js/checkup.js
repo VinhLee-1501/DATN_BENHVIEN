@@ -40,26 +40,28 @@ function addMedicineFromDropdown(MedicineId, MedicineName, MedicineUnit) {
     newRow.innerHTML = `
         <td>${rowIndex}</td>
         <td>${MedicineName}</td>
-        <td>${MedicineUnit}</td>
-        <td style="width:15%"><input type="number" class="form-control" value="3" id="day_drink_${uniqueId}" oninput="updateRowDrink('${uniqueId}')"></td>
+        <td style="width:15%"><input type="number" class="form-control" min="1" value="3" id="day_drink_${uniqueId}" oninput="updateRowDrink('${uniqueId}')"></td>
         <td>
             <select class="form-control" id="time_${uniqueId}" onchange="updateRowDrink('${uniqueId}')">
                 <option value="Sau ăn" selected>Sau ăn</option>
                 <option value="Trước ăn">Trước ăn</option>
             </select>
         </td>
-        <td id="total_day_drink_${uniqueId}"></td>
         <td>
-            <input type="text" class="form-control" id="usage_${uniqueId}" value="Mỗi lần uống 1 viên" oninput="updateRowDrink('${uniqueId}')">
+            <p class="form-control" id="total_day_drink_${uniqueId}" ></p>
         </td>
+        <td style="width:15%">
+            <input type="number" class="form-control" value="1"  id="usage_${uniqueId}" oninput="updateRowDrink('${uniqueId}')" min="1">
+        </td>
+        <td class="margin-top:5px;">${MedicineUnit}</td>
         <td><button class="btn btn-danger btn-sm" onclick="removeMedicine(this)">x</button></td>
     `;
 
     selectedMedicines.push({
         id: MedicineId,
-        name: MedicineName, // Adding MedicineName here
-        unit: MedicineUnit, // Optional: You can also add the unit if necessary
-        usage: "Mỗi lần uống 1 viên",
+        name: MedicineName,
+        unit: MedicineUnit, 
+        usage: 1,
         dosage: 3,
         note: "Sau ăn",
         quantity:
@@ -71,8 +73,8 @@ function addMedicineFromDropdown(MedicineId, MedicineName, MedicineUnit) {
             ) || 0),
     });
 
-    updateRowDrink(uniqueId); // Cập nhật ngay sau khi thêm thuốc
-    updateHiddenInput(); // Cập nhật input ẩn
+    updateRowDrink(uniqueId); 
+    updateHiddenInput(); 
     console.log("Selected medicines:", selectedMedicines);
 }
 
@@ -95,45 +97,44 @@ function removeMedicine(button) {
 
 function updateRowDrink(uniqueId) {
     const dayInput = document.querySelector(`#day_drink_${uniqueId}`);
-    const selectedDayElement = document.getElementById("selectedDay");
     const usageInput = document.querySelector(`#usage_${uniqueId}`);
     const timeSelect = document.querySelector(`#time_${uniqueId}`);
-    console.log(selectedDayElement);
+    const totalElement = document.querySelector(`#total_day_drink_${uniqueId}`);
+    const selectedDayElement = document.getElementById("selectedDay");
 
-    if (!dayInput || !selectedDayElement || !usageInput || !timeSelect) {
-        console.error("Không tìm thấy phần tử cho uniqueId:", uniqueId);
+    if (!dayInput || !usageInput || !timeSelect || !totalElement || !selectedDayElement) {
+        console.error("Không tìm thấy phần tử cần thiết.");
         return;
     }
 
     const day = parseInt(dayInput.value) || 0;
-    const selectedDay =
-        parseInt(selectedDayElement.innerText.replace(" ngày", "")) || 0;
-    const totalDrink = day * selectedDay;
+    const selectedDay = parseInt(selectedDayElement.innerText.replace(" ngày", "")) || 0;
+    const usage = parseInt(usageInput.value) || 0;
+    const totalDrink = day * selectedDay * usage;
 
-    document.querySelector(`#total_day_drink_${uniqueId}`).innerText =
-        totalDrink;
+    // Cập nhật số lượng hiển thị
+    totalElement.innerText = totalDrink;
 
-    const row = document.querySelector(
-        `[data-select2-id="${uniqueId.split("-")[1]}"]`
-    );
+    // Tìm hàng tương ứng trong mảng selectedMedicines
+    const row = document.querySelector(`[data-select2-id="${uniqueId.split("-")[1]}"]`);
     if (!row) {
         console.error("Không tìm thấy hàng cho uniqueId:", uniqueId);
         return;
     }
 
-    // Cập nhật lại thông tin thuốc trong mảng selectedMedicines
     const medicine = selectedMedicines.find(
         (medicine) => medicine.id === uniqueId.split("-")[1]
     );
     if (medicine) {
         medicine.dosage = day;
         medicine.note = timeSelect.value;
-        medicine.usage = usageInput.value;
+        medicine.usage = usage;
         medicine.quantity = totalDrink;
     }
 
-    updateHiddenInput(); // Cập nhật input ẩn sau khi thay đổi thông tin thuốc
+    updateHiddenInput(); // Cập nhật giá trị trong input ẩn
 }
+
 
 function updateHiddenInput() {
     const hiddenInput = document.getElementById("selectedMedicines");
@@ -141,26 +142,30 @@ function updateHiddenInput() {
 }
 
 
-
 function updateSelectedDay(day) {
+    // Cập nhật ngày uống hiển thị
     document.getElementById("selectedDay").innerText = day + " ngày";
+
+    // Cập nhật số lượng thuốc cho từng dòng
     const tableBody = document.querySelector("#tableMedicine tbody");
-    Array.from(tableBody.rows).forEach((row, index) => {
-        const uniqueId = `row-${index + 1}`;
-        updateRowDrink(uniqueId);
+    Array.from(tableBody.rows).forEach((row) => {
+        const uniqueId = row.getAttribute("data-select2-id");
+        if (uniqueId) {
+            updateRowDrink(`row-${uniqueId}`);
+        }
     });
 
-    // -- Cập nhật ngày tái khám theo ngày uống thuốc --
+    // Cập nhật ngày tái khám dựa trên ngày uống thuốc
     const today = new Date();
     today.setDate(today.getDate() + day);
 
     const dayOfMonth = String(today.getDate()).padStart(2, "0");
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const year = today.getFullYear();
-
     const reexamDate = `${dayOfMonth}/${month}/${year}`;
     document.querySelector("#reexamDateInput").value = reexamDate;
 }
+
 
 // --- Tìm thuốc end ---
 

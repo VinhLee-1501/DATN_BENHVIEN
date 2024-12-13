@@ -239,7 +239,6 @@ class CheckupHealthController extends Controller
     public function storePatient(Request $request, $book_id)
     {
 
-        // dd($book_id);
         $book = Book::where('book_id', $book_id)->first();
         $phone = $book->phone;
 
@@ -262,7 +261,7 @@ class CheckupHealthController extends Controller
             $patient->patient_id = $request->input('patient_id');
             $patient->first_name = $request->input('first_name');
             $patient->last_name = $request->input('last_name');
-            $patient->phone = $phone; // Sử dụng phone từ book
+            $patient->phone = $phone; 
             $patient->gender = $request->input('gender');
             $patient->cccd = $request->input('cccd');
             $patient->birthday = $request->input('age');
@@ -271,10 +270,9 @@ class CheckupHealthController extends Controller
             $patient->national = $request->input('national');
             $patient->insurance_number = $request->input('insurance_number');
             $patient->emergency_contact = $request->input('emergency_contact');
-
             $patient->save();
+            
         }
-
 
         return redirect()->route('system.checkupHealth.create', $book_id)->with('success', 'Lưu thông tin bệnh nhân thành công.');
     }

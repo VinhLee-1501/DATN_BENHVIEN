@@ -18,10 +18,10 @@ class MedicalRecordController extends Controller
         $query = MedicalRecord::join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
             ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
             ->whereNotNull('medical_records.diaginsis')
+            ->where('medical_records.status',2)
             ->distinct()
             ->orderby('row_id', 'desc');
-
-        // Tìm kiếm động    
+ 
         if ($request->filled('medical_id')) {
             $query->where('medical_records.medical_id', 'like', '%' . $request->medical_id . '%');
         }
@@ -40,8 +40,6 @@ class MedicalRecordController extends Controller
         return view('System.medicalrecord.index', ['medicalRecord' => $medicalRecord]);
     }
 
-
-
     public function detail($id)
     {
         $medical = MedicalRecord::select('medical_records.*', 'patients.*', 'users.*', 'treatment_details.*')
@@ -50,8 +48,7 @@ class MedicalRecordController extends Controller
             ->join('users', 'users.user_id', '=', 'medical_records.user_id')
             ->where('medical_records.medical_id', $id)
             ->get();
-        // dd($medical);
-// 
+  
         $treatment_id = $medical[0]->treatment_id;
 
         $services = Service::join('treatment_services', 'treatment_services.service_id', '=', 'services.service_id')
@@ -71,7 +68,7 @@ class MedicalRecordController extends Controller
         $medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
             ->where('treatment_medications.treatment_id', $treatment_id)
             ->get();
-        // dd($medical);
+      
         return view(
             'System.medicalrecord.detail',
             [
@@ -114,7 +111,6 @@ class MedicalRecordController extends Controller
                 'treatment_medications.usage'
             )
             ->get();
-        //        dd($treatment[0]);
         return view('System.medicalrecord.prescription', ['treatment' => $treatment]);
     }
 

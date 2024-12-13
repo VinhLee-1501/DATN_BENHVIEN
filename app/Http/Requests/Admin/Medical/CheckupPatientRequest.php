@@ -25,14 +25,14 @@ class CheckupPatientRequest extends FormRequest
             'patient_id' => 'required',
             'last_name' => 'required',
             'first_name' => 'required',
+            'gender' => 'required',
             'age' => 'required|date',
             'address' => 'required',
             'cccd' => 'required|digits:12',
             'phone' => 'required|size:10|regex:/^[0-9]{10,15}$/|unique:patients,phone',
             'national' => 'required',
             'email' => 'required|email',
-           
-            
+  
         ];
     }
 
@@ -48,13 +48,11 @@ class CheckupPatientRequest extends FormRequest
             'cccd.required' => ':attribute không để trống',
             'phone.size' => ':attribute phải đủ 10 số',
             'phone.required' => ':attribute không để trống',
-            'phone.unique' => ':attrib
-            ute đã được sử dụng',
+            'phone.unique' => ':attribute đã được sử dụng',
             'phone.regex' => ':attribute phải là số hợp lệ',  
             'national.required' => ':attribute không để trống',
             'email.required' => ':attribute không được để trống.',
             'email.email' => ':attribute không đúng định dạng.',
-            
 
         ];
     }

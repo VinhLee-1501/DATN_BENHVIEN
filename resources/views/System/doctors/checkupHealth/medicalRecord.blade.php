@@ -96,17 +96,6 @@
                         <div class="card w-100">
                             <b class="card-header py-2 px-3">Dịch vụ lâm sàng</b>
                             <div class="card-body px-3">
-                                <select id="myAjaxSelectService" class="form-control myAjaxSelectService"
-                                    name="myAjaxSelectService[]" onchange="addSelectService()">
-                                    <option disabled selected>Tìm cận lâm sàng</option>
-                                    @foreach ($service as $item)
-                                        <option value='{{ $item->service_id }}' data-price="{{ $item->price }}"
-                                            data-name='{{ $item->name }}'>{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                <form action="{{ route('system.checkupHealth.saveService', $book->book_id) }}"
-                                    method="post">
-                                    @csrf
                                     <table class="table m-0 mb-2" id="selectedTestsTable">
                                         <thead>
                                             <tr>
@@ -142,7 +131,7 @@
                                                 class="btn btn-success btn-sm" type="btn">In Phiếu</a>
                                         </div>
                                     @endif
-                                </form>
+                              
                             </div>
                         </div>
                     </div>

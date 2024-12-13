@@ -90,15 +90,6 @@
                         <div class="card w-100">
                             <b class="card-header py-2 px-3">Dịch vụ lâm sàng</b>
                             <div class="card-body px-3">
-                                <select id="myAjaxSelectService" class="form-control myAjaxSelectService"
-                                    name="myAjaxSelectService[]" onchange="addSelectService()">
-                                    <option disabled selected>Tìm cận lâm sàng</option>
-                                    @foreach ($service as $item)
-                                        <option value='{{ $item->service_id }}' data-price="{{ $item->price }}"
-                                            data-name='{{ $item->name }}'>{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-
                                 <table class="table m-0 mb-2" id="selectedTestsTable">
                                     <thead>
                                         <tr>
@@ -129,13 +120,60 @@
                                     <span id="totalAmout">Tổng cộng:
                                         {{ number_format($totalprice[0]->total_price, 0, ',', '.') }} VNĐ</span>
                                     <div class="float-xxl-end">
-                                        <a href="{{ route('system.pdfService', $data->treatment_id) }}"
-                                            class="btn btn-success btn-sm" type="btn">In Phiếu</a>
+                                        <a type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop">
+                                            Kết quả
+                                        </a>
                                     </div>
                                 @else
                                     <tr></tr>
                                 @endif
 
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content text-center">
+                                <div class="modal-header">
+                                    <h5 class="modal-title w-100" id="staticBackdropLabel">Kết quả dịch vụ</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    @if (isset($imgService) && !$imgService->isEmpty())
+
+                                    @foreach ( $imgService as $item)
+                                        <h4>{{$item['name']}}</h4>
+                                        <div class="image-section mb-4">
+                                            <h6 class="mb-2">Hình ảnh</h6>
+                                            <img src="{{ asset('storage/uploads/TreatmentService/' . $item['img']) }}"
+                                                alt="Hình ảnh kết quả" class="img-fluid rounded mx-auto d-block"
+                                                style="max-width: 300px;">
+                                        </div>
+                                        <!-- Phần kết quả -->
+                                        <div class="result-section d-flex justify-content-center align-items-center">
+                                            <h6 class="me-2 mb-3">Kết quả:</h6>
+                                            <p class="text-muted">{!! $item['note'] !!}</p>
+                                        </div>
+
+                                        <!-- Phần ghi chú -->
+                                        <div class="notes-section d-flex justify-content-center align-items-center">
+                                            <h6 class="me-2 mb-3">Ghi chú:</h6>
+                                            <p class="text-muted">{!! $item['result'] !!}</p>
+                                        </div>
+                                            @endforeach
+                                    @else
+                                        <h6 class="me-2 mb-3">Chưa có kết quả</h6>
+                                    @endif
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -198,7 +236,7 @@
                                 <div class="card-body px-3">
                                     <div class="col mb-2">
                                         <label for="symptoms" class="mb-2">Triệu chứng</label>
-                                        <textarea class="form-control @error('symptoms') is-invalid @enderror" id="symptoms" name="symptoms">{{ old('symptoms',$health->symptom ?? '') }}</textarea>
+                                        <textarea class="form-control @error('symptoms') is-invalid @enderror" id="symptoms" name="symptoms">{{ old('symptoms', $health->symptom ?? '') }}</textarea>
                                         @error('symptoms')
                                             <div class="text-danger">*{{ $message }}</div>
                                         @enderror
@@ -220,7 +258,7 @@
                                 <div class="card-body px-3">
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                             <label for="blood_pressure" class="ms-2">Huyết áp</label>
+                                            <label for="blood_pressure" class="ms-2">Huyết áp</label>
                                             <div class="d-flex align-items-center">
                                                 <input placeholder="Huyết áp" type="text" class="form-control"
                                                     id="bloodPressure" name="blood_pressure"
@@ -250,7 +288,7 @@
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                             <label for="height" class="ms-2">Chiều cao</label>
+                                            <label for="height" class="ms-2">Chiều cao</label>
                                             <div class="d-flex align-items-center">
                                                 <input placeholder="Chiều cao" type="text" class="form-control"
                                                     id="height" name="height" value="{{ $health->height ?? '' }}"

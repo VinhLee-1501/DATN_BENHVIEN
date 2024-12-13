@@ -337,7 +337,7 @@ class OrderController extends Controller
             ->join('treatment_details', 'treatment_details.treatment_id', '=', 'orders.treatment_id')
             ->join('medical_records', 'medical_records.medical_id', '=', 'treatment_details.medical_id')
             ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
-            ->where('orders.row_id', $id)
+            ->where('orders.order_id', $id)
             ->select(
                 'orders.payment',
                 'orders.payment',
@@ -459,8 +459,7 @@ class OrderController extends Controller
         $total_amount = $request->input('total_amount');
 
         if ($payment == 0) {
-            $order = Order::where('row_id', $id)->firstOrFail();
-
+            $order = Order::where('order_id', $id)->firstOrFail();
             $order->update([
                 'cashier' => $cashier_name,
                 'change_amount' => $change_amount,
@@ -629,7 +628,7 @@ class OrderController extends Controller
             ]);
             return redirect()->route('system.order')->with('success', 'Thanh toán hóa đơn thành công');
         }
-
+        return redirect()->route('system.order')->with('error',   'Thanh toán thất bại');
     }
 
     public function handlecallbackVnpay(Request $request){
@@ -658,7 +657,7 @@ class OrderController extends Controller
            ]);
            return redirect()->route('system.order')->with('success', 'Thanh toán hóa đơn thành công');
         }
-        return redirect()->route('system.order');
+        return redirect()->route('system.order')->with('error',   'Thanh toán thất bại');
     }
 
     public function updateStatus($id)

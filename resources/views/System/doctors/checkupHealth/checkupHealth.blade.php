@@ -434,11 +434,11 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Tên thuốc</th>
-                                                <th>DVT</th>
                                                 <th style="width:15%">Ngày uống</th>
                                                 <th>Lúc</th>
                                                 <th>SL</th>
-                                                <th>Cách dùng</th>
+                                                <th>Liều lượng</th>
+                                                <th>DVT</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -446,7 +446,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <div class="col-12 mt-3 p-3">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center">
                                         <div class="d-flex flex-wrap align-items-center flex-grow-1">

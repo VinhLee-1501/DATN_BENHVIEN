@@ -91,8 +91,6 @@
                                     </svg></a>
                             </td>
                     @endif
-
-
                     </tr>
                     @endforeach
                 </tbody>
