@@ -25,7 +25,7 @@
                             <h6 class="fw-semibold mb-0">Ngày thêm</h6>
                         </th>
                         <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Trạng thái</h6>
+                            <h6 class="fw-semibold mb-0">Số lượng</h6>
                         </th>
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">Hành động</h6>
@@ -71,10 +71,12 @@
                             </p>
                         </td>
                         <td class="border-bottom-0">
-                            @if ($data->status == 1)
-                            <span class="badge bg-success">Hoạt động</span>
+                            @if ($data->quantity <= 2000)
+                            <span class="fw-semibold text-black badge bg-wanring">{{ Number::format($data->quantity) }}</span>
+                            @elseif ($data->quantity <= 500)
+                            <span class="fw-semibold text-black badge bg-danger">{{ Number::format($data->quantity) }}</span>
                             @else
-                            <span class="badge bg-danger">Hết</span>
+                            <span class="fw-semibold text-black badge bg-sussecc">{{ Number::format($data->quantity) }}</span>
                             @endif
                         </td>
                         <td class="border-bottom-0 d-flex justify-content-center align-items-center" colspan="5">
@@ -133,6 +135,9 @@
                                                 </p>
                                                 <p class="text-wrap"><strong>Số:</strong>
                                                     {{ $data->registration_number }}
+                                                </p>
+                                                <p class="text-wrap"><strong>Số lượng:</strong>
+                                                    {{ Number::format($data->quantity) }}
                                                 </p>
                                                 <p class="text-wrap"><strong>Nhóm sản phẩm:</strong>
                                                     {{ $data->nameCategory }}

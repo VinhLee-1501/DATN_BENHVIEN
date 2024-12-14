@@ -55,6 +55,7 @@ class ProductController extends Controller
             'categories.created_at',
             'categories.updated_at',
 
+            'products.quantity'
          )
          ->orderBy('products.status', 'desc');
 
@@ -222,6 +223,7 @@ class ProductController extends Controller
             'categories.deleted_at',
             'categories.created_at',
             'categories.updated_at',
+            'products.quantity'
          )
          ->first();
 
@@ -268,6 +270,7 @@ class ProductController extends Controller
       $product->price = $request->input('price');
       $product->brand = $request->input('brand');
       $product->status = $request->input('status');
+      $product->quantity = $request->input('quantity');
       $product->manufacture = $request->input('manufacture');
       $product->registration_number = $request->input('registrationNumber');
 
