@@ -41,6 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'serviceType.php',
                 'service.php',
                 'order.php',
+                'ordermedicine.php',
                 'account.php',
                 'doctor/medicalRecordDoctor.php',
                 'doctor/checkupHealth.php',
