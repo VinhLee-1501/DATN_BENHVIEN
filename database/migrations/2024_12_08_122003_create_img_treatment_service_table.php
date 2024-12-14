@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('img_id')->primary();
             $table->longText('img');
             $table->string('treatment_id', length:10)->nullable();
+            $table->string('service_id', length:10)->nullable();
             $table->foreign('treatment_id')
                 ->references('treatment_id')
                 ->on('treatment_services')

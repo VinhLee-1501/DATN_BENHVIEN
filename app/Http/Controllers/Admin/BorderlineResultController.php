@@ -46,8 +46,7 @@ class BorderlineResultController extends Controller
                 'services.name',
                 'treatment_services.treatment_id',
                 'treatment_services.service_id'
-            );
-
+            )->orderBy('treatment_details.medical_id', 'DESC');
         if ($request->filled('name')) {
 
             $name = str_replace('+', ' ', $request->name);
@@ -160,8 +159,8 @@ class BorderlineResultController extends Controller
             )->first();
         $images = ImgTreatmentService::join('treatment_services', 'treatment_services.treatment_id', '=', 'img_treatment_service.treatment_id')
             ->where('treatment_services.treatment_id', $treatment_id)
+            ->where('img_treatment_service.service_id', $service_id)
             ->pluck('img', 'img_id');
-                
         return view('System.treatmentdetail.detail', ['MedicalRecord' => $MedicalRecord, 'images' => $images]);
     }
 
@@ -170,7 +169,6 @@ class BorderlineResultController extends Controller
         $MedicalRecord = TreatmentService::where('treatment_id', $treatment_id)
             ->where('service_id', $service_id)
             ->first();
-
 
         $MedicalRecord->note = $request->input('note');
         $MedicalRecord->result = $request->input('result');
@@ -182,21 +180,27 @@ class BorderlineResultController extends Controller
 
             $treatment_id = $request->input('treatment_id');
             $files = $request->file('image');
+            $service_id = $request->input('service_id');
 
             foreach ($files as $file) {
-                
-                $path = $file->store('uploads/TreatmentService', 'public');
 
-                $fileName = basename($path); 
+                // Lấy thời gian thực và tạo tên mới cho ảnh
+                $timestamp = now()->format('YmdHis'); // Định dạng thời gian: NămThángNgàyGiờPhútGiây
+                $extension = $file->getClientOriginalExtension(); // Lấy đuôi file
+                $fileName = $timestamp . '_' . uniqid() . '.' . $extension; // Tên file với thời gian và ID duy nhất
 
+                // Lưu file vào thư mục
+                $file->storeAs('uploads/TreatmentService', $fileName, 'public');
+
+                // Lưu vào cơ sở dữ liệu
                 ImgTreatmentService::create([
-                    'img' => $fileName, 
+                    'img' => $fileName,
                     'treatment_id' => $treatment_id,
+                    'service_id' => $service_id,
                 ]);
             }
         }
     }
-
 
     public function fetchImages(Request $request)
     {
@@ -233,12 +237,12 @@ class BorderlineResultController extends Controller
 
     public function revertfile(Request $request)
     {
-            
+
         $treatment_id = $request->input('treatment_id');
         $file_name = $request->input('file_name'); // Lấy tên tệp từ yêu cầu
 
         $file_path = storage_path('app/public/uploads/TreatmentService/' . $file_name); // Đảm bảo đường dẫn chính xác
-    
+
         if (file_exists($file_path)) {
             unlink($file_path); // Xóa tệp
             // Xóa bản ghi trong database
@@ -248,6 +252,4 @@ class BorderlineResultController extends Controller
             return response()->json(['error' => 'File not found']);
         }
     }
-    
-
 }

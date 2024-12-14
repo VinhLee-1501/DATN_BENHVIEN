@@ -348,6 +348,7 @@ class OrderController extends Controller
                 'orders.total_price',
                 'orders.order_id',
                 'orders.created_at',
+                
                 DB::raw('GROUP_CONCAT(services.name SEPARATOR "|") as service_names'), // Dùng dấu "|" để phân tách
                 DB::raw('GROUP_CONCAT(services.price SEPARATOR "|") as service_prices'),
                 'medical_records.medical_id',
@@ -459,7 +460,8 @@ class OrderController extends Controller
         $total_amount = $request->input('total_amount');
 
         if ($payment == 0) {
-            $order = Order::where('order_id', $id)->firstOrFail();
+            $order = Order::where('row_id', $id)->firstOrFail();
+
             $order->update([
                 'cashier' => $cashier_name,
                 'change_amount' => $change_amount,
@@ -628,7 +630,7 @@ class OrderController extends Controller
             ]);
             return redirect()->route('system.order')->with('success', 'Thanh toán hóa đơn thành công');
         }
-        return redirect()->route('system.order')->with('error',   'Thanh toán thất bại');
+
     }
 
     public function handlecallbackVnpay(Request $request){
@@ -657,7 +659,7 @@ class OrderController extends Controller
            ]);
            return redirect()->route('system.order')->with('success', 'Thanh toán hóa đơn thành công');
         }
-        return redirect()->route('system.order')->with('error',   'Thanh toán thất bại');
+        return redirect()->route('system.order');
     }
 
     public function updateStatus($id)

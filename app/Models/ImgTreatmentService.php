@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ImgTreatmentService extends Model
 {
     use HasFactory;
-    protected $fillable = ['treatment_id', 'img', 'img_id'];
+    protected $fillable = ['treatment_id', 'img', 'img_id', 'service_id'];
 
     protected $primaryKey = 'img_id';
 

@@ -143,7 +143,7 @@
                                                     <i class="ti ti-check"></i>
                                                 </a>
                                             </td>
-                                        </tr>
+                                        </tr>\
                                     @endforeach
                                 @endif
                             </tbody>
@@ -352,7 +352,7 @@
                                                                 </p>
                                                                 <p><strong>Bác sĩ:</strong>{{ $data->firstname }}
                                                                     {{ $data->lastname }}</p>
-                                                                <p><strong>KHoa:</strong> {{ $data->specialty }}</p>
+                                                                <p><strong>Khoa:</strong> {{ $data->specialty }}</p>
                                                                 <p><strong>Hình thức thanh toán:</strong>
                                                                     @if ($data->payment == 1)
                                                                         Momo
@@ -751,10 +751,10 @@
                             if (response.success) {
                                 if (paymentMethod === "0") {
                                     if (response.pdf_url) {
-                                        window.open(response.pdf_url, '_blank'); // Mở file PDF
+                                       window.open(response.pdf_url, '_blank', 'noopener');
                                     }
                                     $('#payModal').modal('hide');
-                                    location.reload(); // Tải lại trang
+                                    location.reload(); 
                                 } else if (paymentMethod === "1") {
                                     if (response.payUrl) {
                                         window.location.href = response.payUrl;

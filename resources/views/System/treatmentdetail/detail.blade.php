@@ -127,7 +127,7 @@
                 pond.setOptions({
                     server: {
                         process: {
-                            url: '/system/borderline-result/uploadfile?treatment_id={{ $MedicalRecord->treatment_id }}',
+                            url: '/system/borderline-result/uploadfile?treatment_id={{ $MedicalRecord->treatment_id }}&service_id={{ $MedicalRecord->service_id }}',
                             method: 'post',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
