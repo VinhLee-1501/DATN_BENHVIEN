@@ -5,7 +5,7 @@
         <div class="card-body p-4">
             <div class="d-flex justify-content-between align-items-center m-1 mb-4">
                 <a href="{{ route('system.order.resetsearch') }}" class="card-title">
-                    <h3>Quản lý hóa hơn thuốc</h3>
+                    <h3>Quản lý hóa đơn thuốc</h3>
                 </a>
             </div>
 
