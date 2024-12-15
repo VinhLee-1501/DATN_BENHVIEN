@@ -302,8 +302,8 @@
                         $('#shiftOption').append(`
                             <label for="shift_id">Chọn ca:</label>
                                 <select id="shift_id" name="rowId" class="form-control">
-                                ${response.doctors.map(function(doctor) {
-                            return `<option value="${doctor.rowId}">${doctor.shiftName} - (${doctor.noteShift ?? ""})</option>`;
+                                ${response.shifts.map(function(shift) {
+                            return `<option value="${shift.row_id}">${shift.name} - (${shift.note ?? ""})</option>`;
                                 }).join('')}
                             </select>
                                 `);

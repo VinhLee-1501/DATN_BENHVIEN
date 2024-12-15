@@ -152,7 +152,6 @@ class AppointmentSchedule extends Controller
         $role = $request->input('role');
 
         $doctorsQuery = User::join('schedules', 'schedules.user_id', '=', 'users.user_id')
-            ->leftJoin('table_shifts', 'table_shifts.shift_id', '=', 'schedules.shift_id')
             ->where('users.role', 2)
             ->where('users.specialty_id', $specialtyId)
             ->whereDate('schedules.day', $date)
@@ -161,17 +160,12 @@ class AppointmentSchedule extends Controller
                 'users.user_id',
                 'users.firstname',
                 'users.lastname',
-                'table_shifts.row_id as rowId',
-                'table_shifts.name as shiftName',
-                'table_shifts.note as noteShift',
-                'table_shifts.status as shiftStatus',
-                'table_shifts.shift_id as shiftIdShift',
                 'schedules.shift_id'
             );
 
         if ($role == 1) {
-            $doctorsQuery->where('schedules.status', 1)
-                ->where('table_shifts.status', 0);
+            $doctorsQuery->where('schedules.status', 1);
+            // ->where('table_shifts.status', 0);
         } else {
             $doctorsQuery->where('schedules.status', 0);
         }
@@ -181,15 +175,19 @@ class AppointmentSchedule extends Controller
                 'users.user_id',
                 'users.firstname',
                 'users.lastname',
-                'table_shifts.name',
-                'table_shifts.row_id',
-                'table_shifts.status',
-                'table_shifts.note',
-                'table_shifts.shift_id',
                 'schedules.shift_id'
             )->get();
+        $shift_id = $doctors[0]->shift_id;
 
-        return response()->json(['doctors' => $doctors]);
+
+        $shifts = TableShift::join('schedules', 'schedules.shift_id', '=', 'table_shifts.shift_id')
+            ->where('table_shifts.shift_id', $shift_id)
+            ->where('table_shifts.status', 0)
+            ->select('table_shifts.*')
+            ->get();
+
+        // dd($shift);
+        return response()->json(['doctors' => $doctors, 'shifts' => $shifts]);
     }
 
     public function update($id, Request $request)
@@ -250,12 +248,8 @@ class AppointmentSchedule extends Controller
             ->where('user_id', $doctorUserId)
             ->first();
 
-        // $shiftSchedules = TableShift::where('shift_id', $scheduleDate->shift_id)->first();
         $shiftStatus = TableShift::where('row_id', $rowId)->first();
-        // if (!$shiftStatus) {
-        //     return response()->json(['error' => true, 'message' => 'Không tìm thấy ca làm việc']);
-        // }
-        // dd($shiftStarus);
+
         if ($book->role == 1) {
             if ($shiftStatus->status == 1) {
                 return response()->json(['error' => true, 'message' => 'Ca làm đã được đặt.']);
