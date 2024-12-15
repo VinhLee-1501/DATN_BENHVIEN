@@ -10,6 +10,9 @@
                         <div class="product__details__pic__item">
                             <img class="product__details__pic__item--large"
                                 src="{{ asset('storage/uploads/products/' . $productById->img_array[0]) }}" alt="">
+                            @php
+                                // dd($productById->img_array);
+                            @endphp
                         </div>
                         <div class="product__details__pic__slider owl-carousel">
                             @for ($i = 0; $i < count($productById->img_array); $i++)
@@ -283,7 +286,7 @@
         });
     </script>
 
-     <script>
+    <script>
         document.querySelectorAll('.btn-add-to-cart').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault(); // Ngăn không cho trang tải lại
@@ -306,8 +309,17 @@
                         return response.json(); // Chuyển đổi phản hồi sang JSON
                     })
                     .then(data => {
-                        console.log(data.message); // Kiểm tra thông báo trong console
-                        toastr.success(data.message); // Hiển thị thông báo thành công
+                        // Kiểm tra trạng thái của phản hồi
+                        if (data.status === 'success') {
+                            console.log(data.message); // Kiểm tra thông báo trong console
+                            toastr.success(data.message); // Hiển thị thông báo thành công
+                        } else if (data.status === 'error') {
+                            console.warn(data.message); // Kiểm tra lỗi trong console
+                            toastr.error(data.message); // Hiển thị thông báo lỗi
+                        } else if (data.status === 'warning') {
+                            toastr.warning(data
+                                .message); // Hiển thị thông báo cảnh báo nếu người dùng chưa đăng nhập
+                        }
                     })
                     .catch(error => {
                         console.error('Error:', error.message); // Hiển thị lỗi trong console

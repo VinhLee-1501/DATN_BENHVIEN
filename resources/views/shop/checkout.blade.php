@@ -1,23 +1,6 @@
 @extends('layouts.shop.app')
 
 @section('content')
-    <!-- Breadcrumb Section Begin -->
-    <!-- <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>Thanh toán</h2>
-                        <div class="breadcrumb__option">
-                            <a href="./index.html">Trang chủ</a>
-                            <span>Thanh toán</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-    <!-- Breadcrumb Section End -->
 
     <!-- Checkout Section Begin -->
     <section class="checkout mt-3">
@@ -146,7 +129,7 @@
                                 @foreach ($cart as $item)
                                     @php
                                         $price = $item->price - ($item->price * $item->percent) / 100;
-                                        $subtotal = $price * $item->quantity;
+                                        $subtotal = $price * $item->quantitycart;
                                         $total += $subtotal;
 
                                     @endphp
@@ -155,7 +138,7 @@
                                             <img src="{{ asset('storage/uploads/products/' . $item->img_first) }}"
                                                 style="width: 50px; height: 50px; margin-right: 10px;">
                                             {{ Str::limit($item->name, 20) }}
-                                            (x{{ $item->quantity }})
+                                            (x{{ $item->quantitycart }})
                                             <span>{{ number_format($price * $item->quantity) }} đ</span>
                                         </li>
                                     </ul>

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Service extends Model
 {
     use HasFactory, SoftDeletes;
-     protected $table = 'services';
+    protected $table = 'services';
     protected $fillable = ['service_id',
         'name', 'price', 'directory_id', 'status' //Khóa ngoaị
     ];

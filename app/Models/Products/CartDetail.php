@@ -10,6 +10,7 @@ class CartDetail extends Model
 {
     protected $primaryKey = 'cart_detail_id';
     protected $keyType = 'integer';
+    protected $table = 'cart_details';
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
@@ -22,7 +23,7 @@ class CartDetail extends Model
     {
         return $this->hasMany(CartProduct::class, 'cart_id', 'cart_id');
     }
-
+    
 
     public function productForeignKLey()
     {

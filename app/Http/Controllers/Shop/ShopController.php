@@ -540,9 +540,9 @@ class ShopController extends Controller
                 'quantity' => $quantity,
             ]);
         }
-
+    
         return response()->json([
-            'success' => true,
+            'status' => 'success',
             'message' => 'Thêm vào giỏ hàng thành công.'
         ]);
     }
@@ -670,7 +670,8 @@ class ShopController extends Controller
             ->whereNull('cart_details.deleted_at')
             ->select(
                 'cart_products.*',
-                'cart_details.*',
+            'cart_details.*',
+            'cart_details.quantity as quantitycart',
                 'products.*',
                 'coupons.discount_code',
                 'coupons.percent as percent',

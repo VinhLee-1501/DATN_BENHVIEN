@@ -7,7 +7,7 @@
             </div>
             <table class="table table-bordered text-nowrap mb-0 align-middle mb-3">
                 <thead class="text-dark fs-4">
-                    <tr>
+                    <tr class="text-center">
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">Bệnh nhân</h6>
                         </th>
@@ -30,7 +30,7 @@
                 </thead>
                 <tbody id="myTable">
                     @foreach ($medicalRecording as $item)
-                        <tr>
+                        <tr class="text-center">
                             <td class="border-bottom-0">
                                 <p class="mb-0 fw-semibold">
                                     {{ $item->patientForeignKey->last_name . ' ' . $item->patientForeignKey->first_name }}

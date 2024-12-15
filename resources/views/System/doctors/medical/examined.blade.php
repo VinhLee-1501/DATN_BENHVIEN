@@ -6,15 +6,16 @@
             </div>
             <table class="table table-bordered text-nowrap mb-0 align-middle mb-3">
                 <thead class="text-dark fs-4">
-                    <tr>
-                        <th class="border-bottom-0">
-                            <h6 class="fw-semibold mb-0">Chuẩn đoán</h6>
-                        </th>
+                    <tr class="text-center">
+
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">Bệnh nhân</h6>
                         </th>
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">SĐT Bệnh nhân</h6>
+                        </th>
+                        <th class="border-bottom-0">
+                            <h6 class="fw-semibold mb-0">Chuẩn đoán</h6>
                         </th>
                         <th class="border-bottom-0">
                             <h6 class="fw-semibold mb-0">Ngày khám</h6>
@@ -29,15 +30,8 @@
                 </thead>
                 <tbody id="myTable">
                     @foreach ($medicalRecord as $item)
-                        <tr>
-                            <td class="border-bottom-0">
+                        <tr class="text-center">
 
-                                @if ($item->diaginsis == '')
-                                    <p class="mb-0 fw-semibold">Chưa có chuẩn đoán</p>
-                                @else
-                                    <p class="mb-0 fw-semibold">{{ $item->diaginsis }}</p>
-                                @endif
-                            </td>
                             <td class="border-bottom-0">
                                 <p class="mb-0 fw-semibold">
                                     {{ $item->patientForeignKey->last_name . ' ' . $item->patientForeignKey->first_name }}
@@ -46,6 +40,14 @@
                             </td>
                             <td class="border-bottom-0">
                                 <p class="mb-0 fw-semibold">{{ $item->patientForeignKey->phone }}</p>
+                            </td>
+                            <td class="border-bottom-0">
+
+                                @if ($item->diaginsis == '')
+                                    <p class="mb-0 fw-semibold">Chưa có chuẩn đoán</p>
+                                @else
+                                    <p class="mb-0 fw-semibold">{{ $item->diaginsis }}</p>
+                                @endif
                             </td>
                             <td class="border-bottom-0">
                                 <p class="mb-0 fw-semibold">
@@ -67,7 +69,7 @@
                             <td class="border-bottom-0 d-flex">
                                 <a href="{{ route('system.recordDoctors.detail', $item->medical_id) }}"
                                     class="btn btn-primary btn-sm">Xem</a>
-                               
+
                             </td>
                     @endif
 

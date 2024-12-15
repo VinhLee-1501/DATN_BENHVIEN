@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\OrderProductConfirmation;
+use App\Models\Order;
+use App\Models\Products\CartDetail;
+use App\Models\Products\CartProduct;
 use App\Models\Products\OrderProduct;
+use App\Models\Products\Product;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
-
+use function Laravel\Prompts\select;
 
 class OrderProductController extends Controller
 {
@@ -58,8 +62,7 @@ class OrderProductController extends Controller
             )->orderBy('order_products.created_at', 'desc');
 
         if ($request->filled('name')) {
-            $ordersquery->
-               where('order_products.order_username', 'like', '%' . $request->name . '%');
+            $ordersquery->where('order_products.order_username', 'like', '%' . $request->name . '%');
         }
 
         if ($request->filled('code_order')) {
@@ -151,10 +154,30 @@ class OrderProductController extends Controller
             )
             ->first();
 
+        $order = OrderProduct::where('order_id', $id)->first();
+        $cart_id = $order->cart_id;
+
+        $cart = CartDetail::withTrashed()
+        ->where('cart_id', $cart_id)
+        ->whereNotNull('cart_details.deleted_at')
+        ->get();
+
+        foreach($cart as $item){
+            $product_id = $item->product_id;
+            $quantitycart = $item->quantity;
+            $product = Product::where('product_id', $product_id)->first();
+            $quantity = $product->quantity - $quantitycart;
+            $product->quantity = $quantity;
+            $product->update();
+            
+        }
+
+
         if ($orderProduct->order_status == '0') {
             $orderProduct->order_status = 1;
             $orderProduct->save();
-            // Mail::to($orderProduct->email)->send(new OrderProductConfirmation($orderProduct));
+            Mail::to($orderProduct->email)->send(new OrderProductConfirmation($orderProduct));
+
             return redirect()->route('system.orderproduct')->with('success', 'Xác nhân đơn hàng.');
         } elseif ($orderProduct->order_status == 1) {
             $orderProduct->order_status = 2;

@@ -41,6 +41,7 @@ class PayController extends Controller
                 ->select(
                     'cart_products.*',
                     'cart_details.*',
+                    'cart_details.quantity as quantitycart',
                     'products.*',
                     'coupons.discount_code',
                     'coupons.percent',
@@ -69,8 +70,6 @@ class PayController extends Controller
                 )
                 ->get();
 
-
-
             $order_user = OrderProduct::join('payment_products', 'payment_products.order_id', '=', 'order_products.order_id')
                 ->join('cart_products', 'cart_products.cart_id', '=', 'order_products.cart_id')
                 ->join('cart_details', 'cart_details.cart_id', '=', 'cart_products.cart_id')
@@ -84,10 +83,14 @@ class PayController extends Controller
                     'payment_products.payment_status',
                     'payment_products.payment_id',
                     'cart_products.cart_id',
-                    DB::raw('GROUP_CONCAT(DISTINCT products.product_id ORDER BY products.product_id SEPARATOR ",") as product_ids')
+                    
                 )
                 ->groupBy('order_products.order_id', 'cart_products.cart_id', 'payment_products.payment_id', 'payment_products.payment_method', 'payment_products.payment_status',)
                 ->get();
+
+                
+
+                
         } else {
             $product = [];
             $order_user = [];
@@ -136,7 +139,7 @@ class PayController extends Controller
             $payment->save();
 
 
-            return redirect()->route('client.profile.index')->with([
+            return redirect()->route('shop.bill')->with([
                 'success' => 'Thanh toán thành công!',
                 'active_tab' => 'order',
             ]);
@@ -148,7 +151,7 @@ class PayController extends Controller
             $payment->save();
 
 
-            return redirect()->route('client.profile.index')->with([
+            return redirect()->route('shop.bill')->with([
                 'error' => 'Thanh toán không thành công!',
                 'active_tab' => 'order',
             ]);
@@ -167,7 +170,7 @@ class PayController extends Controller
             $payment->order_id = $orderId;
             $payment->save();
 
-            return redirect()->route('client.profile.index')->with([
+            return redirect()->route('shop.bill')->with([
                 'success' => 'Thanh toán thành công!',
                 'active_tab' => 'order',
             ]);
@@ -179,7 +182,7 @@ class PayController extends Controller
             $payment->save();
             // Thanh toán thất bại
 
-            return redirect()->route('client.profile.index')->with([
+            return redirect()->route('shop.bill')->with([
                 'error' => 'Thanh toán không thành công!',
                 'active_tab' => 'order',
             ]);
@@ -197,7 +200,7 @@ class PayController extends Controller
 
         $paymentExists = PaymentProduct::where('order_id', $vnp_TxnRef)->exists();
         if ($paymentExists) {
-            return redirect()->route('client.profile.index')->with(['error' => 'Giao dịch này đã được xử lý trước đó.']);
+            return redirect()->route('shop.bill')->with(['error' => 'Giao dịch này đã được xử lý trước đó.']);
         }
 
 
@@ -212,7 +215,7 @@ class PayController extends Controller
             $payment->save();
 
 
-            return redirect()->route('client.profile.index')->with([
+            return redirect()->route('shop.bill')->with([
                 'success' => 'Thanh toán thành công!',
                 'active_tab' => 'order',
             ]);
@@ -224,7 +227,7 @@ class PayController extends Controller
             $payment->save();
 
 
-            return redirect()->route('client.profile.index')->with([
+            return redirect()->route('shop.bill')->with([
                 'error' => 'Thanh toán không thành công!',
                 'active_tab' => 'order',
             ]);
@@ -447,7 +450,7 @@ class PayController extends Controller
 
 
 
-            return redirect()->route('client.profile.index')->with([
+            return redirect()->route('shop.bill')->with([
                 'success' => 'Đặt hàng thành công!',
                 'active_tab' => 'order',
             ]);

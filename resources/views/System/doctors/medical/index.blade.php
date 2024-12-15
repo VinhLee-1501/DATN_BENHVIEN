@@ -16,19 +16,23 @@
                 role="tab" aria-controls="nav-profile" aria-selected="false">Đã khám</button>
         </div>
     </nav>
-      <form action="" method="GET" class="row g-2 justify-content-center align-items-center">
+
+    <!-- Tab content -->
+    <div class="tab-content" id="nav-tabContent">
+
+        <form action="" method="GET" class="mb-3 row g-2 justify-content-between align-items-center">
             <div class="row g-2 justify-content-center align-items-center col-md-5">
                 <div class="col-md-6 col-sm-6">
 
-                    <input type="text" id="nameInput" class="form-control" placeholder="Tên bệnh nhân"
-                        name="lastname" value="{{ request('lastname') }}">
+                    <input type="text" id="nameInput" class="form-control" placeholder="Tên bệnh nhân" name="lastname"
+                        value="{{ request('lastname') }}">
 
                 </div>
 
                 <div class="col-md-6 col-sm-6">
 
-                    <input type="text" id="phoneInput" class="form-control" placeholder="Số điện thoại"
-                        name="firstname" value="{{ request('phone') }}">
+                    <input type="text" id="phoneInput" class="form-control" placeholder="Số điện thoại" name="firstname"
+                        value="{{ request('phone') }}">
 
                 </div>
             </div>
@@ -37,8 +41,6 @@
                 <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
             </div>
         </form>
-      <!-- Tab content -->
-    <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
             <!-- Thuốc hoạt động -->
             @include('System.doctors.medical.examined', ['medicalRecord' => $medicalRecord])

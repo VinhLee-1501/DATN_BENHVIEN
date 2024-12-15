@@ -89,10 +89,10 @@ class ProductController extends Controller
 
 
       // Phân trang cho sản phẩm còn hàng (status = 1)
-      $product = $query->clone()->where('products.status', 1)->paginate(10)->appends($request->query());
+      $product = $query->clone()->where('products.status', 1)->where('products.quantity', '>', 0)->paginate(10)->appends($request->query());
 
       // Phân trang cho sản phẩm hết hàng (status = 0)
-      $productEnd = $query->clone()->where('products.status', 0)->paginate(10)->appends($request->query());
+      $productEnd = $query->clone()->where('products.status', 0)->orwhere('products.quantity', 0)->paginate(10)->appends($request->query());
 
       // Lấy danh sách các barcode
       $generatorHTML = new BarcodeGeneratorHTML();

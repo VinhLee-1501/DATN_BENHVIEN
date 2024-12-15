@@ -79,8 +79,13 @@
                         return response.json(); // Chuyển đổi phản hồi sang JSON
                     })
                     .then(data => {
-                        console.log(data.message); // Kiểm tra thông báo trong console
-                        toastr.success(data.message); // Hiển thị thông báo thành công
+                        if (data.status === 'success') {
+                            console.log(data.message); // Kiểm tra thông báo trong console
+                            toastr.success(data.message); // Hiển thị thông báo thành công
+                        } else if (data.status === 'error') {
+                            console.warn(data.message); // Kiểm tra lỗi trong console
+                            toastr.error(data.message); // Hiển thị thông báo lỗi
+                        }
                     })
                     .catch(error => {
                         console.error('Error:', error.message); // Hiển thị lỗi trong console

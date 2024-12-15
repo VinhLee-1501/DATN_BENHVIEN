@@ -69,7 +69,7 @@ class CheckupHealthController extends Controller
             )
             ->paginate(10);
 
-                dd($offline);
+                // dd($offline);
 
         return view('System.doctors.checkupHealth.index', [
             'book' => $book,

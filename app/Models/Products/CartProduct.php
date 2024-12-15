@@ -12,6 +12,7 @@ class CartProduct extends Model
 {
     protected $primaryKey = 'cart_id';
     protected $keyType = 'integer';
+    protected $table = 'cart_products';
     use HasFactory, SoftDeletes;
 
     protected $fillable = [

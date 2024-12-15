@@ -460,7 +460,7 @@ class OrderController extends Controller
         $total_amount = $request->input('total_amount');
 
         if ($payment == 0) {
-            $order = Order::where('row_id', $id)->firstOrFail();
+            $order = Order::where('orrder_id', $id)->firstOrFail();
 
             $order->update([
                 'cashier' => $cashier_name,
