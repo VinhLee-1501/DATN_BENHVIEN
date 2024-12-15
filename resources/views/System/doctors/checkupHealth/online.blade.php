@@ -1,6 +1,6 @@
 <div class="card w-100">
     <div class="card-body p-4">
-        <h5 class="card-title fw-semibold mb-4">Quản lý thuốc hoạt động</h5>
+        <h5 class="card-title fw-semibold mb-4">Quản lý lịch khám trực tuyến</h5>
         <div class="table-responsive">
             <div class="mb-3">
                 {!! $online->links() !!}

@@ -43,11 +43,11 @@
                 </td>
                 <td class="border-bottom-0">
                     <span class="fw-semibold mb-0">
-                        @if ($item->status === 0)
+                        @if ($item->status == 0)
                         <span class="badge bg-danger">Đã đặt</span>
-                        @elseif($item->status === 1)
+                        @elseif($item->status == 1)
                         <span class="badge bg-success">Xác nhận</span>
-                        @elseif ($item->status === 2)
+                        @elseif ($item->status == 2)
                         <span class="badge bg-success">Đã khám</span>
                         @else
                         <span class="badge bg-warning">Đã hủy</span>
@@ -106,11 +106,11 @@
                                 <div class="col-md-4 text-start">
                                     <ul class="list-unstyled mb-0">
                                         <li><strong>Trạng thái:</strong>
-                                            @if ($item->status === 0)
+                                            @if ($item->status == 0)
                                             <span class="badge bg-danger">Đã đặt</span>
-                                            @elseif($item->status === 1)
+                                            @elseif($item->status == 1)
                                             <span class="badge bg-success">Xác nhận</span>
-                                            @elseif ($item->status === 2)
+                                            @elseif ($item->status == 2)
                                             <span class="badge bg-success">Đã khám</span>
                                             @else
                                             <span class="badge bg-warning">Đã hủy</span>

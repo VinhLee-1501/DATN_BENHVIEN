@@ -51,6 +51,10 @@ class PayController extends Controller
                 )
                 ->groupBy(
                     'cart_products.cart_id',
+                    'cart_products.user_id',
+                    'cart_products.deleted_at',
+                    'cart_products.created_at',
+                    'cart_products.updated_at',
                     'products.product_id',
                     'products.name',
                     'products.code_product',
@@ -59,10 +63,22 @@ class PayController extends Controller
                     'products.used',
                     'products.description',
                     'products.price',
+                    'products.quantity',
+                    'products.category_id',
+                    'products.brand',
                     'products.manufacture',
                     'products.registration_number',
                     'products.status',
+                    'products.deleted_at',
+                    'products.created_at',
+                    'products.updated_at',
                     'cart_details.cart_detail_id',
+                    'cart_details.product_id',
+                    'cart_details.quantity',
+                    'cart_details.cart_id',
+                    'cart_details.deleted_at',
+                    'cart_details.created_at',
+                    'cart_details.updated_at',
                     'coupons.discount_code',
                     'coupons.percent',
                     'coupons.time_start',
@@ -85,7 +101,7 @@ class PayController extends Controller
                     'cart_products.cart_id',
                     
                 )
-                ->groupBy('order_products.order_id', 'cart_products.cart_id', 'payment_products.payment_id', 'payment_products.payment_method', 'payment_products.payment_status',)
+                ->groupBy('order_products.order_id','order_products.quantity','order_products.price_old','order_products.price_sale','order_products.order_status','order_products.order_username','order_products.order_phone','order_products.order_address','order_products.note', 'cart_products.cart_id','order_products.cart_id','order_products.product_id','order_products.coupon_id','order_products.user_id','order_products.deleted_at','order_products.created_at','order_products.updated_at', 'payment_products.payment_id', 'payment_products.payment_method', 'payment_products.payment_status',)
                 ->get();
 
                 
@@ -96,7 +112,7 @@ class PayController extends Controller
             $order_user = [];
         }
 
-        return view('Shop.order', ['order' => $order, 'product' => $product, 'order_user' => $order_user]);
+        return view('shop.order', ['order' => $order, 'product' => $product, 'order_user' => $order_user]);
     }
 
 

@@ -56,10 +56,10 @@
                 @php
                     $statusText = '';
                     $statusClass = '';
-                    if ($order->payment_status === 1) {
+                    if ($order->payment_status == 1) {
                         $statusText = 'Thanh toán thành công';
                         $statusClass = 'status-success';
-                    } elseif ($order->payment_status === 2) {
+                    } elseif ($order->payment_status == 2) {
                         $statusText = 'Thanh toán không thành công';
                         $statusClass = 'status-failure';
                     } else {
@@ -67,13 +67,13 @@
                         $statusClass = 'status-cod';
                     }
 
-                    if ($order->payment_method === 0) {
+                    if ($order->payment_method == 0) {
                         $methodText = 'Thanh toán khi nhận hàng';
-                    } elseif ($order->payment_method === 1) {
+                    } elseif ($order->payment_method == 1) {
                         $methodText = 'Thanh toán bằng VNPAY';
-                    } elseif ($order->payment_method === 2) {
+                    } elseif ($order->payment_method == 2) {
                         $methodText = 'Thanh toán bằng MOMOPAY';
-                    } elseif ($order->payment_method === 4) {
+                    } elseif ($order->payment_method == 4) {
                         $methodText = 'Thanh toán bằng ZaloPay';
                     }
                 @endphp

@@ -191,6 +191,7 @@ class OrderController extends Controller
                 'orders.order_id',
                 'orders.created_at',
                 'orders.updated_at',
+                'orders.total_amount',
                 'books.day',
                 'books.hour',
                 'books.name',

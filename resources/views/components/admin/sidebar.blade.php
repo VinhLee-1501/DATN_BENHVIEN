@@ -764,201 +764,200 @@
                     </ul>
                 </nav>
             </div>
-        </div>
-        <!-- Điều hướng thanh bên -->
-        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-            <ul id="sidebarnav">
-                <li
-                    class="sidebar-item {{ request()->is('system/dashboard*') || request()->is('system/dashboard?*') ? 'selected' : '' }}">
-                    <a class="sidebar-link" href="{{ route('system.dashboard') }}" aria-expanded="false">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-                                <path
-                                    d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
-                                <path
-                                    d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
-                                <path
-                                    d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
-                            </svg>
-                        </span>
-                        <span class="hide-menu">Thống kê (Nhân viên)</span>
-                    </a>
-                </li>
-                <li
-                    class="sidebar-item {{ request()->is('system/patient*') || request()->is('system/patient?*') ? 'selected' : '' }}">
-                    <a class="sidebar-link" href="{{ route('system.patient') }}" aria-expanded="false">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                                <path d="M16 19h6" />
-                                <path d="M19 16v6" />
-                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
-                            </svg>
-                        </span>
-                        <span class="hide-menu">Quản lý bệnh nhân</span>
-                    </a>
-                </li>
-                <li
-                    class="sidebar-item {{ request()->is('system/medicalRecord*') || request()->is('system/medicalRecord?*') ? 'selected' : '' }}">
-                    <a class="sidebar-link" href="{{ route('system.medicalRecord') }}" aria-expanded="false">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-text">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                <path
-                                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                <path d="M9 12h6" />
-                                <path d="M9 16h6" />
-                            </svg>
-                        </span>
-                        <span class="hide-menu">Quản lý bệnh án</span>
-                    </a>
-                </li>
-                <li
-                    class="sidebar-item {{ request()->is('system/appointmentSchedule*') || request()->is('system/appointmentSchedule?*') ? 'selected' : '' }}">
-                    <a class="sidebar-link" href="{{ route('system.appointmentSchedule') }}"
-                        aria-expanded="false">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                                <path d="M16 3l0 4" />
-                                <path d="M8 3l0 4" />
-                                <path d="M4 11l16 0" />
-                                <path d="M8 15h2v2h-2z" />
-                            </svg>
-                        </span>
-                        <span class="hide-menu">Quản lý lịch khám</span>
-                    </a>
-                </li>
-                <li
-                    class="sidebar-item {{ request()->is('system/schedule*') || request()->is('system/schedule?*') ? 'selected' : '' }}">
-                    <a class="sidebar-link" href="{{ route('system.schedule') }}"
-                        aria-expanded="false">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
-                                <path d="M16 3v4" />
-                                <path d="M8 3v4" />
-                                <path d="M4 11h16" />
-                                <path d="M7 14h.013" />
-                                <path d="M10.01 14h.005" />
-                                <path d="M13.01 14h.005" />
-                                <path d="M16.015 14h.005" />
-                                <path d="M13.015 17h.005" />
-                                <path d="M7.01 17h.005" />
-                                <path d="M10.01 17h.005" />
-                            </svg>
-                        </span>
-                        <span class="hide-menu">Quản lý lịch làm</span>
-                    </a>
-                </li>
-                <li
-                    class="sidebar-item {{ request()->is('system/order-medicines*') || request()->is('system/order-medicines?*') ? 'selected' : '' }}">
-                    <a class="sidebar-link" href="{{ route('system.ordermedicine') }}" aria-expanded="false">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-first-aid-kit">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M8 8v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
-                                <path
-                                    d="M4 8m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                                <path d="M10 14h4" />
-                                <path d="M12 12v4" />
-                            </svg>
-                        </span>
-                        <span class="hide-menu">QL hóa đơn thuốc</span>
-                    </a>
-                </li>
-                <li
-                    class="sidebar-item {{ request()->is('system/order-services*') || request()->is('system/order-services?*') ? 'selected' : '' }}">
-                    <a class="sidebar-link" href="{{ route('system.order') }}" aria-expanded="false">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-first-aid-kit">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M8 8v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
-                                <path
-                                    d="M4 8m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
-                                <path d="M10 14h4" />
-                                <path d="M12 12v4" />
-                            </svg>
-                        </span>
-                        <span class="hide-menu">QL hóa đơn dịch vụ</span>
-                    </a>
-                </li>
+            <div>
+                <!-- Điều hướng thanh bên -->
+                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                    <ul id="sidebarnav">
+                        <li
+                            class="sidebar-item {{ request()->is('system/dashboard*') || request()->is('system/dashboard?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.dashboard') }}" aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-layout-dashboard">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+                                        <path
+                                            d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+                                        <path
+                                            d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1" />
+                                        <path
+                                            d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">Thống kê (Nhân viên)</span>
+                            </a>
+                        </li>
+                        <li
+                            class="sidebar-item {{ request()->is('system/patient*') || request()->is('system/patient?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.patient') }}" aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                        <path d="M16 19h6" />
+                                        <path d="M19 16v6" />
+                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">Quản lý bệnh nhân</span>
+                            </a>
+                        </li>
+                        <li
+                            class="sidebar-item {{ request()->is('system/medicalRecord*') || request()->is('system/medicalRecord?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.medicalRecord') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-text">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                        <path
+                                            d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                        <path d="M9 12h6" />
+                                        <path d="M9 16h6" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">Quản lý bệnh án</span>
+                            </a>
+                        </li>
+                        <li
+                            class="sidebar-item {{ request()->is('system/appointmentSchedule*') || request()->is('system/appointmentSchedule?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.appointmentSchedule') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                                        <path d="M16 3l0 4" />
+                                        <path d="M8 3l0 4" />
+                                        <path d="M4 11l16 0" />
+                                        <path d="M8 15h2v2h-2z" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">Quản lý lịch khám</span>
+                            </a>
+                        </li>
+                        <li
+                            class="sidebar-item {{ request()->is('system/schedule*') || request()->is('system/schedule?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.schedule') }}" aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-month">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                        <path d="M16 3v4" />
+                                        <path d="M8 3v4" />
+                                        <path d="M4 11h16" />
+                                        <path d="M7 14h.013" />
+                                        <path d="M10.01 14h.005" />
+                                        <path d="M13.01 14h.005" />
+                                        <path d="M16.015 14h.005" />
+                                        <path d="M13.015 17h.005" />
+                                        <path d="M7.01 17h.005" />
+                                        <path d="M10.01 17h.005" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">Quản lý lịch làm</span>
+                            </a>
+                        </li>
+                        <li
+                            class="sidebar-item {{ request()->is('system/order-medicines*') || request()->is('system/order-medicines?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.ordermedicine') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-first-aid-kit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M8 8v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+                                        <path
+                                            d="M4 8m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                                        <path d="M10 14h4" />
+                                        <path d="M12 12v4" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">QL hóa đơn thuốc</span>
+                            </a>
+                        </li>
+                        <li
+                            class="sidebar-item {{ request()->is('system/order-services*') || request()->is('system/order-services?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.order') }}" aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-first-aid-kit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M8 8v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2" />
+                                        <path
+                                            d="M4 8m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                                        <path d="M10 14h4" />
+                                        <path d="M12 12v4" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">QL hóa đơn dịch vụ</span>
+                            </a>
+                        </li>
 
-                <li
-                    class="sidebar-item {{ request()->is('system/order-products*') || request()->is('system/order-products?*') ? 'selected' : '' }}">
-                    <a class="sidebar-link" href="{{ route('system.orderproduct') }}" aria-expanded="false">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="icon icon-tabler icons-tabler-outline icon-tabler-receipt-2">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
-                                <path
-                                    d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
-                            </svg>
-                        </span>
-                        <span class="hide-menu">QL hóa đơn mua hàng</span>
-                    </a>
-                </li>
-                <li
-                class="sidebar-item {{ request()->is('system/borderline-result*') || request()->is('system/borderline-result?*') ? 'selected' : '' }}">
-                <a class="sidebar-link" href="{{ route('system.borderline-result')}}" aria-expanded="false">
-                    <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-id">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
-                            <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                            <path d="M15 8l2 0" />
-                            <path d="M15 12l2 0" />
-                            <path d="M7 16l10 0" />
-                          </svg>
-                    </span>
-                    <span class="hide-menu">QL Kết quả cận lâm sàng</span>
-                </a>
-            </li>
-            </ul>
-        </nav>
-    </div>
-    <!-- Kết thúc Điều hướng thanh bên -->
-
-    <!-- Kết thúc Cuộn thanh bên -->
-</aside>
-
-
-            <!-- Kết thúc Cuộn thanh bên -->
+                        <li
+                            class="sidebar-item {{ request()->is('system/order-products*') || request()->is('system/order-products?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.orderproduct') }}" aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-receipt-2">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+                                        <path
+                                            d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">QL hóa đơn mua hàng</span>
+                            </a>
+                        </li>
+                        <li
+                            class="sidebar-item {{ request()->is('system/borderline-result*') || request()->is('system/borderline-result?*') ? 'selected' : '' }}">
+                            <a class="sidebar-link" href="{{ route('system.borderline-result') }}"
+                                aria-expanded="false">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-id">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                                        <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                        <path d="M15 8l2 0" />
+                                        <path d="M15 12l2 0" />
+                                        <path d="M7 16l10 0" />
+                                    </svg>
+                                </span>
+                                <span class="hide-menu">QL Kết quả cận lâm sàng</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </aside>
     @endif
 @endif

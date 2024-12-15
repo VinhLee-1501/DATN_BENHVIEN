@@ -476,12 +476,17 @@
                                                             default => 'Thanh toán bằng ZaloPay',
                                                         };
 
-                                                        // Xác định trạng thái đơn hàng
-                                                        $orderStatus = match ($item->order_status) {
-                                                            1 => 'Đã xác nhận',
-                                                            0 => 'Đang chờ xử lý',
-                                                            default => 'Đã hủy',
-                                                        };
+                                                     if($item->order_status == 0){
+                                                        $orderStatus = 'Đang chờ xử lý';
+                                                     }elseif($item->order_status == 1){
+                                                        $orderStatus = 'Đã xác nhận';
+                                                     }elseif($item->order_status == 2){
+                                                        $orderStatus = 'Đang giao';
+                                                     }else{
+                                                        $orderStatus = 'Đã xác nhận';
+                                                     }
+                                                         
+                                                        
 
                                                         // Xác định giá trị đơn hàng
                                                         $orderValue =

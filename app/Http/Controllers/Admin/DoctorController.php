@@ -94,7 +94,7 @@ class DoctorController extends Controller
     public function create()
     {
         $specialties = Specialty::all();
-        return view('system.doctors.create', compact('specialties'));
+        return view('System.doctors.create', compact('specialties'));
     }
 
     public function store(DoctorCreateRequest $request)

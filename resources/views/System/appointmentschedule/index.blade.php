@@ -71,12 +71,12 @@
             <!-- Tab Contents -->
             <div class="tab-pane fade show {{ $activeTab == 'nav-home' ? 'show active' : '' }}" id="nav-home" role="tabpanel"
                 aria-labelledby="nav-home-tab">
-                @include('system.appointmentSchedule.offline', ['book' => $booksOffline]) <!-- Truyền biến admin vào view -->
+                @include('System.appointmentschedule.offline', ['book' => $booksOffline]) <!-- Truyền biến admin vào view -->
             </div>
 
             <div class="tab-pane fade {{ $activeTab == 'nav-contact' ? 'show active' : '' }}" id="nav-contact" role="tabpanel"
                 aria-labelledby="nav-contact-tab">
-                @include('system.appointmentSchedule.online', ['book' => $booksOnline]) <!-- Truyền biến users vào view -->
+                @include('System.appointmentschedule.online', ['book' => $booksOnline]) <!-- Truyền biến users vào view -->
             </div>
         </div>
 
@@ -193,8 +193,8 @@
                     $('#specialty_id').val(response.specialty_id);
                     $('#emailUser').val(response.email);
                     updateDoctors(formattedDate, response.specialty_id);
-                    $('#confirmation-check').prop('checked', response.status === 1);
-                    $('#cancelstatus-check').prop('checked', response.status === 4);
+                    $('#confirmation-check').prop('checked', response.status == 1);
+                    $('#cancelstatus-check').prop('checked', response.status == 4);
                     $('#exampleModal').data('id', id);
                     $('#exampleModal').modal('show');
                 },
@@ -319,7 +319,7 @@
                                 text: doctor.lastname + ' ' + doctor.firstname
                             })
                         );
-                        if (doctor.shiftStatus === 1) {
+                        if (doctor.shiftStatus == 1) {
                             $('#doctor_name option[value="' + doctor.user_id + '"]').prop('disabled',
                                 true)
                         } else {
