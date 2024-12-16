@@ -170,10 +170,12 @@ class PatientController extends Controller
 
     public function saveMedical(MedicalRequest $request)
     {
+        // dd($request->all());
 
         $phone = $request->input('phone');
 
         $user = User::where('users.phone', $phone)->first();
+        // dd($user);
         $email = $user->email;
         $user_id = $user->user_id;
         $book = new Book();
@@ -188,6 +190,8 @@ class PatientController extends Controller
         $book->day = $request->input('day');
         $book->symptoms = $request->input('symptoms');
         $book->status = 1;
+
+        // dd($book);
 
         $book->save();
 
@@ -206,6 +210,6 @@ class PatientController extends Controller
         $medical->status = 0;
         $medical->save();
 
-        return response()->json(['success' => true, 'message' => 'Tạo hồ sơ thành công !']);
-    }
+        return response()->json(['success' => false, 'message' => 'Tạo hồ sơ thành công!']);
+        }
 }

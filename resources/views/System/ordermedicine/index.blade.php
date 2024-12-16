@@ -516,14 +516,22 @@
                                 } else {
                                     console.error('Dữ liệu thuốc bị thiếu hoặc không hợp lệ');
                                 }
+                                
+                                totalMedicineAmount = parseFloat(totalMedicineAmount.toString()
+                                    .replace(/[^0-9.-]/g, '')) || 0;
+                                serviceFee = parseFloat(serviceFee.toString().replace(/[^0-9.-]/g,
+                                    '')) || 0;
 
-                                // Phí dịch vụ
-                                var serviceFee = data.price_service || 0;
-
-                                // Tính tổng cộng
                                 var totalAmount = totalMedicineAmount + serviceFee;
 
-                                // Cập nhật giá trị vào giao diện người dùng
+                                // Debug giá trị để kiểm tra
+                                console.log("Chi tiết giá trị:", {
+                                    totalMedicineAmount,
+                                    serviceFee,
+                                    totalAmount
+                                });
+
+                                // Hiển thị giá trị lên giao diện
                                 $('#serviceFee').text(new Intl.NumberFormat('vi-VN').format(
                                     serviceFee) + ' VND');
                                 $('#totalAmount').text(new Intl.NumberFormat('vi-VN').format(
