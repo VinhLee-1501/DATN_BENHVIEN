@@ -71,7 +71,7 @@ class ScheduleController extends Controller
         foreach ($schedule as $shift) {
             $events[] = [
                 'shift_id' => $shift->shift_id,
-                'title' => $shift->firstname . ' ' . $shift->lastname,
+                'title' =>  $shift->lastname . ' ' . $shift->firstname,
                 'start' => $shift->day,
                 'id' => $shift->shift_id,
                 'user_id' => $shift->userId,
