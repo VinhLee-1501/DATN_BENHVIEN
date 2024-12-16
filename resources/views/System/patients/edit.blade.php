@@ -25,7 +25,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Số điện thoại</label>
                                     <input type="text" name="phone" class="form-control"
-                                           value="{{ old('phone', $patient->phone) }}" inputmode="numeric">
+                                           value="{{ old('phone', $patient->phone) }}" inputmode="numeric" readonly>
                                     @error('phone')
                                     <div class="text-danger">*{{ $message }}</div>
                                     @enderror
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Giới tính</label>
                                     <select name="gender" class="form-select">
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Ngày sinh</label>
                                     <input type="date" name="birthday" class="form-control"
@@ -81,19 +81,7 @@
                                     @enderror
                                 </div>
                             </div>
-
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <label class="form-label">Số BHYT</label>
-                                    <input type="number" name="insurance_number" class="form-control"
-                                           value="{{ old('insurance_number', $patient->Insurance_number) }}">
-                                    @error('insurance_number')
-                                    <div class="text-danger">*{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">SDT khẩn cấp</label>
                                     <input type="number" name="emergency_contact" class="form-control"
@@ -134,13 +122,6 @@
                                     @error('national')
                                     <div class="text-danger">*{{ $message }}</div>
                                     @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Ảnh đại diện</label>
-                                    <input type="file" name="avatar" class="form-control">
                                 </div>
                             </div>
                         </div>

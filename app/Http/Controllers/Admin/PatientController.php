@@ -187,7 +187,7 @@ class PatientController extends Controller
         $book->specialty_id = $request->input('specialty_id');
         $book->day = $request->input('day');
         $book->symptoms = $request->input('symptoms');
-        $book->status = 0;
+        $book->status = 1;
 
         $book->save();
 

@@ -272,7 +272,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="active_ingredient_up" class="form-label">Hoạt tính</label>
-                                <input name="active_ingredient_up" class="form-control" id="active_ingredient_up">
+                                <textarea name="active_ingredient_up" class="form-control" id="active_ingredient_up"></textarea>
                                 <div class="invalid-feedback" id="active_ingredient_error"></div>
                             </div>
 
@@ -710,8 +710,7 @@
 
             // Khởi tạo FormData để gửi cả file và dữ liệu form
             var formData = new FormData();
-
-
+            
             // Thêm các trường dữ liệu vào FormData (dữ liệu không phải là file)
             formData.append('id', $('#product_id_up').val());
             formData.append('name_up', $('#name_up').val());

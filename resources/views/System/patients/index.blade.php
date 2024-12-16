@@ -221,7 +221,7 @@
                         <div class="col-md-6">
                             <label for="specialty_id" class="form-label">Ngày</label>
                             <input type="date" id="day" class="form-control" name="day"
-                                value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" readonly>
+                                value="{{ \Carbon\Carbon::now()->timezone('Asia/Ho_Chi_Minh')->format('Y-m-d') }}" readonly>
                             <div class="invalid-feedback" id="day_error"></div>
                         </div>
                         <div class="col-md-6">
@@ -314,7 +314,6 @@
     });
 
     function openAddModal(id) {
-        console.log("Modal mở với patient_id:", id); // Thêm console log để kiểm tra
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -383,8 +382,6 @@
 
     $('#addMedicalForm').on('submit', function(e) {
         e.preventDefault();
-
-        console.log('bấm');
         var formData = new FormData();
         formData.append('specialty_id', $('#specialty_id').val());
         formData.append('shift_id', $('#shift_id').val());
@@ -398,9 +395,11 @@
         formData.append('respiratory_rate', $('#respiratory_rate').val());
         formData.append('blood_pressure', $('#blood_pressure').val());
 
+        console.log(formData);
+        
         $.ajax({
             url: '/system/patients/saveMedical/',
-            type: 'post',
+            type: 'POST',
             data: formData,
             contentType: false,
             processData: false,

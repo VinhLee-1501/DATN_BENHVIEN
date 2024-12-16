@@ -301,7 +301,7 @@
                         $('#username').append(
                             $('<option>', {
                                 value: user.user_id,
-                                text: user.lastname + '' + user.firstname
+                                text: user.lastname + ' ' + user.firstname
                             })
                         );
                     })

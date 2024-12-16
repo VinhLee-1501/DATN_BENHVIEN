@@ -69,7 +69,7 @@ class CheckupHealthController extends Controller
             )
             ->paginate(10);
 
-                // dd($offline);
+        // dd($offline);
 
         return view('System.doctors.checkupHealth.index', [
             'book' => $book,
@@ -106,7 +106,43 @@ class CheckupHealthController extends Controller
                 ->join('patients', 'patients.patient_id', '=', 'medical_records.patient_id')
                 ->select('medical_records.*', 'patients.first_name', 'patients.last_name', 'patients.gender')
                 ->where('medical_records.patient_id', $patient_id)
-                ->groupBy('medical_records.medical_id', 'patients.patient_id', 'patients.first_name', 'patients.last_name', 'patients.gender')
+                ->groupBy(
+                    'medical_records.medical_id',
+                    'medical_records.row_id',
+                    'medical_records.date',
+                    'medical_records.diaginsis',
+                    'medical_records.re_examination_date',
+                    'medical_records.symptom',
+                    'medical_records.status',
+                    'medical_records.advice',
+                    'medical_records.blood_pressure',
+                    'medical_records.respiratory_rate',
+                    'medical_records.weight',
+                    'medical_records.height',
+                    'medical_records.patient_id',
+                    'medical_records.book_id',
+                    'medical_records.deleted_at',
+                    'medical_records.created_at',
+                    'medical_records.updated_at',
+                    'medical_records.user_id',
+
+                    'patients.patient_id',
+                    'patients.row_id',
+                    'patients.first_name',
+                    'patients.last_name',
+                    'patients.gender',
+                    'patients.birthday',
+                    'patients.address',
+                    'patients.cccd',
+                    'patients.insurance_number',
+                    'patients.emergency_contact',
+                    'patients.occupation',
+                    'patients.national',
+                    'patients.phone',
+                    'patients.deleted_at',
+                    'patients.created_at',
+                    'patients.updated_at',
+                )
                 ->orderBy('medical_records.created_at', 'desc')
                 ->whereNotNull('medical_records.diaginsis')
                 ->limit(3)
@@ -147,13 +183,16 @@ class CheckupHealthController extends Controller
 
         $book_id = $medical_record->book_id;
 
-        $medical_id = $medical_record->medical_id;
+        // $medical_id = $medical_record->medical_id;
         $patient_id = $medical_record->patient_id;
         $book = Book::where('book_id', $book_id)->first();
         $patient = Patient::where('patient_id', $patient_id)->first();
+        // dd($medical_id);
         $treatment = TreatmentDetail::where('medical_id', $medical_id)->first();
 
         $treatment_id = $treatment->treatment_id;
+
+      
 
         $medicines = json_decode($request->input('selectedMedicines'), true);
 
@@ -261,7 +300,7 @@ class CheckupHealthController extends Controller
             $patient->patient_id = $request->input('patient_id');
             $patient->first_name = $request->input('first_name');
             $patient->last_name = $request->input('last_name');
-            $patient->phone = $phone; 
+            $patient->phone = $phone;
             $patient->gender = $request->input('gender');
             $patient->cccd = $request->input('cccd');
             $patient->birthday = $request->input('age');
@@ -271,7 +310,6 @@ class CheckupHealthController extends Controller
             $patient->insurance_number = $request->input('insurance_number');
             $patient->emergency_contact = $request->input('emergency_contact');
             $patient->save();
-            
         }
 
         return redirect()->route('system.checkupHealth.create', $book_id)->with('success', 'Lưu thông tin bệnh nhân thành công.');
@@ -362,7 +400,17 @@ class CheckupHealthController extends Controller
                     DB::raw('COUNT(services.service_id) AS service_count'),
                     DB::raw('SUM(services.price) AS total_price')
                 )
-                ->groupBy('treatment_services.treatment_id')
+                ->groupBy(
+                    'treatment_services.id',
+                    'treatment_services.treatment_id',
+                    'treatment_services.note',
+                    'treatment_services.result',
+                    'treatment_services.service_id',
+                    'treatment_services.deleted_at',
+                    'treatment_services.created_at',
+                    'treatment_services.updated_at',
+
+                )
                 ->get();
 
             $totalprice = $totalprices[0]->total_price;
@@ -455,7 +503,6 @@ class CheckupHealthController extends Controller
         $treatment->treatment_id = strtoupper(Str::random(10));
         $treatment->medical_id = $medical_record->medical_id;
         $treatment->save();
-
 
         $phone = $book->phone;
         $medical_patient = MedicalRecord::where('patient_id', $patient_id)

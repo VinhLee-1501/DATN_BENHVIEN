@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Number;
 
@@ -33,6 +34,8 @@ class ShopController extends Controller
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->leftJoin('img_products', 'img_products.product_id', '=', 'products.product_id')
             ->join('parent_categories', 'parent_categories.parent_id', '=', 'categories.parent_id')
+            ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
@@ -58,6 +61,7 @@ class ShopController extends Controller
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
+                'products.quantity',
                 'products.created_at',
                 'products.updated_at',
                 'coupons.discount_code',
@@ -88,6 +92,7 @@ class ShopController extends Controller
             }
 
             $html = view('shop._product_card', ['products' => $products])->render();
+            Log::info($html); // Xem nội dung của HTML được render
             return response()->json(['html' => $html]);
         }
 
@@ -96,6 +101,8 @@ class ShopController extends Controller
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+            ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
@@ -118,6 +125,7 @@ class ShopController extends Controller
                 'products.deleted_at',
                 'products.description',
                 'products.price',
+                'products.quantity',
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
@@ -133,6 +141,8 @@ class ShopController extends Controller
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+            ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
@@ -156,6 +166,7 @@ class ShopController extends Controller
                 'products.used',
                 'products.brand',
                 'products.category_id',
+                'products.quantity',
                 'products.deleted_at',
                 'products.description',
                 'products.price',
@@ -219,6 +230,7 @@ class ShopController extends Controller
                 'products.description',
                 'products.price',
                 'products.manufacture',
+                'products.quantity',
                 'products.registration_number',
                 'products.status',
                 'products.created_at',
@@ -238,6 +250,8 @@ class ShopController extends Controller
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+            ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->where('categories.category_id', $productById->category_id)
             ->select(
                 'products.*',
@@ -261,6 +275,7 @@ class ShopController extends Controller
                 'products.category_id',
                 'products.deleted_at',
                 'products.description',
+                'products.quantity',
                 'products.price',
                 'products.manufacture',
                 'products.registration_number',
@@ -297,6 +312,8 @@ class ShopController extends Controller
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->join('img_products', 'img_products.product_id', '=', 'products.product_id')
+            ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
@@ -321,6 +338,7 @@ class ShopController extends Controller
                 'products.brand',
                 'products.category_id',
                 'products.deleted_at',
+                'products.quantity',
                 'products.description',
                 'products.price',
                 'products.manufacture',
@@ -349,6 +367,8 @@ class ShopController extends Controller
                 $query->where('coupons.time_start', '<=', Carbon::now())
                     ->where('coupons.time_end', '>=', Carbon::now());
             })
+            ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->select(
                 'products.*',
                 'categories.name as nameCategory',
@@ -367,6 +387,7 @@ class ShopController extends Controller
                 'products.active_ingredient',
                 'products.used',
                 'products.brand',
+                'products.quantity',
                 'products.category_id',
                 'products.deleted_at',
                 'products.description',
@@ -385,6 +406,8 @@ class ShopController extends Controller
             ->leftJoin('product_sale', 'product_sale.product_id', '=', 'products.product_id')
             ->leftJoin('coupons', 'coupons.coupon_id', '=', 'product_sale.coupon_id')
             ->leftJoin('img_products', 'img_products.product_id', '=', 'products.product_id')
+            ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->select('products.*', 'categories.name as nameCategory', 'coupons.discount_code', DB::raw('MIN(img_products.img) as imgName'))
             ->groupBy(
                 'products.product_id',
@@ -395,6 +418,7 @@ class ShopController extends Controller
                 'products.unit_of_measurement',
                 'products.active_ingredient',
                 'products.used',
+                'products.quantity',
                 'products.brand',
                 'products.category_id',
                 'products.deleted_at',
@@ -474,6 +498,7 @@ class ShopController extends Controller
                 'products.brand',
                 'products.category_id',
                 'products.deleted_at',
+                'products.quantity',
                 'products.description',
                 'products.price',
                 'products.manufacture',
@@ -540,7 +565,7 @@ class ShopController extends Controller
                 'quantity' => $quantity,
             ]);
         }
-    
+
         return response()->json([
             'status' => 'success',
             'message' => 'Thêm vào giỏ hàng thành công.'
@@ -670,8 +695,8 @@ class ShopController extends Controller
             ->whereNull('cart_details.deleted_at')
             ->select(
                 'cart_products.*',
-            'cart_details.*',
-            'cart_details.quantity as quantitycart',
+                'cart_details.*',
+                'cart_details.quantity as quantitycart',
                 'products.*',
                 'coupons.discount_code',
                 'coupons.percent as percent',
@@ -696,6 +721,7 @@ class ShopController extends Controller
                 'products.deleted_at',
                 'products.description',
                 'products.price',
+                'products.quantity',
                 'products.manufacture',
                 'products.registration_number',
                 'products.status',
@@ -739,6 +765,7 @@ class ShopController extends Controller
                     ->limit(1);
             }, 'img')
             ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->where('products.name', 'LIKE', "%$search%")
             ->orderByDesc('products.product_id')
             ->limit(10)
@@ -762,6 +789,7 @@ class ShopController extends Controller
                     ->limit(1);
             }, 'img')
             ->where('products.status', 1)
+            ->where('products.quantity', '>', 0)
             ->orderByDesc('products.product_id')
             ->limit(10)
             ->get();

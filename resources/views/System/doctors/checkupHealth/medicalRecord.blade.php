@@ -189,6 +189,7 @@
                             <div class="card w-100">
                                 <div class="card-header py-2 px-3 d-flex justify-content-between">
                                     <b>Chuẩn đoán bệnh</b>
+                                    {{$medical->medical_id}}
                                     <b>{{ Carbon\Carbon::now()->format('d/m/Y') }}</b>
                                 </div>
                                 <div class="card-body px-3">

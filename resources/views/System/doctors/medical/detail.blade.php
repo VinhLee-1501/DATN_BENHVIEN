@@ -119,7 +119,7 @@
                                             <tr>
                                                 <td>{{ $count++ }}</td>
                                                 <td>{{ $data->name }}</td>
-                                                <td>{{ $data->price }}.000 VNĐ</td>
+                                                <td>{{ number_format($data->price) }}đ</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -147,7 +147,7 @@
                                         <tr>
                                             <th>STT</th>
                                             <th>Tên thuốc</th>
-                                            <th>Liều dùng</th>
+                                            <th>Lần uống/Ngày</th>
                                             <th>Số lượng</th>
                                             <th>Cách dùng</th>
                                             <th>Lúc uống</th>
