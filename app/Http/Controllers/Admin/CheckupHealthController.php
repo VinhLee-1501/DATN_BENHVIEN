@@ -413,7 +413,7 @@ class CheckupHealthController extends Controller
                 )
                 ->get();
 
-            $totalprice = $totalprices[0]->total_price;
+            $totalprice = $totalprices->sum('total_price');
             $medical_patient = MedicalRecord::where('patient_id', $patient_id)
                 ->join('users', 'users.user_id', '=', 'medical_records.user_id')
                 ->select('medical_records.*', 'users.lastname as lastname', 'users.firstname as firstname')

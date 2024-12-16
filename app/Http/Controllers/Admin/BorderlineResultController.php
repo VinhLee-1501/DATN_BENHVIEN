@@ -209,7 +209,6 @@ class BorderlineResultController extends Controller
                 'users.status',
                 'users.email_verified_at',
                 'users.remember_token',
-                'users.deleted_at',
                 'users.created_at',
                 'users.updated_at',
 

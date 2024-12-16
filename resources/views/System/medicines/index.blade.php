@@ -339,10 +339,12 @@
     // cập nhật
 
     function openEditModalMedicine(id) {
+        
         $.ajax({
             url: '/system/medicines/edit/' + id,
             type: 'GET',
             success: function(response) {
+                        console.log(response);
                 if (response.success) {
                     // Set các trường dữ liệu thuốc
                     $('#medicineId').val(response.medicine.medicine_id);
@@ -399,6 +401,9 @@
             _token: '{{ csrf_token() }}'
         };
 
+        console.log(formData);
+        
+
         $.ajax({
             url: '/system/medicines/update/' + id,
             type: 'PATCH',
@@ -417,7 +422,7 @@
                 }
             },
             error: function(err) {
-                console.error("Lỗi khi thêm thuốc:", err);
+                console.error("Lỗi khi cập nhật thuốc:", err);
 
                 if (err.responseJSON && err.responseJSON.errors) {
                     var errors = err.responseJSON.errors;

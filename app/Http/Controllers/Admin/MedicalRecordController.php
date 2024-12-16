@@ -73,9 +73,13 @@ class MedicalRecordController extends Controller
             )
             ->get();
 
+        
+
         $medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
             ->where('treatment_medications.treatment_id', $treatment_id)
             ->get();
+
+         
 
         return view(
             'System.medicalrecord.detail',

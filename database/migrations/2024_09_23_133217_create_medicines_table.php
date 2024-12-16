@@ -27,7 +27,7 @@ return new class extends Migration
                 ->on('medicine_types')
                 ->onDelete('set null')
                 ->comment('Đặt giá trị null nếu loại thuốc liên kết bị xóa');
-            $table->integer('amount')->nullable()->default(100)->comment('Số lượng thuốc');
+            $table->integer('amount')->nullable()->default(10000)->comment('Số lượng thuốc');
             // Các trường mới thêm vào
             $table->text('dosage' )->nullable()->comment('Hàm lượng thuốc (ví dụ: 500mg)');
             $table->text('packaging' )->nullable()->comment('Thông tin về quy cách đóng gói (ví dụ: hộp 10 viên)');

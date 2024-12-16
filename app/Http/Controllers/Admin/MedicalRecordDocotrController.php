@@ -242,7 +242,6 @@ class MedicalRecordDocotrController extends Controller
                 'treatment_services.updated_at',
             )
             ->get();
-
         $medicines = Medicine::join('treatment_medications', 'treatment_medications.medicine_id', '=', 'medicines.medicine_id')
             ->where('treatment_medications.treatment_id', $treatment_id)
             ->get();

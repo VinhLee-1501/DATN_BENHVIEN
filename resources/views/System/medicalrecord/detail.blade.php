@@ -84,7 +84,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $data->name }}</td>
-                                                <td>{{ $data->price }}.000 VNĐ</td>
+                                                <td>{{ Number::format($data->price) }}VND</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -93,8 +93,8 @@
                             <div class="d-flex justify-content-end">
                                 <strong id="totalAmout">
                                     Tổng cộng:
-                                    @isset($totalprice[0]->total_price)
-                                        {{ Number::format($totalprice[0]->total_price) }}VND
+                                    @isset($totalprice->total_price)
+                                        {{ Number::format($totalprice->total_price) }}VND
                                     @endisset
                                 </strong>
                             </div>

@@ -103,41 +103,46 @@
                             </div>
                             <div class="mb-3">
                                 @if (isset($services) && !$services->isEmpty())
-                                <label class="form-label">Dịch vụ</label>
-                                <table class="table table-bordered" id="selectedTestsTable">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Tên cận lâm sàng</th>
-                                            <th>Thành tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <input type="hidden" id="selectService" name="selectedService" value="">
-                                        @php $count = 1; @endphp
-                                        @foreach ($services as $data)
+                                    <label class="form-label">Dịch vụ</label>
+                                    <table class="table table-bordered" id="selectedTestsTable">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $count++ }}</td>
-                                                <td>{{ $data->name }}</td>
-                                                <td>{{ number_format($data->price) }}đ</td>
+                                                <th>#</th>
+                                                <th>Tên cận lâm sàng</th>
+                                                <th>Thành tiền</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <input type="hidden" id="selectService" name="selectedService" value="">
+                                            @php $count = 1; @endphp
+                                            @foreach ($services as $data)
+                                                <tr>
+                                                    <td>{{ $count++ }}</td>
+                                                    <td>{{ $data->name }}</td>
+                                                    <td>{{ number_format($data->price) }}đ</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 @else
-                                  <div></div>
+                                    <div></div>
                                 @endif
-                            
+
                                 @if (isset($totalprice) && !$totalprice->isEmpty())
                                     <div class="d-flex justify-content-end">
-                                        <span id="totalAmout">Tổng cộng: {{ number_format($totalprice[0]->total_price, 0, ',', '.') }}₫</span>
+                                        <span id="totalAmout">Tổng cộng:
+                                            @php
+                                                $total = $services->sum('price'); 
+                                            @endphp
+                                            {{ number_format($total) }}đ
+                                        </span>
                                     </div>
                                 @else
-                                    <div class="d-flex justify-content-end">    
+                                    <div class="d-flex justify-content-end">
                                     </div>
                                 @endif
                             </div>
-                            
+
 
 
                             <div class="mb-3">
