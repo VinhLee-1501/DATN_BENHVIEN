@@ -11,22 +11,18 @@
 
             <nav class="mb-4">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-home-tab"
-                        data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab"
-                        aria-controls="nav-home" aria-selected="true">Chưa thanh
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                        type="button" role="tab" aria-controls="nav-home" aria-selected="true">Chưa thanh
                         toán</button>
-                    <button class="nav-link"id="nav-profile-tab"
-                        data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab"
-                        aria-controls="nav-profile" aria-selected="false">Thanh
+                    <button class="nav-link"id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                        type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Thanh
                         toán
                         trước</button>
-                    <button class="nav-link"id="nav-contact-tab"
-                        data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab"
-                        aria-controls="nav-contact" aria-selected="false">
+                    <button class="nav-link"id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+                        type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                         Đã thanh toán trước</button>
-                    <button class="nav-link"id="nav-contacts-tab"
-                        data-bs-toggle="tab" data-bs-target="#nav-contacts" type="button" role="tab"
-                        aria-controls="nav-contacts" aria-selected="false">
+                    <button class="nav-link"id="nav-contacts-tab" data-bs-toggle="tab" data-bs-target="#nav-contacts"
+                        type="button" role="tab" aria-controls="nav-contacts" aria-selected="false">
                         Đã thanh toán</button>
                 </div>
             </nav>
@@ -143,7 +139,7 @@
                                                     <i class="ti ti-check"></i>
                                                 </a>
                                             </td>
-                                        </tr>\
+                                        </tr>
                                     @endforeach
                                 @endif
                             </tbody>
@@ -405,9 +401,8 @@
                             </thead>
                             <tbody>
                                 @if ($ordersPaid->isEmpty())
-
                                     <div id="noResults" class="alert alert-warning">Không tìm thấy dữ liệu.</div>
-                                    @else
+                                @else
                                     @foreach ($ordersPaid as $data)
                                         <tr class="order-row text-center">
                                             <td class="border-bottom-0">
@@ -650,7 +645,6 @@
 
                                 $('#cashierName').text(user.first_name + ' ' + user.last_name);
 
-                                // Cập nhật bảng dịch vụ
                                 var serviceTableBody = $('#serviceTableBody');
                                 serviceTableBody.empty();
                                 var serviceNames = data.service_names.split('|');
@@ -673,8 +667,13 @@
 
                                 $('#serviceFee').text(new Intl.NumberFormat('vi-VN').format(20000) +
                                     ' VND');
-                                $('#totalAmount').text(new Intl.NumberFormat('vi-VN').format(data
-                                    .total_price + 20000) + ' VND');
+                                $('#totalAmount').text(
+                                    new Intl.NumberFormat('vi-VN').format(
+                                        parseFloat(data.total_price) + 20000
+                                    ) + ' VND'
+                                );
+
+
 
                                 // Kích hoạt modal
                                 $('#payModal').modal('show');
@@ -714,6 +713,7 @@
                 function calculateChangeAmount() {
                     var cashReceived = $('#cashReceived').val();
                     var totalAmount = parseInt($('#totalAmount').text().replace(/\D/g, ''));
+                    console.log(totalAmount);
                     var changeAmount = (cashReceived) - totalAmount;
                     $('#changeAmount').text(new Intl.NumberFormat('vi-VN').format(changeAmount > 0 ? changeAmount : 0) +
                         ' VND');
@@ -751,10 +751,10 @@
                             if (response.success) {
                                 if (paymentMethod === "0") {
                                     if (response.pdf_url) {
-                                       window.open(response.pdf_url, '_blank', 'noopener');
+                                        window.open(response.pdf_url, '_blank', 'noopener');
                                     }
                                     $('#payModal').modal('hide');
-                                    location.reload(); 
+                                    location.reload();
                                 } else if (paymentMethod === "1") {
                                     if (response.payUrl) {
                                         window.location.href = response.payUrl;
@@ -763,7 +763,7 @@
                                         toastr.error('Không tìm thấy liên kết thanh toán.');
                                     }
                                 } else if (paymentMethod === "2") {
-                                    if(response.payUrl) {
+                                    if (response.payUrl) {
                                         window.location.href = response.payUrl;
                                     } else {
                                         toastr.error('Không tìm thấy liên kết thanh toán.');
