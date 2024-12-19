@@ -139,7 +139,7 @@
                                                 style="width: 50px; height: 50px; margin-right: 10px;">
                                             {{ Str::limit($item->name, 20) }}
                                             (x{{ $item->quantitycart }})
-                                            <span>{{ number_format($price * $item->quantity) }} đ</span>
+                                            <span>{{ number_format($price * $item->quantitycart) }} đ</span>
                                         </li>
                                     </ul>
                                 @endforeach

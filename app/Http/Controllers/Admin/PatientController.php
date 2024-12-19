@@ -177,7 +177,7 @@ class PatientController extends Controller
         $user = User::where('users.phone', $phone)->first();
         // dd($user);
         $email = $user->email;
-        $user_id = $user->user_id;
+       
         $book = new Book();
         $book->book_id = strtoupper(Str::random(10));
         $book_id = $book->book_id;
@@ -191,8 +191,6 @@ class PatientController extends Controller
         $book->symptoms = $request->input('symptoms');
         $book->status = 1;
 
-        // dd($book);
-
         $book->save();
 
         $medical = new MedicalRecord();
@@ -205,11 +203,10 @@ class PatientController extends Controller
         $medical->weight = $request->input('weight');
         $medical->height = $request->input('height');
         $medical->patient_id  = $request->input('patient_id');
-        $medical->user_id = $user_id;
         $medical->date = Carbon::now()->format('Y-m-d H:i:s');
         $medical->status = 0;
         $medical->save();
 
-        return response()->json(['success' => false, 'message' => 'Tạo hồ sơ thành công!']);
+        return response()->json(['success' => true, 'message' => 'Tạo hồ sơ thành công!']);
         }
 }

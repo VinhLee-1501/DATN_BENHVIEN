@@ -133,7 +133,7 @@
                                                     <td>{{ $item->name }}</td>
                                                     <td>{{ number_format($item->price) }} VND</td>
                                                     <td>{{ $item->quantitycart }}</td>
-                                                    <td>{{ number_format($item->price * $item->quantitycart) }} VND</td>
+                                                     <td>{{ number_format($item->price * $item->quantitycart) }} VND</td>
                                                     {{-- <td> <a href="{{ route('shop.shop-details', $item->product_id)}}" class="btn btn-primary">Đánh giá</a></td> --}}
                                                 </tr>
                                             @endforeach
@@ -160,25 +160,36 @@
                                 </div>
 
                                 <div class="col-md-6 col-12 text-end">
-                                    <p class="order-status status-success">Phương thức thanh toán: {{ $statusText }}</p>
-                                    <p
-                                        class="order-status 
-                            @if ($item->order_status === 1) status-success
-                            @elseif ($item->order_status === 0)
-                                status-pending
-                            @else
-                                status-cancelled @endif">
-                                        {{ $item->order_status === 1 ? 'Đã xác nhận' : ($item->order_status === 0 ? 'Đang chờ xử lý' : 'Đã hủy') }}
+                                     <p class="order-status status-success">
+                                        Phương thức thanh toán:
+                                        @if ($item->payment_method == 1)
+                                            VNPay
+                                        @elseif($item->payment_method == 0)
+                                            Khi nhận hàng
+                                        @elseif($item->payment_method == 2)
+                                           MoMoPay
+                                        @elseif($item->payment_method == 4)
+                                            ZaloPay
+                                        @else
+                                            Không xác định
+                                        @endif
                                     </p>
+                                        @if ($item->payment_status == 1)
+                                        <p
+                                            class="order-status 
+                                                  @if ($item->order_status == 1) status-success
+                                                  @elseif ($item->order_status == 0) status-pending
+                                                @else status-cancelled @endif">
+                                            {{ $item->order_status == 1 ? 'Đã xác nhận' : ($item->order_status == 0 ? 'Đang chờ xử lý' : 'Đã hủy') }}
+                                        </p>
+                                    @else
+                                        <p class="order-status status-failed">Thanh toán thất bại</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
-
-
-
-
             </div>
         </section>
     @endif

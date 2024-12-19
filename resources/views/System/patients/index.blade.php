@@ -286,11 +286,7 @@
                                 <div class="invalid-feedback" id="weight_error"></div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="specialty_id" class="form-label">Ngày</label>
-                            <input type="date" id="day" class="form-control" name="day"
-                                value="{{ \Carbon\Carbon::now()->timezone('Asia/Ho_Chi_Minh')->format('Y-m-d') }}" readonly>
-                            <div class="invalid-feedback" id="day_error"></div>
+                        
                         <div class="modal-footer justify-content-end">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                             <button type="submit" class="btn btn-primary" id="addMedicaltBtn">Tạo</button>
@@ -421,9 +417,6 @@
             formData.append('symptoms', $('#symptoms').val());
             formData.append('respiratory_rate', $('#respiratory_rate').val());
             formData.append('blood_pressure', $('#blood_pressure').val());
-
-            // Kiểm tra giá trị của formData trước khi gửi
-            console.log('FormData:', formData);
 
             $.ajax({
                 url: '/system/patients/saveMedical', // Đảm bảo đường dẫn này chính xác
