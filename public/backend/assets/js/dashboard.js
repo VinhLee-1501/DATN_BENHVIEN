@@ -4,8 +4,8 @@ $(function () {
     // =====================================
     // Profit
     // =====================================
-    $(() =>{
-        if (typeof patientData === "undefined"){
+    $(() => {
+        if (typeof patientData === "undefined") {
             console.error('Không có dữ liệu nào')
             return;
         }
@@ -17,25 +17,25 @@ $(function () {
         console.log(max);
 
         function getNextNumber(num) {
-            const nextNumber = Math.ceil(num /10) * 10;
+            const nextNumber = Math.ceil(num / 10) * 10;
             return nextNumber % 20 === 0 ? nextNumber : nextNumber + 10;
         }
         const nextMax = getNextNumber(max);
         console.log(nextMax);
         var chart = {
             series: [
-                {name: "Tổng số: ", data: total_data},
-                {name: "Tháng: ", data: []},
+                { name: "Tổng số: ", data: total_data },
+                { name: "Tháng: ", data: [] },
             ],
 
             chart: {
                 type: "bar",
                 height: 345,
                 offsetX: -15,
-                toolbar: {show: true},
+                toolbar: { show: true },
                 foreColor: "#adb0bb",
                 fontFamily: 'inherit',
-                sparkline: {enabled: false},
+                sparkline: { enabled: false },
             },
 
 
@@ -51,7 +51,7 @@ $(function () {
                     borderRadiusWhenStacked: 'all'
                 },
             },
-            markers: {size: 0},
+            markers: { size: 0 },
 
             dataLabels: {
                 enabled: false,
@@ -77,7 +77,7 @@ $(function () {
                 type: "category",
                 categories: total_months,
                 labels: {
-                    style: {cssClass: "grey--text lighten-2--text fill-color"},
+                    style: { cssClass: "grey--text lighten-2--text fill-color" },
                 },
             },
 
@@ -101,7 +101,7 @@ $(function () {
             },
 
 
-            tooltip: {theme: "light"},
+            tooltip: { theme: "light" },
 
             responsive: [
                 {
@@ -128,19 +128,20 @@ $(function () {
     // Breakup
     // =====================================
     $(() => {
-        if (typeof priceData === "undefined"){
+        if (typeof priceData === "undefined") {
             console.error('Không có dữ liệu nào')
             return;
         }
         const total_data = priceData.map((item) => item.total_price);
         const total_months = priceData.map((item) => item.data_months);
         console.log(...total_data);
-        const currentMonthRevenue = total_data[2].toFixed(3);
-        document.querySelector('#price').innerText = currentMonthRevenue;
+        const currentMonthRevenue = total_data[2];
+        const formattedRevenue = currentMonthRevenue.toLocaleString('vi-VN');
+        document.querySelector('#price').innerText = formattedRevenue;
 
         const total_sum = total_data.reduce((acc, val) => acc + val, 0);
         const total_percentage = total_sum / 100;
-        document.querySelector('#percentage').innerText = total_percentage
+        document.querySelector('#percentage').innerText = total_percentage.toLocaleString('vi-VN');
         document.querySelector('#month1').innerText = total_months[0]
         document.querySelector('#month2').innerText = total_months[1]
         var breakup = {
@@ -200,7 +201,7 @@ $(function () {
     // Earning
     // =====================================
     $(() => {
-        if (typeof transactionsMonthData === "undefined"){
+        if (typeof transactionsMonthData === "undefined") {
             console.error('Không có dữ liệu nào')
             return;
         }
@@ -209,15 +210,15 @@ $(function () {
 
 
         const total_price = total_data.reduce((acc, val) => acc + val, 0);
-        document.querySelector('#totalPriceLineChart').innerText = total_price.toFixed(3);
-        
+        document.querySelector('#totalPriceLineChart').innerText = total_price.toLocaleString('vi-VN');
+
 
         const totalPercentageMonth = total_price / total_element;
         const formatted_total_data = total_data.map(value => {
             const newValue = parseInt(value + '000');
             return newValue.toLocaleString();
         });
-        document.querySelector('#percentagePriceMonthLineChart').innerText = `${totalPercentageMonth.toFixed(2)}%`;
+        document.querySelector('#percentagePriceMonthLineChart').innerText = `${totalPercentageMonth.toLocaleString('vi-VN')}%`;
 
         var earning = {
             chart: {
